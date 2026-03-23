@@ -12,7 +12,6 @@ import type { ProjectLocale } from '../data/projectTranslations'
 import styles from './Blog.module.css'
 
 type ViewMode = 'grid' | 'list'
-const BLOG_HERO_URL = '/blog-hero-placeholder.jpg'
 
 export default function Blog() {
   const navigate = useNavigate()
@@ -25,6 +24,7 @@ export default function Blog() {
   const [posts, setPosts] = useState<Post[]>([])
   const [toast, setToast] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
+  const blogHeroImage = `${import.meta.env.BASE_URL}blog-hero-placeholder.jpg`
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -116,38 +116,27 @@ export default function Blog() {
           </div>
 
           <div className={styles.heroRow}>
-            <div className={styles.heroPhoto}>
+            <div className={`${styles.heroPhoto} ${styles.heroPhotoSolo}`}>
               <img
-                src={BLOG_HERO_URL}
-                alt={blogLocale === 'ko' ? '블로그 대표 이미지 placeholder' : 'Placeholder blog hero image'}
+                src={blogHeroImage}
+                alt={blogLocale === 'ko' ? '블로그 대표 이미지' : 'Blog hero image'}
                 className={styles.catImg}
                 loading="lazy"
               />
               <span className={styles.catCaption}>
-                {blogLocale === 'ko' ? '블로그 대표 이미지 placeholder' : 'Placeholder image for the blog hero'}
+                {blogLocale === 'ko' ? '추후 작성 예정' : 'Coming soon'}
               </span>
             </div>
-            <aside className={styles.heroNote}>
-              <span className={styles.heroEyebrow}>Placeholder</span>
-              <h2 className={styles.heroNoteTitle}>
-                {blogLocale === 'ko' ? '이 공간은 나중에 글 분위기를 보여주는 섹션이 됩니다.' : 'This area will later set the tone for the blog.'}
-              </h2>
-              <p className={styles.heroNoteText}>
-                {blogLocale === 'ko'
-                  ? '기존 고양이 섹션 자리는 지금은 대표 이미지 placeholder로 바꿔 두었습니다. 추후 소개 문구, 대표 사진, 추천 글, 짧은 메모 등으로 자유롭게 교체할 수 있습니다.'
-                  : 'The old cat section is now a placeholder hero image. You can later replace it with an intro note, featured post, profile image, or any editorial block you want.'}
-              </p>
-            </aside>
           </div>
 
           <section className={styles.notice}>
             <h2 className={styles.noticeTitle}>
-              {blogLocale === 'ko' ? '작성 예정 상태로 전환된 블로그입니다.' : 'This blog is currently in placeholder mode.'}
+              {blogLocale === 'ko' ? '추후 작성 예정' : 'Coming soon'}
             </h2>
             <p className={styles.noticeText}>
               {blogLocale === 'ko'
-                ? '기존 글 대신 구조만 남겨두었고, 실제 포스트와 연구 노트는 추후 직접 채워 넣을 수 있도록 비워 두었습니다.'
-                : 'The structure is preserved, but detailed posts and research notes have been replaced with placeholders for future updates.'}
+                ? '블로그와 연구 노트 콘텐츠는 추후 작성 예정입니다.'
+                : 'Blog posts and research notes will be added later.'}
             </p>
           </section>
 

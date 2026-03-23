@@ -7,7 +7,7 @@ const DEFAULT_BLOG_LOCALE: PostLanguage = 'ko'
 const blogPageText = {
   ko: {
     title: 'Blog',
-    subtitle: '이 공간은 개인 기록용 블로그 템플릿입니다.\n실제 글과 연구 노트는 추후 작성 예정입니다.',
+    subtitle: '블로그와 연구 노트는 추후 작성 예정입니다.',
     empty: '이 카테고리 콘텐츠는 추후 작성 예정입니다.',
     loading: '로딩중...',
     notFound: '글을 찾을 수 없습니다',
@@ -22,7 +22,7 @@ const blogPageText = {
   },
   en: {
     title: 'Blog',
-    subtitle: 'This area is currently a personal blog template.\nActual posts and research notes will be added later.',
+    subtitle: 'Blog posts and research notes will be added later.',
     empty: 'Content for this category will be added later.',
     loading: 'Loading...',
     notFound: 'Post not found',

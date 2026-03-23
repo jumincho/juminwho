@@ -146,6 +146,13 @@
   background: var(--blog-surface);
 }
 
+.heroPhotoSolo {
+  position: static;
+  flex: 0 0 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
 .catImg {
   width: 100%;
   aspect-ratio: 4 / 5;

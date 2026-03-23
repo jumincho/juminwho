@@ -4,6 +4,7 @@ import styles from './Hero.module.css'
 
 export default function Hero() {
   const [showAlias, setShowAlias] = useState(false)
+  const profileImage = `${import.meta.env.BASE_URL}jumin-cho.jpg`
 
   return (
     <section className={styles.hero} id="about">
@@ -64,7 +65,7 @@ export default function Hero() {
             </div>
           </div>
           <div className={styles.photo}>
-            <img src="/jumin-cho.jpg" alt="JUMIN CHO" className={styles.profileImg} />
+            <img src={profileImage} alt="JUMIN CHO" className={styles.profileImg} />
           </div>
         </div>
       </div>
