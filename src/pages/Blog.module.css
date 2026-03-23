@@ -105,6 +105,28 @@
   opacity: 0.85;
 }
 
+.notice {
+  margin-bottom: 28px;
+  padding: 20px 22px;
+  border-radius: 16px;
+  border: 1px solid var(--blog-border);
+  background: var(--blog-surface);
+}
+
+.noticeTitle {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--blog-title);
+}
+
+.noticeText {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--blog-subtitle);
+}
+
 /* ── Hero Row: Cat photo (left) + Globe (right) ── */
 .heroRow {
   display: flex;
@@ -126,8 +148,8 @@
 
 .catImg {
   width: 100%;
-  max-height: 520px;
-  object-fit: contain;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
   display: block;
   background: rgba(0, 0, 0, 0.15);
   border-radius: 12px 12px 0 0;
@@ -149,6 +171,44 @@
   top: calc(var(--nav-height) + 24px);
   align-self: flex-start;
   min-height: 420px;
+}
+
+.heroNote {
+  flex: 1;
+  position: sticky;
+  top: calc(var(--nav-height) + 24px);
+  align-self: flex-start;
+  min-height: 420px;
+  padding: 28px;
+  border-radius: 20px;
+  border: 1px solid var(--blog-border);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)),
+    var(--blog-surface);
+}
+
+.heroEyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blog-text-muted);
+}
+
+.heroNoteTitle {
+  margin: 0 0 14px;
+  font-size: 28px;
+  line-height: 1.25;
+  color: var(--blog-title);
+}
+
+.heroNoteText {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--blog-subtitle);
 }
 
 /* ── Posts Section ── */
@@ -371,6 +431,11 @@
   .heroGlobe {
     position: static;
     min-height: 300px;
+  }
+
+  .heroNote {
+    position: static;
+    min-height: auto;
   }
 
   .catImg {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, lazy, Suspense } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import InteractiveBackground from '../components/InteractiveBackground'
 import BlogCard from '../components/BlogCard'
@@ -11,11 +11,8 @@ import { useBlogLocale, getBlogPageText } from '../lib/blogI18n'
 import type { ProjectLocale } from '../data/projectTranslations'
 import styles from './Blog.module.css'
 
-const TravelGlobe = lazy(() => import('../components/TravelGlobe'))
-
-const CAT_PHOTO_URL = 'https://images.weserv.nl/?url=xspdvydnpreiccnpzunm.supabase.co/storage/v1/object/public/blog-images/cat-geumbi.heic&output=jpg&q=85'
-
 type ViewMode = 'grid' | 'list'
+const BLOG_HERO_URL = '/blog-hero-placeholder.jpg'
 
 export default function Blog() {
   const navigate = useNavigate()
@@ -38,7 +35,7 @@ export default function Blog() {
     if (!confirm(t.deleteConfirm(title))) return
     const ok = await deletePost(slug)
     if (ok) {
-      setPosts((prev) => prev.filter((p) => p.slug !== slug))
+      setPosts((prev) => prev.filter((post) => post.slug !== slug))
       setToast(t.deleted(title))
       setTimeout(() => setToast(''), 3000)
     } else {
@@ -46,23 +43,22 @@ export default function Blog() {
     }
   }
 
-  // For 연구노트 category, filter by selected language; for others show all (default: ko posts only)
   const filteredPosts = useMemo(() => {
     const q = searchQuery.toLowerCase().trim()
     return (activeCategory === '전체'
       ? posts
-      : posts.filter((p) => p.category === activeCategory)
+      : posts.filter((post) => post.category === activeCategory)
     )
-      .filter((p) =>
-        (p.category === '연구노트' || p.category === '알고리즘') ? p.language === blogLocale : p.language === 'ko'
+      .filter((post) =>
+        (post.category === '연구노트' || post.category === '알고리즘') ? post.language === blogLocale : post.language === 'ko'
       )
-      .filter((p) => {
+      .filter((post) => {
         if (!q) return true
         return (
-          p.title.toLowerCase().includes(q) ||
-          p.summary.toLowerCase().includes(q) ||
-          p.tags.some((tag) => tag.toLowerCase().includes(q)) ||
-          p.content.toLowerCase().includes(q)
+          post.title.toLowerCase().includes(q) ||
+          post.summary.toLowerCase().includes(q) ||
+          post.tags.some((tag) => tag.toLowerCase().includes(q)) ||
+          post.content.toLowerCase().includes(q)
         )
       })
   }, [posts, activeCategory, blogLocale, searchQuery])
@@ -77,8 +73,8 @@ export default function Blog() {
               <div>
                 <h1 className={styles.title}>Blog</h1>
                 <p className={styles.subtitle}>
-                  {t.subtitle.split('\n').map((line, i) => (
-                    <span key={i}>{line}{i === 0 && <br />}</span>
+                  {t.subtitle.split('\n').map((line, index) => (
+                    <span key={index}>{line}{index === 0 && <br />}</span>
                   ))}
                 </p>
               </div>
@@ -86,7 +82,7 @@ export default function Blog() {
                 {(activeCategory === '연구노트' || activeCategory === '알고리즘') && (
                   <LocaleToggle
                     value={blogLocale as ProjectLocale}
-                    onChange={(v) => setBlogLocale(v as 'ko' | 'en')}
+                    onChange={(value) => setBlogLocale(value as 'ko' | 'en')}
                   />
                 )}
                 <button
@@ -119,22 +115,43 @@ export default function Blog() {
             </div>
           </div>
 
-          {/* Hero: Cat photo (left) + Globe (right) — both sticky */}
           <div className={styles.heroRow}>
             <div className={styles.heroPhoto}>
-              <img src={CAT_PHOTO_URL} alt="금비" className={styles.catImg} loading="lazy" />
-              <span className={styles.catCaption}>우리집 최강 귀요미, 해피바이러스. 금비를 소개함돠</span>
+              <img
+                src={BLOG_HERO_URL}
+                alt={blogLocale === 'ko' ? '블로그 대표 이미지 placeholder' : 'Placeholder blog hero image'}
+                className={styles.catImg}
+                loading="lazy"
+              />
+              <span className={styles.catCaption}>
+                {blogLocale === 'ko' ? '블로그 대표 이미지 placeholder' : 'Placeholder image for the blog hero'}
+              </span>
             </div>
-            <div className={styles.heroGlobe}>
-              <Suspense fallback={<p className={styles.empty}>{t.globeLoading}</p>}>
-                <TravelGlobe compact />
-              </Suspense>
-            </div>
+            <aside className={styles.heroNote}>
+              <span className={styles.heroEyebrow}>Placeholder</span>
+              <h2 className={styles.heroNoteTitle}>
+                {blogLocale === 'ko' ? '이 공간은 나중에 글 분위기를 보여주는 섹션이 됩니다.' : 'This area will later set the tone for the blog.'}
+              </h2>
+              <p className={styles.heroNoteText}>
+                {blogLocale === 'ko'
+                  ? '기존 고양이 섹션 자리는 지금은 대표 이미지 placeholder로 바꿔 두었습니다. 추후 소개 문구, 대표 사진, 추천 글, 짧은 메모 등으로 자유롭게 교체할 수 있습니다.'
+                  : 'The old cat section is now a placeholder hero image. You can later replace it with an intro note, featured post, profile image, or any editorial block you want.'}
+              </p>
+            </aside>
           </div>
 
-          {/* Category toolbar + posts below */}
+          <section className={styles.notice}>
+            <h2 className={styles.noticeTitle}>
+              {blogLocale === 'ko' ? '작성 예정 상태로 전환된 블로그입니다.' : 'This blog is currently in placeholder mode.'}
+            </h2>
+            <p className={styles.noticeText}>
+              {blogLocale === 'ko'
+                ? '기존 글 대신 구조만 남겨두었고, 실제 포스트와 연구 노트는 추후 직접 채워 넣을 수 있도록 비워 두었습니다.'
+                : 'The structure is preserved, but detailed posts and research notes have been replaced with placeholders for future updates.'}
+            </p>
+          </section>
+
           <div className={styles.postsSection}>
-            {/* Search bar */}
             <div className={styles.searchBar}>
               <svg className={styles.searchIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8" />
@@ -143,9 +160,9 @@ export default function Blog() {
               <input
                 type="text"
                 className={styles.searchInput}
-                placeholder={blogLocale === 'ko' ? '논문 제목, 태그, 내용으로 검색...' : 'Search by title, tags, content...'}
+                placeholder={blogLocale === 'ko' ? '제목, 태그, 내용으로 검색...' : 'Search by title, tags, or content...'}
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(event) => setSearchQuery(event.target.value)}
               />
               {searchQuery && (
                 <button
@@ -162,13 +179,13 @@ export default function Blog() {
 
             <div className={styles.toolbar}>
               <div className={styles.categories}>
-                {categories.map((cat) => (
+                {categories.map((category) => (
                   <button
-                    key={cat}
-                    className={`${styles.catBtn} ${activeCategory === cat ? styles.catActive : ''}`}
-                    onClick={() => setActiveCategory(cat)}
+                    key={category}
+                    className={`${styles.catBtn} ${activeCategory === category ? styles.catActive : ''}`}
+                    onClick={() => setActiveCategory(category)}
                   >
-                    {cat}
+                    {category}
                   </button>
                 ))}
               </div>
@@ -177,7 +194,7 @@ export default function Blog() {
                   <button
                     className={`${styles.viewBtn} ${viewMode === 'grid' ? styles.viewActive : ''}`}
                     onClick={() => setViewMode('grid')}
-                    aria-label="그리드 뷰"
+                    aria-label="Grid view"
                   >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
@@ -187,7 +204,7 @@ export default function Blog() {
                   <button
                     className={`${styles.viewBtn} ${viewMode === 'list' ? styles.viewActive : ''}`}
                     onClick={() => setViewMode('list')}
-                    aria-label="리스트 뷰"
+                    aria-label="List view"
                   >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" />
@@ -198,26 +215,20 @@ export default function Blog() {
               </div>
             </div>
 
-            {activeCategory === '여행' ? (
-              <Suspense fallback={<p className={styles.empty}>{t.globeLoading}</p>}>
-                <TravelGlobe />
-              </Suspense>
-            ) : (
-              <div className={viewMode === 'grid' ? styles.grid : styles.list}>
-                {filteredPosts.map((post, i) => (
-                  <BlogCard
-                    key={post.slug}
-                    post={post}
-                    index={i}
-                    viewMode={viewMode}
-                    onDelete={isAdmin && post.source !== 'local' ? () => handleDelete(post.slug, post.title) : undefined}
-                  />
-                ))}
-                {filteredPosts.length === 0 && (
-                  <p className={styles.empty}>{t.empty}</p>
-                )}
-              </div>
-            )}
+            <div className={viewMode === 'grid' ? styles.grid : styles.list}>
+              {filteredPosts.map((post, index) => (
+                <BlogCard
+                  key={post.slug}
+                  post={post}
+                  index={index}
+                  viewMode={viewMode}
+                  onDelete={isAdmin && post.source !== 'local' ? () => handleDelete(post.slug, post.title) : undefined}
+                />
+              ))}
+              {filteredPosts.length === 0 && (
+                <p className={styles.empty}>{t.empty}</p>
+              )}
+            </div>
           </div>
         </div>
 

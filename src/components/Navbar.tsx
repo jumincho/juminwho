@@ -42,7 +42,7 @@ export default function Navbar({ dark }: Props) {
     <nav className={navClass}>
       <div className={styles.inner}>
         <Link to="/" className={styles.logo}>
-          Chaewon Yoon
+          JUMIN CHO
         </Link>
 
         <button

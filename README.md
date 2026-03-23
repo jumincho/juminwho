@@ -1,12 +1,18 @@
-# Chaewon's Website
+# JUMIN CHO Portfolio
 
-https://lluvecwonv.github.io/
+Personal portfolio site for JUMIN CHO.
+
+## First things to update
+
+1. Replace the remaining placeholder contact links if needed.
+2. Replace `/public/jumin-cho.jpg` with a different profile photo if needed.
+3. Update the placeholder project and blog content under `src/data/`.
 
 ## Supabase setup
 
 1. Copy `.env.example` to `.env.local`.
 2. Fill in `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` from your Supabase project.
-3. Run the SQL in [schema.sql](/Users/yoonnchaewon/.codex/worktrees/ce88/my_site/supabase/schema.sql) in the Supabase SQL editor.
+3. Run the SQL in [`supabase/schema.sql`](./supabase/schema.sql) in the Supabase SQL editor.
 4. Create one admin user in Supabase Auth and set `VITE_ADMIN_EMAIL` to that email.
 
 When Supabase env vars are present:
@@ -17,5 +23,5 @@ When Supabase env vars are present:
 - do not add paper figures under `public/posts` for new research notes
 
 When Supabase is not configured:
-- blog posts fall back to local markdown files in `src/posts`
+- blog posts fall back to placeholder local content in `src/data/posts.ts`
 - travel spots fall back to browser `localStorage`

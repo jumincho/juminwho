@@ -17,11 +17,11 @@ const HANGUL_REGEX = /[가-힣]/
 const projectsPageText = {
   ko: {
     title: '프로젝트',
-    subtitle: '연구 및 개발 프로젝트',
+    subtitle: '대표 프로젝트 템플릿입니다. 세부 내용은 추후 작성 예정입니다.',
   },
   en: {
     title: 'Projects',
-    subtitle: 'Research and development projects',
+    subtitle: 'Template project entries. Detailed content will be added later.',
   },
 }
 

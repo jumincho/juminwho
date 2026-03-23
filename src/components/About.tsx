@@ -2,9 +2,12 @@ import ScrollReveal from './ScrollReveal'
 import styles from './About.module.css'
 
 const skills = [
-  'Python', 'TypeScript', 'PyTorch', 'LangChain',
-  'React', 'NLP', 'LLM', 'Multi-Agent',
-  'Deep Learning', 'Reinforcement Learning', 'FastAPI', 'Docker',
+  'Primary stack',
+  'Frameworks',
+  'Research tooling',
+  'Deployment',
+  'Writing',
+  'Collaboration',
 ]
 
 export default function About() {
@@ -13,9 +16,9 @@ export default function About() {
       <div className={styles.container}>
         <ScrollReveal>
           <span className={styles.badge}>About Me</span>
-          <h2 className={styles.title}>AI로 더 나은 세상을 만듭니다</h2>
+          <h2 className={styles.title}>Personal Introduction</h2>
           <p className={styles.subtitle}>
-            연구와 개발의 경계를 넘나드는 AI 엔지니어
+            This section is reserved for a short self-introduction.
           </p>
         </ScrollReveal>
 
@@ -23,12 +26,10 @@ export default function About() {
           <ScrollReveal delay={0.1}>
             <div className={styles.bio}>
               <p>
-                안녕하세요, 채니챈(윤채원)입니다.
-                자연어 처리와 대화형 AI를 중심으로 연구와 개발을 병행하고 있습니다.
+                A brief biography, research direction, and working style will be added later.
               </p>
               <p>
-                특히 LLM 기반 멀티 에이전트 시스템과 AI 윤리에 깊은 관심을 갖고 있으며,
-                사람과 AI가 더 의미 있게 소통할 수 있는 방법을 탐구하고 있습니다.
+                Use this area for an accessible overview of your interests, values, and current work.
               </p>
             </div>
           </ScrollReveal>

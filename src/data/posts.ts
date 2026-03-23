@@ -34,6 +34,10 @@ function isPostLanguage(value: string): value is PostLanguage {
   return value === 'ko' || value === 'en'
 }
 
+function isCategory(value: string): value is Category {
+  return categories.includes(value as Category)
+}
+
 function rowToPost(row: PostRow): Post {
   return {
     slug: row.slug,
@@ -41,116 +45,91 @@ function rowToPost(row: PostRow): Post {
     date: row.date,
     summary: row.summary,
     tags: row.tags ?? [],
-    category: (row.category || '일상') as Category,
+    category: isCategory(row.category) ? row.category : '일상',
     content: row.content,
     language: isPostLanguage(row.language) ? row.language : 'ko',
     source: 'remote',
   }
 }
 
-const localPostModules = import.meta.glob('../posts/*.md', {
-  eager: true,
-  import: 'default',
-  query: '?raw',
-}) as Record<string, string>
+const localPosts: Post[] = [
+  {
+    slug: 'blog-coming-soon',
+    title: '블로그 오픈 준비 중',
+    date: '2026-03-23',
+    summary: '사이트 기본 구조만 먼저 정리했고, 실제 글과 기록은 추후 작성 예정입니다.',
+    tags: ['placeholder', 'setup'],
+    category: 'AI/개발',
+    content: `이 블로그는 현재 템플릿 상태입니다.
 
-function isCategory(value: string): value is Category {
-  return categories.includes(value as Category)
-}
+실제 글, 정리 노트, 링크 모음은 추후 작성 예정입니다.
 
-function stripWrappingQuotes(value: string) {
-  return value.replace(/^['"]/, '').replace(/['"]$/, '').trim()
-}
+- 첫 글 주제 정리
+- 카테고리 구성
+- 발행 주기 설정
 
-function parseTags(rawValue: string | undefined) {
-  if (!rawValue) return []
-
-  const value = rawValue.trim()
-  if (!value.startsWith('[') || !value.endsWith(']')) {
-    const singleTag = stripWrappingQuotes(value)
-    return singleTag ? [singleTag] : []
-  }
-
-  return value
-    .slice(1, -1)
-    .split(',')
-    .map((tag) => stripWrappingQuotes(tag.trim()))
-    .filter(Boolean)
-}
-
-function parseFrontmatter(raw: string) {
-  const normalized = raw.replace(/\r\n/g, '\n')
-  const match = normalized.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/)
-
-  if (!match) {
-    return {
-      frontmatter: {} as Record<string, string>,
-      content: normalized.trim(),
-    }
-  }
-
-  const frontmatter = match[1]
-    .split('\n')
-    .reduce<Record<string, string>>((acc, line) => {
-      const separatorIndex = line.indexOf(':')
-      if (separatorIndex === -1) return acc
-
-      const key = line.slice(0, separatorIndex).trim()
-      const value = line.slice(separatorIndex + 1).trim()
-      if (key) {
-        acc[key] = value
-      }
-      return acc
-    }, {})
-
-  return {
-    frontmatter,
-    content: match[2].trim(),
-  }
-}
-
-function buildSummary(content: string) {
-  return content
-    .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/[`#>*_~-]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, 120)
-}
-
-function parseLocalPost(filepath: string, raw: string): Post | null {
-  const slugMatch = filepath.match(/\/([^/]+)\.md$/)
-  if (!slugMatch) return null
-
-  const { frontmatter, content } = parseFrontmatter(raw)
-  const categoryValue = stripWrappingQuotes(frontmatter.category || '일상')
-
-  const langValue = stripWrappingQuotes(frontmatter.language || 'ko')
-
-  return {
-    slug: slugMatch[1],
-    title: stripWrappingQuotes(frontmatter.title || slugMatch[1]),
-    date: stripWrappingQuotes(frontmatter.date || '1970-01-01'),
-    summary: stripWrappingQuotes(frontmatter.summary || '') || buildSummary(content),
-    tags: parseTags(frontmatter.tags),
-    category: isCategory(categoryValue) ? categoryValue : '일상',
-    content,
-    language: isPostLanguage(langValue) ? langValue : 'ko',
+위 항목들은 모두 나중에 업데이트할 예정입니다.`,
+    language: 'ko',
     source: 'local',
-  }
-}
+  },
+  {
+    slug: 'research-note-coming-soon',
+    title: '연구 노트 준비 중',
+    date: '2026-03-23',
+    summary: '논문 정리, 실험 회고, 읽은 자료 메모는 추후 작성 예정입니다.',
+    tags: ['research-note', 'coming-soon'],
+    category: '연구노트',
+    content: `연구 노트 섹션은 아직 비어 있습니다.
 
-const localPosts = Object.entries(localPostModules)
-  .map(([filepath, raw]) => parseLocalPost(filepath, raw))
-  .filter((post): post is Post => post !== null)
+다음과 같은 내용이 추후 추가될 예정입니다.
+
+- 읽은 논문 요약
+- 실험 설계와 실패 기록
+- 구현 과정 메모
+- 다음 액션 아이템`,
+    language: 'ko',
+    source: 'local',
+  },
+  {
+    slug: 'research-note-coming-soon-en',
+    title: 'Research Notes Coming Soon',
+    date: '2026-03-23',
+    summary: 'Paper summaries, experiment logs, and implementation notes will be added later.',
+    tags: ['research-note', 'coming-soon'],
+    category: '연구노트',
+    content: `This blog is currently in template mode.
+
+The research notes section will be filled in later with:
+
+- paper summaries
+- experiment retrospectives
+- implementation notes
+- next steps`,
+    language: 'en',
+    source: 'local',
+  },
+  {
+    slug: 'insight-coming-soon',
+    title: '인사이트 메모 준비 중',
+    date: '2026-03-23',
+    summary: '짧은 생각, 배운 점, 작업 메모는 추후 작성 예정입니다.',
+    tags: ['insight', 'placeholder'],
+    category: '인사이트',
+    content: `짧은 메모와 회고를 담을 공간입니다.
+
+현재는 사이트 구조만 남겨두었고,
+실제 내용은 추후 작성 예정입니다.`,
+    language: 'ko',
+    source: 'local',
+  },
+]
 
 function sortPosts(posts: Post[]) {
   return [...posts].sort((left, right) => right.date.localeCompare(left.date))
 }
 
 function mergePosts(remotePosts: Post[], language?: PostLanguage) {
-  const filteredLocal = language ? localPosts.filter((p) => p.language === language) : localPosts
+  const filteredLocal = language ? localPosts.filter((post) => post.language === language) : localPosts
   const mergedPosts = new Map(filteredLocal.map((post) => [post.slug, post]))
   remotePosts.forEach((post) => {
     mergedPosts.set(post.slug, post)
@@ -162,9 +141,8 @@ function getLocalPost(slug: string) {
   return localPosts.find((post) => post.slug === slug) ?? null
 }
 
-// Simple cache to avoid redundant fetches within the same session
 let postsCache: { key: string; data: Post[]; ts: number } | null = null
-const CACHE_TTL = 60_000 // 1 minute
+const CACHE_TTL = 60_000
 
 export async function getPosts(language?: PostLanguage): Promise<Post[]> {
   const cacheKey = language ?? '__all__'
@@ -173,7 +151,7 @@ export async function getPosts(language?: PostLanguage): Promise<Post[]> {
   }
 
   const filterByLang = (posts: Post[]) =>
-    language ? posts.filter((p) => p.language === language) : posts
+    language ? posts.filter((post) => post.language === language) : posts
 
   if (!supabase) {
     const result = sortPosts(filterByLang(localPosts))
@@ -252,10 +230,11 @@ export async function createPost(post: Post): Promise<boolean> {
     console.error('Failed to create post:', error)
     return false
   }
+
+  postsCache = null
   return true
 }
 
-/** Get the alternate-language slug for a post (convention: EN posts have `-en` suffix) */
 export function getAlternateSlug(slug: string, currentLang: PostLanguage): string {
   if (currentLang === 'en') {
     return slug.replace(/-en$/, '')
@@ -278,5 +257,7 @@ export async function deletePost(slug: string): Promise<boolean> {
     console.error('Failed to delete post:', error)
     return false
   }
+
+  postsCache = null
   return true
 }
