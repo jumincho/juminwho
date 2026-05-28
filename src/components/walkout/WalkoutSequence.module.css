@@ -757,7 +757,7 @@
   text-shadow: 0 0 18px rgba(251,191,36,0.8);
 }
 
-/* ============ FINAL CARD ============ */
+/* ============ FINAL CARD (FUT-style layout) ============ */
 .cardStage {
   position: relative;
   z-index: 11;
@@ -766,19 +766,20 @@
   align-items: center;
   gap: 28px;
   perspective: 1400px;
+  transform-style: preserve-3d;
 }
 
 .cardWrap {
-  width: 320px;
-  height: 480px;
+  width: 380px;
+  height: 560px;
   position: relative;
-  filter: drop-shadow(0 40px 80px rgba(251,191,36,0.45));
+  filter: drop-shadow(0 50px 90px rgba(251,191,36,0.55));
 }
 
 .cardWrap::before {
   content: '';
   position: absolute;
-  inset: -30px;
+  inset: -34px;
   background: conic-gradient(
     from 0deg,
     #fbbf24 0deg,
@@ -787,8 +788,8 @@
     #06b6d4 270deg,
     #fbbf24 360deg
   );
-  filter: blur(40px);
-  opacity: 0.5;
+  filter: blur(50px);
+  opacity: 0.55;
   z-index: -1;
   animation: cardHaloSpin 4s linear infinite;
 }
@@ -800,8 +801,8 @@
 .cardFoil {
   width: 100%;
   height: 100%;
-  border-radius: 22px;
-  padding: 4px;
+  border-radius: 24px;
+  padding: 5px;
   background:
     conic-gradient(
       from var(--shine-angle, 0deg) at 50% 50%,
@@ -815,9 +816,9 @@
       #fde68a 100%
     );
   box-shadow:
-    inset 0 0 30px rgba(255,255,255,0.5),
+    inset 0 0 36px rgba(255,255,255,0.55),
     0 0 0 1px rgba(255,255,255,0.4),
-    0 30px 60px rgba(0,0,0,0.5);
+    0 36px 80px rgba(0,0,0,0.6);
   animation: foilShine 5s linear infinite;
 }
 
@@ -835,9 +836,12 @@
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 18px;
-  background: radial-gradient(ellipse at top, #fff7c2 0%, #fde68a 40%, #f59e0b 100%);
-  padding: 18px 18px 14px;
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 100%, rgba(245,158,11,0.85) 0%, transparent 70%),
+    radial-gradient(ellipse 90% 50% at 50% 0%,   rgba(255,247,194,0.95) 0%, transparent 60%),
+    linear-gradient(180deg, #fff7c2 0%, #fde68a 35%, #f59e0b 75%, #c2780b 100%);
+  padding: 20px 22px 22px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -855,7 +859,7 @@
   background-position: -100% 0;
   animation: cardSheen 3.4s ease-in-out infinite;
   pointer-events: none;
-  z-index: 1;
+  z-index: 5;
 }
 
 @keyframes cardSheen {
@@ -863,79 +867,110 @@
   100% { background-position: 200% 0 }
 }
 
-.cardRating {
+.cardTopLeft {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  top: 18px;
+  left: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  z-index: 2;
+  gap: 6px;
+  z-index: 3;
 }
 
-.ratingNum {
+.cardOvr {
   font-family: 'Verdana', sans-serif;
-  font-size: 56px;
+  font-size: 58px;
   font-weight: 900;
   line-height: 1;
-  letter-spacing: -2px;
+  letter-spacing: -3px;
   color: #3b1d05;
   text-shadow: 0 1px 0 rgba(255,255,255,0.6);
 }
 
-.ratingPos {
+.cardPos {
   font-family: 'Verdana', sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   color: #3b1d05;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
 }
 
-.cardFlag, .cardShield {
+.cardFlag {
   margin-top: 4px;
-  border-radius: 4px;
+  border-radius: 2px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  background: #fff;
 }
 
-.cardShield { background: transparent; box-shadow: none; }
-
-.cardPortrait {
-  position: relative;
-  margin-top: 24px;
-  width: 200px;
-  height: 200px;
-  z-index: 2;
+.cardCrest {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.portraitRing {
+.cardTier {
   position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, #fff7c2, #f59e0b, #fef3c7, #b45309, #fff7c2);
-  animation: portraitSpin 6s linear infinite;
+  top: 22px;
+  right: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #3b1d05 0%, #1f0d02 100%);
+  color: #fde68a;
+  font-family: 'Verdana', sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+  z-index: 3;
+  box-shadow:
+    inset 0 0 0 1px rgba(253,224,71,0.6),
+    0 3px 10px rgba(0,0,0,0.35);
 }
 
-@keyframes portraitSpin { to { transform: rotate(360deg); } }
+.cardTier > span:first-child,
+.cardTier > span:last-child {
+  color: #fbbf24;
+}
 
-.portraitImg {
+.cardPhoto {
   position: relative;
+  margin-top: 6px;
+  width: 78%;
+  height: 260px;
+  z-index: 2;
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.cardPhotoImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
-  border: 4px solid #fef3c7;
-  filter: contrast(1.05) saturate(1.05);
-  z-index: 1;
+  object-position: center 18%;
+  filter: contrast(1.05) saturate(1.1) drop-shadow(0 8px 14px rgba(0,0,0,0.35));
+}
+
+.cardPhotoFade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(245,158,11,0.85) 95%, #c2780b 100%);
+  pointer-events: none;
 }
 
 .cardName {
-  margin-top: 14px;
+  margin-top: 6px;
   font-family: 'Verdana', sans-serif;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: #3b1d05;
   z-index: 2;
   position: relative;
@@ -943,27 +978,28 @@
 }
 
 .cardDivider {
-  width: 80%;
-  height: 1.5px;
-  background: linear-gradient(to right, transparent, #92400e, transparent);
-  margin: 6px 0;
+  width: 85%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(120,53,15,0.85), transparent);
+  margin: 6px 0 10px;
   z-index: 2;
   position: relative;
 }
 
 .cardStats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px 14px;
+  grid-template-columns: repeat(2, auto);
+  column-gap: 36px;
+  row-gap: 6px;
   z-index: 2;
   position: relative;
+  font-family: 'Verdana', sans-serif;
 }
 
-.stat {
+.statRow {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: 'Verdana', sans-serif;
+  align-items: baseline;
+  gap: 10px;
 }
 
 .statValue {
@@ -971,26 +1007,15 @@
   font-weight: 900;
   color: #3b1d05;
   line-height: 1;
+  min-width: 26px;
+  text-align: right;
 }
 
 .statLabel {
-  font-size: 9px;
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 900;
   color: #7c2d12;
-  letter-spacing: 2px;
-  margin-top: 2px;
-}
-
-.cardClub {
-  margin-top: auto;
-  font-family: 'Verdana', sans-serif;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: #7c2d12;
-  text-align: center;
-  z-index: 2;
-  position: relative;
+  letter-spacing: 1.5px;
 }
 
 /* ============ CONFETTI + BEAMS ============ */
@@ -1045,17 +1070,17 @@
 
 @media (max-width: 640px) {
   .cardWrap {
-    width: 260px;
-    height: 390px;
+    width: 300px;
+    height: 440px;
   }
-  .cardPortrait {
-    width: 160px;
-    height: 160px;
-    margin-top: 16px;
-  }
-  .ratingNum { font-size: 42px; }
-  .cardName { font-size: 20px; }
-  .statValue { font-size: 18px; }
+  .cardPhoto { height: 200px; }
+  .cardOvr { font-size: 44px; }
+  .cardPos { font-size: 14px; }
+  .cardName { font-size: 20px; letter-spacing: 2px; }
+  .statValue { font-size: 18px; min-width: 22px; }
+  .statLabel { font-size: 10px; }
+  .cardStats { column-gap: 24px; }
+  .cardTier { font-size: 8px; padding: 3px 6px; }
   .stagger { font-size: 9px; gap: 5px; letter-spacing: 0.18em; }
   .skip { top: 16px; right: 16px; }
   .silhouette { width: 160px; height: 240px; }

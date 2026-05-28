@@ -226,12 +226,18 @@ export default function WalkoutSequence({ onComplete }: Props) {
           <motion.div
             key="card"
             className={styles.cardStage}
-            initial={{ scale: 0.1, rotateY: 360, opacity: 0 }}
-            animate={{ scale: 1, rotateY: 0, opacity: 1 }}
+            initial={{ scale: 0.18, rotateY: 360, rotateZ: -8, y: -120, opacity: 0 }}
+            animate={{
+              scale: [0.18, 1.18, 0.96, 1],
+              rotateY: [360, 0, 0, 0],
+              rotateZ: [-8, 4, -2, 0],
+              y: [-120, 0, 0, 0],
+              opacity: [0, 1, 1, 1],
+            }}
             transition={{
-              scale: { type: 'spring', stiffness: 380, damping: 24 },
-              rotateY: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-              opacity: { duration: 0.4 },
+              duration: 0.85,
+              times: [0, 0.55, 0.78, 1],
+              ease: [0.16, 1, 0.3, 1],
             }}
           >
             <FinalCard />
@@ -424,45 +430,58 @@ function FinalCard() {
     <div className={styles.cardWrap}>
       <div className={styles.cardFoil}>
         <div className={styles.cardInner}>
-          <div className={styles.cardRating}>
-            <span className={styles.ratingNum}>99</span>
-            <span className={styles.ratingPos}>PHD</span>
+          {/* Top-left column: OVR · POS · NATION · CLUB — FUT layout */}
+          <div className={styles.cardTopLeft}>
+            <div className={styles.cardOvr}>99</div>
+            <div className={styles.cardPos}>PHD</div>
             <div className={styles.cardFlag}>
-              <KoreanFlag style={{ width: 56, height: 36 }} />
+              <KoreanFlag style={{ width: 36, height: 24 }} />
             </div>
-            <div className={styles.cardShield}>
-              <JBNUShield style={{ width: 48, height: 48 }} />
+            <div className={styles.cardCrest}>
+              <JBNUShield style={{ width: 40, height: 40 }} />
             </div>
           </div>
-          <div className={styles.cardPortrait}>
-            <div className={styles.portraitRing} />
+
+          {/* Top-right walkout tier badge */}
+          <div className={styles.cardTier}>
+            <span>★</span>
+            <span>WALKOUT</span>
+            <span>★</span>
+          </div>
+
+          {/* Player photo — rectangular, dominant upper region */}
+          <div className={styles.cardPhoto}>
             <img
               src={`${import.meta.env.BASE_URL}jumin-cho.jpg`}
               alt=""
-              className={styles.portraitImg}
+              className={styles.cardPhotoImg}
               loading="eager"
             />
+            <div className={styles.cardPhotoFade} aria-hidden />
           </div>
+
+          {/* Name strip */}
           <div className={styles.cardName}>JUMIN CHO</div>
           <div className={styles.cardDivider} />
+
+          {/* Stats: 2 columns × 3 rows, number left + label right (real FUT layout) */}
           <div className={styles.cardStats}>
-            <Stat label="NLP" value="99" />
-            <Stat label="RAG" value="95" />
-            <Stat label="LLM" value="93" />
-            <Stat label="RES" value="90" />
-            <Stat label="DEV" value="88" />
-            <Stat label="DRM" value="99" />
+            <StatRow value="99" label="NLP" />
+            <StatRow value="95" label="RAG" />
+            <StatRow value="93" label="LLM" />
+            <StatRow value="90" label="RES" />
+            <StatRow value="88" label="DEV" />
+            <StatRow value="99" label="DRM" />
           </div>
-          <div className={styles.cardClub}>JEONBUK NATIONAL UNIVERSITY · NLLLab</div>
         </div>
       </div>
     </div>
   )
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function StatRow({ value, label }: { value: string; label: string }) {
   return (
-    <div className={styles.stat}>
+    <div className={styles.statRow}>
       <span className={styles.statValue}>{value}</span>
       <span className={styles.statLabel}>{label}</span>
     </div>
