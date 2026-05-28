@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { motion, useScroll, useSpring } from 'framer-motion'
 import { useAdminAuth } from '../context/AdminAuthContext'
 import styles from './Navbar.module.css'
 
@@ -7,11 +8,19 @@ interface Props {
   dark: boolean
 }
 
+const ITEMS = [
+  { to: '/cv', label: 'CV', tag: '01' },
+  { to: '/projects', label: 'Projects', tag: '02' },
+  { to: '/blog', label: 'Blog', tag: '03' },
+] as const
+
 export default function Navbar({ dark }: Props) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
   const { isAdmin, logout, openLogin } = useAdminAuth()
+  const { scrollYProgress } = useScroll()
+  const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 0.4 })
 
   useEffect(() => {
     let ticking = false
@@ -36,13 +45,21 @@ export default function Navbar({ dark }: Props) {
     styles.nav,
     scrolled ? styles.scrolled : '',
     dark ? styles.dark : '',
-  ].join(' ')
+  ].filter(Boolean).join(' ')
 
   return (
     <nav className={navClass}>
+      <motion.div className={styles.progress} style={{ scaleX: progress }} aria-hidden />
+
       <div className={styles.inner}>
         <Link to="/" className={styles.logo}>
-          JUMIN CHO
+          <span className={styles.logoMark} aria-hidden>
+            <span className={styles.logoDot} />
+          </span>
+          <span className={styles.logoText}>
+            <span className={styles.logoLine1}>JUMIN</span>
+            <span className={styles.logoLine2}>CHO</span>
+          </span>
         </Link>
 
         <button
@@ -54,15 +71,30 @@ export default function Navbar({ dark }: Props) {
         </button>
 
         <div className={`${styles.links} ${menuOpen ? styles.mobileOpen : ''}`}>
-          <Link to="/cv" className={location.pathname === '/cv' ? styles.active : ''}>CV</Link>
-          <Link to="/projects" className={location.pathname === '/projects' ? styles.active : ''}>Projects</Link>
-          <Link to="/blog" className={location.pathname.startsWith('/blog') ? styles.active : ''}>Blog</Link>
+          {ITEMS.map((item) => {
+            const active =
+              item.to === '/blog'
+                ? location.pathname.startsWith('/blog')
+                : location.pathname === item.to
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={`${styles.link} ${active ? styles.active : ''}`}
+              >
+                <span className={styles.linkTag}>{item.tag}</span>
+                <span className={styles.linkLabel}>{item.label}</span>
+                <span className={styles.linkUnderline} aria-hidden />
+              </Link>
+            )
+          })}
           <button
             type="button"
-            className={`${styles.adminButton} ${isAdmin ? styles.adminButtonActive : ''}`}
+            className={`${styles.admin} ${isAdmin ? styles.adminActive : ''}`}
             onClick={isAdmin ? logout : () => openLogin(location.pathname)}
           >
-            {isAdmin ? '관리자 로그아웃' : '관리자 로그인'}
+            <span className={styles.adminDot} />
+            <span>{isAdmin ? 'ADMIN · LOGOUT' : 'ADMIN'}</span>
           </button>
         </div>
       </div>
