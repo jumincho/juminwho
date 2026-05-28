@@ -1,33 +1,50 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { JBNUShield, KoreanFlag, PhDBadge, RayBurst } from './symbols'
+import { JBNUShield, KoreanFlag, LeagueCrest, PhDBadge, PlayerSilhouette } from './symbols'
 import styles from './WalkoutSequence.module.css'
 
 type Stage =
   | 'pack'
-  | 'flash'
-  | 'flag'
+  | 'tunnel'
   | 'position'
+  | 'nation'
+  | 'league'
   | 'club'
-  | 'whoosh'
+  | 'ovr'
   | 'card'
   | 'celebration'
   | 'fade'
   | 'done'
 
-// Timing per spec — each step gets enough screen time to read.
+// Timing — pack opens, the iconic tunnel walk plays long enough to read,
+// each reveal is a rapid jump cut (~1.1s) like EA FC, then OVR buildup and final card.
 const STAGE_DURATIONS: Record<Stage, number> = {
   pack: 1100,
-  flash: 500,
-  flag: 1400,
-  position: 1400,
-  club: 1600,
-  whoosh: 380,
-  card: 1900,
+  tunnel: 2400,
+  position: 1100,
+  nation: 1100,
+  league: 1100,
+  club: 1100,
+  ovr: 900,
+  card: 1800,
   celebration: 1000,
-  fade: 600,
+  fade: 500,
   done: 0,
 }
+
+const ORDER: Stage[] = [
+  'pack',
+  'tunnel',
+  'position',
+  'nation',
+  'league',
+  'club',
+  'ovr',
+  'card',
+  'celebration',
+  'fade',
+  'done',
+]
 
 interface Props {
   onComplete: () => void
@@ -48,31 +65,19 @@ export default function WalkoutSequence({ onComplete }: Props) {
       }
       return
     }
-    const order: Stage[] = [
-      'pack',
-      'flash',
-      'flag',
-      'position',
-      'club',
-      'whoosh',
-      'card',
-      'celebration',
-      'fade',
-      'done',
-    ]
     let cancelled = false
     let i = 0
     function next() {
       if (cancelled) return
       i += 1
-      if (i >= order.length) {
+      if (i >= ORDER.length) {
         if (!completedRef.current) {
           completedRef.current = true
           onCompleteRef.current()
         }
         return
       }
-      const s = order[i]
+      const s = ORDER[i]
       setStage(s)
       window.setTimeout(next, STAGE_DURATIONS[s])
     }
@@ -105,72 +110,35 @@ export default function WalkoutSequence({ onComplete }: Props) {
       <div className={styles.scanlines} aria-hidden />
       <div className={styles.grain} aria-hidden />
 
-      {/* Smoke / fog layer */}
-      <div className={styles.smoke} aria-hidden />
-      <div className={styles.smokeB} aria-hidden />
-
-      {/* Spinning background rays (visible from flag stage onward) */}
-      <div
-        className={`${styles.rays} ${styles.raysSlow} ${
-          stage === 'pack' || stage === 'flash' ? styles.raysHidden : ''
-        }`}
-        aria-hidden
-      >
-        <RayBurst count={18} />
-      </div>
-      <div
-        className={`${styles.rays} ${styles.raysFast} ${
-          stage === 'pack' || stage === 'flash' ? styles.raysHidden : ''
-        }`}
-        aria-hidden
-      >
-        <RayBurst count={24} />
-      </div>
-
       <button type="button" className={styles.skip} onClick={handleSkip} aria-label="Skip intro">
         SKIP ▸
       </button>
 
       <div className={styles.stagger} aria-hidden>
-        <StaggerStep label="PACK" current={stage} match={['pack', 'flash']} />
+        <StaggerStep label="PACK" current={stage} stages={['pack']} />
         <span className={styles.staggerDot}>•</span>
-        <StaggerStep label="NATION" current={stage} match={['flag']} />
+        <StaggerStep label="TUNNEL" current={stage} stages={['tunnel']} />
         <span className={styles.staggerDot}>•</span>
-        <StaggerStep label="POSITION" current={stage} match={['position']} />
+        <StaggerStep label="POSITION" current={stage} stages={['position']} />
         <span className={styles.staggerDot}>•</span>
-        <StaggerStep label="CLUB" current={stage} match={['club']} />
+        <StaggerStep label="NATION" current={stage} stages={['nation']} />
         <span className={styles.staggerDot}>•</span>
-        <StaggerStep label="PLAYER" current={stage} match={['whoosh', 'card', 'celebration']} />
+        <StaggerStep label="LEAGUE" current={stage} stages={['league']} />
+        <span className={styles.staggerDot}>•</span>
+        <StaggerStep label="CLUB" current={stage} stages={['club']} />
+        <span className={styles.staggerDot}>•</span>
+        <StaggerStep label="PLAYER" current={stage} stages={['ovr', 'card', 'celebration']} />
       </div>
 
-      {/* Flash burst — global overlay independent of AnimatePresence */}
-      <AnimatePresence>
-        {stage === 'flash' && (
-          <motion.div
-            key="flash"
-            className={styles.flashStage}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: [0, 1, 0.6, 0.2], scale: [0, 2.5, 4, 6] }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, times: [0, 0.4, 0.7, 1], ease: 'easeOut' }}
-          >
-            <div className={styles.flashCore} />
-            <div className={styles.flashRing1} />
-            <div className={styles.flashRing2} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <AnimatePresence mode="wait">
-        {/* Stage 1: Closed pack with pulsing glow */}
         {stage === 'pack' && (
           <motion.div
             key="pack"
             className={styles.packStage}
             initial={{ opacity: 0, y: 40, scale: 0.6 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.4, filter: 'blur(16px)' }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, scale: 1.5, filter: 'blur(20px)' }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className={styles.packGlowOuter} aria-hidden />
             <div className={styles.packGlowInner} aria-hidden />
@@ -188,56 +156,85 @@ export default function WalkoutSequence({ onComplete }: Props) {
           </motion.div>
         )}
 
-        {/* Stage 3: Flag (Korea) */}
-        {stage === 'flag' && (
-          <StageBlock
-            key="flag"
-            label="REPUBLIC OF KOREA"
-            sub="🇰🇷 NATION"
-            tint="#cd2e3a"
+        {stage === 'tunnel' && (
+          <motion.div
+            key="tunnel"
+            className={styles.tunnelStage}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.15, filter: 'brightness(2.5)' }}
+            transition={{ duration: 0.45 }}
           >
-            <KoreanFlag style={{ width: 380, height: 250 }} />
-          </StageBlock>
+            <TunnelScene />
+          </motion.div>
         )}
 
-        {/* Stage 4: Position (Ph.D) */}
         {stage === 'position' && (
-          <StageBlock
-            key="position"
-            label="AI RESEARCHER"
-            sub="POSITION · PH.D CANDIDATE"
-            tint="#8b5cf6"
-          >
+          <RevealCut key="position" label="POSITION" sub="Ph.D · AI RESEARCHER" tint="#a855f7">
             <PhDBadge style={{ width: 360, height: 360 }} />
-          </StageBlock>
+          </RevealCut>
         )}
 
-        {/* Stage 5: Club (JBNU) */}
+        {stage === 'nation' && (
+          <RevealCut
+            key="nation"
+            label="NATION"
+            sub="REPUBLIC OF KOREA"
+            tint="#cd2e3a"
+            windEffect
+          >
+            <div className={styles.flagFrame}>
+              <KoreanFlag style={{ width: 380, height: 250 }} />
+            </div>
+          </RevealCut>
+        )}
+
+        {stage === 'league' && (
+          <RevealCut key="league" label="LEAGUE" sub="ACADEMIA · RESEARCH" tint="#0c4a6e">
+            <LeagueCrest style={{ width: 320, height: 320 }} />
+          </RevealCut>
+        )}
+
         {stage === 'club' && (
-          <StageBlock
+          <RevealCut
             key="club"
-            label="JEONBUK NATIONAL UNIVERSITY"
-            sub="CLUB · NLLLAB · ADVISOR PROF. HYUN-JE SONG"
+            label="CLUB"
+            sub="JEONBUK NATIONAL UNIVERSITY · NLLLab"
             tint="#0a3d62"
           >
             <JBNUShield style={{ width: 320, height: 320 }} />
-          </StageBlock>
+          </RevealCut>
         )}
 
-        {/* Stage 6-7: Player card whoosh + reveal */}
-        {(stage === 'whoosh' || stage === 'card' || stage === 'celebration') && (
+        {stage === 'ovr' && (
+          <motion.div
+            key="ovr"
+            className={styles.ovrStage}
+            initial={{ opacity: 0, scale: 0.4 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.6, filter: 'blur(30px) brightness(3)' }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className={styles.ovrHalo} aria-hidden />
+            <div className={styles.ovrLabel}>OVERALL</div>
+            <OVRNumber />
+            <div className={styles.ovrTier}>PRIME WALKOUT</div>
+          </motion.div>
+        )}
+
+        {(stage === 'card' || stage === 'celebration') && (
           <motion.div
             key="card"
             className={styles.cardStage}
-            initial={{ scale: 0.05, rotateY: 540, opacity: 0 }}
-            animate={{
-              scale: stage === 'whoosh' ? 1.7 : 1,
-              rotateY: 0,
-              opacity: 1,
+            initial={{ scale: 0.1, rotateY: 360, opacity: 0 }}
+            animate={{ scale: 1, rotateY: 0, opacity: 1 }}
+            transition={{
+              scale: { type: 'spring', stiffness: 380, damping: 24 },
+              rotateY: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+              opacity: { duration: 0.4 },
             }}
-            transition={{ type: 'spring', stiffness: 220, damping: 18 }}
           >
-            <FinalCard flash={stage === 'whoosh'} />
+            <FinalCard />
             <motion.div
               className={styles.confetti}
               initial={{ opacity: 0 }}
@@ -247,19 +244,6 @@ export default function WalkoutSequence({ onComplete }: Props) {
               <ConfettiBurst />
             </motion.div>
             {stage === 'celebration' && <LightBeams />}
-            <motion.p
-              className={styles.cardSub}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{
-                opacity: stage === 'card' || stage === 'celebration' ? 1 : 0,
-                y: stage === 'card' || stage === 'celebration' ? 0 : 12,
-              }}
-              transition={{ delay: 0.45, duration: 0.5 }}
-            >
-              <span>A DREAMER</span>
-              <span className={styles.dot}>·</span>
-              <span>AI EXPERT IN THE MAKING</span>
-            </motion.p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -270,28 +254,16 @@ export default function WalkoutSequence({ onComplete }: Props) {
 function StaggerStep({
   label,
   current,
-  match,
+  stages,
 }: {
   label: string
   current: Stage
-  match: Stage[]
+  stages: Stage[]
 }) {
-  const order: Stage[] = [
-    'pack',
-    'flash',
-    'flag',
-    'position',
-    'club',
-    'whoosh',
-    'card',
-    'celebration',
-    'fade',
-    'done',
-  ]
-  const currentIdx = order.indexOf(current)
-  const matchIdx = order.indexOf(match[0])
-  const isActive = match.includes(current)
-  const isDone = currentIdx > matchIdx + match.length - 1
+  const currentIdx = ORDER.indexOf(current)
+  const matchIdx = ORDER.indexOf(stages[stages.length - 1])
+  const isActive = stages.includes(current)
+  const isDone = currentIdx > matchIdx
   return (
     <span className={isActive ? styles.staggerActive : isDone ? styles.staggerDone : ''}>
       {label}
@@ -322,47 +294,106 @@ function ClosedPack() {
   )
 }
 
-function StageBlock({
+function TunnelScene() {
+  return (
+    <div className={styles.tunnel}>
+      {/* Perspective walls implied via clip-path trapezoids */}
+      <div className={styles.tunnelCeiling} aria-hidden />
+      <div className={styles.tunnelFloor} aria-hidden />
+      <div className={styles.tunnelWallL} aria-hidden />
+      <div className={styles.tunnelWallR} aria-hidden />
+      {/* Vanishing-point bright stadium-exit light */}
+      <div className={styles.tunnelGlow} aria-hidden />
+      {/* Two iconic golden vertical beams flaring up along inner edges */}
+      <div className={styles.tunnelBeamL} aria-hidden />
+      <div className={styles.tunnelBeamR} aria-hidden />
+      {/* Triangle diagonal lights converging at top of exit — the 86+ OVR signal */}
+      <div className={styles.tunnelDiagL} aria-hidden />
+      <div className={styles.tunnelDiagR} aria-hidden />
+      {/* Drifting floor fog */}
+      <div className={styles.tunnelFog} aria-hidden />
+      <div className={styles.tunnelFogB} aria-hidden />
+      {/* Player silhouette walking out toward camera */}
+      <motion.div
+        className={styles.silhouette}
+        initial={{ scale: 0.18, y: -40, opacity: 0 }}
+        animate={{
+          scale: [0.18, 0.45, 0.9, 1],
+          y: [-40, 30, 90, 110],
+          opacity: [0, 0.7, 1, 1],
+        }}
+        transition={{
+          duration: 2.3,
+          times: [0, 0.35, 0.85, 1],
+          ease: [0.42, 0, 0.58, 1],
+        }}
+      >
+        <motion.div
+          className={styles.silhouetteSway}
+          animate={{ rotate: [-1.2, 1.2, -1.2] }}
+          transition={{ duration: 0.55, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <PlayerSilhouette style={{ width: '100%', height: '100%' }} />
+        </motion.div>
+      </motion.div>
+    </div>
+  )
+}
+
+function RevealCut({
   children,
   label,
   sub,
   tint,
+  windEffect = false,
 }: {
   children: React.ReactNode
   label: string
   sub: string
   tint: string
+  windEffect?: boolean
 }) {
   return (
     <motion.div
-      className={styles.stageBlock}
-      initial={{ opacity: 0, scale: 0.4 }}
-      animate={{ opacity: 1, scale: [0.4, 1.18, 1] }}
-      exit={{ opacity: 0, scale: 0.55, filter: 'blur(20px)' }}
-      transition={{ duration: 0.55, times: [0, 0.6, 1], ease: 'easeOut' }}
+      className={styles.revealCut}
+      initial={{ opacity: 0, scale: 0.6, filter: 'blur(30px)' }}
+      animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+      exit={{ opacity: 0, scale: 1.15, filter: 'blur(20px)' }}
+      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
     >
       <motion.div
-        className={styles.flashRing}
+        className={styles.revealHalo}
         style={{ ['--tint' as string]: tint } as React.CSSProperties}
         initial={{ opacity: 0, scale: 0.4 }}
-        animate={{ opacity: [0, 1, 0], scale: [0.4, 1.6, 2] }}
-        transition={{ duration: 0.9, ease: 'easeOut' }}
+        animate={{ opacity: [0, 1, 0.6], scale: [0.4, 1.6, 2] }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
         aria-hidden
       />
-      <div className={styles.stageArt}>{children}</div>
+      <div className={styles.revealCorner + ' ' + styles.revealCornerTL} aria-hidden />
+      <div className={styles.revealCorner + ' ' + styles.revealCornerTR} aria-hidden />
+      <div className={styles.revealCorner + ' ' + styles.revealCornerBL} aria-hidden />
+      <div className={styles.revealCorner + ' ' + styles.revealCornerBR} aria-hidden />
       <motion.div
-        className={styles.stageLabel}
-        initial={{ opacity: 0, y: 30, letterSpacing: '0.6em' }}
-        animate={{ opacity: 1, y: 0, letterSpacing: '0.32em' }}
-        transition={{ delay: 0.25, duration: 0.5, ease: 'easeOut' }}
+        className={styles.revealCategory}
+        initial={{ opacity: 0, y: -20, letterSpacing: '0.8em' }}
+        animate={{ opacity: 1, y: 0, letterSpacing: '0.5em' }}
+        transition={{ delay: 0.1, duration: 0.4 }}
       >
         {label}
       </motion.div>
       <motion.div
-        className={styles.stageSub}
+        className={`${styles.revealArt} ${windEffect ? styles.windRipple : ''}`}
+        initial={{ scale: 0.7 }}
+        animate={{ scale: [0.7, 1.15, 1] }}
+        transition={{ duration: 0.55, times: [0, 0.6, 1], ease: 'easeOut' }}
+      >
+        {children}
+      </motion.div>
+      <motion.div
+        className={styles.revealSub}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.35, duration: 0.5 }}
+        transition={{ delay: 0.2, duration: 0.4 }}
       >
         {sub}
       </motion.div>
@@ -370,16 +401,38 @@ function StageBlock({
   )
 }
 
-function FinalCard({ flash }: { flash: boolean }) {
+function OVRNumber() {
+  const [n, setN] = useState(70)
+  useEffect(() => {
+    const start = performance.now()
+    const duration = 700
+    let raf = 0
+    function tick(now: number) {
+      const t = Math.min(1, (now - start) / duration)
+      const eased = 1 - Math.pow(1 - t, 3)
+      setN(Math.round(70 + eased * 29))
+      if (t < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [])
+  return <div className={styles.ovrNumber}>{n}</div>
+}
+
+function FinalCard() {
   return (
-    <div className={`${styles.cardWrap} ${flash ? styles.cardFlash : ''}`}>
+    <div className={styles.cardWrap}>
       <div className={styles.cardFoil}>
         <div className={styles.cardInner}>
           <div className={styles.cardRating}>
             <span className={styles.ratingNum}>99</span>
             <span className={styles.ratingPos}>PHD</span>
-            <div className={styles.cardFlag}><KoreanFlag style={{ width: 56, height: 36 }} /></div>
-            <div className={styles.cardShield}><JBNUShield style={{ width: 48, height: 48 }} /></div>
+            <div className={styles.cardFlag}>
+              <KoreanFlag style={{ width: 56, height: 36 }} />
+            </div>
+            <div className={styles.cardShield}>
+              <JBNUShield style={{ width: 48, height: 48 }} />
+            </div>
           </div>
           <div className={styles.cardPortrait}>
             <div className={styles.portraitRing} />
@@ -431,10 +484,7 @@ function ConfettiBurst() {
           <motion.span
             key={i}
             className={styles.confettiPiece}
-            style={{
-              background: color,
-              transform: `rotate(${angle}deg)`,
-            }}
+            style={{ background: color, transform: `rotate(${angle}deg)` }}
             initial={{ x: 0, y: 0, opacity: 0, scale: 0 }}
             animate={{
               x: Math.cos((angle * Math.PI) / 180) * dist,
@@ -458,9 +508,7 @@ function LightBeams() {
         <motion.span
           key={i}
           className={styles.beam}
-          style={{
-            transform: `rotate(${(i * 360) / 12}deg)`,
-          }}
+          style={{ transform: `rotate(${(i * 360) / 12}deg)` }}
           initial={{ scaleY: 0, opacity: 0 }}
           animate={{ scaleY: [0, 1, 1, 0.4], opacity: [0, 1, 0.6, 0] }}
           transition={{ duration: 1.2, delay: i * 0.04, ease: 'easeOut' }}
