@@ -1,0 +1,49 @@
+.dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 12px #fbbf24, 0 0 28px rgba(251,191,36,0.55);
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+}
+
+.ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(251,191,36,0.7);
+  pointer-events: none;
+  z-index: 99998;
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  backdrop-filter: blur(2px) brightness(1.1);
+}
+
+.ring.hover {
+  width: 72px;
+  height: 72px;
+  border-color: rgba(251,191,36,1);
+  background: rgba(251,191,36,0.08);
+}
+
+:global(html.has-custom-cursor) {
+  cursor: none;
+}
+:global(html.has-custom-cursor) * {
+  cursor: none !important;
+}
+
+@media (pointer: coarse) {
+  .dot, .ring { display: none; }
+  :global(html.has-custom-cursor),
+  :global(html.has-custom-cursor) * {
+    cursor: auto !important;
+  }
+}

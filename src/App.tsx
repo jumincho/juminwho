@@ -5,8 +5,10 @@ import Navbar from './components/Navbar'
 import { AdminAuthProvider } from './context/AdminAuthContext'
 import { BlogThemeProvider, useBlogTheme } from './context/BlogThemeContext'
 import PageTransition from './components/PageTransition'
+import AuroraBackground from './components/effects/AuroraBackground'
+import ParticleField from './components/effects/ParticleField'
+import CustomCursor from './components/effects/CustomCursor'
 
-// Route-based code splitting — each page loaded on demand
 const Home = lazy(() => import('./pages/Home'))
 const ProjectsPage = lazy(() => import('./pages/Projects'))
 const CVPage = lazy(() => import('./pages/CV'))
@@ -21,9 +23,13 @@ function AppShell() {
   const { isBlogLight } = useBlogTheme()
   const isBlog = location.pathname.startsWith('/blog')
   const useDarkBlogTheme = isBlog && !isBlogLight
+  const showAmbient = !isBlog
 
   return (
     <div className={useDarkBlogTheme ? 'app dark-theme' : 'app'}>
+      {showAmbient && <AuroraBackground />}
+      {showAmbient && <ParticleField density={70} />}
+      <CustomCursor />
       <Navbar dark={useDarkBlogTheme} />
       <Suspense fallback={null}>
         <AnimatePresence mode="wait">

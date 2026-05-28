@@ -1,5 +1,6 @@
-/* ===== Pretendard Font ===== */
+/* ===== Fonts ===== */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap');
 
 /* ===== Reset & Base ===== */
 *,
@@ -11,24 +12,24 @@
 }
 
 :root {
-  /* Colors - Light (Portfolio) */
-  --bg-primary: #ffffff;
-  --bg-secondary: #faf9f7;
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --text-tertiary: #9ca3af;
-  --accent: #6366f1;
-  --accent-light: #e0e7ff;
-  --accent-dark: #4f46e5;
-  --border: #e5e7eb;
+  /* Colors - light surface */
+  --bg-primary: #f9f6f0;
+  --bg-secondary: #ffffff;
+  --text-primary: #0a0118;
+  --text-secondary: #4a4258;
+  --text-tertiary: #8a8290;
+  --accent: #d97706;
+  --accent-light: #fef3c7;
+  --accent-dark: #92400e;
+  --border: rgba(15, 15, 30, 0.08);
   --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04);
 
-  /* Colors - Dark (Blog) */
-  --dark-bg: #0f0f1a;
-  --dark-bg-secondary: #1a1a2e;
-  --dark-text: #e5e7eb;
-  --dark-text-secondary: #9ca3af;
+  /* Colors - dark (Blog) */
+  --dark-bg: #07041a;
+  --dark-bg-secondary: #14102a;
+  --dark-text: #f5f3ff;
+  --dark-text-secondary: rgba(245, 243, 255, 0.65);
   --dark-border: rgba(255, 255, 255, 0.08);
   --dark-card: rgba(255, 255, 255, 0.05);
 
@@ -38,7 +39,7 @@
 
   /* Spacing */
   --section-padding: 100px 0;
-  --container-width: 1100px;
+  --container-width: 1200px;
   --nav-height: 72px;
 
   /* Radius */
@@ -66,6 +67,32 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   transition: background-color var(--transition-slow), color var(--transition-slow);
+  font-feature-settings: 'ss01', 'ss02', 'cv09';
+}
+
+/* Light-mode surface is provided by AuroraBackground. Keep body transparent
+   so the aurora bg can show through. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary);
+  z-index: -2;
+}
+
+.app.dark-theme {
+  --bg-primary: var(--dark-bg);
+  --bg-secondary: var(--dark-bg-secondary);
+  --text-primary: var(--dark-text);
+  --text-secondary: var(--dark-text-secondary);
+  --text-tertiary: rgba(245, 243, 255, 0.42);
+  --border: var(--dark-border);
+  color: var(--dark-text);
+}
+
+.app:not(.dark-theme) {
+  /* Use rich, slightly-cream tones for the bright portfolio side. */
+  background: transparent;
 }
 
 a {
@@ -87,11 +114,19 @@ button {
   cursor: pointer;
   font-family: inherit;
   background: none;
+  color: inherit;
+}
+
+/* ===== Selection ===== */
+::selection {
+  background: rgba(251, 191, 36, 0.4);
+  color: inherit;
 }
 
 /* ===== Scrollbar ===== */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -99,6 +134,31 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--text-tertiary);
-  border-radius: 3px;
+  background: linear-gradient(180deg, #fbbf24, #f97316);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #fde68a, #fbbf24);
+}
+
+/* ===== Focus ===== */
+:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
