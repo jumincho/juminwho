@@ -1,114 +1,31 @@
-import type { SVGProps } from 'react'
+import type { CSSProperties, SVGProps } from 'react'
 
-export function KoreanFlag(props: SVGProps<SVGSVGElement>) {
+interface ImgProps {
+  style?: CSSProperties
+  className?: string
+}
+
+export function KoreanFlag({ style, className }: ImgProps) {
   return (
-    <svg viewBox="-120 -80 240 160" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <rect x="-120" y="-80" width="240" height="160" fill="#ffffff" />
-      <g transform="rotate(-33)">
-        <circle cx="0" cy="0" r="40" fill="#cd2e3a" />
-        <path
-          d="M -40 0 A 40 40 0 0 1 40 0 A 20 20 0 0 1 0 0 A 20 20 0 0 0 -40 0 Z"
-          fill="#0047a0"
-        />
-      </g>
-      <g fill="#000" transform="translate(-86 -55) rotate(-56.31)">
-        <rect x="-13" y="-10" width="26" height="4" />
-        <rect x="-13" y="-3" width="26" height="4" />
-        <rect x="-13" y="4" width="26" height="4" />
-      </g>
-      <g fill="#000" transform="translate(86 -55) rotate(56.31)">
-        <rect x="-13" y="-10" width="26" height="4" />
-        <rect x="-13" y="-3" width="11" height="4" />
-        <rect x="2" y="-3" width="11" height="4" />
-        <rect x="-13" y="4" width="26" height="4" />
-      </g>
-      <g fill="#000" transform="translate(-86 55) rotate(56.31)">
-        <rect x="-13" y="-10" width="11" height="4" />
-        <rect x="2" y="-10" width="11" height="4" />
-        <rect x="-13" y="-3" width="26" height="4" />
-        <rect x="-13" y="4" width="11" height="4" />
-        <rect x="2" y="4" width="11" height="4" />
-      </g>
-      <g fill="#000" transform="translate(86 55) rotate(-56.31)">
-        <rect x="-13" y="-10" width="11" height="4" />
-        <rect x="2" y="-10" width="11" height="4" />
-        <rect x="-13" y="-3" width="11" height="4" />
-        <rect x="2" y="-3" width="11" height="4" />
-        <rect x="-13" y="4" width="11" height="4" />
-        <rect x="2" y="4" width="11" height="4" />
-      </g>
-    </svg>
+    <img
+      src={`${import.meta.env.BASE_URL}korea-flag.png`}
+      alt="Korean flag"
+      className={className}
+      style={{ objectFit: 'contain', ...style }}
+      draggable={false}
+    />
   )
 }
 
-export function JBNUShield(props: SVGProps<SVGSVGElement>) {
+export function JBNUShield({ style, className }: ImgProps) {
   return (
-    <svg viewBox="-100 -110 200 230" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <defs>
-        <linearGradient id="jbnu-gold" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#fff7c2" />
-          <stop offset="50%" stopColor="#fbbf24" />
-          <stop offset="100%" stopColor="#b45309" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M -90 -100 L 90 -100 L 90 60 Q 90 100 0 120 Q -90 100 -90 60 Z"
-        fill="#0a3d62"
-        stroke="url(#jbnu-gold)"
-        strokeWidth="3"
-      />
-      <path
-        d="M -76 -86 L 76 -86 L 76 56 Q 76 90 0 106 Q -76 90 -76 56 Z"
-        fill="none"
-        stroke="rgba(253,224,71,0.5)"
-        strokeWidth="1"
-      />
-      <text
-        x="0"
-        y="-30"
-        textAnchor="middle"
-        fontFamily="Georgia, serif"
-        fontSize="46"
-        fontWeight="900"
-        fill="url(#jbnu-gold)"
-      >
-        J
-      </text>
-      <text
-        x="0"
-        y="20"
-        textAnchor="middle"
-        fontFamily="Georgia, serif"
-        fontSize="46"
-        fontWeight="900"
-        fill="url(#jbnu-gold)"
-      >
-        B
-      </text>
-      <text
-        x="0"
-        y="70"
-        textAnchor="middle"
-        fontFamily="Georgia, serif"
-        fontSize="46"
-        fontWeight="900"
-        fill="url(#jbnu-gold)"
-      >
-        N
-      </text>
-      <text
-        x="0"
-        y="100"
-        textAnchor="middle"
-        fontFamily="Verdana, sans-serif"
-        fontSize="14"
-        fontWeight="700"
-        fill="rgba(253,224,71,0.85)"
-        letterSpacing="2"
-      >
-        EST·1947
-      </text>
-    </svg>
+    <img
+      src={`${import.meta.env.BASE_URL}jbnu-logo.png`}
+      alt="Jeonbuk National University"
+      className={className}
+      style={{ objectFit: 'contain', ...style }}
+      draggable={false}
+    />
   )
 }
 
