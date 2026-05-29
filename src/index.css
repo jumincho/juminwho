@@ -1,5 +1,7 @@
 /* ===== Pretendard Font ===== */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+/* ===== Display / Mono / Editorial fonts ===== */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap');
 
 /* ===== Reset & Base ===== */
 *,
@@ -51,6 +53,38 @@
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
+
+  /* ===== Cinematic landing palette (additive — light pages untouched) ===== */
+  --void: #05060f;
+  --void-2: #0a0a1e;
+  --void-3: #13132b;
+  --indigo: #6366f1;
+  --violet: #a855f7;
+  --amber: #f59e0b;
+  --ember: #f94001;
+  --ink: #eceeffff;
+  --ink-soft: #c7cbf0;
+  --ink-dim: #8b90c0;
+
+  /* Fonts */
+  --font-display: 'Space Grotesk', 'Pretendard Variable', sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+
+  /* Easing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+}
+
+/* Dark page background so overscroll never flashes white on cinematic routes */
+html.dark-page,
+html.dark-page body {
+  background: var(--void);
+}
+
+::selection {
+  background: rgba(168, 85, 247, 0.35);
+  color: #ffffff;
 }
 
 html {

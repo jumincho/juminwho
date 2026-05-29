@@ -1,86 +1,106 @@
+import { useEffect } from 'react'
+import type { ReactNode } from 'react'
+import { motion } from 'framer-motion'
+import { profile, education, experience, awards, publication } from '../data/profile'
+import type { TimelineEntry } from '../data/profile'
 import styles from './CV.module.css'
 
+function Section({ title, index, children }: { title: string; index: string; children: ReactNode }) {
+  return (
+    <motion.section
+      className={styles.section}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-8%' }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <h2 className={styles.sectionTitle}>
+        <span className={styles.sectionIndex}>{index}</span>
+        {title}
+      </h2>
+      {children}
+    </motion.section>
+  )
+}
+
+function Entry({ item }: { item: TimelineEntry }) {
+  return (
+    <div className={styles.entry}>
+      <div className={styles.entryHead}>
+        <strong>{item.role}</strong>
+        <span className={styles.date}>{item.period}</span>
+      </div>
+      <div className={styles.entryBody}>
+        <span>{item.org}</span>
+        {item.note && <span className={styles.note}>{item.note}</span>}
+      </div>
+    </div>
+  )
+}
+
 export default function CV() {
+  useEffect(() => {
+    document.documentElement.classList.add('dark-page')
+    return () => document.documentElement.classList.remove('dark-page')
+  }, [])
+
   return (
     <main className={styles.main}>
+      <div className={styles.aura} aria-hidden />
       <div className={styles.container}>
-        <header className={styles.header}>
-          <h1 className={styles.name}>JUMIN CHO</h1>
-          <div className={styles.info}>
-            <p>Affiliation / Department</p>
-            <p>Institution / Lab</p>
-            <p>City, Country</p>
-            <div className={styles.contactLinks}>
-              <a href="https://github.com/jumincho" target="_blank" rel="noopener noreferrer">github.com/jumincho</a>
-            </div>
+        <motion.header
+          className={styles.header}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <p className={styles.eyebrow}>CURRICULUM VITAE</p>
+          <h1 className={styles.name}>
+            {profile.name}<span className={styles.nameKo}>{profile.nameKo}</span>
+          </h1>
+          <p className={styles.role}>{profile.roleLong} · {profile.affiliation} · {profile.lab}</p>
+          <p className={styles.tagline}>{profile.tagline}</p>
+          <div className={styles.contactLinks}>
+            <a href={`mailto:${profile.links.email}`}>{profile.links.email}</a>
+            <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href={profile.links.lab} target="_blank" rel="noopener noreferrer">NLL Lab</a>
+            <a href={profile.links.github} target="_blank" rel="noopener noreferrer">GitHub</a>
           </div>
-        </header>
+          <p className={styles.location}>{profile.locationLong}</p>
+        </motion.header>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Research Interests</h2>
-          <p className={styles.text}>
-            A concise overview of your research interests will be added later.
-          </p>
-        </section>
+        <Section title="Education" index="01">
+          {education.map((e) => <Entry key={`${e.role}-${e.period}`} item={e} />)}
+        </Section>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Education</h2>
-          <div className={styles.entry}>
-            <div className={styles.entryHeader}>
-              <strong>Degree / Program</strong>
-              <span className={styles.date}>Period to be added</span>
-            </div>
-            <div className={styles.entryDetail}>
-              <span>Institution and advisor information will be added later.</span>
-            </div>
+        <Section title="Experience & Service" index="02">
+          {experience.map((e) => <Entry key={`${e.role}-${e.period}`} item={e} />)}
+        </Section>
+
+        <Section title="Publications" index="03">
+          <div className={styles.pub}>
+            <span className={styles.pubVenue}>{publication.venue}</span>
+            <p className={styles.pubTitle}>{publication.title}</p>
           </div>
-          <div className={styles.entry}>
-            <div className={styles.entryHeader}>
-              <strong>Previous Degree / Background</strong>
-              <span className={styles.date}>Period to be added</span>
-            </div>
-            <div className={styles.entryDetail}>
-              <span>Additional academic background will be added later.</span>
-            </div>
-          </div>
-        </section>
+        </Section>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Publications</h2>
-          <ul className={styles.pubList}>
-            <li>Representative papers and preprints will be added later.</li>
-            <li>Conference, journal, and workshop records will be added later.</li>
+        <Section title="Awards & Honors" index="04">
+          <ul className={styles.list}>
+            {awards.map((a) => <li key={a}>{a}</li>)}
           </ul>
-        </section>
+        </Section>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Experience</h2>
-          <div className={styles.entry}>
-            <div className={styles.entryHeader}>
-              <strong>Research / Industry Experience</strong>
-              <span className={styles.date}>Period to be added</span>
-            </div>
-            <p className={styles.text}>
-              Project scope, role, and outcomes will be added later.
-            </p>
-          </div>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Skills</h2>
-          <ul className={styles.skillList}>
-            <li>Primary programming languages and frameworks will be added later.</li>
-            <li>Research methods, tooling, and deployment experience will be added later.</li>
-            <li>Languages, writing, and presentation strengths will be added later.</li>
+        <Section title="Certifications" index="05">
+          <ul className={styles.list}>
+            <li>{profile.certification}</li>
           </ul>
-        </section>
+        </Section>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Awards</h2>
-          <ul className={styles.skillList}>
-            <li>Scholarships, awards, and recognitions will be added later.</li>
+        <Section title="Languages" index="06">
+          <ul className={styles.list}>
+            <li>{profile.language}</li>
           </ul>
-        </section>
+        </Section>
       </div>
     </main>
   )
