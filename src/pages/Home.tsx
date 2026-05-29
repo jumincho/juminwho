@@ -4,7 +4,6 @@ import ShaderBackground from '../components/ShaderBackground'
 import Cursor from '../components/Cursor'
 import HeroCinematic from '../components/landing/HeroCinematic'
 import Marquee from '../components/landing/Marquee'
-import ResearchShowcase from '../components/landing/ResearchShowcase'
 import JourneyTimeline from '../components/landing/JourneyTimeline'
 import LandingFooter from '../components/landing/LandingFooter'
 import styles from './Home.module.css'
@@ -27,7 +26,6 @@ export default function Home() {
       <div className={styles.content}>
         <HeroCinematic />
         <Marquee />
-        <ResearchShowcase />
         <JourneyTimeline />
         <LandingFooter />
       </div>

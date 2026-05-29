@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
-import { profile, education, experience, awards, focus, publication } from '../data/profile'
+import { profile, education, experience, awards, publication } from '../data/profile'
 import type { TimelineEntry } from '../data/profile'
 import styles from './CV.module.css'
 
@@ -69,40 +69,34 @@ export default function CV() {
           <p className={styles.location}>{profile.locationLong}</p>
         </motion.header>
 
-        <Section title="Research Interests" index="01">
-          <div className={styles.tags}>
-            {focus.map((f) => <span key={f} className={styles.tag}>{f}</span>)}
-          </div>
-        </Section>
-
-        <Section title="Education" index="02">
+        <Section title="Education" index="01">
           {education.map((e) => <Entry key={`${e.role}-${e.period}`} item={e} />)}
         </Section>
 
-        <Section title="Experience & Service" index="03">
+        <Section title="Experience & Service" index="02">
           {experience.map((e) => <Entry key={`${e.role}-${e.period}`} item={e} />)}
         </Section>
 
-        <Section title="Publications" index="04">
+        <Section title="Publications" index="03">
           <div className={styles.pub}>
             <span className={styles.pubVenue}>{publication.venue}</span>
             <p className={styles.pubTitle}>{publication.title}</p>
           </div>
         </Section>
 
-        <Section title="Awards & Honors" index="05">
+        <Section title="Awards & Honors" index="04">
           <ul className={styles.list}>
             {awards.map((a) => <li key={a}>{a}</li>)}
           </ul>
         </Section>
 
-        <Section title="Certifications" index="06">
+        <Section title="Certifications" index="05">
           <ul className={styles.list}>
             <li>{profile.certification}</li>
           </ul>
         </Section>
 
-        <Section title="Languages" index="07">
+        <Section title="Languages" index="06">
           <ul className={styles.list}>
             <li>{profile.language}</li>
           </ul>

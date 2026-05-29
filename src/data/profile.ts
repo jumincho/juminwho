@@ -33,33 +33,12 @@ export const profile = {
   },
 } as const
 
-/** Statement built strictly from stated role + affiliation + the publication topic. */
-export const manifesto =
-  'AI Researcher and Ph.D. student at Jeonbuk National University, working on retrieval-augmented, causality-based structured reasoning for radiology report generation.'
-
-/** Research keywords — all drawn from the publication title and field. */
-export const focus = [
-  'Natural Language Processing',
-  'Retrieval-Augmented Generation',
-  'Structured Reasoning',
-  'Causality-Based Reasoning',
-  'Radiology Report Generation',
-  'NTCIR-18 · HIDDEN-RAD',
-]
-
+/** A single publication, kept plain — listed on the CV only. */
 export const publication = {
   title:
     'Optimizing Causality-Based Radiology Reporting with Retrieval-Augmented and Structured Reasoning Approaches for the NTCIR-18 HIDDEN-RAD Task',
-  venue: 'NTCIR-18 · HIDDEN-RAD Task',
+  venue: 'NTCIR-18 HIDDEN-RAD Task',
 }
-
-/** Four-stage pipeline distilled from the publication title. */
-export const pipeline = [
-  { label: 'Radiology Findings', sub: 'clinical input', icon: '🩻' },
-  { label: 'Retrieval-Augmented Context', sub: 'evidence grounding', icon: '🔎' },
-  { label: 'Causality-Based Structured Reasoning', sub: 'inference core', icon: '🧩' },
-  { label: 'Faithful Radiology Report', sub: 'generated output', icon: '📄' },
-]
 
 export const education: TimelineEntry[] = [
   { role: 'Ph.D. in Computer Science', org: 'Jeonbuk National University', period: '2026.03 – 2029.02', note: 'Candidate' },

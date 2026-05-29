@@ -1,7 +1,7 @@
 import styles from './Marquee.module.css'
 
-const ROW_A = ['AI RESEARCHER', 'RETRIEVAL-AUGMENTED', 'STRUCTURED REASONING', 'CAUSALITY', 'RADIOLOGY NLP']
-const ROW_B = ['A DREAMER', 'NTCIR-18 · HIDDEN-RAD', 'PhD @ JBNU', 'NATURAL LANGUAGE', 'JEONJU, KR']
+const ROW_A = ['JUMIN CHO', 'AI RESEARCHER', 'PhD STUDENT', 'COMPUTER SCIENCE']
+const ROW_B = ['조주민', 'A DREAMER', 'JEONBUK NATIONAL UNIVERSITY', 'JEONJU · KR']
 
 function Row({ words, reverse }: { words: string[]; reverse?: boolean }) {
   const content = (

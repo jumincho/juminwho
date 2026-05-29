@@ -75,17 +75,6 @@ export default function HeroCinematic() {
           </motion.p>
 
           <motion.div
-            className={styles.fields}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.25, duration: 0.7 }}
-          >
-            {['NLP', 'Retrieval-Augmented Generation', 'Structured Reasoning'].map((f) => (
-              <span key={f} className={styles.chip}>{f}</span>
-            ))}
-          </motion.div>
-
-          <motion.div
             className={styles.ctas}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -128,7 +117,7 @@ export default function HeroCinematic() {
       </div>
 
       <motion.a
-        href="#research"
+        href="#journey"
         className={styles.scrollCue}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

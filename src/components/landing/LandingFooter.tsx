@@ -22,7 +22,7 @@ export default function LandingFooter() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          ❋&nbsp;&nbsp;CONTACT&nbsp;&nbsp;/&nbsp;&nbsp;03
+          ❋&nbsp;&nbsp;CONTACT&nbsp;&nbsp;/&nbsp;&nbsp;02
         </motion.span>
 
         <motion.h2

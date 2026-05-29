@@ -33,7 +33,7 @@ export default function JourneyTimeline() {
   return (
     <section id="journey" className={styles.section}>
       <div className={styles.inner}>
-        <span className={styles.kicker}>❋&nbsp;&nbsp;JOURNEY&nbsp;&nbsp;/&nbsp;&nbsp;02</span>
+        <span className={styles.kicker}>❋&nbsp;&nbsp;JOURNEY&nbsp;&nbsp;/&nbsp;&nbsp;01</span>
         <h2 className={styles.heading}>
           B.S. <span className={styles.sep}>→</span> M.S. <span className={styles.sep}>→</span> Ph.D.
           <span className={styles.headingSub}>all in Computer Science, all at Jeonbuk National University.</span>
