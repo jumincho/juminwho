@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 const BIRTH = new Date('1998-07-10T00:00:00+09:00').getTime()
 // Gregorian mean year length (accounts for leap years).
 const YEAR_MS = 365.2425 * 24 * 60 * 60 * 1000
-const DECIMALS = 10
+const DECIMALS = 12
 
 function ageNow() {
   // High-resolution wall clock so the trailing digits advance smoothly
