@@ -4,7 +4,7 @@
   z-index: 20000;
   background: #050510;
   overflow: hidden;
-  perspective: 1000px;
+  perspective: 900px;
   display: grid;
   place-items: center;
   color: #fff;
@@ -15,18 +15,18 @@
 .fadeOut { animation: introFade 0.7s ease forwards; }
 @keyframes introFade { to { opacity: 0; visibility: hidden; } }
 
-.shake { animation: shake 0.32s linear; }
+.shake { animation: shake 0.36s linear; }
 @keyframes shake {
   0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(-7px, 4px); }
-  40% { transform: translate(8px, -6px); }
-  60% { transform: translate(-6px, -4px); }
-  80% { transform: translate(6px, 6px); }
+  20% { transform: translate(-8px, 5px); }
+  40% { transform: translate(9px, -7px); }
+  60% { transform: translate(-7px, -5px); }
+  80% { transform: translate(7px, 7px); }
 }
 
 .particles { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
 
-/* ===== Phase 1 — warp tunnel ===== */
+/* ===== continuous warp tunnel ===== */
 .tunnel {
   position: absolute;
   inset: 0;
@@ -34,20 +34,20 @@
   display: grid;
   place-items: center;
   transform-style: preserve-3d;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 .tunnelGone { opacity: 0; }
 .tunnelCore {
-  width: 70px;
-  height: 70px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
-  background: radial-gradient(circle, #fff 0%, rgba(255, 255, 255, 0.4) 55%, transparent 72%);
-  filter: blur(2px);
-  animation: corePulse 2.5s ease-in forwards;
+  background: radial-gradient(circle, #ffffff 0%, rgba(180, 200, 255, 0.5) 40%, transparent 70%);
+  filter: blur(6px);
+  animation: corePulse 2.6s ease-in-out infinite;
 }
 @keyframes corePulse {
-  0% { transform: scale(0.25); opacity: 0.5; }
-  100% { transform: scale(9); opacity: 1; }
+  0%, 100% { transform: scale(0.85); opacity: 0.75; }
+  50% { transform: scale(1.25); opacity: 1; }
 }
 .streak {
   position: absolute;
@@ -65,21 +65,23 @@
 @keyframes warp {
   0% { transform: rotate(var(--a)) translateY(0) scaleY(0.2); opacity: 0; }
   12% { opacity: 1; }
-  100% { transform: rotate(var(--a)) translateY(78vh) scaleY(1); opacity: 0; }
+  100% { transform: rotate(var(--a)) translateY(82vh) scaleY(1); opacity: 0; }
 }
+/* hyperspace: streaks fly far faster and read as long light-trails */
+.hyper .streak { animation-duration: 0.3s !important; width: 4px; }
+.hyper .tunnelCore { animation-duration: 0.5s; }
 
-/* ===== The stacked trio ===== */
+/* ===== elements that pop up over the tunnel ===== */
 .trio {
   position: relative;
   z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(14px, 3.2vh, 36px);
-  transform-style: preserve-3d;
+  gap: clamp(16px, 3.4vh, 38px);
 }
 .trioGone { display: none; }
-.buildup { animation: vibrate 0.09s linear infinite; }
+.buildup { animation: vibrate 0.08s linear infinite; }
 @keyframes vibrate {
   0% { transform: translate(0, 0); }
   25% { transform: translate(-2px, 1px); }
@@ -87,26 +89,24 @@
   75% { transform: translate(-1px, -2px); }
 }
 
-/* flag */
+@keyframes pop {
+  0% { opacity: 0; transform: scale(0.4); }
+  65% { opacity: 1; transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
 .flag {
   width: clamp(120px, 22vw, 230px);
   border-radius: 6px;
   opacity: 0;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
 }
-.flagIn { animation: drop 0.5s cubic-bezier(0.1, 1, 0.1, 1) forwards, glowBurst 0.7s ease-out 0.45s; }
-@keyframes drop {
-  0% { opacity: 0; transform: translateZ(500px) scale(5); }
-  55% { opacity: 1; }
-  100% { opacity: 1; transform: translateZ(0) scale(1); }
-}
-@keyframes glowBurst {
-  0% { box-shadow: 0 0 0 0 rgba(150, 175, 255, 0); }
-  30% { box-shadow: 0 0 70px 26px rgba(150, 175, 255, 0.75); }
-  100% { box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6); }
-}
+.flagIn { animation: pop 0.5s cubic-bezier(0.2, 1.5, 0.4, 1) forwards, floaty 3.6s ease-in-out 0.6s infinite; }
 
-/* position text */
 .position {
   opacity: 0;
   font-weight: 800;
@@ -120,28 +120,26 @@
   color: transparent;
   filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
 }
-.positionIn { animation: slam 0.45s cubic-bezier(0.1, 1, 0.1, 1) forwards, posPulse 2.6s ease-in-out 0.5s infinite; }
-@keyframes slam {
-  0% { opacity: 0; transform: perspective(600px) rotateX(45deg) scale(3) translateY(-40px); }
-  55% { opacity: 1; }
-  100% { opacity: 1; transform: perspective(600px) rotateX(0) scale(1) translateY(0); }
-}
+.positionIn { animation: pop 0.5s cubic-bezier(0.2, 1.5, 0.4, 1) forwards, posPulse 2.6s ease-in-out 0.6s infinite; }
 @keyframes posPulse {
-  0%, 100% { filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 4px rgba(245, 210, 130, 0.25)); }
-  50% { filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 18px rgba(245, 210, 130, 0.8)); }
+  0%, 100% { transform: translateY(0); filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 4px rgba(245, 210, 130, 0.25)); }
+  50% { transform: translateY(-5px); filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 16px rgba(245, 210, 130, 0.8)); }
 }
 
-/* affiliation logo (crest PNG ships on white — clip to its circle) */
-.logo { width: clamp(96px, 16vw, 180px); opacity: 0; border-radius: 50%; }
-.logoIn { animation: burnIn 1s ease-out forwards; }
-@keyframes burnIn {
-  0% { opacity: 0; transform: scale(0.8); filter: brightness(4) blur(8px); }
-  45% { opacity: 1; filter: brightness(2.4) blur(2px); }
-  100% { opacity: 1; transform: scale(1.12); filter: brightness(1) blur(0) drop-shadow(0 0 26px rgba(245, 200, 90, 0.85)); }
+.logo {
+  width: clamp(96px, 16vw, 176px);
+  opacity: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 rgba(245, 200, 90, 0);
+}
+.logoIn { animation: pop 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) forwards, logoGlow 2.6s ease-in-out 0.6s infinite; }
+@keyframes logoGlow {
+  0%, 100% { transform: translateY(0); box-shadow: 0 0 14px rgba(245, 200, 90, 0.35); }
+  50% { transform: translateY(-6px); box-shadow: 0 0 30px rgba(245, 200, 90, 0.85); }
 }
 
-/* ===== Stage + final card ===== */
-.p7 { background: radial-gradient(72% 60% at 50% 36%, #221a3e 0%, #0a0816 56%, #050510 100%); }
+/* ===== stage + card image ===== */
+.p7 { background: radial-gradient(72% 60% at 50% 42%, #221a3e 0%, #0a0816 56%, #050510 100%); }
 .stage { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; pointer-events: none; }
 
 .confetti { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
@@ -161,70 +159,33 @@
   100% { transform: translateY(102vh) rotate(calc(var(--rot) + 540deg)); opacity: 0.85; }
 }
 
-.card {
+.cardImg {
   position: relative;
   z-index: 1;
-  width: clamp(240px, 33vh, 330px);
-  aspect-ratio: 3 / 4.4;
-  padding: 16px 16px 12px;
-  border-radius: 18px;
+  height: min(80vh, 560px);
+  max-width: 88vw;
+  object-fit: contain;
   opacity: 0;
   transform: scale(0);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #3a2c08;
-  background: linear-gradient(160deg, #fbe9a0 0%, #e3b341 32%, #a9791a 72%, #f3d98a 100%);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7), inset 0 0 0 2px rgba(255, 255, 255, 0.45), 0 0 55px rgba(245, 200, 90, 0.5);
-  overflow: hidden;
+  filter: drop-shadow(0 30px 70px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 60px rgba(245, 200, 90, 0.35));
 }
-.cardIn { animation: walkout 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.cardIn { animation: walkout 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards, cardFloat 5s ease-in-out 1.5s infinite; }
 @keyframes walkout {
   0% { opacity: 0; transform: rotateY(720deg) scale(0); }
   30% { opacity: 1; }
   100% { opacity: 1; transform: rotateY(0) scale(1); }
 }
-.cardSheen {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.55) 50%, transparent 70%);
-  transform: translateX(-130%);
-  animation: sheen 3s ease-in-out 1.4s infinite;
-  mix-blend-mode: overlay;
-  pointer-events: none;
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0) rotateY(0); }
+  50% { transform: translateY(-12px) rotateY(6deg); }
 }
-@keyframes sheen { 0% { transform: translateX(-130%); } 60%, 100% { transform: translateX(130%); } }
-
-.cardTop { display: flex; align-items: flex-start; justify-content: space-between; width: 100%; height: 54%; }
-.cardMeta { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 46px; }
-.rating { font-size: 2rem; font-weight: 800; line-height: 1; }
-.pos { font-size: 0.78rem; font-weight: 700; }
-.cardFlag { width: 30px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
-.cardClub { width: 30px; border-radius: 50%; }
-.cardPhoto { height: 100%; max-width: 66%; object-fit: contain; object-position: bottom; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.4)); }
-.cardName {
-  width: 100%;
-  margin: 6px 0;
-  padding: 4px 0;
-  text-align: center;
-  font-weight: 800;
-  font-size: clamp(1rem, 2.4vh, 1.25rem);
-  letter-spacing: 1px;
-  border-top: 2px solid rgba(58, 44, 8, 0.55);
-  border-bottom: 2px solid rgba(58, 44, 8, 0.55);
-}
-.cardStats { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 16px; width: 100%; padding: 0 12px; }
-.stat { display: flex; gap: 6px; justify-content: center; font-size: 0.92rem; }
-.stat b { font-weight: 800; }
-.stat span { opacity: 0.75; }
-.cardFoot { margin-top: auto; font-size: 0.55rem; letter-spacing: 1px; opacity: 0.8; padding-top: 8px; }
 
 /* ===== white flash ===== */
 .flash { position: absolute; inset: 0; z-index: 30; background: #fff; opacity: 0; pointer-events: none; }
 .flashOn { animation: flashMed 0.6s ease-out; }
-.flashBlind { animation: flashBig 0.45s ease-out; }
+.flashBlind { animation: flashBig 0.5s ease-out; }
 @keyframes flashMed { 0% { opacity: 0; } 25% { opacity: 0.85; } 100% { opacity: 0; } }
-@keyframes flashBig { 0% { opacity: 0; } 15% { opacity: 1; } 60% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes flashBig { 0% { opacity: 0; } 14% { opacity: 1; } 62% { opacity: 1; } 100% { opacity: 0; } }
 
 /* ===== skip ===== */
 .skip {
@@ -247,5 +208,5 @@
 .skip:hover { background: rgba(255, 255, 255, 0.18); border-color: rgba(255, 255, 255, 0.55); }
 
 @media (prefers-reduced-motion: reduce) {
-  .streak, .conf, .cardSheen, .buildup, .tunnelCore { animation: none !important; }
+  .streak, .conf, .buildup, .tunnelCore, .cardImg { animation: none !important; }
 }

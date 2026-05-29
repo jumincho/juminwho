@@ -1,58 +1,47 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
-import { profile } from '../../data/profile'
 import styles from './IntroSequence.module.css'
 
 /**
  * FC / FIFA-Online "player pack opening" parody intro.
  *
- * Phases (ms):
- *  0.0  warp tunnel        2.3 white flash (tunnel exit)
- *  2.5  nation flag drop   3.0 impact (shake + glow)
- *  4.0  position slam      4.5 impact
- *  5.5  affiliation burn-in
- *  6.5  buildup (vibrate + glow)
- *  7.5  blinding burst (trio vanishes)
- *  7.8  walkout: final card spins + scales in
- *  12.5 fade out -> onComplete
- *
- * Asset swap points are marked with ⟪REPLACE⟫ comments below.
+ * The warp tunnel runs continuously while the elements pop up over it:
+ *   0.0  warp tunnel starts (travels forward the whole time)
+ *   1.5  taegukgi pops in (center-top, floats)
+ *   3.0  "Ph.D. Student" pops in below it
+ *   4.5  JBNU crest pops in below that
+ *   6.0  HYPERSPACE — tunnel accelerates, the three elements vibrate
+ *   7.5  blinding white flash → tunnel + trio vanish
+ *   7.8  final card (card.jpg) walks out on a grand stage
+ *  12.0  fade out → onComplete
  */
 
-const SK_FLAG = `${import.meta.env.BASE_URL}intro/flag.png`       // South Korea flag (user asset)
-const LOGO = `${import.meta.env.BASE_URL}intro/club.png`          // Jeonbuk National University crest (user asset)
-const PHOTO = `${import.meta.env.BASE_URL}jumin-cho.jpg`          // final card photo
-
-// Parody FUT-card attributes (obvious joke — not factual skill claims)
-const STATS: [string, number][] = [
-  ['INT', 99], ['RES', 98],
-  ['NLP', 97], ['RSN', 96],
-  ['GRT', 99], ['DRM', 99],
-]
+const SK_FLAG = `${import.meta.env.BASE_URL}intro/flag.png`
+const LOGO = `${import.meta.env.BASE_URL}intro/club.png`
+const CARD = `${import.meta.env.BASE_URL}intro/card.jpg` // provided card art (optimized)
 
 export default function IntroSequence({ onComplete }: { onComplete: () => void }) {
   const [phase, setPhase] = useState(0)
-  const [flash, setFlash] = useState(0) // 0 none, 1 medium, 2 blinding
+  const [flash, setFlash] = useState(0)
   const [shake, setShake] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const phaseRef = useRef(0)
   const doneRef = useRef(false)
 
-  // randomised warp streaks + confetti, computed once
   const streaks = useMemo(
     () =>
-      Array.from({ length: 60 }, (_, i) => ({
-        a: (i / 60) * 360 + Math.random() * 6,
-        delay: Math.random() * 1.8,
-        dur: 0.7 + Math.random() * 0.8,
+      Array.from({ length: 64 }, (_, i) => ({
+        a: (i / 64) * 360 + Math.random() * 6,
+        delay: Math.random() * 2,
+        dur: 0.8 + Math.random() * 0.9,
         gold: Math.random() > 0.5,
-        len: 60 + Math.random() * 220,
+        len: 70 + Math.random() * 240,
       })),
     [],
   )
   const confetti = useMemo(
     () =>
-      Array.from({ length: 80 }, () => ({
+      Array.from({ length: 90 }, () => ({
         x: Math.random() * 100,
         delay: Math.random() * 3,
         dur: 2.6 + Math.random() * 2.4,
@@ -66,11 +55,10 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
   const finish = () => {
     if (doneRef.current) return
     doneRef.current = true
-    setPhase(9) // fade-out class
+    setPhase(9)
     window.setTimeout(onComplete, 700)
   }
 
-  // ---- orchestration timeline ----
   useEffect(() => {
     const bump = (p: number) => {
       phaseRef.current = p
@@ -80,31 +68,27 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
       setFlash(level)
       window.setTimeout(() => setFlash(0), ms)
     }
-    const shakeOnce = (ms = 320) => {
+    const shakeOnce = (ms = 380) => {
       setShake(true)
       window.setTimeout(() => setShake(false), ms)
     }
-
     const timers: number[] = []
     const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms))
 
-    bump(1) // tunnel
-    at(2300, () => flashPulse(1, 600)) // tunnel exit flash
-    at(2500, () => bump(2)) // flag drop
-    at(3000, () => { shakeOnce(); })
-    at(4000, () => bump(3)) // position slam
-    at(4500, () => shakeOnce())
-    at(5500, () => bump(4)) // affiliation burn-in
-    at(6500, () => bump(5)) // buildup
-    at(7500, () => { flashPulse(2, 450); shakeOnce(450); }) // blinding burst
-    at(7800, () => bump(7)) // walkout / card
-    at(12500, finish) // auto end
+    bump(1) // tunnel travels continuously
+    at(1500, () => bump(2)) // flag pops over the moving tunnel
+    at(3000, () => bump(3)) // position pops
+    at(4500, () => bump(4)) // affiliation pops
+    at(6000, () => bump(5)) // HYPERSPACE: accelerate + vibrate
+    at(7500, () => { flashPulse(2, 500); shakeOnce(460) }) // blinding burst
+    at(7800, () => bump(7)) // card walkout on the new stage
+    at(12000, finish)
 
     return () => timers.forEach(clearTimeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // ---- gold/neon particle field (canvas) ----
+  // gold/neon particle field that accelerates with the tunnel
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -129,7 +113,7 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
       x: Math.random() * w,
       y: Math.random() * h,
       r: 0.6 + Math.random() * 2.2,
-      vy: 0.2 + Math.random() * 0.9,
+      vy: 0.25 + Math.random() * 1,
       a: 0.2 + Math.random() * 0.6,
       gold: Math.random() > 0.45,
     }))
@@ -137,7 +121,7 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
     const draw = () => {
       ctx.clearRect(0, 0, w, h)
       const p = phaseRef.current
-      const speed = p >= 7 ? 0.6 : p === 5 ? 4.5 : p >= 2 ? 1.6 : 1
+      const speed = p >= 7 ? 0.5 : p >= 5 ? 6 : p >= 2 ? 2.2 : 1.4
       for (const o of ps) {
         o.y -= o.vy * speed
         if (o.y < -10) {
@@ -146,9 +130,7 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
         }
         ctx.beginPath()
         ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2)
-        ctx.fillStyle = o.gold
-          ? `rgba(245,200,90,${o.a})`
-          : `rgba(120,150,255,${o.a})`
+        ctx.fillStyle = o.gold ? `rgba(245,200,90,${o.a})` : `rgba(120,150,255,${o.a})`
         ctx.shadowBlur = 8
         ctx.shadowColor = o.gold ? 'rgba(245,190,70,0.8)' : 'rgba(120,150,255,0.7)'
         ctx.fill()
@@ -173,8 +155,11 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
     <div className={rootClass} role="dialog" aria-label="Intro animation">
       <canvas ref={canvasRef} className={styles.particles} aria-hidden />
 
-      {/* Phase 1 — warp tunnel */}
-      <div className={`${styles.tunnel} ${phase >= 2 ? styles.tunnelGone : ''}`} aria-hidden>
+      {/* continuous warp tunnel (accelerates at hyperspace) */}
+      <div
+        className={`${styles.tunnel} ${phase >= 5 ? styles.hyper : ''} ${phase >= 7 ? styles.tunnelGone : ''}`}
+        aria-hidden
+      >
         <div className={styles.tunnelCore} />
         {streaks.map((s, i) => (
           <span
@@ -190,14 +175,14 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
         ))}
       </div>
 
-      {/* The stacked "trio": flag → position → affiliation */}
-      <div className={`${styles.trio} ${phase === 5 ? styles.buildup : ''} ${phase >= 7 ? styles.trioGone : ''}`}>
+      {/* elements that pop up over the moving tunnel */}
+      <div className={`${styles.trio} ${phase >= 5 ? styles.buildup : ''} ${phase >= 7 ? styles.trioGone : ''}`}>
         <img id="nation-flag" src={SK_FLAG} alt="South Korea" className={`${styles.flag} ${phase >= 2 ? styles.flagIn : ''}`} />
-        <div id="position-text" className={`${styles.position} ${phase >= 3 ? styles.positionIn : ''}`}>Ph.D. Candidate</div>
+        <div id="position-text" className={`${styles.position} ${phase >= 3 ? styles.positionIn : ''}`}>Ph.D. Student</div>
         <img id="affiliation-logo" src={LOGO} alt="Jeonbuk National University" className={`${styles.logo} ${phase >= 4 ? styles.logoIn : ''}`} />
       </div>
 
-      {/* Phase 5 — the final walkout card */}
+      {/* final card walkout */}
       <div className={styles.stage} aria-hidden={phase < 7}>
         <div className={styles.confetti}>
           {phase >= 7 &&
@@ -215,32 +200,10 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
               />
             ))}
         </div>
-
-        <div id="final-card" className={`${styles.card} ${phase >= 7 ? styles.cardIn : ''}`}>
-          <div className={styles.cardSheen} />
-          <div className={styles.cardTop}>
-            <div className={styles.cardMeta}>
-              <span className={styles.rating}>99</span>
-              <span className={styles.pos}>PHD</span>
-              <img src={SK_FLAG} alt="" className={styles.cardFlag} />
-              <img src={LOGO} alt="" className={styles.cardClub} />
-            </div>
-            <img src={PHOTO} alt={profile.name} className={styles.cardPhoto} />
-          </div>
-          <div className={styles.cardName}>{profile.name}</div>
-          <div className={styles.cardStats}>
-            {STATS.map(([k, v]) => (
-              <div key={k} className={styles.stat}>
-                <b>{v}</b>
-                <span>{k}</span>
-              </div>
-            ))}
-          </div>
-          <div className={styles.cardFoot}>AI RESEARCHER · {profile.affiliation}</div>
-        </div>
+        <img id="final-card" src={CARD} alt="JUMIN CHO — Ph.D. Student" className={`${styles.cardImg} ${phase >= 7 ? styles.cardIn : ''}`} />
       </div>
 
-      {/* white flash overlay */}
+      {/* white flash */}
       <div className={`${styles.flash} ${flash === 1 ? styles.flashOn : ''} ${flash === 2 ? styles.flashBlind : ''}`} aria-hidden />
 
       <button type="button" className={styles.skip} onClick={finish}>Skip ⏭</button>
