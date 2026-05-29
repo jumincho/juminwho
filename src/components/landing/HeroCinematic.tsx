@@ -5,6 +5,7 @@ import { profile } from '../../data/profile'
 import ScrambleText from '../ScrambleText'
 import MagneticButton from '../MagneticButton'
 import TiltCard from '../TiltCard'
+import LiveAge from '../LiveAge'
 import styles from './HeroCinematic.module.css'
 
 function Letters({ text }: { text: string }) {
@@ -72,6 +73,18 @@ export default function HeroCinematic() {
           >
             {profile.roleLong} <span className={styles.at}>@</span> {profile.affiliation}
             <span className={styles.lab}> · {profile.lab}</span>
+          </motion.p>
+
+          <motion.p
+            className={styles.ageRow}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+          >
+            <span className={styles.ageDot} />
+            <span className={styles.ageLabel}>ALIVE FOR</span>
+            <LiveAge className={styles.ageNum} />
+            <span className={styles.ageUnit}>years</span>
           </motion.p>
 
           <motion.div
