@@ -81,12 +81,13 @@
   transform: translate(-50%, -50%) scale(0.05);
   will-change: transform, opacity;
 }
-.fly { animation: flyPast 2s cubic-bezier(0.55, 0, 0.9, 0.25) forwards; }
+.fly { animation: flyPast 2s cubic-bezier(0.45, 0, 0.85, 0.4) forwards; }
 @keyframes flyPast {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.05); }
-  12% { opacity: 1; }
-  68% { opacity: 1; }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(9); }
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.08); }
+  16% { opacity: 1; }
+  50% { opacity: 1; }
+  82% { opacity: 0; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(4.4); }
 }
 .flyFlag { width: clamp(130px, 22vw, 280px); border-radius: 6px; box-shadow: 0 12px 50px rgba(0, 0, 0, 0.5); }
 .flyLogo { width: clamp(120px, 18vw, 240px); border-radius: 50%; }
