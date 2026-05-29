@@ -43,7 +43,7 @@ export const publication = {
 }
 
 export const education: TimelineEntry[] = [
-  { role: 'Ph.D. in Computer Science', org: 'Jeonbuk National University', period: '2026.03 – 2029.02', note: 'Candidate' },
+  { role: 'Ph.D. in Computer Science', org: 'Jeonbuk National University', period: '2026.03 – 2029.02', note: 'Student' },
   { role: 'M.S. in Computer Science', org: 'Jeonbuk National University', period: '2024.03 – 2026.02' },
   { role: 'B.S. in Computer Science', org: 'Jeonbuk National University', period: '2018.03 – 2024.02' },
 ]
