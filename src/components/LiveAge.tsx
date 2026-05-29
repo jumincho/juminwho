@@ -4,16 +4,19 @@ import { useEffect, useRef } from 'react'
 const BIRTH = new Date('1998-07-10T00:00:00+09:00').getTime()
 // Gregorian mean year length (accounts for leap years).
 const YEAR_MS = 365.2425 * 24 * 60 * 60 * 1000
-const DECIMALS = 8
+const DECIMALS = 12
 
 function ageNow() {
-  return ((Date.now() - BIRTH) / YEAR_MS).toFixed(DECIMALS)
+  // High-resolution wall clock so the trailing digits advance smoothly
+  // (sub-millisecond) — an "atomic clock" blur on the last few digits.
+  const now = performance.timeOrigin + performance.now()
+  return ((now - BIRTH) / YEAR_MS).toFixed(DECIMALS)
 }
 
 /**
- * A live age counter that ticks in real time (e.g. 27.88421056).
- * Writes straight to the DOM via a ref so it never triggers a React
- * re-render; falls back to a 1 Hz update for reduced-motion users.
+ * A live age counter that races in real time (e.g. 27.889012345678).
+ * Repaints every animation frame straight to the DOM via a ref (no React
+ * re-render); falls back to a calm 1 Hz update for reduced-motion users.
  */
 export default function LiveAge({ className }: { className?: string }) {
   const ref = useRef<HTMLSpanElement>(null)
