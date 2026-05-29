@@ -18,7 +18,7 @@ import styles from './IntroSequence.module.css'
 
 const SK_FLAG = `${import.meta.env.BASE_URL}intro/flag.png`
 const LOGO = `${import.meta.env.BASE_URL}intro/club.png`
-const CARD = `${import.meta.env.BASE_URL}intro/card.jpg` // provided card art (optimized)
+const CARD = `${import.meta.env.BASE_URL}intro/card.webp` // provided card art (transparent, optimized)
 
 export default function IntroSequence({ onComplete }: { onComplete: () => void }) {
   const [phase, setPhase] = useState(0)
@@ -76,10 +76,10 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
     const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms))
 
     bump(1) // tunnel travels continuously
-    at(1500, () => bump(2)) // flag pops over the moving tunnel
-    at(3000, () => bump(3)) // position pops
-    at(4500, () => bump(4)) // affiliation pops
-    at(6000, () => bump(5)) // HYPERSPACE: accelerate + vibrate
+    at(1000, () => bump(2)) // flag zooms in from the centre and flies past
+    at(3000, () => bump(3)) // "Ph.D. Student" flies past
+    at(5000, () => bump(4)) // crest flies past
+    at(7000, () => bump(5)) // HYPERSPACE overdrive
     at(7500, () => { flashPulse(2, 500); shakeOnce(460) }) // blinding burst
     at(7800, () => bump(7)) // card walkout on the new stage
     at(12000, finish)
@@ -175,12 +175,10 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
         ))}
       </div>
 
-      {/* elements that pop up over the moving tunnel */}
-      <div className={`${styles.trio} ${phase >= 5 ? styles.buildup : ''} ${phase >= 7 ? styles.trioGone : ''}`}>
-        <img id="nation-flag" src={SK_FLAG} alt="South Korea" className={`${styles.flag} ${phase >= 2 ? styles.flagIn : ''}`} />
-        <div id="position-text" className={`${styles.position} ${phase >= 3 ? styles.positionIn : ''}`}>Ph.D. Student</div>
-        <img id="affiliation-logo" src={LOGO} alt="Jeonbuk National University" className={`${styles.logo} ${phase >= 4 ? styles.logoIn : ''}`} />
-      </div>
+      {/* fly-through: each element zooms from the centre toward the camera and passes, one at a time */}
+      <img id="nation-flag" src={SK_FLAG} alt="South Korea" className={`${styles.flyEl} ${styles.flyFlag} ${phase >= 2 ? styles.fly : ''}`} />
+      <div id="position-text" className={`${styles.flyEl} ${styles.flyPos} ${phase >= 3 ? styles.fly : ''}`}>Ph.D. Student</div>
+      <img id="affiliation-logo" src={LOGO} alt="Jeonbuk National University" className={`${styles.flyEl} ${styles.flyLogo} ${phase >= 4 ? styles.fly : ''}`} />
 
       {/* final card walkout */}
       <div className={styles.stage} aria-hidden={phase < 7}>

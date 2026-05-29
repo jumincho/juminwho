@@ -71,71 +71,37 @@
 .hyper .streak { animation-duration: 0.3s !important; width: 4px; }
 .hyper .tunnelCore { animation-duration: 0.5s; }
 
-/* ===== elements that pop up over the tunnel ===== */
-.trio {
-  position: relative;
+/* ===== fly-through elements: centre → zoom toward camera → pass (one at a time) ===== */
+.flyEl {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   z-index: 5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(16px, 3.4vh, 38px);
-}
-.trioGone { display: none; }
-.buildup { animation: vibrate 0.08s linear infinite; }
-@keyframes vibrate {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-2px, 1px); }
-  50% { transform: translate(2px, -1px); }
-  75% { transform: translate(-1px, -2px); }
-}
-
-@keyframes pop {
-  0% { opacity: 0; transform: scale(0.4); }
-  65% { opacity: 1; transform: scale(1.12); }
-  100% { opacity: 1; transform: scale(1); }
-}
-@keyframes floaty {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-7px); }
-}
-
-.flag {
-  width: clamp(120px, 22vw, 230px);
-  border-radius: 6px;
   opacity: 0;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  transform: translate(-50%, -50%) scale(0.05);
+  will-change: transform, opacity;
 }
-.flagIn { animation: pop 0.5s cubic-bezier(0.2, 1.5, 0.4, 1) forwards, floaty 3.6s ease-in-out 0.6s infinite; }
-
-.position {
-  opacity: 0;
+.fly { animation: flyPast 2s cubic-bezier(0.55, 0, 0.9, 0.25) forwards; }
+@keyframes flyPast {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.05); }
+  12% { opacity: 1; }
+  68% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(9); }
+}
+.flyFlag { width: clamp(130px, 22vw, 280px); border-radius: 6px; box-shadow: 0 12px 50px rgba(0, 0, 0, 0.5); }
+.flyLogo { width: clamp(120px, 18vw, 240px); border-radius: 50%; }
+.flyPos {
+  font-family: var(--font-display, sans-serif);
   font-weight: 800;
-  font-size: clamp(1.6rem, 6vw, 4rem);
-  letter-spacing: 0.02em;
-  text-align: center;
+  font-size: clamp(2rem, 8vw, 5.5rem);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
   background: linear-gradient(180deg, #ffffff 0%, #cfd2e6 38%, #9aa0c0 54%, #f3d489 74%, #b8860b 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
-}
-.positionIn { animation: pop 0.5s cubic-bezier(0.2, 1.5, 0.4, 1) forwards, posPulse 2.6s ease-in-out 0.6s infinite; }
-@keyframes posPulse {
-  0%, 100% { transform: translateY(0); filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 4px rgba(245, 210, 130, 0.25)); }
-  50% { transform: translateY(-5px); filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 16px rgba(245, 210, 130, 0.8)); }
-}
-
-.logo {
-  width: clamp(96px, 16vw, 176px);
-  opacity: 0;
-  border-radius: 50%;
-  box-shadow: 0 0 0 rgba(245, 200, 90, 0);
-}
-.logoIn { animation: pop 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) forwards, logoGlow 2.6s ease-in-out 0.6s infinite; }
-@keyframes logoGlow {
-  0%, 100% { transform: translateY(0); box-shadow: 0 0 14px rgba(245, 200, 90, 0.35); }
-  50% { transform: translateY(-6px); box-shadow: 0 0 30px rgba(245, 200, 90, 0.85); }
+  filter: drop-shadow(0 0 24px rgba(245, 210, 130, 0.4));
 }
 
 /* ===== stage + card image ===== */
