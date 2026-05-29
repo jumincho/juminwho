@@ -26,6 +26,8 @@ export const profile = {
   certification: 'Unmanned Multi-Copter Pilot License (Class 2)',
   links: {
     email: 'properly59@gmail.com',
+    // Gmail web-compose — opens reliably even without a desktop mail client
+    emailCompose: 'https://mail.google.com/mail/?view=cm&fs=1&to=properly59@gmail.com',
     linkedin: 'https://www.linkedin.com/in/jumin-cho-42b126338',
     lab: 'https://sites.google.com/view/nlllab/main',
     portfolio: 'https://jumincho.github.io/juminwho/',

@@ -61,7 +61,7 @@ export default function CV() {
           <p className={styles.role}>{profile.roleLong} · {profile.affiliation} · {profile.lab}</p>
           <p className={styles.tagline}>{profile.tagline}</p>
           <div className={styles.contactLinks}>
-            <a href={`mailto:${profile.links.email}`}>{profile.links.email}</a>
+            <a href={profile.links.emailCompose} target="_blank" rel="noopener noreferrer">{profile.links.email}</a>
             <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
             <a href={profile.links.lab} target="_blank" rel="noopener noreferrer">NLL Lab</a>
             <a href={profile.links.github} target="_blank" rel="noopener noreferrer">GitHub</a>

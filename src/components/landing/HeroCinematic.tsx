@@ -86,7 +86,7 @@ export default function HeroCinematic() {
               </Link>
             </MagneticButton>
             <MagneticButton>
-              <a href={`mailto:${profile.links.email}`} className={styles.btn} data-cursor>
+              <a href={profile.links.emailCompose} className={styles.btn} target="_blank" rel="noopener noreferrer" data-cursor>
                 Get in Touch
               </a>
             </MagneticButton>

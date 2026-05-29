@@ -7,7 +7,7 @@ const socials = [
   { label: 'LinkedIn', href: profile.links.linkedin },
   { label: 'NLL Lab', href: profile.links.lab },
   { label: 'GitHub', href: profile.links.github },
-  { label: 'Email', href: `mailto:${profile.links.email}` },
+  { label: 'Email', href: profile.links.emailCompose },
 ]
 
 export default function LandingFooter() {
@@ -36,7 +36,7 @@ export default function LandingFooter() {
         </motion.h2>
 
         <MagneticButton strength={0.25}>
-          <a href={`mailto:${profile.links.email}`} className={styles.email} data-cursor>
+          <a href={profile.links.emailCompose} className={styles.email} target="_blank" rel="noopener noreferrer" data-cursor>
             {profile.links.email}
           </a>
         </MagneticButton>
