@@ -21,10 +21,11 @@ function AppShell() {
   const { isBlogLight } = useBlogTheme()
   const isBlog = location.pathname.startsWith('/blog')
   const useDarkBlogTheme = isBlog && !isBlogLight
+  const isCinematic = location.pathname === '/' || location.pathname === '/cv'
 
   return (
     <div className={useDarkBlogTheme ? 'app dark-theme' : 'app'}>
-      <Navbar dark={useDarkBlogTheme} />
+      <Navbar dark={useDarkBlogTheme || isCinematic} />
       <Suspense fallback={null}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>

@@ -1,0 +1,166 @@
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 120px 32px;
+  color: var(--ink);
+}
+.inner { max-width: 1180px; margin: 0 auto; }
+
+.kicker {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  color: var(--amber);
+  margin-bottom: 28px;
+}
+
+.statement {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 4.6vw, 3.6rem);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  max-width: 20ch;
+  margin: 0 0 80px;
+  color: var(--ink-soft);
+}
+.statement em {
+  font-style: italic;
+  background: linear-gradient(100deg, var(--indigo), var(--violet) 50%, var(--amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ---- pipeline ---- */
+.pipeline {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 64px;
+}
+.node {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 26px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+  backdrop-filter: blur(8px);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.node:hover {
+  border-color: rgba(168, 85, 247, 0.6);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(99, 102, 241, 0.18);
+}
+.nodeIcon { font-size: 26px; }
+.nodeLabel { font-weight: 600; font-size: 0.98rem; line-height: 1.25; color: var(--ink); }
+.nodeSub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.connector {
+  flex: 0 0 46px;
+  align-self: center;
+  height: 2px;
+  position: relative;
+  overflow: hidden;
+  transform-origin: left center;
+  background: rgba(255, 255, 255, 0.12);
+}
+.flow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  width: 40%;
+  animation: flow 1.8s linear infinite;
+}
+@keyframes flow { from { transform: translateX(-120%); } to { transform: translateX(320%); } }
+
+/* ---- bottom row ---- */
+.bottom {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 24px;
+}
+.pubCard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 34px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(150deg, rgba(99, 102, 241, 0.12), rgba(10, 10, 30, 0.4));
+  transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+}
+.pubCard:hover {
+  border-color: rgba(245, 158, 11, 0.55);
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+.pubTag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--amber);
+}
+.pubTitle {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  line-height: 1.35;
+  margin: 0;
+  color: var(--ink);
+}
+.pubArrow { font-family: var(--font-mono); font-size: 12px; color: var(--ink-dim); transition: color 0.3s ease; }
+.pubCard:hover .pubArrow { color: var(--ink); }
+
+.focusBox {
+  padding: 34px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+}
+.focusLabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--ink-dim);
+  margin-bottom: 16px;
+}
+.focusList { display: flex; flex-direction: column; gap: 10px; }
+.focusList li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+.focusList li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(var(--amber), var(--ember));
+}
+
+@media (max-width: 860px) {
+  .section { padding: 90px 22px; }
+  .pipeline { flex-direction: column; }
+  .connector { width: 2px; height: 32px; align-self: center; flex-basis: 32px; transform-origin: top center; }
+  .flow { animation: flowV 1.8s linear infinite; }
+  @keyframes flowV { from { transform: translateY(-120%); } to { transform: translateY(320%); } }
+  .bottom { grid-template-columns: 1fr; }
+}
