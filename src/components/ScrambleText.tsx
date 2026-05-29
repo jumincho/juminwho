@@ -23,9 +23,12 @@ export default function ScrambleText({ text, className, as = 'span', delay = 0, 
     // out already defaults to the full text, so reduced-motion users just keep it
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let frame = 0
-    let raf = 0
+    let timer = 0
+    let rafId = 0
+    let cancelled = false
     const total = text.length + 14
     const tick = () => {
+      if (cancelled) return
       const progress = frame
       const next = text
         .split('')
@@ -38,13 +41,14 @@ export default function ScrambleText({ text, className, as = 'span', delay = 0, 
         .join('')
       setOut(next)
       frame += 1
-      if (frame <= total) raf = window.setTimeout(() => requestAnimationFrame(tick), speed)
+      if (frame <= total) timer = window.setTimeout(() => { rafId = requestAnimationFrame(tick) }, speed)
       else setOut(text)
     }
-    const startTimer = window.setTimeout(() => requestAnimationFrame(tick), delay)
+    timer = window.setTimeout(() => { rafId = requestAnimationFrame(tick) }, delay)
     return () => {
-      window.clearTimeout(startTimer)
-      window.clearTimeout(raf)
+      cancelled = true
+      window.clearTimeout(timer)
+      cancelAnimationFrame(rafId)
     }
   }, [inView, text, delay, speed])
 
