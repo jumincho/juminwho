@@ -26,6 +26,7 @@ src/
   data/profile.ts  single source of truth for personal info
 public/intro/    intro assets (flag, crest, card)
 supabase/        schema.sql + seed SQL
+docs/            research notes & slides (kept out of the build/deploy)
 ```
 
 ## Develop
