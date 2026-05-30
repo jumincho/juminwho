@@ -4,13 +4,13 @@ Personal portfolio site for **Jumin Cho (조주민)** — AI Researcher · Ph.D.
 
 🔗 **Live:** https://jumincho.github.io/juminwho/
 
-A cinematic single-page landing (with an FC-Online–style "pack opening" intro) plus a CV, project gallery, and a research blog. Built with **React 19 + TypeScript + Vite**; the blog and travel data are backed by Supabase with local fallbacks.
+A bright **cherry-blossom pastel** single-page landing — a hand-written WebGL watercolor backdrop, drifting sakura petals, and an FC-Online–style "pack-opening" warp intro that bursts straight into the hero — plus a CV, project gallery, and a research blog. Built with **React 19 + TypeScript + Vite**; the blog and travel data are backed by Supabase with local fallbacks.
 
 ## Tech stack
 
 - **React 19**, **TypeScript** (strict), **Vite 7**
 - **framer-motion** — scroll-driven + spring animation
-- Raw **WebGL / GLSL** — the hand-written shader background
+- Raw **WebGL / GLSL** — the hand-written cherry-blossom watercolor background
 - **react-router 7**, **react-markdown** + **KaTeX** (blog), **mapbox-gl** (travel globe)
 - **Supabase** — blog posts, travel spots, admin auth
 
@@ -22,9 +22,9 @@ src/
   components/
     landing/     Hero, Marquee, Journey timeline, Footer
     intro/       FC-Online pack-opening intro
-    …            ShaderBackground, Cursor, TiltCard, MagneticButton, ScrambleText, LiveAge
+    …            ShaderBackground, SakuraPetals, Cursor, TiltCard, MagneticButton, ScrambleText, LiveAge
   data/profile.ts  single source of truth for personal info
-public/intro/    intro assets (flag, crest, card)
+public/intro/    intro assets (flag, crest)
 supabase/        schema.sql + seed SQL
 docs/            research notes & slides (kept out of the build/deploy)
 ```
