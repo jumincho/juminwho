@@ -3,9 +3,10 @@
   z-index: 1;
   padding: 30px 0;
   overflow: hidden;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(5, 6, 15, 0.3);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(6px);
   -webkit-user-select: none;
   user-select: none;
 }
@@ -28,18 +29,19 @@
   line-height: 1.1;
   padding: 8px 0;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(199, 203, 240, 0.45);
+  -webkit-text-stroke: 1.2px rgba(124, 64, 110, 0.4);
   white-space: nowrap;
-  transition: -webkit-text-stroke 0.3s ease, color 0.3s ease;
+  transition: -webkit-text-stroke 0.3s ease, color 0.3s ease, transform 0.3s var(--ease-out-back);
 }
 .item:hover {
-  color: var(--amber);
+  color: var(--rose);
   -webkit-text-stroke: 1px transparent;
+  transform: scale(1.04);
 }
 .star {
   margin: 0 38px;
   font-size: 0.5em;
-  color: var(--violet);
+  color: var(--lilac);
   -webkit-text-stroke: 0;
 }
 

@@ -14,9 +14,9 @@
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(60% 50% at 15% 0%, rgba(99, 102, 241, 0.22), transparent 70%),
-    radial-gradient(50% 40% at 95% 20%, rgba(168, 85, 247, 0.18), transparent 70%),
-    radial-gradient(60% 50% at 50% 110%, rgba(245, 158, 11, 0.12), transparent 70%);
+    radial-gradient(60% 50% at 15% 0%, rgba(255, 158, 196, 0.30), transparent 70%),
+    radial-gradient(50% 40% at 95% 20%, rgba(143, 198, 255, 0.24), transparent 70%),
+    radial-gradient(60% 50% at 50% 110%, rgba(255, 213, 138, 0.20), transparent 70%);
 }
 
 .container {
@@ -31,7 +31,7 @@
 .header {
   margin-bottom: 64px;
   padding-bottom: 32px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid var(--line-strong);
 }
 .eyebrow {
   font-family: var(--font-mono);
@@ -47,7 +47,7 @@
   line-height: 0.95;
   letter-spacing: -0.03em;
   margin-bottom: 16px;
-  background: linear-gradient(100deg, #ffffff, #a855f7 50%, #f59e0b);
+  background: linear-gradient(100deg, #ff5b9f, #c08cff 50%, #ffb56f);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -99,11 +99,11 @@
   color: var(--ink);
   padding-bottom: 14px;
   margin-bottom: 22px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--line);
 }
 .sectionIndex { font-family: var(--font-mono); font-size: 0.8rem; color: var(--amber); }
 
-.entry { padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+.entry { padding: 14px 0; border-bottom: 1px solid var(--line); }
 .entry:last-child { border-bottom: none; }
 .entryHead { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
 .entryHead strong { font-size: 1.05rem; font-weight: 600; color: var(--ink); }
@@ -120,17 +120,17 @@
   padding: 8px 14px;
   border-radius: 999px;
   color: var(--ink-soft);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.03);
-  transition: border-color 0.25s ease, color 0.25s ease;
+  border: 1px solid var(--line);
+  background: var(--glass-soft);
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
 }
-.tag:hover { border-color: var(--violet); color: var(--ink); }
+.tag:hover { border-color: var(--sakura); color: var(--rose); background: rgba(255, 126, 176, 0.08); }
 
 .pub {
   padding: 22px 24px;
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(150deg, rgba(99, 102, 241, 0.1), rgba(10, 10, 30, 0.3));
+  border: 1px solid var(--line);
+  background: linear-gradient(150deg, rgba(255, 158, 196, 0.16), rgba(143, 198, 255, 0.12)), var(--glass);
 }
 .pubVenue { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; color: var(--amber); }
 .pubTitle { margin-top: 10px; font-size: 1.05rem; line-height: 1.4; color: var(--ink); }

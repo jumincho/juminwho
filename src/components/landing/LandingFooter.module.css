@@ -21,8 +21,8 @@
   line-height: 0.95;
   letter-spacing: -0.04em;
   margin: 0 0 34px;
-  background: linear-gradient(100deg, #ffffff, #a855f7 45%, #f59e0b 80%, #ffffff);
-  background-size: 200% 100%;
+  background: linear-gradient(100deg, #ff5b9f, #c08cff 36%, #6fb3ff 58%, #ffb56f 82%, #ff5b9f);
+  background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -37,11 +37,11 @@
   font-size: clamp(1rem, 3vw, 1.6rem);
   color: var(--ink);
   padding-bottom: 6px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid var(--line-strong);
   transition: color 0.3s ease, border-color 0.3s ease;
   margin-bottom: 56px;
 }
-.email:hover { color: var(--amber); border-color: var(--amber); }
+.email:hover { color: var(--rose); border-color: var(--sakura); }
 
 .socials {
   display: flex;
@@ -58,14 +58,17 @@
   border-radius: 999px;
   font-size: 0.92rem;
   color: var(--ink-soft);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  border: 1px solid var(--line);
+  background: var(--glass-soft);
+  backdrop-filter: blur(6px);
+  transition: border-color 0.3s ease, color 0.3s ease, transform 0.35s var(--ease-out-back), background 0.3s ease, box-shadow 0.3s ease;
 }
 .social:hover {
-  color: var(--ink);
-  border-color: rgba(245, 158, 11, 0.6);
-  background: rgba(245, 158, 11, 0.06);
-  transform: translateY(-3px);
+  color: var(--rose);
+  border-color: var(--sakura);
+  background: rgba(255, 126, 176, 0.1);
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 12px 28px rgba(214, 110, 168, 0.2);
 }
 .socialArrow { font-size: 0.85em; opacity: 0.6; }
 
@@ -76,13 +79,13 @@
   justify-content: space-between;
   gap: 12px;
   padding-top: 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--line);
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.08em;
   color: var(--ink-dim);
 }
-.loc { color: rgba(255, 255, 255, 0.25); }
+.loc { color: rgba(124, 64, 110, 0.45); }
 .top { color: var(--ink-dim); transition: color 0.3s ease; }
 .top:hover { color: var(--amber); }
 
