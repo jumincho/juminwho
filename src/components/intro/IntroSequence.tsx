@@ -5,20 +5,18 @@ import styles from './IntroSequence.module.css'
 /**
  * FC / FIFA-Online "player pack opening" parody intro.
  *
- * The warp tunnel runs continuously while the elements pop up over it:
+ * The warp tunnel runs continuously while the elements fly through it:
  *   0.0  warp tunnel starts (travels forward the whole time)
- *   1.5  taegukgi pops in (center-top, floats)
- *   3.0  "Ph.D. Student" pops in below it
- *   4.5  JBNU crest pops in below that
- *   6.0  HYPERSPACE — tunnel accelerates, the three elements vibrate
- *   7.5  blinding white flash → tunnel + trio vanish
- *   7.8  final card (card.jpg) walks out on a grand stage
- *  12.0  fade out → onComplete
+ *   1.0  taegukgi flies past
+ *   3.0  "Ph.D. Student" flies past
+ *   5.0  JBNU crest flies past
+ *   7.0  HYPERSPACE — tunnel accelerates into overdrive
+ *   7.5  blinding white burst (+ shake) — the climax
+ *   7.9  ride the burst straight through into the homepage → onComplete
  */
 
 const SK_FLAG = `${import.meta.env.BASE_URL}intro/flag.png`
 const LOGO = `${import.meta.env.BASE_URL}intro/club.png`
-const CARD = `${import.meta.env.BASE_URL}intro/card.webp` // provided card art (transparent, optimized)
 
 export default function IntroSequence({ onComplete }: { onComplete: () => void }) {
   const [phase, setPhase] = useState(0)
@@ -39,19 +37,6 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
       })),
     [],
   )
-  const confetti = useMemo(
-    () =>
-      Array.from({ length: 90 }, () => ({
-        x: Math.random() * 100,
-        delay: Math.random() * 3,
-        dur: 2.6 + Math.random() * 2.4,
-        rot: Math.random() * 360,
-        gold: Math.random() > 0.4,
-        w: 5 + Math.random() * 6,
-      })),
-    [],
-  )
-
   const finish = () => {
     if (doneRef.current) return
     doneRef.current = true
@@ -80,9 +65,8 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
     at(3000, () => bump(3)) // "Ph.D. Student" flies past
     at(5000, () => bump(4)) // crest flies past
     at(7000, () => bump(5)) // HYPERSPACE overdrive
-    at(7500, () => { flashPulse(2, 500); shakeOnce(460) }) // blinding burst
-    at(7800, () => bump(7)) // card walkout on the new stage
-    at(12000, finish)
+    at(7500, () => { flashPulse(2, 900); shakeOnce(460) }) // blinding burst — the climax
+    at(7900, finish) // ride the white burst straight into the homepage
 
     return () => timers.forEach(clearTimeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,7 +105,7 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
     const draw = () => {
       ctx.clearRect(0, 0, w, h)
       const p = phaseRef.current
-      const speed = p >= 7 ? 0.5 : p >= 5 ? 6 : p >= 2 ? 2.2 : 1.4
+      const speed = p >= 5 ? 6 : p >= 2 ? 2.2 : 1.4
       for (const o of ps) {
         o.y -= o.vy * speed
         if (o.y < -10) {
@@ -180,28 +164,7 @@ export default function IntroSequence({ onComplete }: { onComplete: () => void }
       <div id="position-text" className={`${styles.flyEl} ${styles.flyPos} ${phase >= 3 ? styles.fly : ''}`}>Ph.D. Student</div>
       <img id="affiliation-logo" src={LOGO} alt="Jeonbuk National University" className={`${styles.flyEl} ${styles.flyLogo} ${phase >= 4 ? styles.fly : ''}`} />
 
-      {/* final card walkout */}
-      <div className={styles.stage} aria-hidden={phase < 7}>
-        <div className={styles.confetti}>
-          {phase >= 7 &&
-            confetti.map((c, i) => (
-              <span
-                key={i}
-                className={`${styles.conf} ${c.gold ? styles.confGold : styles.confBlue}`}
-                style={{
-                  left: `${c.x}%`,
-                  '--delay': `${c.delay}s`,
-                  '--dur': `${c.dur}s`,
-                  '--rot': `${c.rot}deg`,
-                  '--w': `${c.w}px`,
-                } as CSSProperties}
-              />
-            ))}
-        </div>
-        <img id="final-card" src={CARD} alt="JUMIN CHO — Ph.D. Student" className={`${styles.cardImg} ${phase >= 7 ? styles.cardIn : ''}`} />
-      </div>
-
-      {/* white flash */}
+      {/* white flash — the burst carries straight into the homepage */}
       <div className={`${styles.flash} ${flash === 1 ? styles.flashOn : ''} ${flash === 2 ? styles.flashBlind : ''}`} aria-hidden />
 
       <button type="button" className={styles.skip} onClick={finish}>Skip ⏭</button>

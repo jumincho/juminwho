@@ -105,48 +105,6 @@
   filter: drop-shadow(0 0 24px rgba(245, 210, 130, 0.4));
 }
 
-/* ===== stage + card image ===== */
-.p7 { background: radial-gradient(72% 60% at 50% 42%, #221a3e 0%, #0a0816 56%, #050510 100%); }
-.stage { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; pointer-events: none; }
-
-.confetti { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
-.conf {
-  position: absolute;
-  top: -24px;
-  width: var(--w);
-  height: calc(var(--w) * 1.6);
-  border-radius: 1px;
-  animation: fall var(--dur) linear var(--delay) infinite;
-}
-.confGold { background: #f0c850; }
-.confBlue { background: #7a96ff; }
-@keyframes fall {
-  0% { transform: translateY(-24px) rotate(var(--rot)); opacity: 0; }
-  10% { opacity: 1; }
-  100% { transform: translateY(102vh) rotate(calc(var(--rot) + 540deg)); opacity: 0.85; }
-}
-
-.cardImg {
-  position: relative;
-  z-index: 1;
-  height: min(80vh, 560px);
-  max-width: 88vw;
-  object-fit: contain;
-  opacity: 0;
-  transform: scale(0);
-  filter: drop-shadow(0 30px 70px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 60px rgba(245, 200, 90, 0.35));
-}
-.cardIn { animation: walkout 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards, cardFloat 5s ease-in-out 1.5s infinite; }
-@keyframes walkout {
-  0% { opacity: 0; transform: rotateY(720deg) scale(0); }
-  30% { opacity: 1; }
-  100% { opacity: 1; transform: rotateY(0) scale(1); }
-}
-@keyframes cardFloat {
-  0%, 100% { transform: translateY(0) rotateY(0); }
-  50% { transform: translateY(-12px) rotateY(6deg); }
-}
-
 /* ===== white flash ===== */
 .flash { position: absolute; inset: 0; z-index: 30; background: #fff; opacity: 0; pointer-events: none; }
 .flashOn { animation: flashMed 0.6s ease-out; }
@@ -175,5 +133,5 @@
 .skip:hover { background: rgba(255, 255, 255, 0.18); border-color: rgba(255, 255, 255, 0.55); }
 
 @media (prefers-reduced-motion: reduce) {
-  .streak, .conf, .buildup, .tunnelCore, .cardImg { animation: none !important; }
+  .streak, .tunnelCore { animation: none !important; }
 }

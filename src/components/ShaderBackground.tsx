@@ -72,28 +72,34 @@ void main(){
   float f = fbm(p * 1.4 + 1.8 * q + vec2(1.7, 9.2));
   f = 0.5 + 0.5 * f;
 
-  // palette
-  vec3 col   = vec3(0.020, 0.024, 0.060);
-  vec3 indigo= vec3(0.39, 0.40, 0.95);
-  vec3 violet= vec3(0.66, 0.33, 0.97);
-  vec3 amber = vec3(0.96, 0.62, 0.04);
+  // palette — soft cherry-blossom watercolor (light & airy)
+  vec3 base  = vec3(0.995, 0.965, 0.975);  // warm blush white
+  vec3 pink  = vec3(1.000, 0.760, 0.855);  // sakura
+  vec3 sky   = vec3(0.715, 0.875, 1.000);  // spring sky
+  vec3 lav   = vec3(0.855, 0.795, 1.000);  // wisteria
+  vec3 peach = vec3(1.000, 0.855, 0.730);  // peach
+  vec3 mint  = vec3(0.800, 0.970, 0.880);  // soft mint
 
-  col = mix(col, indigo * 0.55, smoothstep(0.20, 0.62, f));
-  col = mix(col, violet * 0.65, smoothstep(0.45, 0.85, f + 0.20 * q.x));
-  col = mix(col, amber  * 0.70, smoothstep(0.78, 1.02, f + 0.25 * q.y));
-  col *= 0.45 + 0.65 * f;
+  vec3 col = base;
+  col = mix(col, pink,  smoothstep(0.18, 0.72, f) * 0.92);
+  col = mix(col, sky,   smoothstep(0.42, 0.96, f + 0.28 * q.x) * 0.62);
+  col = mix(col, lav,   smoothstep(0.28, 0.82, 0.5 + 0.5 * q.y) * 0.50);
+  col = mix(col, peach, smoothstep(0.76, 1.06, f + 0.22 * q.y) * 0.70);
+  col = mix(col, mint,  smoothstep(0.55, 0.94, f - 0.22 * q.x) * 0.26);
+  col = mix(col, vec3(1.0), 0.10 * (1.0 - f));  // keep it luminous
 
-  // pointer glow
+  // pointer glow — a soft warm bloom that follows the cursor
   vec2 m = (u_mouse - 0.5 * u_res.xy) / u_res.y;
   float d = length(p - m);
-  col += (indigo * 0.5 + violet * 0.45) * (0.10 / (d * 6.0 + 0.5)) * u_pointer;
+  col += (pink * 0.55 + sky * 0.35) * (0.07 / (d * 6.0 + 0.5)) * u_pointer;
 
-  // vignette
-  col *= 0.32 + 0.68 * smoothstep(1.25, 0.15, length(p));
+  // gentle light vignette — brighten the centre, never darken to murk
+  col = mix(col, col + 0.06, smoothstep(1.30, 0.10, length(p)));
+  col = clamp(col, 0.0, 1.0);
 
-  // film grain
+  // whisper-soft grain
   float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + u_time) * 43758.5453);
-  col += (g - 0.5) * 0.022;
+  col += (g - 0.5) * 0.015;
 
   gl_FragColor = vec4(col, 1.0);
 }
@@ -120,7 +126,7 @@ export default function ShaderBackground({ className }: { className?: string }) 
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const fallbackBG =
-      'radial-gradient(120% 120% at 30% 20%, #13132b 0%, #0a0a1e 45%, #05060f 100%)'
+      'radial-gradient(120% 120% at 30% 20%, #ffe3ef 0%, #fdeef6 45%, #eef3ff 100%)'
 
     const gl =
       canvas.getContext('webgl', { antialias: false, alpha: false, depth: false, powerPreference: 'low-power' }) ||

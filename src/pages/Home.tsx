@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import ShaderBackground from '../components/ShaderBackground'
+import SakuraPetals from '../components/SakuraPetals'
 import Cursor from '../components/Cursor'
 import IntroSequence from '../components/intro/IntroSequence'
 import HeroCinematic from '../components/landing/HeroCinematic'
@@ -45,6 +46,14 @@ export default function Home() {
       {!showIntro && (
         <>
           <ShaderBackground />
+          <div className={styles.bokeh} aria-hidden>
+            <span className={`${styles.orb} ${styles.orb1}`} />
+            <span className={`${styles.orb} ${styles.orb2}`} />
+            <span className={`${styles.orb} ${styles.orb3}`} />
+            <span className={`${styles.orb} ${styles.orb4}`} />
+            <span className={`${styles.orb} ${styles.orb5}`} />
+          </div>
+          <SakuraPetals />
           <Cursor />
           <motion.div className={styles.progress} style={{ scaleX: progress }} aria-hidden />
           <div className={styles.grain} aria-hidden />
