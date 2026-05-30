@@ -57,7 +57,7 @@
   justify-items: start;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.9rem, 10.5vw, 8.5rem);
+  font-size: clamp(2.5rem, 8.4vw, 7rem); /* sized so the wider alias "JUMIN WHO?" still fits the column */
   line-height: 0.92;
   letter-spacing: -0.03em;
   margin: 0 0 22px;
@@ -322,17 +322,13 @@
   50% { transform: translate(3px, 2px); opacity: 0.6; }
 }
 
-/* The name uses background-clip:text on .facePrimary. Any transform/filter/opacity
-   on the child .letter spans makes a stacking context that breaks the gradient clip
-   (glyphs go transparent), so the entrance animates the WHOLE .facePrimary — its clip
-   travels with it — and the letters are left untouched. */
-@keyframes faceIn {
-  0% { opacity: 0; transform: translateY(16px) scale(0.965); }
-  100% { opacity: 1; transform: none; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .facePrimary { animation: shimmer 9s linear infinite, faceIn 0.75s var(--ease-out-back) both; }
-}
+/* The name uses background-clip:text on .facePrimary. Two rules keep it working:
+   1) never put transform/filter/opacity on the child .letter spans — it makes a
+      stacking context that breaks the gradient clip (glyphs go transparent);
+   2) don't leave a filled entrance animation on .facePrimary either — its held
+      final opacity/transform would override the .nameAlias hover state, so the
+      "JUMIN CHO" face couldn't fade out and the two faces overlapped.
+   Shimmer-only (background-position) is safe; it never touches opacity/transform. */
 
 @media (max-width: 900px) {
   .grid { grid-template-columns: 1fr; gap: 40px; }
