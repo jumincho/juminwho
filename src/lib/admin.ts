@@ -1,7 +1,7 @@
 import { supabase } from './supabase'
 
 const ADMIN_EMAIL = ((import.meta.env.VITE_ADMIN_EMAIL as string) || '').trim()
-const LOCAL_ADMIN_PASSWORD = ((import.meta.env.VITE_ADMIN_PASSWORD as string) || '1387').trim()
+const LOCAL_ADMIN_PASSWORD = ((import.meta.env.VITE_ADMIN_PASSWORD as string) || 'admin').trim()
 const LOCAL_ADMIN_SESSION_KEY = 'local-admin-session'
 
 function setLocalAdminSession(isAuthenticated: boolean) {
