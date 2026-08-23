@@ -1,7 +1,5 @@
 /* ===== Pretendard Font ===== */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
-/* ===== Display / Mono / Editorial fonts ===== */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap');
 
 /* ===== Reset & Base ===== */
 *,
@@ -53,63 +51,6 @@
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
-
-  /* ===== Cherry-blossom landing palette — bright, pastel, multi-hue ===== */
-  --void: #fff4f9;     /* blush page base */
-  --void-2: #ffe9f3;
-  --void-3: #fbe3ff;
-
-  /* pastel accent spectrum (다채로운) */
-  --sakura: #ff7eb0;
-  --rose:   #ff6a98;
-  --coral:  #ff9d86;
-  --peach:  #ffb56f;
-  --lemon:  #ffd76a;
-  --mint:   #4fd9ab;
-  --sky:    #5cb3ff;
-  --peri:   #8aa0ff;
-  --lilac:  #c294ff;
-
-  /* legacy aliases → existing rules inherit the blossom hues */
-  --indigo: var(--peri);
-  --violet: var(--lilac);
-  --amber:  var(--sakura);
-  --ember:  var(--rose);
-
-  /* ink on light */
-  --ink:      #46284c;   /* deep plum */
-  --ink-soft: #7a5277;
-  --ink-dim:  #a884ac;
-
-  /* surfaces — soft plum hairlines + frosted glass for the light theme */
-  --line:           rgba(124, 64, 110, 0.16);
-  --line-strong:    rgba(124, 64, 110, 0.30);
-  --glass:          rgba(255, 255, 255, 0.58);
-  --glass-soft:     rgba(255, 255, 255, 0.34);
-  --scrim:          rgba(255, 255, 255, 0.62);
-  --petal:          #ffd4e6;
-  --blossom-shadow: 0 24px 60px rgba(214, 110, 168, 0.22);
-
-  /* Fonts */
-  --font-display: 'Space Grotesk', 'Pretendard Variable', sans-serif;
-  --font-serif: 'Instrument Serif', Georgia, serif;
-  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
-
-  /* Easing */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
-  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Dark page background so overscroll never flashes white on cinematic routes */
-html.dark-page,
-html.dark-page body {
-  background: var(--void);
-}
-
-::selection {
-  background: rgba(255, 126, 176, 0.38);
-  color: #46284c;
 }
 
 html {
