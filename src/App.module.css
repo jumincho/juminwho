@@ -1,0 +1,70 @@
+.prose {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.prose p {
+  color: var(--fg);
+}
+
+.lead {
+  margin-bottom: var(--space-5);
+}
+
+.subheading {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--fg-muted);
+}
+
+.plainList {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.plainList li {
+  position: relative;
+  padding-left: var(--space-4);
+}
+
+.plainList li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.75em;
+  width: 6px;
+  height: 1px;
+  background: var(--fg-faint);
+}
+
+.kv {
+  display: grid;
+}
+
+.kvRow {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+  border-top: 1px solid var(--line);
+}
+
+.kvRow:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.kvRow dt {
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+
+@media (max-width: 720px) {
+  .kvRow {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+}

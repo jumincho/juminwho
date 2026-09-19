@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Jumin Cho</title>
+    <script>
+      // The site is a single page. Send any stale deep link (old /blog, /cv, ...) to the root
+      // of this deployment, which is the first path segment on GitHub Pages project sites.
+      (function () {
+        var segments = window.location.pathname.split('/').filter(Boolean);
+        var base = segments.length > 1 ? '/' + segments[0] + '/' : '/';
+        window.location.replace(base);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>This page has moved. <a href="/">Go to the home page.</a></p>
+  </body>
+</html>
