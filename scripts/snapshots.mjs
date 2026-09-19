@@ -44,9 +44,10 @@ try {
         console.error(`✗ ${vp.name}/${scheme}: horizontal overflow (${scrollW}px > ${vp.width}px)`)
       }
 
-      const counter = page.locator('h1 ~ * >> text=/^\\d+\\.\\d{12}$/').first()
+      const counter = page.locator('h1 ~ * >> text=/^\\d+\\.\\d{8}$/').first()
+      // The 8th decimal of a year advances every ~0.32 s; 700 ms guarantees a change.
       const a = await counter.textContent()
-      await page.waitForTimeout(100)
+      await page.waitForTimeout(700)
       const b = await counter.textContent()
       if (a === b) {
         failures++

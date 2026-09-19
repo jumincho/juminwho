@@ -5,11 +5,10 @@ import { ALIAS_SCROLL_THRESHOLD } from './Hero'
 import styles from './SiteHeader.module.css'
 
 const sections = [
-  { id: 'about', label: 'About' },
   { id: 'experience', label: 'Experience' },
   { id: 'education', label: 'Education' },
   { id: 'publications', label: 'Publications' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'honors', label: 'Honors' },
 ]
 
 export default function SiteHeader() {

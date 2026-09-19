@@ -8,9 +8,9 @@ tokens disagree, fix the tokens.
 
 A one-page profile for Jumin Cho, an AI researcher and Ph.D. student. Readers are
 recruiters, collaborators and reviewers who want to answer three questions fast: who
-is this person, what have they done, how do I reach them. The page is a research
-notebook, not a landing page. It should read like a well-set CV, not sell like a
-product.
+is this person, what have they done, how do I reach them. The page is a well-set CV,
+not a landing page: a hero with the facts and contact links, then lists. It should
+not sell like a product.
 
 ## Priority order
 
@@ -57,8 +57,11 @@ theme toggle; `data-theme` on `<html>` exists for tooling and tests.
 - Link to the primary source (publisher PDF, proceedings page). If none exists, list the
   venue without a link rather than a search result.
 - Dates use `YYYY.MM – YYYY.MM` or `YYYY.MM – present`.
-- Do not describe research topics or interests in prose. Publications speak for
-  themselves; the About text covers affiliation, path and background only.
+- No prose sections. The page is the hero facts plus four lists (experience,
+  education, publications, honors). Research topics are not described anywhere;
+  publications speak for themselves. Contact details live in the hero only.
+- Institutions and advisors link to their official pages (university, department,
+  lab, faculty page). External links open in a new tab.
 
 ## Anti-patterns to reject
 

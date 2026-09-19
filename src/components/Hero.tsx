@@ -33,7 +33,13 @@ export default function Hero() {
           <div className={styles.fact}>
             <dt>Affiliation</dt>
             <dd>
-              {profile.department}, {profile.affiliation}
+              <a href={profile.links.department} className="link" target="_blank" rel="noopener noreferrer">
+                {profile.department}
+              </a>
+              ,{' '}
+              <a href={profile.links.university} className="link" target="_blank" rel="noopener noreferrer">
+                {profile.affiliation}
+              </a>
               <br />
               <a href={profile.links.lab} className="link" target="_blank" rel="noopener noreferrer">
                 {profile.lab}
@@ -50,9 +56,6 @@ export default function Hero() {
               <LiveAge birth={profile.birth} className={styles.ageNum} />
               <span className={styles.ageUnit} aria-hidden="true">
                 years
-              </span>
-              <span className={styles.ageNote} aria-hidden="true">
-                since 1998-07-10
               </span>
             </dd>
           </div>

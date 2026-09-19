@@ -17,7 +17,16 @@ export default function EntryList({ items, label }: Props) {
           <span className={styles.detail}>
             <span className={styles.title}>{item.title}</span>
             <span className={styles.org}>{item.org}</span>
-            {item.note && <span className={styles.note}>{item.note}</span>}
+            {(item.note || item.noteLink) && (
+              <span className={styles.note}>
+                {item.note}
+                {item.noteLink && (
+                  <a href={item.noteLink.url} className="link" target="_blank" rel="noopener noreferrer">
+                    {item.noteLink.text}
+                  </a>
+                )}
+              </span>
+            )}
           </span>
         </li>
       ))}

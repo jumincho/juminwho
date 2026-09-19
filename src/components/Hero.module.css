@@ -111,11 +111,6 @@
   color: var(--fg-muted);
 }
 
-.ageNote {
-  color: var(--fg-faint);
-  font-size: var(--text-xs);
-}
-
 /* ---- links ---- */
 .links {
   margin-top: var(--space-6);
