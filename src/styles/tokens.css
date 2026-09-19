@@ -1,0 +1,92 @@
+/*
+ * Design tokens — the single source of truth for colour, type, space and motion.
+ * See docs/DESIGN.md for the rules these tokens implement.
+ *
+ * Colour is monochrome by default. `--accent` is the only hue and is reserved
+ * for links, focus rings and the "JUMIN WHO?" alias state.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* ---- surfaces & ink (light) ---- */
+  --bg: #ffffff;
+  --bg-subtle: #f6f6f4;
+  --fg: #111111;
+  --fg-muted: #5c5c5c;
+  --fg-faint: #8a8a8a;
+  --line: #e4e4e0;
+  --line-strong: #c9c9c4;
+  --accent: #1f4fd8;
+  --accent-soft: rgba(31, 79, 216, 0.10);
+  --selection: rgba(31, 79, 216, 0.18);
+
+  /* ---- typography ---- */
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --text-xs: 0.8125rem;   /* 13px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-md: 1.125rem;    /* 18px */
+  --text-lg: 1.375rem;    /* 22px */
+  --text-xl: 1.75rem;     /* 28px */
+  --text-2xl: clamp(2.25rem, 1.5rem + 3vw, 3.5rem);
+
+  --leading-tight: 1.2;
+  --leading-snug: 1.4;
+  --leading-body: 1.65;
+
+  /* ---- spacing (4px base) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* ---- layout ---- */
+  --measure: 42rem;        /* 672px reading column */
+  --content: 64rem;        /* 1024px page width */
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --header-h: 3.5rem;
+
+  /* ---- shape & motion ---- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --duration: 160ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0e0e0e;
+    --bg-subtle: #161616;
+    --fg: #ededed;
+    --fg-muted: #a3a3a3;
+    --fg-faint: #6f6f6f;
+    --line: #262626;
+    --line-strong: #3a3a3a;
+    --accent: #7c9dff;
+    --accent-soft: rgba(124, 157, 255, 0.14);
+    --selection: rgba(124, 157, 255, 0.28);
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #0e0e0e;
+  --bg-subtle: #161616;
+  --fg: #ededed;
+  --fg-muted: #a3a3a3;
+  --fg-faint: #6f6f6f;
+  --line: #262626;
+  --line-strong: #3a3a3a;
+  --accent: #7c9dff;
+  --accent-soft: rgba(124, 157, 255, 0.14);
+  --selection: rgba(124, 157, 255, 0.28);
+}

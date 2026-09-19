@@ -1,0 +1,13 @@
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-6) var(--space-8);
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+.meta {
+  color: var(--fg-faint);
+}
