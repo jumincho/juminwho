@@ -37,7 +37,7 @@ export default function PublicationList({ items }: Props) {
             </p>
             <Authors names={pub.authors} />
             <p className={styles.venue}>
-              {pub.venue} · {pub.kind}
+              {pub.venue}
               {pub.url && (
                 <>
                   {' · '}
