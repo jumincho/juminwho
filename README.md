@@ -14,7 +14,8 @@ backend. Content is plain data in `src/data/profile.ts`.
 npm ci
 npm run dev      # http://localhost:5173
 npm run lint
-npm run build    # outputs dist/
+npm run build       # outputs dist/
+npm run snapshots   # visual checks + screenshots in snapshots/ (needs Chromium; see scripts/snapshots.mjs)
 ```
 
 ## Update content

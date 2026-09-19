@@ -18,10 +18,43 @@
 }
 
 .wordmark {
+  display: inline-grid;
   font-size: var(--text-sm);
   font-weight: 600;
   letter-spacing: 0.02em;
   white-space: nowrap;
+}
+
+.wordFace {
+  grid-area: 1 / 1;
+  transition: opacity var(--duration-slow) var(--ease), transform var(--duration-slow) var(--ease);
+}
+
+.wordPrimary {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wordAlias {
+  color: var(--accent);
+  opacity: 0;
+  transform: translateY(0.4em);
+}
+
+.wordmarkAlias .wordPrimary {
+  opacity: 0;
+  transform: translateY(-0.4em);
+}
+
+.wordmarkAlias .wordAlias {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordFace {
+    transition: none;
+  }
 }
 
 .inner > nav {

@@ -1,29 +1,19 @@
-import { useState } from 'react'
 import { profile } from '../data/profile'
+import { useScrolled } from '../lib/useScrolled'
 import LiveAge from './LiveAge'
 import styles from './Hero.module.css'
 
+/** Scroll distance (px) after which the name reads "JUMIN WHO?". */
+export const ALIAS_SCROLL_THRESHOLD = 48
+
 export default function Hero() {
-  const [alias, setAlias] = useState(false)
+  const alias = useScrolled(ALIAS_SCROLL_THRESHOLD)
   const photo = `${import.meta.env.BASE_URL}jumin-cho.jpg`
 
   return (
     <section className={`wrap ${styles.hero}`} id="top" aria-labelledby="hero-name">
       <div className={styles.text}>
-        <p className={styles.hint} aria-hidden="true">
-          Hover or tap the name
-        </p>
-        <h1
-          id="hero-name"
-          className={`${styles.name} ${alias ? styles.nameAlias : ''}`}
-          tabIndex={0}
-          aria-label={profile.name}
-          onMouseEnter={() => setAlias(true)}
-          onMouseLeave={() => setAlias(false)}
-          onFocus={() => setAlias(true)}
-          onBlur={() => setAlias(false)}
-          onClick={() => setAlias((v) => !v)}
-        >
+        <h1 id="hero-name" className={`${styles.name} ${alias ? styles.nameAlias : ''}`} aria-label={profile.name}>
           <span className={`${styles.face} ${styles.facePrimary}`} aria-hidden={alias}>
             {profile.name}
           </span>

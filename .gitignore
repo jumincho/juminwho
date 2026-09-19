@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Visual snapshots from scripts/snapshots.mjs
+snapshots
