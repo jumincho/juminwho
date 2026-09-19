@@ -9,6 +9,8 @@ export interface Entry {
   title: string
   org: string
   note?: string
+  /** Optional link rendered after `note`, e.g. an advisor's homepage. */
+  noteLink?: { text: string; url: string }
 }
 
 export interface Publication {
@@ -29,8 +31,6 @@ export const profile = {
   department: 'Computer Science',
   affiliation: 'Jeonbuk National University',
   lab: 'Natural Language Learning Lab',
-  labShort: 'NLL Lab',
-  advisor: 'Prof. Hyun-Je Song',
   location: 'Jeonju, Republic of Korea',
   birth: '1998-07-10T00:00:00+09:00',
   email: 'properly59@gmail.com',
@@ -38,30 +38,31 @@ export const profile = {
     email: 'mailto:properly59@gmail.com',
     linkedin: 'https://www.linkedin.com/in/jumin-cho-42b126338/',
     github: 'https://github.com/jumincho',
+    university: 'https://www.jbnu.ac.kr/en/index.do',
+    department: 'https://top.jbnu.ac.kr/csaieng/index..do',
     lab: 'https://sites.google.com/view/nlllab/main',
   },
 } as const
 
-export const about = [
-  'I am a Ph.D. student in Computer Science at Jeonbuk National University, working in the Natural Language Learning Lab under Prof. Hyun-Je Song. I completed my M.S. in the same department under Prof. Seung-Hoon Na, now at UNIST, and my B.S. there as well.',
-  'Before graduate school I served in the Republic of Korea Air Force and was vice president of the Computer Science student council. Outside research I hold a Class 2 unmanned multi-copter pilot license.',
-]
-
-export const siteDescription =
-  'Jumin Cho, AI researcher and Ph.D. student in Computer Science at Jeonbuk National University.'
+const advisors = {
+  song: { text: 'Prof. Hyun-Je Song', url: 'https://sites.google.com/site/songhyunje/Home' },
+  na: { text: 'Prof. Seung-Hoon Na', url: 'https://nlp.unist.ac.kr/faculty.html' },
+}
 
 export const experience: Entry[] = [
   {
     period: '2026.03 – present',
     title: 'Researcher',
     org: 'Jeonbuk National University',
-    note: 'Advisor: Prof. Hyun-Je Song',
+    note: 'Advisor: ',
+    noteLink: advisors.song,
   },
   {
     period: '2024.03 – 2026.02',
     title: 'Researcher',
     org: 'Jeonbuk National University',
-    note: 'Advisor: Prof. Seung-Hoon Na (now at UNIST)',
+    note: 'Advisor: ',
+    noteLink: { ...advisors.na, text: `${advisors.na.text} (now at UNIST)` },
   },
   {
     period: '2025.03 – 2025.08',
@@ -131,10 +132,5 @@ export const honors: Entry[] = [
 ]
 
 export const certifications = ['Unmanned Multi-Copter Pilot License (Class 2)']
-
-export const languages = [
-  { name: 'Korean', level: 'Native' },
-  { name: 'English', level: 'Limited working proficiency' },
-]
 
 export const lastUpdated = '2026-09'
