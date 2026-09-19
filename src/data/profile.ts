@@ -43,16 +43,12 @@ export const profile = {
 } as const
 
 export const about = [
-  'I am a Ph.D. student in Computer Science at Jeonbuk National University, working in the Natural Language Learning Lab under Prof. Hyun-Je Song. I completed my M.S. in the same department under Prof. Seung-Hoon Na, now at UNIST.',
-  'My research centres on retrieval-augmented generation and the reasoning behaviour of large language models: how a model should decide what to retrieve next in multi-hop question answering, and how retrieval and structured reasoning can make domain reports, such as radiology reports, more faithful to their evidence.',
+  'I am a Ph.D. student in Computer Science at Jeonbuk National University, working in the Natural Language Learning Lab under Prof. Hyun-Je Song. I completed my M.S. in the same department under Prof. Seung-Hoon Na, now at UNIST, and my B.S. there as well.',
+  'Before graduate school I served in the Republic of Korea Air Force and was vice president of the Computer Science student council. Outside research I hold a Class 2 unmanned multi-copter pilot license.',
 ]
 
-export const interests = [
-  'Retrieval-augmented generation',
-  'Multi-hop question answering',
-  'Reasoning in large language models',
-  'Retrieval and structured reasoning for medical report generation',
-]
+export const siteDescription =
+  'Jumin Cho, AI researcher and Ph.D. student in Computer Science at Jeonbuk National University.'
 
 export const experience: Entry[] = [
   {

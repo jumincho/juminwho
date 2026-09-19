@@ -10,7 +10,6 @@ import {
   education,
   experience,
   honors,
-  interests,
   languages,
   profile,
   publications,
@@ -30,13 +29,6 @@ export default function App() {
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
-
-          <h3 className={styles.subheading}>Research interests</h3>
-          <ul className={styles.plainList}>
-            {interests.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
 
           <h3 className={styles.subheading}>Languages</h3>
           <dl className={styles.kv}>
@@ -73,8 +65,8 @@ export default function App() {
 
         <Section id="contact" title="Contact">
           <p className={styles.lead}>
-            The quickest way to reach me is email. I read every message, and I am glad to talk about
-            retrieval-augmented generation, multi-hop reasoning, or collaboration.
+            The quickest way to reach me is email. I read every message and reply to anything about research,
+            collaboration, or the site itself.
           </p>
           <dl className={styles.kv}>
             <div className={styles.kvRow}>

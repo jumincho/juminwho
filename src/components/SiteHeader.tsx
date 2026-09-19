@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { profile } from '../data/profile'
+import { useScrolled } from '../lib/useScrolled'
+import { ALIAS_SCROLL_THRESHOLD } from './Hero'
 import styles from './SiteHeader.module.css'
 
 const sections = [
@@ -12,6 +14,7 @@ const sections = [
 
 export default function SiteHeader() {
   const [active, setActive] = useState<string>('')
+  const alias = useScrolled(ALIAS_SCROLL_THRESHOLD)
 
   useEffect(() => {
     const targets = sections
@@ -35,8 +38,13 @@ export default function SiteHeader() {
   return (
     <header className={styles.header}>
       <div className={`wrap ${styles.inner}`}>
-        <a href="#top" className={styles.wordmark}>
-          {profile.name}
+        <a href="#top" className={`${styles.wordmark} ${alias ? styles.wordmarkAlias : ''}`} aria-label={profile.name}>
+          <span className={`${styles.wordFace} ${styles.wordPrimary}`} aria-hidden={alias}>
+            {profile.name}
+          </span>
+          <span className={`${styles.wordFace} ${styles.wordAlias}`} aria-hidden={!alias}>
+            {profile.alias}
+          </span>
         </a>
         <nav aria-label="Sections">
           <ul className={styles.nav}>

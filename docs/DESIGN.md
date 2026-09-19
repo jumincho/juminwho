@@ -39,9 +39,12 @@ cards, no boxes within boxes.
 **Spacing.** 4px base scale (`--space-1` … `--space-9`). Sections breathe with
 `--space-8`; rows inside a list with `--space-4`. Do not invent values.
 
-**Motion.** Default to stillness. The two allowed motions are the 160ms name flip and
-the age counter repaint. Both respect `prefers-reduced-motion`. No scroll reveals,
-no page transitions, no background animation, no parallax.
+**Motion.** Default to stillness. The two allowed motions are the name flip and the
+age counter repaint. The flip is driven by scroll position: once the page is scrolled
+past 48px the hero name and the header wordmark read "JUMIN WHO?", and they read
+"JUMIN CHO" again at the top. It is a 320ms crossfade, with no hint text telling the
+reader to do anything. Both motions respect `prefers-reduced-motion`. No scroll
+reveals, no page transitions, no background animation, no parallax.
 
 **Theme.** Follows the operating system via `prefers-color-scheme`. There is no visible
 theme toggle; `data-theme` on `<html>` exists for tooling and tests.
@@ -54,6 +57,8 @@ theme toggle; `data-theme` on `<html>` exists for tooling and tests.
 - Link to the primary source (publisher PDF, proceedings page). If none exists, list the
   venue without a link rather than a search result.
 - Dates use `YYYY.MM – YYYY.MM` or `YYYY.MM – present`.
+- Do not describe research topics or interests in prose. Publications speak for
+  themselves; the About text covers affiliation, path and background only.
 
 ## Anti-patterns to reject
 
@@ -65,6 +70,10 @@ tiny muted paragraphs for real content · centred paragraphs · numeric section 
 ## Checklist before merging
 
 - `npm run lint` and `npm run build` pass.
-- Rendered at 375px and 1280px in light and dark: no horizontal scroll, no clipped text.
-- Keyboard: tab order reaches the name (flips alias on focus), every link and nothing else.
+- `npm run snapshots` passes. It serves `dist/`, renders 375px and 1280px in light and
+  dark, fails on horizontal overflow, a frozen counter or a missing alias after scroll,
+  and writes the screenshots to `snapshots/` for a side-by-side look against the
+  previous build. Compare before and after every visual change; encode any correction
+  as a token or a rule here rather than a one-off style.
+- Keyboard: tab order reaches every link and nothing else.
 - With reduced motion enabled the page is static except a 1 Hz counter update.
