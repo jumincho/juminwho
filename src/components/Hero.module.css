@@ -111,13 +111,18 @@
   color: var(--fg-muted);
 }
 
-/* ---- links ---- */
+/* ---- contact & links ---- */
 .links {
   margin-top: var(--space-6);
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-4);
   font-size: var(--text-sm);
+}
+
+.email {
+  color: var(--fg);
+  user-select: all;
 }
 
 /* ---- photo ---- */

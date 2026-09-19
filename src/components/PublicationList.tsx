@@ -36,17 +36,7 @@ export default function PublicationList({ items }: Props) {
               )}
             </p>
             <Authors names={pub.authors} />
-            <p className={styles.venue}>
-              {pub.venue}
-              {pub.url && (
-                <>
-                  {' · '}
-                  <a href={pub.url} className="link" target="_blank" rel="noopener noreferrer">
-                    PDF
-                  </a>
-                </>
-              )}
-            </p>
+            <p className={styles.venue}>{pub.venue}</p>
           </div>
         </li>
       ))}
