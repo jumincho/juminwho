@@ -1,74 +1,103 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { profile } from '../data/profile'
+import LiveAge from './LiveAge'
 import styles from './Hero.module.css'
 
 export default function Hero() {
-  const [showAlias, setShowAlias] = useState(false)
-  const profileImage = `${import.meta.env.BASE_URL}jumin-cho.jpg`
+  const [alias, setAlias] = useState(false)
+  const photo = `${import.meta.env.BASE_URL}jumin-cho.jpg`
 
   return (
-    <section className={styles.hero} id="about">
-      <div className={styles.container}>
-        <div className={styles.content}>
-          <div className={styles.text}>
-            <div className={styles.nameWrap}>
-              <span className={styles.nameHint}>Hover or tap the name</span>
-              <h1
-                className={`${styles.greeting} ${showAlias ? styles.greetingActive : ''}`}
-                tabIndex={0}
-                onMouseEnter={() => setShowAlias(true)}
-                onMouseLeave={() => setShowAlias(false)}
-                onFocus={() => setShowAlias(true)}
-                onBlur={() => setShowAlias(false)}
-                onTouchStart={() => setShowAlias((current) => !current)}
-              >
-                <span className={`${styles.nameFace} ${styles.namePrimary}`}>JUMIN CHO</span>
-                <span className={`${styles.nameFace} ${styles.nameAlias}`}>JUMIN WHO?</span>
-              </h1>
-            </div>
-            <p className={styles.role}>A Dreamer of an Artificial Intelligence Expert</p>
-            <p className={styles.affiliation}>
-              Affiliation, lab, and short introduction will be updated later.
-            </p>
-            <div className={styles.interests}>
-              <h3>Focus Areas</h3>
-              <ul>
-                <li>Primary research topic to be added later</li>
-                <li>Secondary interest and long-term direction to be added later</li>
-                <li>Representative keywords and collaboration topics to be added later</li>
-              </ul>
-            </div>
-            <div className={styles.skills}>
-              <h3>Tech Stack</h3>
-              <div className={styles.skillTags}>
-                <span>Stack TBD</span>
-                <span>Tooling TBD</span>
-                <span>Infra TBD</span>
-                <span>Libraries TBD</span>
-              </div>
-            </div>
-            <div className={styles.linksGroup}>
-              <div className={styles.links}>
-                <span className={styles.linksLabel}>About Me</span>
-                <Link to="/cv" className={styles.cvLink}>CV</Link>
-                <span className={styles.divider}>|</span>
-                <Link to="/projects" className={styles.cvLink}>Projects</Link>
-                <span className={styles.divider}>|</span>
-                <Link to="/blog" className={styles.cvLink}>Blog</Link>
-              </div>
-              <div className={styles.links}>
-                <span className={styles.linksLabel}>Contact Me</span>
-                <a href="https://github.com/jumincho" className={styles.link} target="_blank" rel="noopener noreferrer">GitHub</a>
-                <span className={styles.divider}>|</span>
-                <span className={styles.link}>More links later</span>
-              </div>
-            </div>
+    <section className={`wrap ${styles.hero}`} id="top" aria-labelledby="hero-name">
+      <div className={styles.text}>
+        <p className={styles.hint} aria-hidden="true">
+          Hover or tap the name
+        </p>
+        <h1
+          id="hero-name"
+          className={`${styles.name} ${alias ? styles.nameAlias : ''}`}
+          tabIndex={0}
+          aria-label={profile.name}
+          onMouseEnter={() => setAlias(true)}
+          onMouseLeave={() => setAlias(false)}
+          onFocus={() => setAlias(true)}
+          onBlur={() => setAlias(false)}
+          onClick={() => setAlias((v) => !v)}
+        >
+          <span className={`${styles.face} ${styles.facePrimary}`} aria-hidden={alias}>
+            {profile.name}
+          </span>
+          <span className={`${styles.face} ${styles.faceAlias}`} aria-hidden={!alias}>
+            {profile.alias}
+          </span>
+        </h1>
+        <p className={styles.nameKo}>{profile.nameKo}</p>
+
+        <p className={styles.tagline}>{profile.tagline}</p>
+
+        <dl className={styles.facts}>
+          <div className={styles.fact}>
+            <dt>Role</dt>
+            <dd>{profile.role}</dd>
           </div>
-          <div className={styles.photo}>
-            <img src={profileImage} alt="JUMIN CHO" className={styles.profileImg} />
+          <div className={styles.fact}>
+            <dt>Affiliation</dt>
+            <dd>
+              {profile.department}, {profile.affiliation}
+              <br />
+              <a href={profile.links.lab} className="link" target="_blank" rel="noopener noreferrer">
+                {profile.lab}
+              </a>
+            </dd>
           </div>
-        </div>
+          <div className={styles.fact}>
+            <dt>Location</dt>
+            <dd>{profile.location}</dd>
+          </div>
+          <div className={styles.fact}>
+            <dt>Age</dt>
+            <dd className={styles.age}>
+              <LiveAge birth={profile.birth} className={styles.ageNum} />
+              <span className={styles.ageUnit} aria-hidden="true">
+                years
+              </span>
+              <span className={styles.ageNote} aria-hidden="true">
+                since 1998-07-10
+              </span>
+            </dd>
+          </div>
+        </dl>
+
+        <ul className={styles.links} aria-label="Profiles">
+          <li>
+            <a href={profile.links.email} className="link">
+              Email
+            </a>
+          </li>
+          <li>
+            <a href={profile.links.linkedin} className="link" target="_blank" rel="noopener noreferrer">
+              LinkedIn
+            </a>
+          </li>
+          <li>
+            <a href={profile.links.github} className="link" target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+          </li>
+        </ul>
       </div>
+
+      <figure className={styles.photoWrap}>
+        <img
+          src={photo}
+          alt={`${profile.name} standing under cherry blossoms by a pond`}
+          className={styles.photo}
+          width={400}
+          height={400}
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
     </section>
   )
 }

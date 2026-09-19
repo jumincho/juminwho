@@ -1,66 +1,118 @@
-import { lazy, Suspense } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
-import Navbar from './components/Navbar'
-import { AdminAuthProvider } from './context/AdminAuthContext'
-import { BlogThemeProvider, useBlogTheme } from './context/BlogThemeContext'
-import PageTransition from './components/PageTransition'
-
-// Route-based code splitting — each page loaded on demand
-const Home = lazy(() => import('./pages/Home'))
-const ProjectsPage = lazy(() => import('./pages/Projects'))
-const CVPage = lazy(() => import('./pages/CV'))
-const Blog = lazy(() => import('./pages/Blog'))
-const BlogWrite = lazy(() => import('./pages/BlogWrite'))
-const BlogPost = lazy(() => import('./pages/BlogPost'))
-const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
-const AdminAccessGate = lazy(() => import('./components/AdminAccessGate'))
-
-function AppShell() {
-  const location = useLocation()
-  const { isBlogLight } = useBlogTheme()
-  const isBlog = location.pathname.startsWith('/blog')
-  const useDarkBlogTheme = isBlog && !isBlogLight
-
-  return (
-    <div className={useDarkBlogTheme ? 'app dark-theme' : 'app'}>
-      <Navbar dark={useDarkBlogTheme} />
-      <Suspense fallback={null}>
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-            <Route path="/projects" element={<PageTransition><ProjectsPage /></PageTransition>} />
-            <Route path="/projects/:slug" element={<PageTransition><ProjectDetail /></PageTransition>} />
-            <Route path="/cv" element={<PageTransition><CVPage /></PageTransition>} />
-            <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
-            <Route
-              path="/blog/write"
-              element={(
-                <PageTransition>
-                  <AdminAccessGate
-                    title="블로그 글쓰기는 관리자만 사용할 수 있어요."
-                    description="사이트에서 직접 글을 작성하려면 먼저 관리자 로그인이 필요합니다."
-                    redirectTo="/blog/write"
-                  >
-                    <BlogWrite />
-                  </AdminAccessGate>
-                </PageTransition>
-              )}
-            />
-            <Route path="/blog/:slug" element={<PageTransition><BlogPost /></PageTransition>} />
-          </Routes>
-        </AnimatePresence>
-      </Suspense>
-    </div>
-  )
-}
+import SiteHeader from './components/SiteHeader'
+import Hero from './components/Hero'
+import Section from './components/Section'
+import EntryList from './components/EntryList'
+import PublicationList from './components/PublicationList'
+import SiteFooter from './components/SiteFooter'
+import {
+  about,
+  certifications,
+  education,
+  experience,
+  honors,
+  interests,
+  languages,
+  profile,
+  publications,
+} from './data/profile'
+import styles from './App.module.css'
 
 export default function App() {
   return (
-    <AdminAuthProvider>
-      <BlogThemeProvider>
-        <AppShell />
-      </BlogThemeProvider>
-    </AdminAuthProvider>
+    <>
+      <SiteHeader />
+      <main>
+        <Hero />
+
+        <Section id="about" title="About">
+          <div className={styles.prose}>
+            {about.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+
+          <h3 className={styles.subheading}>Research interests</h3>
+          <ul className={styles.plainList}>
+            {interests.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+
+          <h3 className={styles.subheading}>Languages</h3>
+          <dl className={styles.kv}>
+            {languages.map((lang) => (
+              <div key={lang.name} className={styles.kvRow}>
+                <dt>{lang.name}</dt>
+                <dd>{lang.level}</dd>
+              </div>
+            ))}
+          </dl>
+        </Section>
+
+        <Section id="experience" title="Experience">
+          <EntryList items={experience} label="Experience" />
+        </Section>
+
+        <Section id="education" title="Education">
+          <EntryList items={education} label="Education" />
+        </Section>
+
+        <Section id="publications" title="Publications">
+          <PublicationList items={publications} />
+        </Section>
+
+        <Section id="honors" title="Honors & certifications">
+          <EntryList items={honors} label="Honors and awards" />
+          <h3 className={styles.subheading}>Certifications</h3>
+          <ul className={styles.plainList}>
+            {certifications.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section id="contact" title="Contact">
+          <p className={styles.lead}>
+            The quickest way to reach me is email. I read every message, and I am glad to talk about
+            retrieval-augmented generation, multi-hop reasoning, or collaboration.
+          </p>
+          <dl className={styles.kv}>
+            <div className={styles.kvRow}>
+              <dt>Email</dt>
+              <dd>
+                <a href={profile.links.email} className="link">
+                  {profile.email}
+                </a>
+              </dd>
+            </div>
+            <div className={styles.kvRow}>
+              <dt>LinkedIn</dt>
+              <dd>
+                <a href={profile.links.linkedin} className="link" target="_blank" rel="noopener noreferrer">
+                  linkedin.com/in/jumin-cho-42b126338
+                </a>
+              </dd>
+            </div>
+            <div className={styles.kvRow}>
+              <dt>GitHub</dt>
+              <dd>
+                <a href={profile.links.github} className="link" target="_blank" rel="noopener noreferrer">
+                  github.com/jumincho
+                </a>
+              </dd>
+            </div>
+            <div className={styles.kvRow}>
+              <dt>Lab</dt>
+              <dd>
+                <a href={profile.links.lab} className="link" target="_blank" rel="noopener noreferrer">
+                  {profile.lab}, {profile.affiliation}
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </Section>
+      </main>
+      <SiteFooter />
+    </>
   )
 }

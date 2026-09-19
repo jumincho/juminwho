@@ -1,27 +1,30 @@
-# JUMIN CHO Portfolio
+# juminwho
 
-Personal portfolio site for JUMIN CHO.
+One-page personal site for Jumin Cho, AI researcher and Ph.D. student at Jeonbuk National
+University. Live at <https://jumincho.github.io/juminwho/>.
 
-## First things to update
+## Stack
 
-1. Replace the remaining placeholder contact links if needed.
-2. Replace `/public/jumin-cho.jpg` with a different profile photo if needed.
-3. Update the placeholder project and blog content under `src/data/`.
+Vite 7 · React 19 · TypeScript · CSS Modules with design tokens. No router, no CMS, no
+backend. Content is plain data in `src/data/profile.ts`.
 
-## Supabase setup
+## Develop
 
-1. Copy `.env.example` to `.env.local`.
-2. Fill in `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` from your Supabase project.
-3. Run the SQL in [`supabase/schema.sql`](./supabase/schema.sql) in the Supabase SQL editor.
-4. Create one admin user in Supabase Auth and set `VITE_ADMIN_EMAIL` to that email.
+```bash
+npm ci
+npm run dev      # http://localhost:5173
+npm run lint
+npm run build    # outputs dist/
+```
 
-When Supabase env vars are present:
-- blog posts are read from `posts`
-- travel spots are read from `travel_spots`
-- admin login uses Supabase email/password auth
-- paper figure assets should be uploaded to Supabase Storage `blog-images/papers/` and post content should reference those public URLs
-- do not add paper figures under `public/posts` for new research notes
+## Update content
 
-When Supabase is not configured:
-- blog posts fall back to placeholder local content in `src/data/posts.ts`
-- travel spots fall back to browser `localStorage`
+Edit `src/data/profile.ts`. Everything on the page (roles, education, publications, links,
+birth date for the live age counter) is read from that file. Design rules are in
+[`docs/DESIGN.md`](docs/DESIGN.md); tokens are in `src/styles/tokens.css`.
+
+## Deploy
+
+Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the site and publishes
+it with the GitHub Pages Actions deployment. The repository's Pages source must be set to
+**GitHub Actions** (Settings → Pages → Build and deployment).
