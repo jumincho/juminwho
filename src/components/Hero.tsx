@@ -61,12 +61,8 @@ export default function Hero() {
           </div>
         </dl>
 
-        <ul className={styles.links} aria-label="Profiles">
-          <li>
-            <a href={profile.links.email} className="link">
-              Email
-            </a>
-          </li>
+        <ul className={styles.links} aria-label="Contact and profiles">
+          <li className={styles.email}>{profile.email}</li>
           <li>
             <a href={profile.links.linkedin} className="link" target="_blank" rel="noopener noreferrer">
               LinkedIn

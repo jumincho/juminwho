@@ -34,7 +34,6 @@ export const profile = {
   birth: '1998-07-10T00:00:00+09:00',
   email: 'properly59@gmail.com',
   links: {
-    email: 'mailto:properly59@gmail.com',
     linkedin: 'https://www.linkedin.com/in/jumin-cho-42b126338/',
     github: 'https://github.com/jumincho',
     university: 'https://www.jbnu.ac.kr/en/index.do',
@@ -116,7 +115,7 @@ export const publications: Publication[] = [
     authors: ['Ju-Min Cho', 'Ho-Jin Yi', 'Myung-Kyu Kim', 'Se-Jin Jeong', 'Seung-Hoon Na'],
     venue: 'NTCIR-18',
     year: 2025,
-    url: 'https://research.nii.ac.jp/ntcir/pdf/ntcir/04-NTCIR18-HIDDEN-RAD-ChoJ.pdf',
+    url: 'https://research.nii.ac.jp/ntcir/workshop/OnlineProceedings18/pdf/ntcir/04-NTCIR18-HIDDEN-RAD-ChoJ.pdf',
   },
 ]
 
