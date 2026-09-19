@@ -18,7 +18,6 @@ export interface Publication {
   authors: string[]
   venue: string
   year: number
-  kind: string
   url?: string
 }
 
@@ -110,7 +109,6 @@ export const publications: Publication[] = [
     authors: ['Jumin Cho', 'Chanjun Park', 'Seung-Hoon Na', 'Hyun-Je Song'],
     venue: 'CIKM 2026',
     year: 2026,
-    kind: 'Short paper',
   },
   {
     title:
@@ -118,7 +116,6 @@ export const publications: Publication[] = [
     authors: ['Ju-Min Cho', 'Ho-Jin Yi', 'Myung-Kyu Kim', 'Se-Jin Jeong', 'Seung-Hoon Na'],
     venue: 'NTCIR-18',
     year: 2025,
-    kind: 'Task participant paper',
     url: 'https://research.nii.ac.jp/ntcir/pdf/ntcir/04-NTCIR18-HIDDEN-RAD-ChoJ.pdf',
   },
 ]
