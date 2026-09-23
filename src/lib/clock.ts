@@ -112,9 +112,6 @@ export function utcLabel(offset: number): string {
 export const longDate = (date: Date, timeZone: string) =>
   format(timeZone, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(date)
 
-/** "Thursday" */
-export const weekdayName = (date: Date, timeZone: string) => format(timeZone, { weekday: 'long' }).format(date)
-
 /** Zones some browsers still report by their old names. */
 const RENAMED_ZONES: Record<string, string> = {
   'Asia/Calcutta': 'Asia/Kolkata',
@@ -138,10 +135,6 @@ export function zoneAbbreviation(date: Date, timeZone: string): string | null {
   return name && name !== 'UTC' && /^[A-Z]{2,5}$/.test(name) ? name : null
 }
 
-/** The instant of 00:00 on the day `clock` is on (off by an hour on a daylight-saving switch day). */
-export const midnightOf = (date: Date, clock: WallClock) =>
-  date.getTime() - ((clock.hour * 60 + clock.minute) * 60 + clock.second) * 1000 - date.getMilliseconds()
-
 // ---- Jumin's routine ----
 
 const minutesOf = (hhmm: string) => {
@@ -152,12 +145,13 @@ const minutesOf = (hhmm: string) => {
 const isWeekend = (weekday: number) => weekday === 0 || weekday === 6
 
 /**
- * Jumin's states at `minute` (0–1439) of a day that is `weekday` in Jumin's
- * time zone, earliest-started first. Stretches that began yesterday and run
- * past midnight count too. A gap in the routine reads as superposition.
+ * What Jumin is maybe doing at `minute` (0–1439) of a day that is `weekday`
+ * in Jumin's time zone. Yesterday's stretches that run past midnight count
+ * too. Where stretches overlap the one that started last wins, and a gap in
+ * the routine reads as superposition.
  */
-export function statesAt(routine: Routine, weekday: number, minute: number): RoutineState[] {
-  const found: { state: RoutineState; start: number }[] = []
+export function stateAt(routine: Routine, weekday: number, minute: number): RoutineState {
+  let found: { state: RoutineState; start: number } | null = null
   const days = [
     { spans: isWeekend(weekday) ? routine.weekend : routine.weekday, shift: 0 },
     { spans: isWeekend((weekday + 6) % 7) ? routine.weekend : routine.weekday, shift: -DAY },
@@ -168,60 +162,19 @@ export function statesAt(routine: Routine, weekday: number, minute: number): Rou
       const to = minutesOf(span.to)
       const start = from + shift
       const end = (to > from ? to : to + DAY) + shift
-      if (minute >= start && minute < end) found.push({ state: span.state, start })
+      if (minute >= start && minute < end && (!found || start > found.start)) found = { state: span.state, start }
     }
   }
-  const states = found.sort((a, b) => a.start - b.start).map((f) => f.state)
-  return states.length > 0 ? [...new Set(states)] : ['superposition']
+  return found?.state ?? 'superposition'
 }
-
-/** Weekday and minute of the day, `offset` minutes east of UTC. */
-function zoneMinute(ms: number, offset: number) {
-  const total = Math.floor(ms / 60000) + offset
-  const days = Math.floor(total / DAY)
-  // 1970-01-01 was a Thursday.
-  return { weekday: (((days + 4) % 7) + 7) % 7, minute: total - days * DAY }
-}
-
-const sameStates = (a: RoutineState[], b: RoutineState[]) => a.join() === b.join()
 
 export interface Status {
-  states: RoutineState[]
+  state: RoutineState
   /** Saturday or Sunday on Jumin's calendar. */
   weekend: boolean
-  /** When the states next change. */
-  until: Date
 }
 
-/** What Jumin is maybe doing at `now`, with Jumin's clock `offset` minutes east of UTC. */
-export function statusAt(routine: Routine, now: Date, offset: number): Status {
-  const minute = now.getTime() - (now.getTime() % 60000)
-  const at = (ms: number) => {
-    const { weekday, minute: m } = zoneMinute(ms, offset)
-    return statesAt(routine, weekday, m)
-  }
-  const states = at(minute)
-  let next = minute + 60000
-  for (let step = 0; step < 2 * DAY && sameStates(at(next), states); step++) next += 60000
-  return { states, weekend: isWeekend(zoneMinute(minute, offset).weekday), until: new Date(next) }
-}
-
-/** A stretch of the shown day, in minutes from its midnight, with Jumin's states during it. */
-export interface Run {
-  from: number
-  to: number
-  states: RoutineState[]
-}
-
-/** Jumin's states across the 24 hours from `midnight` (of any clock), with Jumin `offset` minutes east of UTC. */
-export function dayRuns(routine: Routine, midnight: number, offset: number): Run[] {
-  const runs: Run[] = []
-  for (let m = 0; m < DAY; m++) {
-    const { weekday, minute } = zoneMinute(midnight + m * 60000, offset)
-    const states = statesAt(routine, weekday, minute)
-    const last = runs.at(-1)
-    if (last && sameStates(last.states, states)) last.to = m + 1
-    else runs.push({ from: m, to: m + 1, states })
-  }
-  return runs
+/** What Jumin is maybe doing when Jumin's own clock reads `clock`. */
+export function statusAt(routine: Routine, clock: WallClock): Status {
+  return { state: stateAt(routine, clock.weekday, clock.hour * 60 + clock.minute), weekend: isWeekend(clock.weekday) }
 }

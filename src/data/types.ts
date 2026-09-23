@@ -58,7 +58,7 @@ export interface RoutineSpan {
   state: RoutineState
 }
 
-/** Monday to Friday, and Saturday and Sunday. Where two stretches overlap, both states hold. */
+/** Monday to Friday, and Saturday and Sunday. Where stretches overlap, the one that started last wins. */
 export interface Routine {
   weekday: RoutineSpan[]
   weekend: RoutineSpan[]

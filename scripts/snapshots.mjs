@@ -32,12 +32,13 @@ const routineCases = [
   ['2026-09-23T08:30:00', 'ready'], // Wednesday
   ['2026-09-23T10:00:00', 'working'],
   ['2026-09-23T22:00:00', 'superposition'],
-  ['2026-09-24T01:30:00', 'superposition asleep'], // the weekday overlap hour
-  ['2026-09-24T03:00:00', 'asleep'],
-  ['2026-09-26T01:30:00', 'superposition asleep'], // Saturday, Friday's evening still going
+  ['2026-09-24T00:59:00', 'superposition'], // the evening lasts until 01:00
+  ['2026-09-24T01:00:00', 'asleep'],
+  ['2026-09-26T00:30:00', 'superposition'], // Saturday, Friday's evening still going
   ['2026-09-26T12:00:00', 'superposition'],
   ['2026-09-27T03:00:00', 'asleep'], // Sunday
-  ['2026-09-28T01:30:00', 'asleep'], // Monday: Sunday's evening ended at 01:00
+  ['2026-09-28T00:30:00', 'superposition'], // Monday, Sunday's evening still going
+  ['2026-09-28T08:30:00', 'ready'],
 ]
 
 const server = await preview({ preview: { port: 4173 }, logLevel: 'warn' }) // next free port if taken
