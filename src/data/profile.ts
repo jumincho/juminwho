@@ -32,6 +32,7 @@ export const profile = {
     src: 'jumin-cho.jpg',
     alt: 'Jumin Cho standing under cherry blossoms by a pond',
   },
+  // "index..do" with two dots is not a typo: it is the address JBNU's CMS gives this site's home page.
   department: { label: 'Computer Science', href: 'https://top.jbnu.ac.kr/csaieng/index..do' },
   university: { label: 'Jeonbuk National University', href: 'https://www.jbnu.ac.kr/en/index.do' },
   lab: { label: 'Natural Language Learning Lab', href: 'https://sites.google.com/view/nlllab/main' },
