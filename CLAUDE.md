@@ -2,10 +2,12 @@
 
 이 저장소는 조주민(Jumin Cho)의 한 페이지 개인 사이트입니다. Vite + React 19 + TypeScript, CSS Modules.
 
-- 콘텐츠는 전부 `src/data/profile.ts`에만 있습니다. JSX에 사실 정보를 직접 쓰지 마세요.
-- 디자인 규칙은 `docs/DESIGN.md`, 토큰은 `src/styles/tokens.css`를 따릅니다. 모노크롬, 정적, 카드 없음.
-- 유지해야 하는 아이덴티티 요소: 이름 호버 시 "JUMIN WHO?" 전환, 1998-07-10 기준 실시간 나이 카운터.
-- 변경 후 `npm run lint`와 `npm run build`가 통과해야 하며, 375px/1280px, 라이트/다크에서 확인합니다.
+- 콘텐츠(사실 정보와 화면 문구)는 전부 `src/data/profile.ts`에만 있습니다. JSX에 사실 정보를 직접 쓰지 마세요.
+- 디자인 규칙은 `docs/DESIGN.md`, 토큰은 `src/styles/tokens.css`를 따릅니다. 몽글몽글·코지: 크림/코코아 색, 파스텔 톤, 둥근 쿠션 패널, 느리고 작은 모션(모션 줄이기 존중).
+- 유지해야 하는 아이덴티티 요소: 이름 호버(또는 스크롤) 시 "JUMIN WHO?" 전환, 1998-07-10 기준 실시간 나이 카운터, 마스코트 몽글이(`public/favicon.svg`).
+- 변경 후 `npm run lint`와 `npm run build`가 통과해야 하며, `npm run snapshots`로 375px/1280px, 라이트/다크에서 확인합니다.
+- 마스코트·팔레트·이름·소개를 바꾸면 `npm run icons`로 아이콘과 OG 이미지를 다시 만듭니다.
+- 브랜치는 `main` 하나만 유지합니다. 작업 브랜치를 원격에 남기지 마세요.
 - 블로그·관리자 기능·Supabase·Mapbox는 2026-09 개편에서 제거되었습니다. 다시 추가하지 마세요.
 
 # 논문 블로그 규칙 (블로그 기능을 복원할 경우에만 적용)

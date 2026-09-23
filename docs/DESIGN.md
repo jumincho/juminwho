@@ -1,82 +1,147 @@
-# DESIGN.md — jumincho.github.io/juminwho
+# DESIGN.md — 몽글몽글 코지 디자인 가이드
 
-Guidance for anyone, human or AI agent, who changes this site. Judgement lives here as
-prose; repeatable mechanics live in `src/styles/tokens.css`. If a rule here and the
-tokens disagree, fix the tokens.
+이 사이트를 고치는 사람과 AI 에이전트를 위한 규칙입니다. 판단 기준은 이 문서에, 반복해서 쓰는 값은
+`src/styles/tokens.css`에 있습니다. 둘이 어긋나면 토큰을 고칩니다.
 
-## What the site is
+## 이 사이트는
 
-A one-page profile for Jumin Cho, an AI researcher and Ph.D. student. Readers are
-recruiters, collaborators and reviewers who want to answer three questions fast: who
-is this person, what have they done, how do I reach them. The page is a well-set CV,
-not a landing page: a hero with the facts and contact links, then lists. It should
-not sell like a product.
+AI 연구자이자 박사과정생 조주민의 한 페이지 프로필입니다. 채용 담당자, 공동 연구자, 리뷰어가 **누구인지,
+무엇을 했는지, 어떻게 연락하는지**를 빠르게 확인하는 곳입니다. 분위기는 말랑하고 포근하게(몽글몽글, cozy)
+가져가되, 내용은 이력서처럼 정확하고 읽기 쉬워야 합니다. 귀여움은 장식에서, 신뢰는 타이포그래피와 정보 구조에서
+나옵니다.
 
-## Priority order
+## 우선순위
 
-1. Facts are correct and sourced (`src/data/profile.ts` is the only place content lives).
-2. Reading is effortless at 375px and 1440px, in light and dark, with and without motion.
-3. The page looks quiet and deliberate. Personality comes from two things only: the
-   "JUMIN WHO?" name flip and the live age counter.
+1. 사실이 정확하다. 콘텐츠는 `src/data/profile.ts`에만 있습니다.
+2. 375px부터 1440px까지, 라이트와 다크, 모션을 켜거나 끈 상태 모두에서 편하게 읽힌다.
+3. 포근하다. 둥근 모양, 크림과 코코아 색, 파스텔 톤, 천천히 떠다니는 블롭을 씁니다.
 
-## Visual system
+## 무드
 
-**Colour.** Design in monochrome. Surfaces are near-white or near-black; ink is three
-steps of grey (`--fg`, `--fg-muted`, `--fg-faint`). One accent hue (`--accent`) exists
-for links on hover, focus rings and the alias state of the name. Never use colour to
-decorate. Never add gradients, glows, glass panels or coloured cards.
+| 테마 | 이름 | 배경 | 글자 | 느낌 |
+| --- | --- | --- | --- | --- |
+| 라이트 | 크림 모닝 | `#fff8f0` 크림 | `#45352b` 코코아 | 햇살 드는 방, 파스텔 블롭 |
+| 다크 | 코코아 나이트 | `#1e1916` 코코아 | `#f7ecdf` 크림 | 등불 켠 밤, 은은한 빛 번짐 |
 
-**Type.** Pretendard Variable for everything, JetBrains Mono only for the age counter.
-Sentence-case headings. No all-caps eyebrows, kickers or numbered section labels.
-Body is 16px at 1.65 leading, measure capped at 42rem. Section headings are small and
-muted; the content carries the weight, not the label.
+## 시각 체계
 
-**Layout.** One column of content at 64rem max width, with a 12rem heading rail on the
-left from 720px up. Every list is a two-column grid: period or year on the left, detail
-on the right, separated by hairlines. Hairlines (`--line`) are the only dividers. No
-cards, no boxes within boxes.
+**색.** 표면은 `--bg`(페이지), `--bg-sunk`(푸터), `--surface`(카드), `--surface-glass`(헤더)를 씁니다. 글자는
+`--ink` / `--ink-soft` / `--ink-faint` 세 단계이고, 모든 파스텔 틴트 위에서도 4.5:1(WCAG AA) 이상입니다. 파스텔
+톤은 여섯 가족(peach, butter, sage, sky, lilac, rose)이며 가족마다 세 값을 가집니다.
 
-**Spacing.** 4px base scale (`--space-1` … `--space-9`). Sections breathe with
-`--space-8`; rows inside a list with `--space-4`. Do not invent values.
+- `--{tone}`: 틴트. 패널이나 칩의 바탕에 씁니다.
+- `--{tone}-ink`: 틴트 위의 글자와 아이콘에 씁니다.
+- `--{tone}-pop`: 점이나 블롭 같은 장식에만 씁니다. 글자에는 쓰지 않습니다.
 
-**Motion.** Default to stillness. The two allowed motions are the name flip and the
-age counter repaint. The flip is driven by scroll position: once the page is scrolled
-past 48px the hero name and the header wordmark read "JUMIN WHO?", and they read
-"JUMIN CHO" again at the top. It is a 320ms crossfade, with no hint text telling the
-reader to do anything. Both motions respect `prefers-reduced-motion`. No scroll
-reveals, no page transitions, no background animation, no parallax.
+요소에 `data-tone="sage"`처럼 톤을 지정하면 그 안에서 `--tone`, `--tone-ink`, `--tone-pop`을 쓸 수 있습니다
+(`global.css`). 배정은 다음과 같습니다.
 
-**Theme.** Follows the operating system via `prefers-color-scheme`. There is no visible
-theme toggle; `data-theme` on `<html>` exists for tooling and tests.
+| 곳 | 톤 |
+| --- | --- |
+| 논문 / 경력 / 학력 / 수상 패널 | sage / peach / sky / butter |
+| 역할 / 소속 / 위치 / 나이 행 | lilac / sky / sage / rose |
+| LinkedIn / GitHub 버튼 | sky / lilac |
 
-## Content rules
+`--accent`는 링크 호버와 포커스 링에만, `--alias`는 "JUMIN WHO?"에만 씁니다. `--alias`는 명도 대비가 3.6:1이므로
+큰 글자에만 씁니다. 순수한 검정과 흰색, 형광·네온 색, 회색 그림자는 쓰지 않습니다.
 
-- Every fact traces to the LinkedIn profile or a citable record. Mark expected dates as
-  "(expected)". Do not pad thin sections with placeholder text; drop the section.
-- Author lists are complete and in the published order. Emphasise Jumin's name.
-- Link to the primary source (publisher PDF, proceedings page). If none exists, list the
-  venue without a link rather than a search result.
-- Dates use `YYYY.MM – YYYY.MM` or `YYYY.MM – present`.
-- No prose sections. The page is the hero facts plus four lists (experience,
-  education, publications, honors). Research topics are not described anywhere;
-  publications speak for themselves. Contact details live in the hero only.
-- Institutions and advisors link to their official pages (university, department,
-  lab, faculty page). External links open in a new tab.
+**타이포.** 모두 Fontsource로 직접 호스팅합니다.
 
-## Anti-patterns to reject
+- Fredoka: 이름과 제목에 쓰는 둥근 디스플레이 서체.
+- Nunito: 본문 서체. 숫자 폭이 같아서 나이 카운터가 흔들리지 않습니다.
+- Jua: 한글 디스플레이 서체(조주민). `vite-plugins/hangulFont.ts`가 빌드할 때 `profile.ts`에 실제로 쓰인 한글만
+  골라 약 2kB로 서브셋하고, CSS 안에 직접 넣습니다.
 
-Decorative gradients or blurred blobs · glassmorphism · nested cards · icons in front
-of every list item · stock or generated imagery · marquees · scroll-triggered reveals ·
-tiny muted paragraphs for real content · centred paragraphs · numeric section labels ·
-"scroll to explore" prompts · admin or CMS chrome in the public page.
+제목은 문장형 대소문자로 쓰고 영문 대문자 라벨은 이름에만 씁니다. 본문은 16px, 행간 1.65입니다.
 
-## Checklist before merging
+**모양.** 반경은 `--radius-sm/md/lg/xl/pill`(10/16/24/36/999px)만 씁니다. 사진, 배지, 패널 모서리 장식은 블롭
+윤곽 세 가지(`--blob-1..3`) 가운데 하나를 씁니다. 각진 모서리는 쓰지 않습니다.
 
-- `npm run lint` and `npm run build` pass.
-- `npm run snapshots` passes. It serves `dist/`, renders 375px and 1280px in light and
-  dark, fails on horizontal overflow, a frozen counter or a missing alias after scroll,
-  and writes the screenshots to `snapshots/` for a side-by-side look against the
-  previous build. Compare before and after every visual change; encode any correction
-  as a token or a rule here rather than a one-off style.
-- Keyboard: tab order reaches every link and nothing else.
-- With reduced motion enabled the page is static except a 1 Hz counter update.
+**그림자.** 따뜻한 갈색을 여러 겹 쌓은 `--shadow-sm/md/lg`만 씁니다. 다크에서는 검정 기반으로 바뀝니다.
+
+**간격.** 4px 단위 `--space-1` … `--space-9`만 쓰고, 새 값은 만들지 않습니다.
+
+**레이아웃.** 콘텐츠 최대 폭은 72rem입니다. 위에서부터 떠 있는 헤더, 히어로, 파스텔 쿠션 패널 네 개(논문 → 경력
+→ 학력 → 수상·자격), 구름 모양 푸터 순서입니다. 패널 안은 다음처럼 짭니다.
+
+- 타임라인: `기간 칩 | 점과 점선 | 내용`. 44rem 아래에서는 기간이 내용 위로 올라갑니다. 진행 중인 항목의 점은
+  은은하게 빛납니다.
+- 논문: 종이 카드 격자. 본인 이름은 굵게 쓰고 형광펜 줄을 긋습니다.
+- 수상·자격: 스티커 카드 격자.
+
+**헤더.** 유리처럼 비치는 알약 모양 바입니다. 폭에 따라 이렇게 바뀝니다.
+
+| 폭 | 내비게이션 |
+| --- | --- |
+| 60rem 이상 | 아이콘 + 라벨 |
+| 40–60rem | 라벨만 |
+| 40rem 미만 | 아이콘만 (라벨은 스크린리더용으로 남김) |
+| 22rem 미만 | 이름을 숨기고 마스코트만 |
+
+## 아이덴티티 요소 (반드시 유지)
+
+- **"JUMIN WHO?" 전환.** 마우스를 이름에 올리거나 페이지를 48px 넘게 스크롤하면, 히어로의 이름과 헤더의 워드마크가
+  젤리처럼 눌렸다가 통통 튀며 "JUMIN WHO?"로 바뀝니다(`NameFlip`). 두 얼굴이 한 칸에 겹쳐 있어서 크기가 변하지
+  않습니다. 스크린리더는 언제나 실제 이름을 읽습니다. 터치에서는 스크롤로만 바뀝니다.
+- **실시간 나이.** 1998-07-10 00:00 KST부터 센 나이를 소수점 8자리로 보여 줍니다. 100ms마다 DOM에 직접 그리고
+  React는 다시 렌더링하지 않습니다. 모션 줄이기에서는 1초마다 갱신합니다. 스크린리더에는 만 나이만 알려 줍니다.
+- **마스코트 몽글이.** 새싹이 달린 복숭아 모찌입니다. 원본은 `public/favicon.svg` 한 파일이고, 파비콘, 헤더, 사진
+  옆, 푸터, 앱 아이콘, OG 이미지에 모두 같은 그림을 씁니다.
+
+## 모션
+
+허용하는 움직임은 모두 느리고 작습니다.
+
+- 배경 블롭 떠다니기: 40–60초 주기
+- 사진과 패널 모서리 블롭의 모양 변형: 14–19초 주기
+- 마스코트 둥실, 구름 흐름, 반짝이, 손 흔들기
+- 하트 박동: 1초 주기, 나이 옆
+- 진행 중 타임라인 점의 빛
+- 이름 전환: 560ms 스프링
+- 호버 시 살짝 뜨기: 3px 이하
+
+모든 애니메이션은 `prefers-reduced-motion: no-preference` 안에만 둡니다. 모션 줄이기를 켜면 1Hz로 갱신하는 나이
+카운터 말고는 멈춥니다. 스크롤에 따라 나타나는 효과, 패럴랙스, 페이지 전환, 자동 재생 캐러셀은 쓰지 않습니다.
+
+## 테마
+
+기본값은 운영체제 설정입니다. 헤더의 해·달 버튼으로 바꿀 수 있고, 고른 값은 `localStorage`의
+`juminwho:theme`에 저장됩니다. `index.html`의 인라인 스크립트가 첫 화면을 그리기 전에 `<html data-theme>`를
+정하므로 화면이 깜빡이지 않습니다. 색 토큰은 `:root`(라이트)와 `:root[data-theme='dark']`(다크) 두 곳에만
+있습니다.
+
+## 콘텐츠 규칙
+
+- 모든 사실은 LinkedIn 프로필이나 인용 가능한 기록으로 확인할 수 있어야 합니다. 예정된 날짜는 `expected`로
+  표시합니다. 빈약한 섹션을 지어낸 문구로 채우지 않고, 차라리 섹션을 뺍니다.
+- 저자 목록은 빠짐없이 출판 순서대로 쓰고, 본인 이름 표기는 `selfNames`에 넣어 강조합니다.
+- 논문은 1차 출처(출판사 PDF, 프로시딩 페이지)로 링크합니다. 1차 출처가 없으면 검색 결과를 걸지 말고 링크 없이
+  학회명만 씁니다.
+- 기간은 `{ from, to?, expected? }`로 적습니다. `to`가 없으면 "present"로 표시합니다.
+- 기관과 지도교수는 공식 페이지로 링크하고, 외부 링크는 새 탭으로 엽니다.
+- 이메일은 복사 버튼이 붙은 일반 텍스트로 둡니다. `mailto:` 링크로 만들지 않습니다.
+- 화면 문구(인사말, 라벨, 스크린리더용 문장)도 `profile.ts`의 `labels`에 둡니다.
+
+## 하지 말 것
+
+- 지어낸 소개글, 스킬 막대, 숫자 부풀리기
+- 날카로운 모서리, 회색 그림자, 강한 그라디언트 글자, 유리 효과 남발(헤더 한 곳만 씀)
+- 목록마다 아이콘 붙이기(섹션 배지와 사실 행에만 씀)
+- 스톡 이미지나 생성 이미지(사진은 본인 사진 한 장, 장식은 마스코트와 도형만 씀)
+- 블로그, 관리자 기능, CMS, Supabase, Mapbox 재도입(2026-09 개편에서 제거함)
+
+## 머지 전 체크리스트
+
+- `npm run lint`와 `npm run build`가 통과한다.
+- `npm run snapshots`가 통과한다. 375px과 1280px, 라이트와 다크에서 다음 항목을 검사하고 스크린샷을
+  `snapshots/`에 남깁니다. 바뀌기 전과 나란히 놓고 비교하세요.
+  - 콘솔 에러, 실패한 요청
+  - 가로 넘침, 헤더 내비게이션 넘침
+  - 이미지, 아이콘, 폰트 로드
+  - 나이 카운터 갱신
+  - 호버·스크롤 시 "JUMIN WHO?" 전환
+  - 테마 토글
+  - 모션 줄이기에서 멈추는지
+- 키보드로 이동하면 "Skip to content" 링크 → 헤더 → 본문 순서로 모든 링크와 버튼에 닿고, 포커스 링이 보인다.
+- 마스코트, 팔레트, 이름을 바꿨다면 `npm run icons`로 아이콘과 OG 이미지를 다시 만든다. 첫 화면이 바뀌었다면
+  `npm run snapshots -- --readme`로 README 미리보기도 새로 만든다.
