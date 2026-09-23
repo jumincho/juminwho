@@ -4,24 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0e0e0e" media="(prefers-color-scheme: dark)" />
-    <title>JUMIN WHO?</title>
-    <meta
-      name="description"
-      content="Jumin Cho, AI researcher and Ph.D. student in Computer Science at Jeonbuk National University."
-    />
-    <meta property="og:type" content="profile" />
-    <meta property="og:title" content="JUMIN WHO?" />
-    <meta
-      property="og:description"
-      content="AI researcher and Ph.D. student in Computer Science at Jeonbuk National University."
-    />
-    <meta property="og:image" content="/jumin-cho.jpg" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="theme-color" content="#fff8f0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1e1916" media="(prefers-color-scheme: dark)" />
+    <!-- <title>, description, canonical and social tags come from src/data/profile.ts (see vite.config.ts). -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script>
+      // Apply the saved or system theme before first paint so the page never flashes.
+      // The storage key must match THEME_STORAGE_KEY in src/lib/theme.ts.
+      ;(function () {
+        var stored = null
+        try {
+          stored = localStorage.getItem('juminwho:theme')
+        } catch (e) {}
+        var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

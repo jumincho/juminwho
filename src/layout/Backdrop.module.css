@@ -1,0 +1,101 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Radial gradients fade to nothing on their own, so no blur filter is needed. */
+.blob {
+  position: absolute;
+  width: var(--size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--color), transparent);
+  opacity: var(--blob-opacity);
+}
+
+.a {
+  --color: var(--blob-a);
+  --size: 48vmax;
+  top: -16vmax;
+  left: -14vmax;
+}
+
+.b {
+  --color: var(--blob-b);
+  --size: 40vmax;
+  top: 6vh;
+  right: -16vmax;
+}
+
+.c {
+  --color: var(--blob-c);
+  --size: 44vmax;
+  bottom: -20vmax;
+  left: 8vw;
+}
+
+.d {
+  --color: var(--blob-d);
+  --size: 36vmax;
+  right: 4vw;
+  bottom: 4vh;
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media print {
+  .backdrop {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .a {
+    animation: drift-a 46s ease-in-out infinite alternate;
+  }
+
+  .b {
+    animation: drift-b 52s ease-in-out infinite alternate;
+  }
+
+  .c {
+    animation: drift-c 58s ease-in-out infinite alternate;
+  }
+
+  .d {
+    animation: drift-d 42s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes drift-a {
+  to {
+    transform: translate(10vmax, 7vmax) scale(1.12);
+  }
+}
+
+@keyframes drift-b {
+  to {
+    transform: translate(-9vmax, 12vmax) scale(0.9);
+  }
+}
+
+@keyframes drift-c {
+  to {
+    transform: translate(12vmax, -8vmax) scale(1.08);
+  }
+}
+
+@keyframes drift-d {
+  to {
+    transform: translate(-10vmax, -10vmax) scale(1.15);
+  }
+}

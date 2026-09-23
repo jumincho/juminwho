@@ -1,0 +1,153 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding-top: var(--space-3);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 3.5rem;
+  padding-inline: var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface-glass);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 12px 4px 4px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.mascot {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  transition: transform var(--dur-slow) var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .brand:hover .mascot {
+    transform: rotate(-12deg) scale(1.1);
+  }
+}
+
+.nav {
+  min-width: 0;
+  margin-left: auto;
+}
+
+.navList {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.navList::-webkit-scrollbar {
+  display: none;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.navLink:hover,
+.navLink[aria-current] {
+  background: var(--tone);
+  color: var(--tone-ink);
+}
+
+/* The scrollable list clips anything outside it, so draw the ring inside the pill. */
+.navLink:focus-visible {
+  outline-offset: -3px;
+}
+
+.navIcon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+/* Tablets: labels only. Phones: icons only (labels stay for screen readers). */
+@media (max-width: 60rem) {
+  .navIcon {
+    display: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .bar {
+    gap: 2px;
+    padding-inline: 6px;
+  }
+
+  .brand {
+    gap: 6px;
+    padding: 3px 8px 3px 3px;
+    font-size: var(--text-base);
+  }
+
+  .mascot {
+    width: 28px;
+    height: 28px;
+  }
+
+  .navIcon {
+    display: block;
+    width: 17px;
+    height: 17px;
+  }
+
+  .navLink {
+    padding: 7px;
+  }
+
+  .navLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* Below 352px the mascot alone stands in for the name; the hero still shows it. */
+@media (max-width: 22rem) {
+  .brand {
+    padding-right: 3px;
+  }
+
+  .brandName {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

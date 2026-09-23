@@ -1,0 +1,82 @@
+.panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(1.25rem, 0.9rem + 1.8vw, 2.5rem);
+  border-radius: var(--radius-xl);
+  background: var(--tone);
+  box-shadow: var(--shadow-md);
+  --link-line: var(--tone-pop);
+}
+
+/* A big soft blob tucked into the top-right corner. */
+.panel::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -5.5rem;
+  right: -4.5rem;
+  width: 15rem;
+  aspect-ratio: 1;
+  border-radius: var(--blob-2);
+  background: var(--tone-pop);
+  opacity: 0.32;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.badge {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--blob-1);
+  background: var(--surface);
+  color: var(--tone-ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.badge svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.title {
+  font-size: var(--text-xl);
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .panel::before {
+    animation: morph 16s ease-in-out infinite;
+  }
+
+  .badge {
+    transition: transform var(--dur-slow) var(--ease-spring);
+  }
+
+  @media (hover: hover) {
+    .panel:hover .badge {
+      transform: rotate(-8deg) scale(1.06);
+    }
+  }
+}
+
+@keyframes morph {
+  0%,
+  100% {
+    border-radius: var(--blob-2);
+  }
+  33% {
+    border-radius: var(--blob-3);
+  }
+  66% {
+    border-radius: var(--blob-1);
+  }
+}

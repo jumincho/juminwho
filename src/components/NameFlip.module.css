@@ -1,0 +1,35 @@
+.flip {
+  display: inline-grid;
+  justify-items: start;
+}
+
+.face {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  transform-origin: 20% 85%;
+}
+
+.alias {
+  color: var(--alias);
+  opacity: 0;
+  transform: translateY(0.3em) scale(0.92, 0.6);
+}
+
+/* Outgoing face squashes down like jelly; the incoming one springs up. */
+.showAlias .name {
+  opacity: 0;
+  transform: translateY(-0.25em) scale(1.06, 0.7);
+}
+
+.showAlias .alias {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .face {
+    transition:
+      opacity var(--dur) var(--ease-out),
+      transform var(--dur-slow) var(--ease-spring);
+  }
+}

@@ -1,27 +1,4 @@
-.subheading {
-  margin-top: var(--space-6);
-  margin-bottom: var(--space-3);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--fg-muted);
-}
-
-.plainList {
+.main {
   display: grid;
-  gap: var(--space-2);
-}
-
-.plainList li {
-  position: relative;
-  padding-left: var(--space-4);
-}
-
-.plainList li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.75em;
-  width: 6px;
-  height: 1px;
-  background: var(--fg-faint);
+  gap: clamp(1.25rem, 0.75rem + 1.5vw, 2rem);
 }

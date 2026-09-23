@@ -1,0 +1,12 @@
+/*
+ * Self-hosted fonts (Fontsource), split by unicode-range so a browser only
+ * downloads the slices the page uses.
+ *   Fredoka — rounded display face for the name and headings
+ *   Nunito  — rounded body face; its digits are tabular, which keeps the
+ *             live age counter from jittering
+ * The Hangul display face (Jua, for 조주민) is subset at build time to the
+ * characters in src/data/profile.ts: see vite-plugins/hangulFont.ts and the
+ * `virtual:hangul-font.css` import in main.tsx.
+ */
+@import '@fontsource-variable/fredoka/wght.css';
+@import '@fontsource-variable/nunito/wght.css';
