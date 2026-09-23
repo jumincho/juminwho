@@ -24,7 +24,7 @@ Jeonbuk National University.
 - A live age counter, running from 1998-07-10 to eight decimal places.
 - Mongle the mascot, a peach mochi that becomes the favicon, the app icons and the link-preview
   (Open Graph) image.
-- Round flag stickers that show where each paper was presented.
+- Round flag stickers in front of places: where Jumin is based, and where each paper was presented.
 - A theme toggle that follows the operating system until you pick one, a copy-email button and
   print styles.
 - Respect for reduced motion, screen readers and keyboard navigation, with WCAG AA contrast or
@@ -58,7 +58,7 @@ it to GitHub Pages.
 ├── src/
 │   ├── data/                     profile.ts (all content) and types.ts
 │   ├── sections/                 Hero, Publications, Experience, Education, Honors
-│   ├── components/               NameFlip, LiveAge, Panel, Timeline, Flag, CopyEmail, ThemeToggle, …
+│   ├── components/               NameFlip, LiveAge, Panel, Timeline, Flag, PlaceName, CopyEmail, …
 │   ├── layout/                   Header, Footer, Backdrop (the drifting blobs)
 │   ├── hooks/                    useScrolled, useActiveSection, useTheme
 │   ├── lib/                      cx, theme
@@ -98,7 +98,7 @@ Edit `src/data/profile.ts` and nothing else; components never hold facts or word
 | Export | Holds |
 | --- | --- |
 | `site` | Page title, description, address and last-updated month; the `<head>` tags are built from it |
-| `profile` | Name, alias, Korean name, tagline, affiliation, birth instant, email, photo and links |
+| `profile` | Name, alias, Korean name, tagline, affiliation, location, birth instant, email, photo and links |
 | `sections` | Section order, titles and navigation labels |
 | `publications`, `selfNames` | Papers, with venue and place, and the spellings of Jumin's name to highlight |
 | `experience`, `education` | Timeline entries; periods are `{ from, to?, expected? }` |
@@ -107,8 +107,9 @@ Edit `src/data/profile.ts` and nothing else; components never hold facts or word
 
 - Korean text is welcome anywhere. The build subsets the Korean display font (Jua) to exactly the
   characters in use.
-- A paper's `place` takes a city, a country and an ISO country code. Italy and Japan have flag
-  drawings in `src/components/Flag.tsx`; any other code shows a map pin until you add one.
+- Places (`profile.location` and each paper's `place`) take a city, a country and an ISO country
+  code. Korea, Italy and Japan have flag drawings in `src/components/Flag.tsx`; any other code
+  shows a map pin until you add one.
 - After changing the name, tagline, affiliation or photo, run `npm run icons` so the link-preview
   image matches.
 

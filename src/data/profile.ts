@@ -6,7 +6,7 @@
  * `vite.config.ts` also reads `site` to fill the <head> tags, so keep this file
  * free of browser-only code.
  */
-import type { Honor, Link, Publication, SectionMeta, TimelineEntry } from './types'
+import type { Honor, Link, Place, Publication, SectionMeta, TimelineEntry } from './types'
 
 export const site = {
   title: 'JUMIN WHO?',
@@ -24,7 +24,7 @@ export const profile = {
   nameKo: '조주민',
   tagline: 'A Dreamer of an Artificial Intelligence Expert',
   role: 'AI Researcher · Ph.D. Student',
-  location: 'Jeonju, Republic of Korea',
+  location: { city: 'Jeonju', country: 'Republic of Korea', countryCode: 'KR' } satisfies Place,
   /** Birth instant (KST) for the live age counter. */
   birth: '1998-07-10T00:00:00+09:00',
   email: 'properly59@gmail.com',

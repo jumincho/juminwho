@@ -43,9 +43,6 @@
 }
 
 .place {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
   color: var(--ink-soft);
   font-size: var(--text-xs);
   font-weight: 700;
