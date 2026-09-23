@@ -1,0 +1,92 @@
+.email {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 100%;
+  min-height: 2.875rem;
+  padding: 5px 5px 5px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--peach-ink);
+}
+
+.address {
+  min-width: 0;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.button {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--peach);
+  color: var(--peach-ink);
+  transition:
+    transform var(--dur) var(--ease-spring),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.button svg {
+  width: 17px;
+  height: 17px;
+}
+
+.button:hover {
+  background: color-mix(in srgb, var(--peach-pop) 45%, var(--peach));
+  transform: scale(1.08);
+}
+
+.button:active {
+  transform: scale(0.92);
+}
+
+/* "Copied!" speech bubble above the button. */
+.bubble {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--bg);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 6px) scale(0.7);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur) var(--ease-spring);
+}
+
+.bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: inherit;
+  border-radius: 0 0 4px 0;
+  transform: translate(-50%, -60%) rotate(45deg);
+}
+
+.copied .bubble {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}

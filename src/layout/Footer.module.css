@@ -1,0 +1,56 @@
+.footer {
+  position: relative;
+  margin-top: clamp(4rem, 3rem + 4vw, 7rem);
+  background: var(--bg-sunk);
+}
+
+/* A row of soft bumps along the top edge: the footer is a cloud. */
+.footer::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  height: 22px;
+  background: radial-gradient(circle at 50% 100%, var(--bg-sunk) 21px, transparent 22px) 0 0 / 44px 22px repeat-x;
+}
+
+.inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-5) var(--space-8);
+  text-align: center;
+}
+
+.mascot {
+  width: 72px;
+  height: 72px;
+  margin-top: calc(-1 * var(--space-8));
+  filter: drop-shadow(0 8px 12px rgb(var(--shadow-rgb) / 0.2));
+}
+
+.signOff {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.meta {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mascot {
+    animation: bob 3.6s ease-in-out infinite;
+  }
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-6px) rotate(4deg);
+  }
+}

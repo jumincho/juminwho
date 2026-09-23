@@ -1,0 +1,65 @@
+.toggle {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--bg-sunk);
+  color: var(--ink);
+  transition:
+    transform var(--dur) var(--ease-spring),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.toggle:hover {
+  background: var(--butter);
+  transform: rotate(-14deg) scale(1.06);
+}
+
+.toggle:active {
+  transform: scale(0.9);
+}
+
+.icon {
+  grid-area: 1 / 1;
+  width: 20px;
+  height: 20px;
+  transition:
+    opacity var(--dur) var(--ease-out),
+    transform var(--dur-slow) var(--ease-spring);
+}
+
+.sun {
+  color: var(--butter-ink);
+}
+
+.moon {
+  color: var(--lilac-ink);
+  opacity: 0;
+  transform: rotate(80deg) scale(0.4);
+}
+
+.toggle[data-current='dark'] .sun {
+  opacity: 0;
+  transform: rotate(-80deg) scale(0.4);
+}
+
+.toggle[data-current='dark'] .moon {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 40rem) {
+  .toggle {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle,
+  .icon {
+    transition: none;
+  }
+}

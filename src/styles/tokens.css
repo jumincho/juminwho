@@ -1,44 +1,86 @@
 /*
- * Design tokens — the single source of truth for colour, type, space and motion.
- * See docs/DESIGN.md for the rules these tokens implement.
+ * Design tokens: every colour, size, radius and timing the components use.
+ * docs/DESIGN.md explains the rules behind them.
  *
- * Colour is monochrome by default. `--accent` is the only hue and is reserved
- * for links, focus rings and the "JUMIN WHO?" alias state.
+ * Light ("cream morning") is the default. Dark ("cocoa night") applies when
+ * <html data-theme="dark">, which index.html sets before first paint from the
+ * stored choice or the operating system.
  */
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
-  /* ---- surfaces & ink (light) ---- */
-  --bg: #ffffff;
-  --bg-subtle: #f6f6f4;
-  --fg: #111111;
-  --fg-muted: #5c5c5c;
-  --fg-faint: #8a8a8a;
-  --line: #e4e4e0;
-  --line-strong: #c9c9c4;
-  --accent: #1f4fd8;
-  --accent-soft: rgba(31, 79, 216, 0.10);
-  --selection: rgba(31, 79, 216, 0.18);
+  /* ---- surfaces & ink ---- */
+  --bg: #fff8f0;
+  --bg-sunk: #fbeee1;
+  --surface: #fffdf9;
+  --surface-glass: rgb(255 253 249 / 0.72);
+  --ink: #45352b;
+  --ink-soft: #6b5749;
+  --ink-faint: #7a6456;
+  --line: #f0e1d2;
+  --line-strong: #e3cdb9;
 
-  /* ---- typography ---- */
-  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* ---- accents ---- */
+  --accent: #ae4b33; /* link hover, focus ring */
+  --alias: #d2603f; /* "JUMIN WHO?"; display sizes only (3.6:1) */
+  --highlight: #ffe2a3; /* marker stroke behind emphasised words */
+  --cloud: #ffffff;
+  --selection: rgb(255 179 143 / 0.45);
 
-  --text-xs: 0.8125rem;   /* 13px */
-  --text-sm: 0.875rem;    /* 14px */
-  --text-base: 1rem;      /* 16px */
-  --text-md: 1.125rem;    /* 18px */
-  --text-lg: 1.375rem;    /* 22px */
-  --text-xl: 1.75rem;     /* 28px */
-  --text-2xl: clamp(2.25rem, 1.5rem + 3vw, 3.5rem);
+  /* ---- pastel tones: tint (a surface), ink (text on the tint), pop (decoration) ---- */
+  --peach: #ffe8d9;
+  --peach-ink: #a8492e;
+  --peach-pop: #ffb38f;
+  --butter: #fff2cc;
+  --butter-ink: #8a6412;
+  --butter-pop: #f7cf6a;
+  --sage: #e4f1de;
+  --sage-ink: #3f7447;
+  --sage-pop: #a8d5a0;
+  --sky: #deeef8;
+  --sky-ink: #2f6b96;
+  --sky-pop: #9ccbf0;
+  --lilac: #ede7fa;
+  --lilac-ink: #6a55b8;
+  --lilac-pop: #c2b2f7;
+  --rose: #ffe4ea;
+  --rose-ink: #a33d5c;
+  --rose-pop: #f7aec0;
 
-  --leading-tight: 1.2;
-  --leading-snug: 1.4;
+  /* ---- backdrop ---- */
+  --blob-a: #ffd3bb;
+  --blob-b: #ffe6a1;
+  --blob-c: #d3ebcb;
+  --blob-d: #e2d8fb;
+  --blob-opacity: 0.8;
+  --grain-opacity: 0.06;
+  --grain-blend: multiply;
+
+  /* ---- shadows: warm and stacked, never grey ---- */
+  --shadow-rgb: 124 76 44;
+  --shadow-sm: 0 1px 2px rgb(var(--shadow-rgb) / 0.06), 0 4px 10px -4px rgb(var(--shadow-rgb) / 0.12);
+  --shadow-md: 0 2px 4px rgb(var(--shadow-rgb) / 0.05), 0 14px 30px -14px rgb(var(--shadow-rgb) / 0.26);
+  --shadow-lg: 0 4px 12px rgb(var(--shadow-rgb) / 0.06), 0 30px 60px -26px rgb(var(--shadow-rgb) / 0.38);
+
+  /* ---- type ---- */
+  --font-display: 'Fredoka Variable', 'Jua', 'Nunito Variable', ui-rounded, system-ui, sans-serif;
+  --font-body: 'Nunito Variable', ui-rounded, system-ui, -apple-system, 'Segoe UI', 'Apple SD Gothic Neo',
+    'Malgun Gothic', 'Noto Sans KR', sans-serif;
+
+  --text-xs: 0.8125rem; /* 13px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-md: 1.125rem; /* 18px */
+  --text-lg: 1.3125rem; /* 21px */
+  --text-xl: clamp(1.5rem, 1.25rem + 1vw, 1.875rem); /* 24 → 30px */
+  --text-hero: clamp(2.75rem, 1.5rem + 5.2vw, 5.25rem); /* 44 → 84px */
+
+  --leading-tight: 1.05;
+  --leading-snug: 1.35;
   --leading-body: 1.65;
 
-  /* ---- spacing (4px base) ---- */
+  /* ---- space (4px base) ---- */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -49,45 +91,78 @@
   --space-8: 4rem;
   --space-9: 6rem;
 
+  /* ---- shape ---- */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 36px;
+  --radius-pill: 999px;
+  /* Three blob outlines; the morph animations cycle between them. */
+  --blob-1: 58% 42% 55% 45% / 50% 56% 44% 50%;
+  --blob-2: 44% 56% 42% 58% / 58% 44% 56% 42%;
+  --blob-3: 52% 48% 60% 40% / 42% 60% 40% 58%;
+
+  /* ---- motion ---- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 160ms;
+  --dur: 280ms;
+  --dur-slow: 560ms;
+
   /* ---- layout ---- */
-  --measure: 42rem;        /* 672px reading column */
-  --content: 64rem;        /* 1024px page width */
+  --page: 72rem; /* 1152px */
   --gutter: clamp(1rem, 4vw, 2.5rem);
-  --header-h: 3.5rem;
-
-  /* ---- shape & motion ---- */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 14px;
-  --duration: 160ms;
-  --duration-slow: 320ms;
-  --ease: cubic-bezier(0.2, 0, 0, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --bg: #0e0e0e;
-    --bg-subtle: #161616;
-    --fg: #ededed;
-    --fg-muted: #a3a3a3;
-    --fg-faint: #6f6f6f;
-    --line: #262626;
-    --line-strong: #3a3a3a;
-    --accent: #7c9dff;
-    --accent-soft: rgba(124, 157, 255, 0.14);
-    --selection: rgba(124, 157, 255, 0.28);
-  }
+  --header-h: 4.5rem; /* floating bar plus its offset */
 }
 
 :root[data-theme='dark'] {
-  --bg: #0e0e0e;
-  --bg-subtle: #161616;
-  --fg: #ededed;
-  --fg-muted: #a3a3a3;
-  --fg-faint: #6f6f6f;
-  --line: #262626;
-  --line-strong: #3a3a3a;
-  --accent: #7c9dff;
-  --accent-soft: rgba(124, 157, 255, 0.14);
-  --selection: rgba(124, 157, 255, 0.28);
+  color-scheme: dark;
+
+  --bg: #1e1916;
+  --bg-sunk: #171310;
+  --surface: #2a231f;
+  --surface-glass: rgb(42 35 31 / 0.72);
+  --ink: #f7ecdf;
+  --ink-soft: #cdbbaa;
+  --ink-faint: #ad9a8a;
+  --line: #3b312b;
+  --line-strong: #4d4038;
+
+  --accent: #ffb08c;
+  --alias: #ffb08c;
+  --highlight: rgb(244 208 122 / 0.3);
+  --cloud: #4a4160;
+  --selection: rgb(255 176 140 / 0.3);
+
+  --peach: #3a2a22;
+  --peach-ink: #ffb08c;
+  --peach-pop: #d9825f;
+  --butter: #372f1e;
+  --butter-ink: #f4d07a;
+  --butter-pop: #c9a14a;
+  --sage: #253128;
+  --sage-ink: #a6d7a1;
+  --sage-pop: #6fa56c;
+  --sky: #212e37;
+  --sky-ink: #9ccbf0;
+  --sky-pop: #5f93bd;
+  --lilac: #2c283b;
+  --lilac-ink: #c2b2f7;
+  --lilac-pop: #8a78c9;
+  --rose: #38262d;
+  --rose-ink: #f7aec0;
+  --rose-pop: #c5718a;
+
+  --blob-a: #6a3a26;
+  --blob-b: #5a4520;
+  --blob-c: #25402d;
+  --blob-d: #3a2f58;
+  --blob-opacity: 0.55;
+  --grain-opacity: 0.08;
+  --grain-blend: soft-light;
+
+  --shadow-rgb: 0 0 0;
+  --shadow-sm: 0 1px 2px rgb(var(--shadow-rgb) / 0.3), 0 4px 10px -4px rgb(var(--shadow-rgb) / 0.4);
+  --shadow-md: 0 2px 4px rgb(var(--shadow-rgb) / 0.25), 0 14px 30px -14px rgb(var(--shadow-rgb) / 0.6);
+  --shadow-lg: 0 4px 12px rgb(var(--shadow-rgb) / 0.3), 0 30px 60px -26px rgb(var(--shadow-rgb) / 0.75);
 }

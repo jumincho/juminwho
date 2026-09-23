@@ -1,42 +1,30 @@
-import SiteHeader from './components/SiteHeader'
-import Hero from './components/Hero'
-import Section from './components/Section'
-import EntryList from './components/EntryList'
-import PublicationList from './components/PublicationList'
-import SiteFooter from './components/SiteFooter'
-import { certifications, education, experience, honors, publications } from './data/profile'
+import { labels } from './data/profile'
+import Backdrop from './layout/Backdrop'
+import Footer from './layout/Footer'
+import Header from './layout/Header'
+import Education from './sections/Education'
+import Experience from './sections/Experience'
+import Hero from './sections/Hero'
+import Honors from './sections/Honors'
+import Publications from './sections/Publications'
 import styles from './App.module.css'
 
 export default function App() {
   return (
     <>
-      <SiteHeader />
-      <main>
+      <a className="skip-link" href="#main">
+        {labels.skipToContent}
+      </a>
+      <Backdrop />
+      <Header />
+      <main id="main" className={`page ${styles.main}`}>
         <Hero />
-
-        <Section id="experience" title="Experience">
-          <EntryList items={experience} label="Experience" />
-        </Section>
-
-        <Section id="education" title="Education">
-          <EntryList items={education} label="Education" />
-        </Section>
-
-        <Section id="publications" title="Publications">
-          <PublicationList items={publications} />
-        </Section>
-
-        <Section id="honors" title="Honors & certifications">
-          <EntryList items={honors} label="Honors and awards" />
-          <h3 className={styles.subheading}>Certifications</h3>
-          <ul className={styles.plainList}>
-            {certifications.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </Section>
+        <Publications />
+        <Experience />
+        <Education />
+        <Honors />
       </main>
-      <SiteFooter />
+      <Footer />
     </>
   )
 }

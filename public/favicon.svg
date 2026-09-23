@@ -1,12 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <style>
-    .bg { fill: #111111; }
-    .fg { fill: #ffffff; }
-    @media (prefers-color-scheme: dark) {
-      .bg { fill: #ededed; }
-      .fg { fill: #0e0e0e; }
-    }
-  </style>
-  <rect class="bg" width="64" height="64" rx="12"/>
-  <text class="fg" x="32" y="43" font-family="Pretendard, Inter, -apple-system, Helvetica, Arial, sans-serif" font-size="28" font-weight="700" text-anchor="middle" letter-spacing="-1">JM</text>
+  <!-- Mongle, the juminwho mascot: a soft peach mochi with a sprout. -->
+  <defs>
+    <linearGradient id="body" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#ffd0b0"/>
+      <stop offset="1" stop-color="#ff9f7e"/>
+    </linearGradient>
+  </defs>
+  <path d="M33 10.5C33 5.5 36.8 2.6 42 3c-.5 4.6-4 7.8-9 7.5z" fill="#8cc084"/>
+  <path d="M31.5 10.5c-.4-3.4-3.2-5.2-6.6-4.7.5 3.1 3.2 5 6.6 4.7z" fill="#a8d5a0"/>
+  <path d="M32 9.5c14 0 24.5 10.6 24.5 24.4C56.5 47.4 46.2 56 32 56S7.5 47.4 7.5 33.9C7.5 20.1 18 9.5 32 9.5z" fill="url(#body)" stroke="#ef8c69" stroke-width="1.5"/>
+  <ellipse cx="21.5" cy="20" rx="6.5" ry="3.8" transform="rotate(-28 21.5 20)" fill="#fff" opacity=".5"/>
+  <ellipse cx="17" cy="40.5" rx="4.4" ry="2.7" fill="#ff7f94" opacity=".55"/>
+  <ellipse cx="47" cy="40.5" rx="4.4" ry="2.7" fill="#ff7f94" opacity=".55"/>
+  <ellipse cx="23.5" cy="33.5" rx="3.1" ry="3.7" fill="#45352b"/>
+  <ellipse cx="40.5" cy="33.5" rx="3.1" ry="3.7" fill="#45352b"/>
+  <circle cx="24.6" cy="32.1" r="1.1" fill="#fff"/>
+  <circle cx="41.6" cy="32.1" r="1.1" fill="#fff"/>
+  <path d="M28 40c1 1.7 3 1.7 4 0 1 1.7 3 1.7 4 0" fill="none" stroke="#45352b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
