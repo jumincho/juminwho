@@ -23,9 +23,9 @@ Jeonbuk National University.
 - JUMIN WHO? Hover over the name, or scroll the page, and it bounces into "JUMIN WHO?".
 - A live age counter, running from 1998-07-10 to eight decimal places.
 - What time is it for Jumin? A clock card with a Local | Jumin switch shows Jumin's time (KST) or
-  yours, how far apart the two are, and what Jumin is maybe doing right now by a weekday and weekend
-  routine: maybe… working, maybe… getting ready for work, maybe… asleep, or maybe… in
-  superposition, every state at once until measured. A pastel ribbon draws Jumin's whole day.
+  yours, and what Jumin is maybe doing right now by a weekday and weekend routine that stays behind
+  the scenes: maybe… working, maybe… getting ready for work, maybe… asleep, or maybe… in
+  superposition, every state at once until measured.
 - Mongle the mascot, a peach mochi that becomes the favicon, the app icons and the link-preview
   (Open Graph) image.
 - Round flag stickers in front of places: where Jumin is based, and where each paper was presented.
@@ -123,7 +123,8 @@ Edit `src/data/profile.ts` and nothing else; components never hold facts or word
   shows a map pin until you add one.
 - The routine (`juminTime.routine`) lists stretches of the day in KST as `{ from, to, state }`. A
   stretch whose `to` comes before its `from` runs past midnight and belongs to the day it starts
-  on. Where two stretches overlap, the card shows both states. Every state is shown after "maybe…".
+  on. Where two stretches overlap, the one that started last wins. The card shows only the current
+  state, always after "maybe…", never the routine itself.
 - After changing the name, tagline, affiliation or photo, run `npm run icons` so the link-preview
   image matches.
 - After any content change, run `npm run github-profile` and push the profile repository, so the
