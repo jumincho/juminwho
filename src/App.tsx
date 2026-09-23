@@ -6,6 +6,7 @@ import Education from './sections/Education'
 import Experience from './sections/Experience'
 import Hero from './sections/Hero'
 import Honors from './sections/Honors'
+import JuminTime from './sections/JuminTime'
 import Publications from './sections/Publications'
 import styles from './App.module.css'
 
@@ -19,6 +20,7 @@ export default function App() {
       <Header />
       <main id="main" className={`page ${styles.main}`}>
         <Hero />
+        <JuminTime />
         <Publications />
         <Experience />
         <Education />

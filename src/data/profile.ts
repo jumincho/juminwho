@@ -6,7 +6,16 @@
  * `vite.config.ts` also reads `site` to fill the <head> tags, so keep this file
  * free of browser-only code.
  */
-import type { Honor, Link, Place, Publication, SectionMeta, TimelineEntry } from './types'
+import type {
+  Honor,
+  Link,
+  Place,
+  Publication,
+  Routine,
+  RoutineState,
+  SectionMeta,
+  TimelineEntry,
+} from './types'
 
 export const site = {
   title: 'JUMIN WHO?',
@@ -136,6 +145,63 @@ export const honors: Honor[] = [
 ]
 
 export const certifications: string[] = ['Unmanned Multi-Copter Pilot License (Class 2)']
+
+/**
+ * "What time is it for Jumin?", the clock card under the hero: Jumin's time
+ * and the visitor's, and what Jumin is maybe doing right now. Every state is
+ * hedged with `maybe`. On weekdays the evening superposition (21:00–02:00)
+ * and bedtime (01:00–08:00) share an hour, and then both states show.
+ */
+export const juminTime = {
+  id: 'jumin-time',
+  title: 'What time is it for Jumin?',
+  timeZone: 'Asia/Seoul',
+  zoneName: 'KST',
+  routine: {
+    weekday: [
+      { from: '09:00', to: '21:00', state: 'working' },
+      { from: '21:00', to: '02:00', state: 'superposition' },
+      { from: '01:00', to: '08:00', state: 'asleep' },
+      { from: '08:00', to: '09:00', state: 'ready' },
+    ],
+    weekend: [
+      { from: '08:00', to: '01:00', state: 'superposition' },
+      { from: '01:00', to: '08:00', state: 'asleep' },
+    ],
+  } satisfies Routine,
+  maybe: 'maybe…',
+  states: {
+    asleep: { label: 'asleep', hint: 'Sweet dreams. Your message will be waiting in the morning.' },
+    ready: { label: 'getting ready for work', hint: 'Morning routine: the workday is about to begin.' },
+    working: { label: 'working', hint: 'Working hours in Korea, a good time to say hello.' },
+    superposition: {
+      label: 'in superposition',
+      hint: 'Every possible state at once, until measured. An email counts as a measurement.',
+    },
+  } satisfies Record<RoutineState, { label: string; hint: string }>,
+  overlapHint: 'Superposition and bedtime overlap in this hour, so both hold until measured.',
+  modesLabel: 'Show the time in',
+  modes: { local: 'Local', jumin: 'Jumin' },
+  using: { local: 'Using your local time', jumin: 'Using Jumin’s time (KST)' },
+  yourZone: 'Your time zone',
+  days: { weekday: 'Weekday', weekend: 'Weekend' },
+  until: (time: string) => `until ${time}`,
+  dayCaption: { local: 'Jumin’s day on your clock', jumin: 'Jumin’s day (KST)' },
+  elsewhere: {
+    local: (time: string, day: string) => `For Jumin it’s ${time} on ${day}.`,
+    jumin: (time: string, day: string) => `For you it’s ${time} on ${day}.`,
+  },
+  /** `minutes`: how far Jumin's clock is ahead of the visitor's. */
+  gap: (minutes: number) => {
+    if (minutes === 0) return 'You’re on the same clock as Jumin.'
+    const hours = Math.floor(Math.abs(minutes) / 60)
+    const rest = Math.abs(minutes) % 60
+    const span = [hours > 0 && `${hours} hour${hours === 1 ? '' : 's'}`, rest > 0 && `${rest} minutes`]
+      .filter(Boolean)
+      .join(' ')
+    return `Jumin is ${span} ${minutes > 0 ? 'ahead of' : 'behind'} you.`
+  },
+}
 
 /** Interface wording: labels, greetings and screen-reader text. */
 export const labels = {

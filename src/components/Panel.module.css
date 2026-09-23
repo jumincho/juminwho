@@ -30,6 +30,25 @@
   margin-bottom: var(--space-5);
 }
 
+/* With a control: it sits at the end of the row, and gets a row of its own on narrow screens. */
+.withAction {
+  flex-wrap: wrap;
+}
+
+.withAction .title {
+  flex: 1 1 8rem;
+}
+
+.action {
+  margin-left: auto;
+}
+
+@media (max-width: 40rem) {
+  .action {
+    flex-basis: 100%;
+  }
+}
+
 .badge {
   flex: none;
   display: grid;

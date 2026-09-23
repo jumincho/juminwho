@@ -4,7 +4,8 @@
 
 - 콘텐츠(사실 정보와 화면 문구)는 전부 `src/data/profile.ts`에만 있습니다. JSX에 사실 정보를 직접 쓰지 마세요.
 - 디자인 규칙은 `docs/DESIGN.md`, 토큰은 `src/styles/tokens.css`를 따릅니다. 몽글몽글·코지: 크림/코코아 색, 파스텔 톤, 둥근 쿠션 패널, 느리고 작은 모션(모션 줄이기 존중).
-- 유지해야 하는 아이덴티티 요소: 이름 호버(또는 스크롤) 시 "JUMIN WHO?" 전환, 1998-07-10 기준 실시간 나이 카운터, 마스코트 몽글이(`public/favicon.svg`).
+- 유지해야 하는 아이덴티티 요소: 이름 호버(또는 스크롤) 시 "JUMIN WHO?" 전환, 1998-07-10 기준 실시간 나이 카운터, 마스코트 몽글이(`public/favicon.svg`), Jumin 시계.
+- Jumin 시계(`src/sections/JuminTime.tsx`): Local | Jumin 스위치로 방문자 시간과 Jumin 시간(KST)을 보여 주고, KST 일과표(`profile.ts`의 `juminTime.routine`)로 상태를 정합니다. 모든 상태 앞에는 반드시 "maybe…"를 붙입니다. 일과표를 바꾸면 `scripts/snapshots.mjs`의 `routineCases`도 맞춥니다.
 - 변경 후 `npm run lint`와 `npm run build`가 통과해야 하며, `npm run snapshots`로 375px/1280px, 라이트/다크에서 확인합니다.
 - 마스코트·팔레트·이름·소개를 바꾸면 `npm run icons`로 아이콘과 OG 이미지를 다시 만듭니다.
 - GitHub 프로필 README(jumincho/jumincho)는 `npm run github-profile`로 이 저장소에서 생성합니다(`scripts/github-profile/`). `profile.ts`·마스코트·팔레트를 바꾸면 다시 생성해 그 저장소의 main에 올리고, 그 저장소의 README와 이미지는 직접 고치지 마세요.
