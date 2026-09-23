@@ -4,15 +4,15 @@ import { cx } from '../lib/cx'
 import ExternalLink from './ExternalLink'
 import styles from './Timeline.module.css'
 
-/** `2024.03 – 2026.02`, `2026.03 – present`, `2026.03 – 2029.02 (expected)`. */
+/** A date pill (`2024.03 – 2026.02`, `2026.03 – present`), plus an "expected" tag for planned end dates. */
 function PeriodLabel({ period: { from, to, expected } }: { period: Period }) {
   return (
     <p className={styles.period}>
-      <span>{`${from} – ${to ?? labels.present}`}</span>
+      <span className={styles.range}>{`${from} – ${to ?? labels.present}`}</span>
       {expected && (
         <>
           {' '}
-          <span>({labels.expected})</span>
+          <span className={styles.expected}>{labels.expected}</span>
         </>
       )}
     </p>

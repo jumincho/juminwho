@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import ExternalLink from '../components/ExternalLink'
+import Flag from '../components/Flag'
 import Panel from '../components/Panel'
 import { publications, selfNames } from '../data/profile'
 import type { Publication } from '../data/types'
@@ -30,7 +31,15 @@ export default function Publications() {
       <ol className={styles.papers}>
         {publications.map((paper) => (
           <li key={paper.title} className={styles.paper}>
-            <p className={styles.venue}>{venueLabel(paper)}</p>
+            <div className={styles.meta}>
+              <p className={styles.venue}>{venueLabel(paper)}</p>
+              {paper.place && (
+                <p className={styles.place}>
+                  <Flag code={paper.place.countryCode} />
+                  {`${paper.place.city}, ${paper.place.country}`}
+                </p>
+              )}
+            </div>
             <h3 className={styles.title}>
               {paper.href ? (
                 <ExternalLink href={paper.href} className="link">
