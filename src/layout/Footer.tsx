@@ -8,7 +8,9 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`page ${styles.inner}`}>
         <Mascot size={72} className={styles.mascot} />
-        <p className={styles.signOff}>{labels.signOff}</p>
+        <p className={styles.signOff}>
+          <span>{labels.thanks}</span> <span>{labels.signOff}</span>
+        </p>
         <p className={styles.meta}>
           © {new Date().getFullYear()} {profile.name} · {labels.lastUpdated} {site.lastUpdated} ·{' '}
           <ExternalLink href={site.source} className="link">

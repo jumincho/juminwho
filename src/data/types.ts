@@ -20,12 +20,21 @@ export interface TimelineEntry {
   advisor?: Link
 }
 
+/** Where a conference took place. */
+export interface Place {
+  city: string
+  country: string
+  /** ISO 3166-1 alpha-2 code; picks the flag drawn next to the city. */
+  countryCode: string
+}
+
 export interface Publication {
   title: string
   /** Complete author list in the published order. */
   authors: string[]
   venue: string
   year: number
+  place?: Place
   /** Primary source: publisher PDF or proceedings page. */
   href?: string
 }

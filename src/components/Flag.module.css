@@ -1,0 +1,18 @@
+.flag {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  overflow: hidden;
+  border-radius: 50%;
+  /* A hairline ring keeps white stripes visible on white cards; the shadow makes it a sticker. */
+  box-shadow:
+    0 0 0 1px rgb(var(--shadow-rgb) / 0.16),
+    0 1px 3px rgb(var(--shadow-rgb) / 0.22);
+}
+
+.pin {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  color: var(--tone-ink);
+}

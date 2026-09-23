@@ -60,6 +60,7 @@ export const publications: Publication[] = [
     authors: ['Jumin Cho', 'Chanjun Park', 'Seung-Hoon Na', 'Hyun-Je Song'],
     venue: 'CIKM 2026',
     year: 2026,
+    place: { city: 'Rome', country: 'Italy', countryCode: 'IT' },
   },
   {
     title:
@@ -67,6 +68,7 @@ export const publications: Publication[] = [
     authors: ['Ju-Min Cho', 'Ho-Jin Yi', 'Myung-Kyu Kim', 'Se-Jin Jeong', 'Seung-Hoon Na'],
     venue: 'NTCIR-18',
     year: 2025,
+    place: { city: 'Tokyo', country: 'Japan', countryCode: 'JP' },
     href: 'https://research.nii.ac.jp/ntcir/workshop/OnlineProceedings18/pdf/ntcir/04-NTCIR18-HIDDEN-RAD-ChoJ.pdf',
   },
 ]
@@ -155,7 +157,8 @@ export const labels = {
   themeToLight: 'Switch to light theme',
   navigation: 'Sections',
   backToTop: 'Back to top',
-  signOff: 'Thanks for stopping by. Have a cozy day!',
+  thanks: 'Thanks for stopping by.',
+  signOff: 'May every day be a good day!',
   lastUpdated: 'Last updated',
   source: 'Source',
 }

@@ -35,7 +35,11 @@
   font-family: var(--font-display);
   font-size: var(--text-lg);
   font-weight: 500;
-  text-wrap: balance;
+}
+
+/* Each sentence stays whole, so a narrow screen breaks between them. */
+.signOff span {
+  display: inline-block;
 }
 
 .meta {
