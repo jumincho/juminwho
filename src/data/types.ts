@@ -20,7 +20,7 @@ export interface TimelineEntry {
   advisor?: Link
 }
 
-/** Where a conference took place. */
+/** A city, shown with its country's flag: where Jumin is based, or where a conference took place. */
 export interface Place {
   city: string
   country: string

@@ -7,6 +7,7 @@ import LiveAge from '../components/LiveAge'
 import Mascot from '../components/Mascot'
 import NameFlip from '../components/NameFlip'
 import type { Tone } from '../components/Panel'
+import PlaceName from '../components/PlaceName'
 import { labels, profile } from '../data/profile'
 import { useScrolled } from '../hooks/useScrolled'
 import { cx } from '../lib/cx'
@@ -94,7 +95,7 @@ export default function Hero() {
             </ExternalLink>
           </Fact>
           <Fact icon={MapPin} tone="sage" label={labels.location}>
-            {profile.location}
+            <PlaceName place={profile.location} />
           </Fact>
           <Fact icon={Heart} tone="rose" label={labels.age} beating>
             <span className={styles.age}>

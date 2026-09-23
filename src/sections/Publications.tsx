@@ -1,7 +1,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import ExternalLink from '../components/ExternalLink'
-import Flag from '../components/Flag'
 import Panel from '../components/Panel'
+import PlaceName from '../components/PlaceName'
 import { publications, selfNames } from '../data/profile'
 import type { Publication } from '../data/types'
 import { panelProps } from './looks'
@@ -35,8 +35,7 @@ export default function Publications() {
               <p className={styles.venue}>{venueLabel(paper)}</p>
               {paper.place && (
                 <p className={styles.place}>
-                  <Flag code={paper.place.countryCode} />
-                  {`${paper.place.city}, ${paper.place.country}`}
+                  <PlaceName place={paper.place} />
                 </p>
               )}
             </div>
