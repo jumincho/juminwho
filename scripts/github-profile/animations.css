@@ -1,0 +1,180 @@
+/*
+ * Motion inside the profile SVGs. The classes come from data-anim in
+ * cards.mjs. Everything is slow and small, and stops for reduced motion,
+ * like the site (docs/DESIGN.md, "모션").
+ */
+
+g[class] {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* JUMIN CHO squashes away and JUMIN WHO? springs in, then back. */
+.flip-a,
+.flip-b {
+  transform-origin: 18% 85%;
+  animation: 9s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+
+.flip-a {
+  animation-name: flip-a;
+}
+
+.flip-b {
+  opacity: 0;
+  animation-name: flip-b;
+}
+
+@keyframes flip-a {
+  0%,
+  45% {
+    opacity: 1;
+    transform: none;
+  }
+  50%,
+  95% {
+    opacity: 0;
+    transform: translateY(-12px) scale(1.06, 0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes flip-b {
+  0%,
+  46% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.92, 0.6);
+  }
+  52%,
+  94% {
+    opacity: 1;
+    transform: none;
+  }
+  99%,
+  100% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.92, 0.6);
+  }
+}
+
+.drift-a,
+.drift-b,
+.drift-c,
+.drift-d {
+  animation: 18s ease-in-out infinite alternate;
+}
+
+.drift-a {
+  animation-name: drift-a;
+}
+
+.drift-b {
+  animation-name: drift-b;
+  animation-duration: 21s;
+}
+
+.drift-c {
+  animation-name: drift-c;
+  animation-duration: 24s;
+}
+
+.drift-d {
+  animation-name: drift-d;
+  animation-duration: 19s;
+}
+
+@keyframes drift-a {
+  to {
+    transform: translate(60px, 36px) scale(1.1);
+  }
+}
+
+@keyframes drift-b {
+  to {
+    transform: translate(-50px, 50px) scale(0.9);
+  }
+}
+
+@keyframes drift-c {
+  to {
+    transform: translate(70px, -40px) scale(1.08);
+  }
+}
+
+@keyframes drift-d {
+  to {
+    transform: translate(-60px, -46px) scale(1.12);
+  }
+}
+
+.wave {
+  transform-origin: 70% 85%;
+  animation: wave 3.2s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%,
+  55%,
+  100% {
+    transform: rotate(0);
+  }
+  10%,
+  30% {
+    transform: rotate(18deg);
+  }
+  20%,
+  40% {
+    transform: rotate(-8deg);
+  }
+}
+
+/* The halo is an uneven blob, so a slow turn reads as a gentle wobble. */
+.spin {
+  animation: spin 40s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.drift {
+  animation: cloud 8s ease-in-out infinite alternate;
+}
+
+@keyframes cloud {
+  to {
+    transform: translate(-8px, 5px);
+  }
+}
+
+.twinkle {
+  animation: twinkle 3.4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  50% {
+    opacity: 0.55;
+    transform: scale(0.75) rotate(18deg);
+  }
+}
+
+.bob {
+  animation: bob 3.6s ease-in-out infinite;
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-6px) rotate(-4deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  g[class] {
+    animation: none !important;
+  }
+}

@@ -30,6 +30,7 @@ Jeonbuk National University.
 - Respect for reduced motion, screen readers and keyboard navigation, with WCAG AA contrast or
   better for all text.
 - One content file: every word on the page lives in `src/data/profile.ts`.
+- A matching GitHub profile README, drawn from the same data and design by `npm run github-profile`.
 
 ## Tech stack
 
@@ -54,7 +55,9 @@ it to GitHub Pages.
 ├── scripts/
 │   ├── icons.mjs                 renders the icons and the link-preview image
 │   ├── snapshots.mjs             visual and behaviour checks for the build
-│   └── lib/browser.mjs
+│   ├── github-profile.mjs        builds the GitHub profile README (jumincho/jumincho)
+│   ├── github-profile/           its cards, animations, README template and daily age updater
+│   └── lib/                      Chromium launcher; HTML → SVG export with outlined text
 ├── src/
 │   ├── data/                     profile.ts (all content) and types.ts
 │   ├── sections/                 Hero, Publications, Experience, Education, Honors
@@ -62,7 +65,7 @@ it to GitHub Pages.
 │   ├── layout/                   Header, Footer, Backdrop (the drifting blobs)
 │   ├── hooks/                    useScrolled, useActiveSection, useTheme
 │   ├── lib/                      cx, theme
-│   ├── styles/                   tokens.css (design tokens), global.css, fonts.css
+│   ├── styles/                   tokens.css (design tokens), tones.css, global.css, fonts.css
 │   ├── App.tsx
 │   └── main.tsx
 ├── vite-plugins/                 siteMeta (<head> tags), hangulFont (Korean font subset)
@@ -87,9 +90,11 @@ npm run dev        # http://localhost:5173
 | `npm run lint` | Runs ESLint |
 | `npm run snapshots` | Checks the build at 375 px and 1280 px in light and dark, and saves screenshots to `snapshots/` |
 | `npm run icons` | Redraws the favicon, the app icons and the link-preview image from `favicon.svg` |
+| `npm run github-profile` | Rebuilds the GitHub profile README and its images in `../jumincho` (see below) |
 
-`snapshots` and `icons` drive Chromium through Playwright. Run `npx playwright install chromium`
-once, or point `PLAYWRIGHT_CHROMIUM=/path/to/chrome` at a browser you already have.
+`snapshots`, `icons` and `github-profile` drive Chromium through Playwright. Run
+`npx playwright install chromium` once, or point `PLAYWRIGHT_CHROMIUM=/path/to/chrome` at a browser
+you already have.
 
 ## Editing the content
 
@@ -104,6 +109,7 @@ Edit `src/data/profile.ts` and nothing else; components never hold facts or word
 | `experience`, `education` | Timeline entries; periods are `{ from, to?, expected? }` |
 | `honors`, `certifications` | Awards and certifications |
 | `labels` | Greetings, labels, button names and screen-reader text |
+| `githubProfile` | The few words used only by the GitHub profile README |
 
 - Korean text is welcome anywhere. The build subsets the Korean display font (Jua) to exactly the
   characters in use.
@@ -112,6 +118,8 @@ Edit `src/data/profile.ts` and nothing else; components never hold facts or word
   shows a map pin until you add one.
 - After changing the name, tagline, affiliation or photo, run `npm run icons` so the link-preview
   image matches.
+- After any content change, run `npm run github-profile` and push the profile repository, so the
+  GitHub profile says the same thing as the site.
 
 ## Design
 
@@ -123,3 +131,27 @@ in `src/styles/tokens.css`. Use a token, or add one, instead of hard-coding a va
 Every push to `main` runs `.github/workflows/deploy.yml`, which lints, builds and publishes the
 site to GitHub Pages. In the repository settings, Settings → Pages → Build and deployment → Source
 must be set to GitHub Actions. `main` is the only branch.
+
+## GitHub profile README
+
+The README on github.com/jumincho lives in the jumincho/jumincho repository, and this repository
+generates it. Clone that repository next to this one, then:
+
+```bash
+npm run github-profile                  # writes into ../jumincho
+npm run github-profile -- path/to/repo  # or into another checkout
+```
+
+Commit and push in the profile repository afterwards. Never edit its README or images by hand.
+
+- Every image is a card laid out in Chromium with the site's tokens, tones, fonts, flags and
+  mascot (`scripts/github-profile/cards.css`), then exported to SVG in a light and a dark
+  version. The README picks one with `<picture>`, following the viewer's GitHub theme.
+- Text is turned into outlines with HarfBuzz, so the images need no fonts and look the same in
+  every browser.
+- On wide screens the cards sit two to a row at equal heights; on phones they stack.
+- The hero, At a glance and footer cards move slowly (the name flips to "JUMIN WHO?" in a
+  9-second cycle, blobs drift, Mongle bobs) and stand still when the viewer prefers reduced motion.
+- The generator also writes `scripts/update-age.mjs` and `.github/workflows/age.yml` into the
+  profile repository. The workflow redraws the age in the At a glance card every day at 00:05
+  KST, with no dependencies.

@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "snapshots": "node scripts/snapshots.mjs",
-    "icons": "node scripts/icons.mjs"
+    "icons": "node scripts/icons.mjs",
+    "github-profile": "node scripts/github-profile.mjs"
   },
   "dependencies": {
     "@fontsource-variable/fredoka": "^5.3.0",
@@ -32,7 +33,9 @@
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
+    "fontverter": "^2.0.0",
     "globals": "^16.5.0",
+    "harfbuzzjs": "^1.6.2",
     "playwright": "^1.63.0",
     "subset-font": "^2.9.0",
     "typescript": "~5.9.3",

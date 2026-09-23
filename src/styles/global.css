@@ -1,4 +1,4 @@
-/* Base elements, a few shared utilities and the tone scopes. Tokens live in tokens.css. */
+/* Base elements and a few shared utilities. Tokens live in tokens.css, tone scopes in tones.css. */
 
 *,
 *::before,
@@ -134,44 +134,6 @@ button {
 
 .skip-link:focus-visible {
   transform: none;
-}
-
-/* ---- tones: `data-tone` picks one pastel family for everything inside ---- */
-
-[data-tone='peach'] {
-  --tone: var(--peach);
-  --tone-ink: var(--peach-ink);
-  --tone-pop: var(--peach-pop);
-}
-
-[data-tone='butter'] {
-  --tone: var(--butter);
-  --tone-ink: var(--butter-ink);
-  --tone-pop: var(--butter-pop);
-}
-
-[data-tone='sage'] {
-  --tone: var(--sage);
-  --tone-ink: var(--sage-ink);
-  --tone-pop: var(--sage-pop);
-}
-
-[data-tone='sky'] {
-  --tone: var(--sky);
-  --tone-ink: var(--sky-ink);
-  --tone-pop: var(--sky-pop);
-}
-
-[data-tone='lilac'] {
-  --tone: var(--lilac);
-  --tone-ink: var(--lilac-ink);
-  --tone-pop: var(--lilac-pop);
-}
-
-[data-tone='rose'] {
-  --tone: var(--rose);
-  --tone-ink: var(--rose-ink);
-  --tone-pop: var(--rose-pop);
 }
 
 /* ---- print: a plain CV on white paper ---- */
