@@ -163,3 +163,10 @@ export const labels = {
   lastUpdated: 'Last updated',
   source: 'Source',
 }
+
+/** Wording used only by the GitHub profile README (scripts/github-profile.mjs). */
+export const githubProfile = {
+  glance: 'At a glance',
+  portfolio: 'Portfolio',
+  lab: 'NLL Lab',
+}

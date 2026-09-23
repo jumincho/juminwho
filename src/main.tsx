@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './styles/fonts.css'
 import 'virtual:hangul-font.css'
 import './styles/tokens.css'
+import './styles/tones.css'
 import './styles/global.css'
 import App from './App'
 

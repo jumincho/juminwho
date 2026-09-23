@@ -1,0 +1,766 @@
+/*
+ * Layout for the GitHub profile images. It uses the site's tokens (inlined
+ * before this file), and only what lib/export-scene.mjs can translate:
+ * solid colours, borders, radii, text, inline SVG and <img>. Every text
+ * element's first font family must cover its characters (see outline-text.mjs).
+ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background: transparent;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 24px;
+  color: var(--ink);
+  font-family: 'Nunito Variable';
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+svg {
+  display: block;
+}
+
+/* Each frame becomes one SVG; its padding leaves room for the drop shadows. */
+.frame {
+  padding: 10px 12px 20px;
+}
+
+.frame.card {
+  width: 414px;
+}
+
+.frame.wide {
+  width: 864px;
+}
+
+.frame.pill {
+  padding: 6px 6px 10px;
+}
+
+.display {
+  font-family: 'Fredoka Variable';
+}
+
+/* ---- panel: the pastel cushion every section sits in ---- */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 22px 22px 24px;
+  border-radius: 30px;
+  background: var(--tone);
+}
+
+.corner {
+  position: absolute;
+  z-index: -1;
+  top: -74px;
+  right: -60px;
+  width: 184px;
+  height: 184px;
+  border-radius: var(--blob-2);
+  background: var(--tone-pop);
+  opacity: 0.32;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.badge {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--blob-1);
+  background: var(--surface);
+  color: var(--tone-ink);
+}
+
+.badge svg {
+  width: 20px;
+  height: 20px;
+}
+
+.badge .mascot-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.title {
+  font-family: 'Fredoka Variable';
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* ---- chips and flags ---- */
+
+.chip {
+  padding: 0 11px;
+  border-radius: 999px;
+  background: var(--tone);
+  color: var(--tone-ink);
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.75;
+  white-space: nowrap;
+}
+
+.place {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.flag {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+}
+
+.flag svg {
+  width: 17px;
+  height: 17px;
+}
+
+.flag-ring {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgb(var(--shadow-rgb) / 0.2);
+  border-radius: 50%;
+}
+
+/* ---- at a glance ---- */
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fact {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.fact-icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--tone-ink);
+}
+
+.fact-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.fact-label {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.fact-value {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+/* Institution names wrap as a whole. */
+.nowrap {
+  white-space: nowrap;
+}
+
+/* Text sits high in its line box; lift the flag to its visual middle. */
+.fact-value .flag {
+  top: -1.5px;
+}
+
+.age {
+  color: var(--rose-ink);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.age-unit {
+  color: var(--ink-soft);
+}
+
+.glance-foot {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.bubble {
+  margin-bottom: 44px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: 'Fredoka Variable';
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.glance-mascot {
+  width: 78px;
+  height: 78px;
+}
+
+/* ---- publications ---- */
+
+.papers {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.paper {
+  isolation: isolate;
+  padding: 16px 18px 18px;
+  border-radius: 22px;
+  background: var(--surface);
+}
+
+.paper-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin-bottom: 8px;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.75;
+}
+
+.paper-title {
+  font-family: 'Fredoka Variable';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.authors {
+  margin-top: 6px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.self {
+  position: relative;
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.self-mark {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 6px;
+  background: var(--highlight);
+}
+
+/* ---- timeline ---- */
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.entry {
+  position: relative;
+  padding: 0 0 16px 28px;
+}
+
+.entry:last-child {
+  padding-bottom: 0;
+}
+
+.thread {
+  position: absolute;
+  top: 24px;
+  bottom: 4px;
+  left: 8px;
+  width: 2px;
+  color: var(--tone-ink);
+  opacity: 0.45;
+}
+
+.glow {
+  position: absolute;
+  top: -1px;
+  left: -4px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--tone-pop);
+  opacity: 0.35;
+}
+
+.dot {
+  position: absolute;
+  top: 4px;
+  left: 1px;
+  width: 16px;
+  height: 16px;
+  border: 3px solid var(--tone-pop);
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.ongoing .dot {
+  background: var(--tone-pop);
+}
+
+.period {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  color: var(--tone-ink);
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.75;
+}
+
+.range {
+  padding: 0 11px;
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.expected {
+  padding: 0 9px;
+  border: 1.5px dashed var(--tone-ink);
+  border-radius: 999px;
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+.entry-title {
+  font-family: 'Fredoka Variable';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.entry-org {
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.entry-note {
+  color: var(--ink-faint);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.entry-note .who {
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+/* ---- honors ---- */
+
+.stickers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sticker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px 12px 12px;
+  border-radius: 20px;
+  background: var(--surface);
+}
+
+.sticker-icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--blob-3);
+  background: var(--tone);
+  color: var(--tone-ink);
+}
+
+.sticker-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.sticker-title {
+  font-size: 14.5px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.sticker-caption {
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* ---- pill buttons ---- */
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 16px 0 5px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--tone);
+  color: var(--tone-ink);
+}
+
+.button-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.button-icon .mascot-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.button-label {
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.button-arrow {
+  color: var(--ink-faint);
+}
+
+.button-arrow svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ---- hero ---- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  height: 372px;
+  padding: 36px 44px 36px 48px;
+  border-radius: 36px;
+  background: var(--bg);
+}
+
+.hero-blob {
+  position: absolute;
+  z-index: -1;
+  opacity: var(--blob-opacity);
+}
+
+.hero-blob.a {
+  top: -170px;
+  left: -150px;
+  width: 460px;
+  height: 460px;
+  color: var(--blob-a);
+}
+
+.hero-blob.b {
+  top: -120px;
+  right: -140px;
+  width: 400px;
+  height: 400px;
+  color: var(--blob-b);
+}
+
+.hero-blob.c {
+  bottom: -230px;
+  left: 180px;
+  width: 440px;
+  height: 440px;
+  color: var(--blob-c);
+}
+
+.hero-blob.d {
+  right: 90px;
+  bottom: -210px;
+  width: 360px;
+  height: 360px;
+  color: var(--blob-d);
+}
+
+.hero-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.greeting {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 15px 5px 11px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.greeting .wave {
+  color: var(--peach-ink);
+}
+
+.greeting svg {
+  width: 17px;
+  height: 17px;
+}
+
+.name-box {
+  position: relative;
+  height: 78px;
+  margin-top: 14px;
+}
+
+.name {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'Fredoka Variable';
+  font-size: 70px;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.name.alias {
+  color: var(--alias);
+}
+
+.ko {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  margin-top: 4px;
+  padding: 0 5px;
+  color: var(--ink-soft);
+  font-family: 'Jua';
+  font-size: 27px;
+  line-height: 1.3;
+}
+
+.ko-mark {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 12px;
+  background: var(--highlight);
+}
+
+.tagline {
+  margin-top: 12px;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.role {
+  margin-top: 6px;
+  color: var(--ink-soft);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.portrait {
+  position: relative;
+  flex: none;
+  width: 244px;
+  height: 244px;
+}
+
+.halo {
+  position: absolute;
+  top: 12px;
+  right: -17px;
+  bottom: -15px;
+  left: 22px;
+  border-radius: var(--blob-2);
+  background: var(--butter-pop);
+  opacity: 0.6;
+}
+
+.photo {
+  position: relative;
+  display: block;
+  width: 244px;
+  height: 244px;
+  object-fit: cover;
+  border: 7px solid var(--surface);
+  border-radius: var(--blob-1);
+}
+
+.cloud {
+  position: absolute;
+  top: -16px;
+  right: -12px;
+  color: var(--cloud);
+}
+
+.cloud svg {
+  width: 70px;
+  height: 70px;
+}
+
+.sparkle {
+  position: absolute;
+  top: 34px;
+  left: -26px;
+  color: var(--butter-pop);
+}
+
+.sparkle svg {
+  width: 32px;
+  height: 32px;
+}
+
+.hero-mascot {
+  position: absolute;
+  bottom: -14px;
+  left: -16px;
+}
+
+.hero-mascot svg {
+  width: 70px;
+  height: 70px;
+}
+
+/* ---- footer: a cloud with the mascot on top ---- */
+
+.foot {
+  position: relative;
+  padding-top: 40px;
+}
+
+.bumps {
+  position: absolute;
+  top: 26px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.bump {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+.foot-body {
+  position: relative;
+  padding: 26px 20px 24px;
+  border-radius: 34px;
+  background: var(--bg);
+  text-align: center;
+}
+
+.thanks,
+.wish {
+  font-family: 'Fredoka Variable';
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.foot-meta {
+  margin-top: 6px;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.foot-mascot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -36px;
+}
+
+.foot-mascot svg {
+  width: 72px;
+  height: 72px;
+}

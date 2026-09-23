@@ -7,6 +7,7 @@
 - 유지해야 하는 아이덴티티 요소: 이름 호버(또는 스크롤) 시 "JUMIN WHO?" 전환, 1998-07-10 기준 실시간 나이 카운터, 마스코트 몽글이(`public/favicon.svg`).
 - 변경 후 `npm run lint`와 `npm run build`가 통과해야 하며, `npm run snapshots`로 375px/1280px, 라이트/다크에서 확인합니다.
 - 마스코트·팔레트·이름·소개를 바꾸면 `npm run icons`로 아이콘과 OG 이미지를 다시 만듭니다.
+- GitHub 프로필 README(jumincho/jumincho)는 `npm run github-profile`로 이 저장소에서 생성합니다(`scripts/github-profile/`). `profile.ts`·마스코트·팔레트를 바꾸면 다시 생성해 그 저장소의 main에 올리고, 그 저장소의 README와 이미지는 직접 고치지 마세요.
 - 브랜치는 `main` 하나만 유지합니다. 작업 브랜치를 원격에 남기지 마세요.
 - 블로그·관리자 기능·Supabase·Mapbox는 2026-09 개편에서 제거되었습니다. 다시 추가하지 마세요.
 
