@@ -44,6 +44,26 @@ export interface Honor {
   org: string
 }
 
+/** What Jumin is maybe doing; the wording lives in `juminTime.states`. */
+export type RoutineState = 'asleep' | 'ready' | 'working' | 'superposition'
+
+/**
+ * One stretch of Jumin's day, in Jumin's time zone, from `from` up to `to`
+ * ("HH:MM"). A `to` at or before `from` runs past midnight; the stretch still
+ * belongs to the day it starts on, so Friday's evening lasts into Saturday.
+ */
+export interface RoutineSpan {
+  from: string
+  to: string
+  state: RoutineState
+}
+
+/** Monday to Friday, and Saturday and Sunday. Where two stretches overlap, both states hold. */
+export interface Routine {
+  weekday: RoutineSpan[]
+  weekend: RoutineSpan[]
+}
+
 export interface SectionMeta {
   id: string
   title: string
