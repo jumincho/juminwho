@@ -127,7 +127,7 @@ AI 연구자이자 박사과정생 조주민의 한 페이지 프로필입니다
   | 요일 | 시간(KST) | 상태 |
   | --- | --- | --- |
   | 평일 | 09:00–21:00 | maybe… working |
-  | 평일 | 21:00–01:00 | maybe… in superposition (측정 전까지 여러 상태가 겹친 시간) |
+  | 평일 | 21:00–01:00 | maybe… in superposition (관측 전까지 여러 상태가 겹친 시간) |
   | 평일 | 01:00–08:00 | maybe… asleep |
   | 평일 | 08:00–09:00 | maybe… getting ready for work |
   | 주말 | 08:00–01:00 | maybe… in superposition |

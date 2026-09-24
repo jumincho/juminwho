@@ -400,11 +400,11 @@ export const juminTime = {
         ko: '양자 중첩 중',
       },
       hint: {
-        en: 'Every possible state at once, until measured. An email counts as a measurement.',
+        en: 'Every possible state at once, until observed. An email counts as an observation.',
         'zh-CN': '在被观测之前，所有状态同时存在。发一封邮件也算观测。',
         'zh-HK': '在被觀測之前，所有狀態同時存在。發一封電郵也算觀測。',
         ja: '観測されるまで、あらゆる状態が重なり合っています。メールも観測のうちです。',
-        ko: '측정되기 전까지는 모든 상태가 한꺼번에. 이메일도 측정으로 칩니다.',
+        ko: '관측되기 전까지는 모든 상태가 한꺼번에. 이메일도 관측으로 칩니다.',
       },
     },
   } satisfies Record<RoutineState, { label: Localized; hint: Localized }>,
