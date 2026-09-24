@@ -1,14 +1,15 @@
 /**
  * Turns a scene from export-scene.mjs into a standalone SVG. Text becomes
- * outlined glyphs: each glyph is defined once per font and weight, in font
- * units, and every line is a scaled group of <use> elements. Boxes become
- * paths, and data-anim groups get classes for the CSS passed in `css`.
+ * outlined glyphs: each glyph is defined once per face and weight, in font
+ * units, and every run of a line (the stretch set in one face) is a scaled
+ * group of <use> elements. Boxes become paths, and data-anim groups get
+ * classes for the CSS passed in `css`.
  *
  * Digits in a data-age element are drawn from fixed glyph ids (age-0 … age-9,
  * age-dot) inside <g id="age">, so a script without fonts can rewrite the
  * number later: see github-profile/update-age.mjs.
  */
-import { glyphPath, shapeLine } from './outline-text.mjs'
+import { glyphPath, shapeText } from './fonts.mjs'
 
 const round = (n) => Math.round(n * 100) / 100
 const xml = (text) => String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;')
@@ -60,46 +61,53 @@ export async function sceneToSvg(scene, { shadow, css = '', label = '' }) {
   let uid = 0
   const nextId = (prefix) => `${prefix}${(uid++).toString(36)}`
 
-  async function glyphRef(font, id) {
-    const key = `${font.family}|${font.weight}|${id}`
+  async function glyphRef(run, glyph) {
+    const key = `${run.font}|${run.weight}|${glyph}`
     if (!glyphIds.has(key)) {
-      const d = await glyphPath({ ...font, id })
+      const d = await glyphPath({ font: run.font, weight: run.weight, glyph })
       glyphIds.set(key, d ? nextId('g') : null)
       if (d) defs.push(`<path id="${glyphIds.get(key)}" d="${d}"/>`)
     }
     return glyphIds.get(key)
   }
 
-  /** A line of text: glyph <use>s in font units inside one translated, scaled group. */
-  const lineGroup = (item, scale, inner, extra = '') =>
-    `<g${extra} ${fillAttrs(item.color)} transform="translate(${round(item.x)} ${round(item.y)}) scale(${Number(scale.toPrecision(5))})">${inner}</g>`
+  /** Glyph <use>s in font units inside one translated, scaled group. */
+  const runGroup = (x, y, scale, inner, attrs = '') =>
+    `<g${attrs} transform="translate(${round(x)} ${round(y)}) scale(${Number(scale.toPrecision(5))})">${inner}</g>`
 
+  /** A line of text: one group per run, sharing the line's fill. */
   async function textRun(item) {
-    const { glyphs, scale } = await shapeLine(item)
-    const uses = []
-    for (const g of glyphs) {
-      const ref = await glyphRef(item, g.id)
-      if (ref) uses.push(`<use href="#${ref}" x="${Math.round(g.x)}"${g.y ? ` y="${Math.round(g.y)}"` : ''}/>`)
+    const groups = []
+    for (const run of (await shapeText(item)).runs) {
+      const uses = []
+      for (const g of run.glyphs) {
+        const ref = await glyphRef(run, g.id)
+        if (ref) uses.push(`<use href="#${ref}" x="${Math.round(g.x)}"${g.y ? ` y="${Math.round(g.y)}"` : ''}/>`)
+      }
+      if (uses.length > 0) groups.push([item.x + run.x, run.scale, uses.join('')])
     }
-    return lineGroup(item, scale, uses.join(''))
+    if (groups.length === 1) return runGroup(groups[0][0], item.y, groups[0][1], groups[0][2], ` ${fillAttrs(item.color)}`)
+    return `<g ${fillAttrs(item.color)}>${groups.map(([x, scale, inner]) => runGroup(x, item.y, scale, inner)).join('')}</g>`
   }
 
   /** Age digits reference fixed ids so update-age.mjs can swap them without fonts. */
   async function ageRun(item) {
     const advances = {}
+    let scale = 1
     for (const ch of '0123456789.') {
-      const { glyphs, advance } = await shapeLine({ ...item, text: ch })
-      defs.push(`<path id="age-${ch === '.' ? 'dot' : ch}" d="${await glyphPath({ ...item, id: glyphs[0].id })}"/>`)
-      advances[ch] = Math.round(advance)
+      const [run] = (await shapeText({ ...item, text: ch })).runs
+      defs.push(`<path id="age-${ch === '.' ? 'dot' : ch}" d="${await glyphPath({ font: run.font, weight: run.weight, glyph: run.glyphs[0].id })}"/>`)
+      advances[ch] = Math.round(run.advance)
+      scale = run.scale
     }
-    const { scale } = await shapeLine(item)
     let x = 0
     const uses = [...item.text].map((ch) => {
       const use = `<use href="#age-${ch === '.' ? 'dot' : ch}" x="${x}"/>`
       x += advances[ch]
       return use
     })
-    return lineGroup(item, scale, uses.join(''), ` id="age" data-digit="${advances['0']}" data-dot="${advances['.']}"`)
+    const attrs = ` id="age" data-digit="${advances['0']}" data-dot="${advances['.']}" ${fillAttrs(item.color)}`
+    return runGroup(item.x, item.y, scale, uses.join(''), attrs)
   }
 
   for (const item of scene.items) {

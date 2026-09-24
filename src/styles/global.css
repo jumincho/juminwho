@@ -31,9 +31,26 @@ body {
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Korean breaks between words, not syllables; Chinese and Japanese break between characters (below). */
   word-break: keep-all;
   overflow-wrap: break-word;
   transition: color var(--dur) var(--ease-out);
+}
+
+/* Korean headings are in Jua, which has one weight; a faked bold would smear it. */
+:lang(ko) {
+  font-synthesis-weight: none;
+}
+
+:lang(ja),
+:lang(zh) {
+  word-break: normal;
+  line-break: strict;
+}
+
+/* Japanese breaks between phrases where the browser can tell them (Chromium), not inside words. */
+:lang(ja) {
+  word-break: auto-phrase;
 }
 
 h1,

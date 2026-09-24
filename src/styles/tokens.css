@@ -64,9 +64,19 @@
   --shadow-lg: 0 4px 12px rgb(var(--shadow-rgb) / 0.06), 0 30px 60px -26px rgb(var(--shadow-rgb) / 0.38);
 
   /* ---- type ---- */
-  --font-display: 'Fredoka Variable', 'Jua', 'Nunito Variable', ui-rounded, system-ui, sans-serif;
-  --font-body: 'Nunito Variable', ui-rounded, system-ui, -apple-system, 'Segoe UI', 'Apple SD Gothic Neo',
-    'Malgun Gothic', 'Noto Sans KR', sans-serif;
+  /*
+   * Latin comes from Fredoka and Nunito; the rest falls through to the system
+   * fonts for the page language (`--font-cjk`, set below per <html lang>).
+   * The Noto names are what the GitHub profile generator lays cards out with.
+   */
+  --cjk-ko: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR Variable', 'Noto Sans KR';
+  --cjk-ja: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Yu Gothic', 'Noto Sans JP Variable',
+    'Noto Sans JP';
+  --cjk-sc: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC Variable', 'Noto Sans SC';
+  --cjk-hk: 'PingFang HK', 'Microsoft JhengHei', 'Noto Sans HK Variable', 'Noto Sans HK', 'Noto Sans TC';
+  --font-cjk: var(--cjk-ko);
+  --font-display: 'Fredoka Variable', 'Jua', var(--font-cjk), 'Nunito Variable', ui-rounded, system-ui, sans-serif;
+  --font-body: 'Nunito Variable', var(--font-cjk), ui-rounded, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --text-xs: 0.8125rem; /* 13px */
   --text-sm: 0.875rem; /* 14px */
@@ -113,6 +123,19 @@
   --page: 72rem; /* 1152px */
   --gutter: clamp(1rem, 4vw, 2.5rem);
   --header-h: 4.5rem; /* floating bar plus its offset */
+}
+
+/* Han characters look different in each language, so each page asks for its own fonts. */
+:root:lang(ja) {
+  --font-cjk: var(--cjk-ja);
+}
+
+:root:lang(zh-CN) {
+  --font-cjk: var(--cjk-sc);
+}
+
+:root:lang(zh-HK) {
+  --font-cjk: var(--cjk-hk);
 }
 
 :root[data-theme='dark'] {

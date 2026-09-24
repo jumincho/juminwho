@@ -1,6 +1,7 @@
 import { Check, Copy, Mail } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { labels } from '../data/profile'
+import { useLanguage } from '../hooks/useLanguage'
 import { cx } from '../lib/cx'
 import styles from './CopyEmail.module.css'
 
@@ -9,6 +10,7 @@ import styles from './CopyEmail.module.css'
  * with a small button that copies it and says so in a speech bubble.
  */
 export default function CopyEmail({ email }: { email: string }) {
+  const { t } = useLanguage()
   const [copied, setCopied] = useState(false)
   const addressRef = useRef<HTMLSpanElement>(null)
 
@@ -41,14 +43,20 @@ export default function CopyEmail({ email }: { email: string }) {
       <span ref={addressRef} className={styles.address}>
         {email}
       </span>
-      <button type="button" className={styles.button} onClick={copy} aria-label={labels.copyEmail} title={labels.copyEmail}>
+      <button
+        type="button"
+        className={styles.button}
+        onClick={copy}
+        aria-label={t(labels.copyEmail)}
+        title={t(labels.copyEmail)}
+      >
         {copied ? <Check /> : <Copy />}
         <span className={styles.bubble} aria-hidden="true">
-          {labels.copied}
+          {t(labels.copied)}
         </span>
       </button>
       <span className="visually-hidden" role="status">
-        {copied ? labels.copiedSpoken : ''}
+        {copied ? t(labels.copiedSpoken) : ''}
       </span>
     </div>
   )

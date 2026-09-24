@@ -136,6 +136,23 @@
   }
 }
 
+/* Small phones: a little tighter everywhere, so the language menu and theme toggle both fit. */
+@media (max-width: 26rem) {
+  .bar,
+  .navList {
+    gap: 0;
+  }
+
+  .brand {
+    padding-right: 4px;
+    font-size: 0.9375rem;
+  }
+
+  .navLink {
+    padding: 7px 5px;
+  }
+}
+
 /* Below 352px the mascot alone stands in for the name; the hero still shows it. */
 @media (max-width: 22rem) {
   .brand {

@@ -1,0 +1,143 @@
+.root {
+  position: relative;
+  flex: none;
+}
+
+/* Same round shape as the theme toggle next to it. */
+.toggle {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--bg-sunk);
+  color: var(--ink);
+}
+
+.toggle:hover,
+.toggle[aria-expanded='true'] {
+  background: var(--tone);
+  color: var(--tone-ink);
+}
+
+.icon {
+  width: 19px;
+  height: 19px;
+}
+
+/* ---- the list: a soft card hanging under the button ---- */
+
+.menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 30;
+  display: grid;
+  gap: 2px;
+  min-width: 12.5rem;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) 1rem;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  text-align: left;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.item:hover,
+.item:focus-visible {
+  background: var(--bg-sunk);
+}
+
+.item:focus-visible {
+  outline-offset: -3px;
+}
+
+.item[aria-checked='true'] {
+  background: var(--tone);
+  color: var(--tone-ink);
+}
+
+.region {
+  color: var(--ink-faint);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.item[aria-checked='true'] .region {
+  color: inherit;
+}
+
+/* Each name in its own script's fonts, whatever the page language. */
+.name:lang(ko) {
+  font-family: 'Nunito Variable', var(--cjk-ko), sans-serif;
+}
+
+.name:lang(ja) {
+  font-family: 'Nunito Variable', var(--cjk-ja), sans-serif;
+}
+
+.name:lang(zh-CN) {
+  font-family: 'Nunito Variable', var(--cjk-sc), sans-serif;
+}
+
+.name:lang(zh-HK) {
+  font-family: 'Nunito Variable', var(--cjk-hk), sans-serif;
+}
+
+.check {
+  width: 16px;
+  height: 16px;
+  visibility: hidden;
+}
+
+.item[aria-checked='true'] .check {
+  visibility: visible;
+}
+
+@media (max-width: 40rem) {
+  .toggle {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+@media (max-width: 26rem) {
+  .toggle {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .toggle,
+  .item {
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
+  }
+
+  .menu {
+    transform-origin: top right;
+    animation: pop var(--dur) var(--ease-spring);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.96);
+  }
+}

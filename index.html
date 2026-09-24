@@ -12,15 +12,19 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <script>
-      // Apply the saved or system theme before first paint so the page never flashes.
-      // The storage key must match THEME_STORAGE_KEY in src/lib/theme.ts.
+      // Apply the saved or system theme, and the page language, before first paint so nothing flashes.
+      // The keys must match THEME_STORAGE_KEY in src/lib/theme.ts and LANG_STORAGE_KEY / LANG_PARAM in src/lib/i18n.ts.
       ;(function () {
         var stored = null
+        var lang = null
         try {
           stored = localStorage.getItem('juminwho:theme')
+          lang = localStorage.getItem('juminwho:lang')
         } catch (e) {}
         var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
         document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+        lang = new URLSearchParams(location.search).get('lang') || lang
+        if (/^(en|zh-CN|zh-HK|ja|ko)$/.test(lang)) document.documentElement.lang = lang
       })()
     </script>
   </head>

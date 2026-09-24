@@ -1,14 +1,18 @@
 /*
  * Layout for the GitHub profile images. It uses the site's tokens (inlined
  * before this file), and only what lib/export-scene.mjs can translate:
- * solid colours, borders, radii, text, inline SVG and <img>. Every text
- * element's first font family must cover its characters (see outline-text.mjs).
+ * solid colours, borders, radii, text, inline SVG and <img>. Text uses the
+ * site's font stacks; every character must be drawn by one of the families
+ * lib/fonts.mjs knows, or the export stops and says which.
  */
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  /* Plain advances, as HarfBuzz sets them: no squeezed CJK punctuation, no extra CJK–Latin gaps. */
+  text-spacing-trim: space-all;
+  text-autospace: no-autospace;
 }
 
 html,
@@ -23,9 +27,25 @@ body {
   gap: 32px;
   padding: 24px;
   color: var(--ink);
-  font-family: 'Nunito Variable';
+  font-family: var(--font-body);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+}
+
+/* As on the site: Chinese and Japanese break between characters; Jua is never fake-bolded. */
+:lang(ja),
+:lang(zh) {
+  word-break: normal;
+  line-break: strict;
+}
+
+:lang(ja) {
+  word-break: auto-phrase;
+}
+
+:lang(ko) {
+  font-synthesis-weight: none;
 }
 
 svg {
@@ -50,7 +70,7 @@ svg {
 }
 
 .display {
-  font-family: 'Fredoka Variable';
+  font-family: var(--font-display);
 }
 
 /* ---- panel: the pastel cushion every section sits in ---- */
@@ -112,7 +132,7 @@ svg {
 }
 
 .title {
-  font-family: 'Fredoka Variable';
+  font-family: var(--font-display);
   font-size: 22px;
   font-weight: 600;
   line-height: 1.25;
@@ -237,7 +257,7 @@ svg {
   border-radius: 999px;
   background: var(--ink);
   color: var(--bg);
-  font-family: 'Fredoka Variable';
+  font-family: var(--font-display);
   font-size: 15px;
   font-weight: 600;
   white-space: nowrap;
@@ -276,7 +296,7 @@ svg {
 }
 
 .paper-title {
-  font-family: 'Fredoka Variable';
+  font-family: var(--font-display);
   font-size: 16px;
   font-weight: 600;
   line-height: 1.35;
@@ -385,7 +405,7 @@ svg {
 }
 
 .entry-title {
-  font-family: 'Fredoka Variable';
+  font-family: var(--font-display);
   font-size: 16px;
   font-weight: 600;
   line-height: 1.35;
@@ -508,6 +528,64 @@ svg {
   height: 15px;
 }
 
+/* ---- language pills: region tag and the language's own name, the current one tinted and checked ---- */
+
+.lang-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 14px 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.lang-pill.on {
+  border-color: transparent;
+  background: var(--tone);
+  color: var(--tone-ink);
+}
+
+.lang-region {
+  color: var(--ink-faint);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.lang-pill.on .lang-region {
+  color: inherit;
+}
+
+.lang-name {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Each name in its own script's fonts, whatever the README's language. */
+.lang-name:lang(ko) {
+  font-family: 'Nunito Variable', var(--cjk-ko), sans-serif;
+}
+
+.lang-name:lang(ja) {
+  font-family: 'Nunito Variable', var(--cjk-ja), sans-serif;
+}
+
+.lang-name:lang(zh-CN) {
+  font-family: 'Nunito Variable', var(--cjk-sc), sans-serif;
+}
+
+.lang-name:lang(zh-HK) {
+  font-family: 'Nunito Variable', var(--cjk-hk), sans-serif;
+}
+
+.lang-check svg {
+  width: 14px;
+  height: 14px;
+}
+
 /* ---- hero ---- */
 
 .hero {
@@ -597,7 +675,7 @@ svg {
   position: absolute;
   top: 0;
   left: 0;
-  font-family: 'Fredoka Variable';
+  font-family: var(--font-display);
   font-size: 70px;
   font-weight: 700;
   line-height: 1.08;
@@ -741,7 +819,7 @@ svg {
 
 .thanks,
 .wish {
-  font-family: 'Fredoka Variable';
+  font-family: var(--font-display);
   font-size: 20px;
   font-weight: 500;
   line-height: 1.4;

@@ -1,7 +1,27 @@
 /** Shapes of the content in `profile.ts`. */
 
-export interface Link {
-  label: string
+/** The languages the site speaks, in menu order; English is the default. */
+export type Lang = 'en' | 'zh-CN' | 'zh-HK' | 'ja' | 'ko'
+
+/**
+ * One value per language: usually text, sometimes a function that builds it.
+ * Every language is required, so a missing translation fails the type check.
+ */
+export type Localized<T = string> = Record<Lang, T>
+
+export interface Language {
+  code: Lang
+  /** Region tag shown in front of the name in the language menu, e.g. "JP". */
+  region: string
+  /** The language's own name, e.g. "日本語". */
+  name: string
+  /** Locale for dates, e.g. "ja-JP". */
+  locale: string
+}
+
+/** A link whose label is a proper name (`string`) or translated (`Localized`). */
+export interface Link<Label = string> {
+  label: Label
   href: string
 }
 
@@ -15,19 +35,20 @@ export interface Period {
 
 export interface TimelineEntry {
   period: Period
-  title: string
-  org: string
-  advisor?: Link
+  title: Localized
+  org: Localized
+  advisor?: Link<Localized>
 }
 
 /** A city, shown with its country's flag: where Jumin is based, or where a conference took place. */
 export interface Place {
-  city: string
-  country: string
+  city: Localized
+  country: Localized
   /** ISO 3166-1 alpha-2 code; picks the flag drawn next to the city. */
   countryCode: string
 }
 
+/** Titles, authors and venues stay as published, in English. */
 export interface Publication {
   title: string
   /** Complete author list in the published order. */
@@ -40,8 +61,8 @@ export interface Publication {
 }
 
 export interface Honor {
-  title: string
-  org: string
+  title: Localized
+  org: Localized
 }
 
 /** What Jumin is maybe doing; the wording lives in `juminTime.states`. */
@@ -66,7 +87,7 @@ export interface Routine {
 
 export interface SectionMeta {
   id: string
-  title: string
+  title: Localized
   /** Shorter label for the header navigation. */
-  nav: string
+  nav: Localized
 }

@@ -1,4 +1,5 @@
 import { labels } from './data/profile'
+import { useLanguage } from './hooks/useLanguage'
 import Backdrop from './layout/Backdrop'
 import Footer from './layout/Footer'
 import Header from './layout/Header'
@@ -11,10 +12,11 @@ import Publications from './sections/Publications'
 import styles from './App.module.css'
 
 export default function App() {
+  const { t } = useLanguage()
   return (
     <>
       <a className="skip-link" href="#main">
-        {labels.skipToContent}
+        {t(labels.skipToContent)}
       </a>
       <Backdrop />
       <Header />

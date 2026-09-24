@@ -1,5 +1,5 @@
 import { Cloud, Hand, Heart, Landmark, MapPin, Sparkles, type LucideIcon } from 'lucide-react'
-import type { ReactNode } from 'react'
+import { Fragment, type ReactNode } from 'react'
 import { GitHubIcon, LinkedInIcon } from '../components/BrandIcons'
 import CopyEmail from '../components/CopyEmail'
 import ExternalLink from '../components/ExternalLink'
@@ -9,6 +9,7 @@ import NameFlip from '../components/NameFlip'
 import type { Tone } from '../components/Panel'
 import PlaceName from '../components/PlaceName'
 import { labels, profile } from '../data/profile'
+import { useLanguage } from '../hooks/useLanguage'
 import { useScrolled } from '../hooks/useScrolled'
 import { cx } from '../lib/cx'
 import styles from './Hero.module.css'
@@ -37,13 +38,14 @@ function Fact({ icon: Icon, tone, label, beating = false, children }: FactProps)
 }
 
 function Portrait() {
+  const { t } = useLanguage()
   return (
     <figure className={styles.portrait}>
       <span className={styles.halo} aria-hidden="true" />
       <img
         className={styles.photo}
         src={`${import.meta.env.BASE_URL}${profile.photo.src}`}
-        alt={profile.photo.alt}
+        alt={t(profile.photo.alt)}
         width={400}
         height={400}
         fetchPriority="high"
@@ -56,14 +58,23 @@ function Portrait() {
 }
 
 export default function Hero() {
+  const { t } = useLanguage()
   const scrolled = useScrolled()
+  const affiliation = t(labels.affiliationOrder)(
+    <ExternalLink href={profile.department.href} className="link">
+      {t(profile.department.label)}
+    </ExternalLink>,
+    <ExternalLink href={profile.university.href} className="link">
+      {t(profile.university.label)}
+    </ExternalLink>,
+  )
 
   return (
     <section id="top" className={styles.hero} aria-labelledby="hero-name">
       <div className={styles.intro}>
         <p className={styles.greeting}>
           <Hand className={styles.wave} />
-          {labels.greeting}
+          {t(labels.greeting)}
         </p>
         <h1 id="hero-name" className={styles.name}>
           <NameFlip name={profile.name} alias={profile.alias} flipped={scrolled} />
@@ -71,37 +82,33 @@ export default function Hero() {
         <p className={styles.nameKo} lang="ko">
           {profile.nameKo}
         </p>
-        <p className={styles.tagline}>{profile.tagline}</p>
+        <p className={styles.tagline}>{t(profile.tagline)}</p>
       </div>
 
       <Portrait />
 
       <div className={styles.details}>
         <dl className={styles.facts}>
-          <Fact icon={Sparkles} tone="lilac" label={labels.role}>
-            {profile.role}
+          <Fact icon={Sparkles} tone="lilac" label={t(labels.role)}>
+            {t(profile.role)}
           </Fact>
-          <Fact icon={Landmark} tone="sky" label={labels.affiliation}>
-            <ExternalLink href={profile.department.href} className="link">
-              {profile.department.label}
-            </ExternalLink>
-            ,{' '}
-            <ExternalLink href={profile.university.href} className="link">
-              {profile.university.label}
-            </ExternalLink>
+          <Fact icon={Landmark} tone="sky" label={t(labels.affiliation)}>
+            {affiliation.map((part, i) => (
+              <Fragment key={i}>{part}</Fragment>
+            ))}
             <br />
-            <ExternalLink href={profile.lab.href} className="link">
+            <ExternalLink href={profile.lab.href} className="link" lang="en">
               {profile.lab.label}
             </ExternalLink>
           </Fact>
-          <Fact icon={MapPin} tone="sage" label={labels.location}>
+          <Fact icon={MapPin} tone="sage" label={t(labels.location)}>
             <PlaceName place={profile.location} />
           </Fact>
-          <Fact icon={Heart} tone="rose" label={labels.age} beating>
+          <Fact icon={Heart} tone="rose" label={t(labels.age)} beating>
             <span className={styles.age}>
               <LiveAge birth={profile.birth} className={styles.ageDigits} />
               <span className={styles.ageUnit} aria-hidden="true">
-                {labels.ageUnit}
+                {t(labels.ageUnit)}
               </span>
             </span>
           </Fact>

@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import { labels } from '../data/profile'
+import { useLanguage } from '../hooks/useLanguage'
 
 const YEAR_MS = 365.2425 * 24 * 60 * 60 * 1000
 const DECIMALS = 8
@@ -18,6 +19,8 @@ interface Props {
  * which get the whole number of years instead.
  */
 export default function LiveAge({ birth, className }: Props) {
+  const { t } = useLanguage()
+  const spoken = t(labels.ageSpoken)
   const digitsRef = useRef<HTMLSpanElement>(null)
   const spokenRef = useRef<HTMLSpanElement>(null)
   const birthMs = new Date(birth).getTime()
@@ -27,13 +30,13 @@ export default function LiveAge({ birth, className }: Props) {
     const paint = () => {
       if (digitsRef.current) digitsRef.current.textContent = years().toFixed(DECIMALS)
     }
-    if (spokenRef.current) spokenRef.current.textContent = labels.ageSpoken(Math.floor(years()))
+    if (spokenRef.current) spokenRef.current.textContent = spoken(Math.floor(years()))
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     paint()
     const timer = window.setInterval(paint, reduce ? 1000 : 100)
     return () => window.clearInterval(timer)
-  }, [birthMs])
+  }, [birthMs, spoken])
 
   return (
     <>

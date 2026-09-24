@@ -46,7 +46,8 @@ export function exportScene(root) {
 
   function font(cs) {
     return {
-      family: cs.fontFamily.split(',')[0].trim().replace(/^["']|["']$/g, ''),
+      // The whole list: each character is outlined in the first family that draws it.
+      families: cs.fontFamily.split(',').map((family) => family.trim().replace(/^["']|["']$/g, '')),
       weight: num(cs.fontWeight),
       size: num(cs.fontSize),
       letterSpacing: cs.letterSpacing === 'normal' ? 0 : num(cs.letterSpacing),
