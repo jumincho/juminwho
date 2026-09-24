@@ -23,14 +23,14 @@
   천천히 떠다니는 블롭, 구름 모양 푸터가 있습니다.
 - JUMIN WHO? 이름에 마우스를 올리거나 페이지를 스크롤하면 이름이 통통 튀며 "JUMIN WHO?"로 바뀝니다.
 - 1998-07-10부터 소수점 8자리까지 실시간으로 세는 나이 카운터.
-- 지금 주민이는 몇 시일까요? 내 시간 | 주민이 시간 스위치가 달린 시계 카드가 주민이의 시간(KST)이나 방문자의
-  시간을 보여 주고, 화면에는 드러나지 않는 평일·주말 일과표에 따라 주민이가 지금 아마도 무엇을 하는지 알려
-  줍니다: 아마도… 일하는 중, 출근 준비 중, 자는 중, 또는 측정되기 전까지 모든 상태가 겹쳐 있는 양자 중첩 중.
+- 지금 주민은 몇 시일까요? 내 시간 | 주민 시간 스위치가 달린 시계 카드가 주민의 시간(KST)이나 방문자의 시간을
+  보여 주고, 화면에는 드러나지 않는 평일·주말 일과표에 따라 지금 주민의 상태를 알려 줍니다: 아마도… 일하는
+  중, 출근 준비 중, 자는 중, 또는 측정되기 전까지 모든 상태가 겹쳐 있는 양자 중첩 중.
 - 다섯 가지 언어: English(기본), 简体中文, 繁體中文, 日本語, 한국어. 헤더의 메뉴에서 고르면 그 선택을
   기억하고, `?lang=ko` 같은 링크로 원하는 언어의 페이지를 바로 열 수 있습니다.
 - 복숭아 모찌 마스코트 몽글이. 파비콘, 앱 아이콘, 링크 미리보기(Open Graph) 이미지가 모두 이 그림에서
   나옵니다.
-- 장소 앞의 동그란 국기 스티커: 주민이가 지내는 곳과 논문을 발표한 곳.
+- 장소 앞의 동그란 국기 스티커: 주민의 위치와 각 논문을 발표한 곳.
 - 운영체제 설정을 따르다가 직접 고르면 그 값을 기억하는 테마 토글, 이메일 복사 버튼, 인쇄용 스타일.
 - 모션 줄이기, 스크린리더, 키보드 탐색을 존중하고, 모든 글자가 WCAG AA 이상의 대비를 갖습니다.
 - 콘텐츠 파일은 하나뿐입니다. 모든 언어의 모든 문구가 `src/data/profile.ts`에 있습니다.
@@ -68,7 +68,7 @@ GitHub Actions가 사이트를 빌드해 GitHub Pages에 올립니다.
 │   ├── components/               NameFlip, LiveAge, Panel, Timeline, Flag, PlaceName, LanguageMenu 등
 │   ├── layout/                   Header, Footer, Backdrop(떠다니는 블롭)
 │   ├── hooks/                    useLanguage, useScrolled, useActiveSection, useTheme, useNow, useClockMode
-│   ├── lib/                      i18n, theme, clock(시간대와 주민이의 일과표), cx
+│   ├── lib/                      i18n, theme, clock(시간대와 주민의 일과표), cx
 │   ├── styles/                   tokens.css(디자인 토큰), tones.css, global.css, fonts.css
 │   ├── App.tsx
 │   └── main.tsx
@@ -112,7 +112,7 @@ chromium`을 한 번 실행하거나, `PLAYWRIGHT_CHROMIUM=/path/to/chrome`으�
 | `publications`, `selfNames` | 학회와 개최지를 포함한 논문, 강조할 본인 이름 표기 |
 | `experience`, `education` | 타임라인 항목. 기간은 `{ from, to?, expected? }` |
 | `honors`, `certifications` | 수상과 자격 |
-| `juminTime` | 시계 카드: 주민이의 시간대, 평일·주말 일과표, 문구 |
+| `juminTime` | 시계 카드: 주민의 시간대, 평일·주말 일과표, 문구 |
 | `labels` | 인사말, 라벨, 버튼 이름, 스크린리더용 문장 |
 | `githubProfile` | GitHub 프로필 README에서만 쓰는 몇 가지 문구와 주소 |
 
