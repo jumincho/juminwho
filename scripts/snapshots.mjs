@@ -10,13 +10,16 @@
  * icons, fonts that did not load, a frozen age counter or clock, a missing
  * "JUMIN WHO?" after hover or scroll, a theme toggle or Local | Jumin switch
  * that does nothing, a status without "maybe…", a status that disagrees with
- * Jumin's routine at fixed moments, or animations that keep running with
- * reduced motion. Full-page screenshots go to snapshots/ (git-ignored) for a
- * side-by-side look against the last build.
+ * Jumin's routine at fixed moments, animations that keep running with
+ * reduced motion, or a language (every one in profile.ts, at both widths)
+ * that does not switch, does not fit or loses its hedge, or a language menu
+ * that does not pick, remember and link. Full-page screenshots go to
+ * snapshots/ (git-ignored) for a side-by-side look against the last build.
  */
 import { mkdir } from 'node:fs/promises'
 import { preview } from 'vite'
 import { launchChromium } from './lib/browser.mjs'
+import { loadModules } from './lib/load-modules.mjs'
 
 const OUT = 'snapshots'
 const ALIAS = 'JUMIN WHO?'
@@ -41,6 +44,7 @@ const routineCases = [
   ['2026-09-28T08:30:00', 'ready'],
 ]
 
+const [content] = await loadModules(['/src/data/profile.ts'])
 const server = await preview({ preview: { port: 4173 }, logLevel: 'warn' }) // next free port if taken
 const url = server.resolvedUrls.local[0]
 const browser = await launchChromium()
@@ -115,10 +119,12 @@ async function checkPage(vp, scheme) {
   const shown = await clock.textContent()
   await page.waitForTimeout(1100)
   if ((await clock.textContent()) === shown) fail('the Jumin clock is not ticking')
-  const unhedged = await page.$$eval('[data-state-label]', (labels) =>
-    labels.map((label) => label.textContent.trim()).filter((text) => !text.startsWith('maybe…')),
+  const unhedged = await page.$$eval(
+    '[data-state-label]',
+    (labels, hedge) => labels.map((label) => label.textContent.trim()).filter((text) => !text.startsWith(hedge)),
+    content.juminTime.maybe.en,
   )
-  for (const text of unhedged) fail(`status "${text}" does not start with "maybe…"`)
+  for (const text of unhedged) fail(`status "${text}" does not start with "${content.juminTime.maybe.en}"`)
 
   await page.screenshot({ path: `${OUT}/${vp.name}-${scheme}.png`, fullPage: true, animations: 'disabled' })
   if (writeReadmePreviews && vp.name === 'desktop') {
@@ -140,7 +146,7 @@ async function checkPage(vp, scheme) {
   if ((await aliasOpacity(page, 'header')) < 0.99) fail('the header name does not flip after scrolling')
   await page.screenshot({ path: `${OUT}/${vp.name}-${scheme}-scrolled.png`, animations: 'disabled' })
 
-  const toggle = page.locator('header button')
+  const toggle = page.locator('header button[data-current]')
   await toggle.click()
   const flipped = await page.evaluate(() => document.documentElement.dataset.theme)
   await toggle.click()
@@ -193,11 +199,76 @@ async function checkRoutine() {
   console.log(`${failures.some((f) => f.startsWith('routine')) ? '✗' : '✓'} routine (${routineCases.length} moments)`)
 }
 
+/** Every other language at both widths (desktop light, mobile dark): it switches, fits and stays hedged. */
+async function checkLanguage(vp, code) {
+  const scheme = vp.name === 'desktop' ? 'light' : 'dark'
+  const tag = `${vp.name}/${code}`
+  const fail = (message) => failures.push(`${tag}: ${message}`)
+  const context = await browser.newContext({ viewport: vp, colorScheme: scheme })
+  const page = await context.newPage()
+  page.on('console', (message) => message.type() === 'error' && fail(`console error: ${message.text()}`))
+  page.on('pageerror', (error) => fail(`page error: ${error.message}`))
+  page.on('requestfailed', (request) => fail(`request failed: ${request.url()}`))
+
+  await page.goto(`${url}?lang=${code}`, { waitUntil: 'networkidle' })
+  const state = await page.evaluate(() => {
+    const nav = document.querySelector('header nav ul')
+    return {
+      lang: document.documentElement.lang,
+      scrollWidth: document.documentElement.scrollWidth,
+      navOverflow: nav.scrollWidth - nav.clientWidth,
+      title: document.querySelector('#publications h2')?.textContent,
+      status: document.querySelector('[data-state-label]')?.textContent.trim(),
+      jua: [...document.fonts].filter((face) => face.family.replace(/"/g, '') === 'Jua' && face.status === 'loaded').length,
+    }
+  })
+  if (state.lang !== code) fail(`<html lang> is "${state.lang}"`)
+  if (state.scrollWidth > vp.width) fail(`horizontal overflow (${state.scrollWidth}px > ${vp.width}px)`)
+  if (state.navOverflow > 0) fail(`header nav is ${state.navOverflow}px too wide`)
+  if (state.title !== content.sections.publications.title[code]) fail(`Publications heading reads "${state.title}"`)
+  if (!state.status?.startsWith(content.juminTime.maybe[code])) fail(`status "${state.status}" does not start with "${content.juminTime.maybe[code]}"`)
+  // Korean headings need the full Jua subset besides the one for the name.
+  if (code === 'ko' && state.jua < 2) fail('the Korean Jua subset did not load')
+
+  await page.screenshot({ path: `${OUT}/${vp.name}-${code}.png`, fullPage: true, animations: 'disabled' })
+  await context.close()
+  console.log(`${failures.some((f) => f.startsWith(tag)) ? '✗' : '✓'} ${tag}`)
+}
+
+/** Picking a language in the menu switches the page, puts it in the address and remembers it. */
+async function checkLanguageMenu() {
+  const fail = (message) => failures.push(`language menu: ${message}`)
+  const context = await browser.newContext({ viewport: viewports[0] })
+  const page = await context.newPage()
+  await page.goto(url, { waitUntil: 'networkidle' })
+  const pick = async (name) => {
+    await page.locator('header button[aria-haspopup="menu"]').click()
+    await page.getByRole('menuitemradio', { name }).click()
+  }
+  const [target, english] = [content.languages.at(-2), content.languages[0]]
+
+  if ((await page.evaluate(() => document.documentElement.lang)) !== english.code) fail('the page does not start in English')
+  await pick(target.name)
+  const picked = await page.evaluate(() => ({ lang: document.documentElement.lang, search: location.search, stored: localStorage.getItem('juminwho:lang') }))
+  if (picked.lang !== target.code) fail(`picking ${target.name} left <html lang> at "${picked.lang}"`)
+  if (picked.search !== `?lang=${target.code}`) fail(`the address reads "${picked.search}"`)
+  if (picked.stored !== target.code) fail('the choice was not stored')
+  await page.goto(url, { waitUntil: 'networkidle' })
+  if ((await page.evaluate(() => document.documentElement.lang)) !== target.code) fail('the stored choice is not used on the next visit')
+  await pick(english.name)
+  if ((await page.evaluate(() => location.search)) !== '') fail('English still carries ?lang= in the address')
+
+  await context.close()
+  console.log(`${failures.some((f) => f.startsWith('language menu')) ? '✗' : '✓'} language menu`)
+}
+
 try {
   await mkdir(OUT, { recursive: true })
   for (const vp of viewports) for (const scheme of schemes) await checkPage(vp, scheme)
   await checkReducedMotion()
   await checkRoutine()
+  for (const vp of viewports) for (const { code } of content.languages.slice(1)) await checkLanguage(vp, code)
+  await checkLanguageMenu()
 } finally {
   await browser.close()
   await server.close()

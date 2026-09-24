@@ -53,12 +53,15 @@ export interface WallClock {
 
 const formats = new Map<string, Intl.DateTimeFormat>()
 
-/** English formats, cached: building an Intl.DateTimeFormat is the slow part. */
-function format(timeZone: string, options: Intl.DateTimeFormatOptions): Intl.DateTimeFormat {
-  const key = `${timeZone}|${JSON.stringify(options)}`
+/**
+ * Cached formats, English unless a locale is given: building an
+ * Intl.DateTimeFormat is the slow part.
+ */
+function format(timeZone: string, options: Intl.DateTimeFormatOptions, locale = 'en-US'): Intl.DateTimeFormat {
+  const key = `${locale}|${timeZone}|${JSON.stringify(options)}`
   let found = formats.get(key)
   if (!found) {
-    found = new Intl.DateTimeFormat('en-US', { timeZone, ...options })
+    found = new Intl.DateTimeFormat(locale, { timeZone, ...options })
     formats.set(key, found)
   }
   return found
@@ -108,9 +111,9 @@ export function utcLabel(offset: number): string {
   return `UTC${offset < 0 ? '−' : '+'}${Math.floor(abs / 60)}${abs % 60 ? `:${pad(abs % 60)}` : ''}`
 }
 
-/** "Thursday, September 24, 2026" */
-export const longDate = (date: Date, timeZone: string) =>
-  format(timeZone, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(date)
+/** "Thursday, September 24, 2026", or the same date the way `locale` writes it ("2026年9月24日木曜日"). */
+export const longDate = (date: Date, timeZone: string, locale?: string) =>
+  format(timeZone, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }, locale).format(date)
 
 /** Zones some browsers still report by their old names. */
 const RENAMED_ZONES: Record<string, string> = {

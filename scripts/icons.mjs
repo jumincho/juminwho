@@ -48,15 +48,16 @@ const iconPage = (scale, background) =>
      img { width: ${scale * 100}vw; height: ${scale * 100}vw; }`,
   )
 
+// Link previews speak the default language, English.
 const ogPage = page(
   `<div class="blob a"></div><div class="blob b"></div><div class="blob c"></div><div class="blob d"></div>
    <main>
-     <p class="greeting">${labels.greeting}</p>
+     <p class="greeting">${labels.greeting.en}</p>
      <h1>${profile.name}</h1>
      <p class="ko">${profile.nameKo}</p>
-     <p class="tagline">${profile.tagline}</p>
-     <p class="role">${profile.role}</p>
-     <p class="role">${profile.department.label}, ${profile.university.label}</p>
+     <p class="tagline">${profile.tagline.en}</p>
+     <p class="role">${profile.role.en}</p>
+     <p class="role">${labels.affiliationOrder.en(profile.department.label.en, profile.university.label.en).join('')}</p>
    </main>
    <figure>
      <div class="halo"></div>

@@ -57,6 +57,13 @@
   }
 }
 
+@media (max-width: 26rem) {
+  .toggle {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .toggle,
   .icon {

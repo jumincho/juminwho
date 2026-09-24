@@ -1,18 +1,20 @@
 import { BadgeCheck, Trophy } from 'lucide-react'
 import Panel from '../components/Panel'
 import { certifications, honors, labels } from '../data/profile'
+import { useLanguage } from '../hooks/useLanguage'
 import { panelProps } from './looks'
 import styles from './Honors.module.css'
 
-const stickers = [
-  ...honors.map(({ title, org }) => ({ title, caption: org, Icon: Trophy })),
-  ...certifications.map((title) => ({ title, caption: labels.certification, Icon: BadgeCheck })),
-]
-
 /** Awards and certifications as little stickers. */
 export default function Honors() {
+  const { t } = useLanguage()
+  const stickers = [
+    ...honors.map(({ title, org }) => ({ title: t(title), caption: t(org), Icon: Trophy })),
+    ...certifications.map((title) => ({ title: t(title), caption: t(labels.certification), Icon: BadgeCheck })),
+  ]
+
   return (
-    <Panel {...panelProps('honors')}>
+    <Panel {...panelProps('honors', t)}>
       <ul className={styles.stickers}>
         {stickers.map(({ title, caption, Icon }) => (
           <li key={title} className={styles.sticker}>
