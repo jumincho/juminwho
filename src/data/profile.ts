@@ -303,8 +303,7 @@ export const honors: Honor[] = [
     },
   },
   {
-    // A second runner-up comes third.
-    title: { en: '2nd Runner-up', 'zh-CN': '季军', 'zh-HK': '季軍', ja: '第3位', ko: '3위' },
+    title: { en: 'Silver Award', 'zh-CN': '银奖', 'zh-HK': '銀獎', ja: '銀賞', ko: '은상' },
     org: {
       en: 'Department of Computer Science Project Competition',
       'zh-CN': '计算机科学系项目竞赛',
@@ -338,7 +337,7 @@ export const juminTime = {
     'zh-CN': 'Jumin 那边现在几点？',
     'zh-HK': 'Jumin 那邊現在幾點？',
     ja: 'ジュミンは今、何時？',
-    ko: '지금 주민이는 몇 시일까요?',
+    ko: '지금 주민은 몇 시일까요?',
   } satisfies Localized,
   timeZone: 'Asia/Seoul',
   zoneName: 'KST',
@@ -418,7 +417,7 @@ export const juminTime = {
   } satisfies Localized,
   modes: {
     local: { en: 'Local', 'zh-CN': '本地', 'zh-HK': '本地', ja: 'ローカル', ko: '내 시간' },
-    jumin: { en: 'Jumin', 'zh-CN': 'Jumin', 'zh-HK': 'Jumin', ja: 'ジュミン', ko: '주민이 시간' },
+    jumin: { en: 'Jumin', 'zh-CN': 'Jumin', 'zh-HK': 'Jumin', ja: 'ジュミン', ko: '주민 시간' },
   } satisfies Record<'local' | 'jumin', Localized>,
   using: {
     local: {
@@ -433,7 +432,7 @@ export const juminTime = {
       'zh-CN': 'Jumin 的时间（KST）',
       'zh-HK': 'Jumin 的時間（KST）',
       ja: 'ジュミンの時間（KST）',
-      ko: '주민이 시간 기준 (KST)',
+      ko: '주민 시간 기준 (KST)',
     },
   } satisfies Record<'local' | 'jumin', Localized>,
   days: {
