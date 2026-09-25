@@ -5,7 +5,7 @@
 - 콘텐츠(사실 정보와 화면 문구)는 전부 `src/data/profile.ts`에만 있습니다. JSX에 사실 정보를 직접 쓰지 마세요.
 - 사이트와 GitHub 프로필은 다섯 언어(English 기본, 简体中文, 繁體中文, 日本語, 한국어)입니다. 문구는 `Localized`(`{ en, 'zh-CN', 'zh-HK', ja, ko }`)로 다섯 언어를 모두 채웁니다. 논문 제목·저자·학회명, 연구실, LinkedIn, GitHub 같은 고유 명사는 번역하지 않습니다. 언어는 `?lang=` → `localStorage`의 `juminwho:lang` → 영어 순서로 정하며, 이 키와 매개변수는 `src/lib/i18n.ts`와 `index.html`의 인라인 스크립트가 함께 씁니다. 저장소 README도 `README.md`(영어)와 `README.<code>.md` 네 개가 있으니, 내용을 바꾸면 다섯 개를 함께 고칩니다.
 - 디자인 규칙은 `docs/DESIGN.md`, 토큰은 `src/styles/tokens.css`를 따릅니다. 몽글몽글·코지: 크림/코코아 색, 파스텔 톤, 둥근 쿠션 패널, 느리고 작은 모션(모션 줄이기 존중).
-- 유지해야 하는 아이덴티티 요소: 이름 호버(또는 스크롤) 시 "JUMIN WHO?" 전환, 1998-07-10 기준 실시간 나이 카운터, 마스코트 몽글이(`public/favicon.svg`), Jumin 시계.
+- 유지해야 하는 아이덴티티 요소: 이름 호버(또는 스크롤) 시 "JUMIN WHO?" 전환, 1998-07-10 기준 실시간 나이 카운터, 마스코트 몽글이(통나무에 앞발을 걸친 아기 판다, `public/favicon.svg`), Jumin 시계.
 - Jumin 시계(`src/sections/JuminTime.tsx`): Local | Jumin 스위치로 방문자 시간과 Jumin 시간(KST)을 보여 주고, KST 일과표(`profile.ts`의 `juminTime.routine`)로 상태를 정합니다. 모든 상태 앞에는 반드시 "maybe…"(다른 언어에서는 `juminTime.maybe`의 같은 뜻의 말)를 붙입니다. 일과표 자체와 "until …" 같은 다음 상태 시각은 화면에 보여 주지 않고, 장소 줄·하루 리본·시차 줄도 두지 않습니다(자리를 줄이기 위해 뺌). 일과표를 바꾸면 `scripts/snapshots.mjs`의 `routineCases`도 맞춥니다.
 - 변경 후 `npm run lint`와 `npm run build`가 통과해야 하며, `npm run snapshots`로 375px/1280px, 라이트/다크, 모든 언어에서 확인합니다.
 - 마스코트·팔레트·이름·소개를 바꾸면 `npm run icons`로 아이콘과 OG 이미지를 다시 만듭니다.
