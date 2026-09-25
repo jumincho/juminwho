@@ -15,7 +15,7 @@ English · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-HK.md) ·
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/preview-dark.jpg" />
-  <img src="docs/preview-light.jpg" alt="The first screen: the name and a fact card on a cream background, next to a photo under cherry blossoms and a panda mascot" />
+  <img src="docs/preview-light.jpg" alt="The first screen: the name and a fact card on a cream background, next to a photo under cherry blossoms and a peach mascot" />
 </picture>
 
 ## Features
@@ -31,8 +31,8 @@ English · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-HK.md) ·
 - Five languages: English (the default), 简体中文, 繁體中文, 日本語 and 한국어, picked from a menu
   in the header. The choice is remembered, and a link such as `?lang=ja` opens the page in that
   language.
-- Mongle the mascot, a fluffy panda cub with its paws over a log, which becomes the favicon, the
-  app icons and the link-preview (Open Graph) image.
+- Mongle the mascot, a peach mochi that becomes the favicon, the app icons and the link-preview
+  (Open Graph) image.
 - Round flag stickers in front of places: where Jumin is based, and where each paper was presented.
 - A theme toggle that follows the operating system until you pick one, a copy-email button and
   print styles.
