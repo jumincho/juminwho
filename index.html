@@ -24,7 +24,7 @@
         var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
         document.documentElement.dataset.theme = dark ? 'dark' : 'light'
         lang = new URLSearchParams(location.search).get('lang') || lang
-        if (/^(en|zh-CN|zh-HK|ja|ko)$/.test(lang)) document.documentElement.lang = lang
+        if (/^(en|ko|zh-CN|zh-HK|ja)$/.test(lang)) document.documentElement.lang = lang
       })()
     </script>
   </head>

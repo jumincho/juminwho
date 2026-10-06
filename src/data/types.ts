@@ -1,7 +1,7 @@
 /** Shapes of the content in `profile.ts`. */
 
 /** The languages the site speaks, in menu order; English is the default. */
-export type Lang = 'en' | 'zh-CN' | 'zh-HK' | 'ja' | 'ko'
+export type Lang = 'en' | 'ko' | 'zh-CN' | 'zh-HK' | 'ja'
 
 /**
  * One value per language: usually text, sometimes a function that builds it.

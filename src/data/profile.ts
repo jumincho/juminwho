@@ -26,10 +26,10 @@ import type {
 /** Menu order. English is the default; `?lang=ko` (etc.) opens the page in another language. */
 export const languages: Language[] = [
   { code: 'en', region: 'US', name: 'English', locale: 'en-US' },
+  { code: 'ko', region: 'KR', name: '한국어', locale: 'ko-KR' },
   { code: 'zh-CN', region: 'CN', name: '简体中文', locale: 'zh-CN' },
   { code: 'zh-HK', region: 'HK', name: '繁體中文', locale: 'zh-HK' },
   { code: 'ja', region: 'JP', name: '日本語', locale: 'ja-JP' },
-  { code: 'ko', region: 'KR', name: '한국어', locale: 'ko-KR' },
 ]
 
 export const site = {

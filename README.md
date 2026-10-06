@@ -9,7 +9,7 @@ Jeonbuk National University.
 
 <https://jumincho.github.io/juminwho/>
 
-English · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-HK.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
+English · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-HK.md) · [日本語](README.ja.md)
 
 </div>
 
@@ -28,7 +28,7 @@ English · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-HK.md) ·
   yours, and what Jumin is maybe doing right now by a weekday and weekend routine that stays behind
   the scenes: maybe… working, maybe… getting ready for work, maybe… asleep, or maybe… in
   superposition, every state at once until observed.
-- Five languages: English (the default), 简体中文, 繁體中文, 日本語 and 한국어, picked from a menu
+- Five languages: English (the default), 한국어, 简体中文, 繁體中文 and 日本語, picked from a menu
   in the header. The choice is remembered, and a link such as `?lang=ja` opens the page in that
   language.
 - Mongle the mascot, a peach mochi that becomes the favicon, the app icons and the link-preview
