@@ -116,7 +116,7 @@ chromium`을 한 번 실행하거나, `PLAYWRIGHT_CHROMIUM=/path/to/chrome`으�
 | `labels` | 인사말, 라벨, 버튼 이름, 스크린리더용 문장 |
 | `githubProfile` | GitHub 프로필 README에서만 쓰는 몇 가지 문구와 주소 |
 
-- 문구는 `Localized` 형식입니다. 언어마다 하나씩 `{ en, 'zh-CN', 'zh-HK', ja, ko }`로 적고, 번역이
+- 문구는 `Localized` 형식입니다. 언어마다 하나씩 `{ en, ko, 'zh-CN', 'zh-HK', ja }`로 적고, 번역이
   하나라도 빠지면 TypeScript가 막습니다. 고유 명사는 그대로 둡니다. 논문 제목, 저자, 학회명은 발표된
   그대로, 연구실과 LinkedIn, GitHub도 그대로입니다.
 - 한국어는 어디에 써도 됩니다. 빌드할 때 한글 디스플레이 글꼴(Jua)을 실제로 쓰인 글자만 남기고 줄입니다.

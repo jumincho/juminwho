@@ -108,7 +108,7 @@ npm run dev        # http://localhost:5173
 | `labels` | 问候语、标签、按钮名称和屏幕阅读器文字 |
 | `githubProfile` | 只在 GitHub 个人主页 README 中使用的几段文字和网址 |
 
-- 文字采用 `Localized` 格式：每种语言一条，写作 `{ en, 'zh-CN', 'zh-HK', ja, ko }`，缺少任何一种翻译，TypeScript 都会报错。专有名词保持原样：论文标题、作者和会议名称按发表时的写法，实验室、LinkedIn 和 GitHub 也保持不变。
+- 文字采用 `Localized` 格式：每种语言一条，写作 `{ en, ko, 'zh-CN', 'zh-HK', ja }`，缺少任何一种翻译，TypeScript 都会报错。专有名词保持原样：论文标题、作者和会议名称按发表时的写法，实验室、LinkedIn 和 GitHub 也保持不变。
 - 韩文可以写在任何地方。构建时会把韩文标题字体（Jua）精简到实际用到的字符：조주민 这三个字在每个页面都会加载，其余的只在页面语言为韩语时加载。
 - 地点（`profile.location` 和每篇论文的 `place`）由城市、国家和 ISO 国家代码组成。韩国、意大利和日本在 `src/components/Flag.tsx` 中有国旗图案；其他代码在添加图案之前显示为地图图钉。
 - 作息表（`juminTime.routine`）按 KST 列出一天中的时段，写作 `{ from, to, state }`。`to` 早于 `from` 的时段会跨过午夜，属于它开始的那一天。时段重叠时，较晚开始的时段优先。卡片从不显示作息表本身，只显示当前状态，并且总是放在“maybe…”（简体中文页面上为“也许……”）之后。

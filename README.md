@@ -123,7 +123,7 @@ Edit `src/data/profile.ts` and nothing else; components never hold facts or word
 | `labels` | Greetings, labels, button names and screen-reader text |
 | `githubProfile` | The few words and addresses used only by the GitHub profile README |
 
-- Text is `Localized`: one entry per language, `{ en, 'zh-CN', 'zh-HK', ja, ko }`. TypeScript
+- Text is `Localized`: one entry per language, `{ en, ko, 'zh-CN', 'zh-HK', ja }`. TypeScript
   refuses a missing translation. Proper names stay as they are: paper titles, authors and venues
   as published, and the lab, LinkedIn and GitHub.
 - Korean text is welcome anywhere. The build subsets the Korean display font (Jua) to exactly the
