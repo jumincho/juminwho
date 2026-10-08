@@ -241,6 +241,19 @@
     animation: live 2.6s ease-in-out infinite;
   }
 
+  /* Each state idles in its own way: a rocking moon, a rising sun, a laptop typing along, a spinning atom. */
+  .icon[data-state='asleep'] svg {
+    animation: rock 6s ease-in-out infinite;
+  }
+
+  .icon[data-state='ready'] svg {
+    animation: dawn 4.8s ease-in-out infinite;
+  }
+
+  .icon[data-state='working'] svg {
+    animation: typing 2.4s ease-in-out infinite;
+  }
+
   .icon[data-state='superposition'] svg {
     animation: spin 16s linear infinite;
   }
@@ -249,6 +262,41 @@
 @keyframes live {
   50% {
     box-shadow: 0 0 0 6px color-mix(in srgb, var(--sage-pop) 12%, transparent);
+  }
+}
+
+@keyframes rock {
+  0%,
+  100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes dawn {
+  0%,
+  100% {
+    transform: translateY(2px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes typing {
+  0%,
+  40%,
+  100% {
+    transform: none;
+  }
+  10%,
+  30% {
+    transform: translateY(-1.5px);
+  }
+  20% {
+    transform: translateY(0.5px);
   }
 }
 

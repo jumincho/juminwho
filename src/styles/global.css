@@ -14,13 +14,24 @@ html {
   background: var(--bg);
   scroll-padding-top: calc(var(--header-h) + var(--space-4));
   scrollbar-color: var(--line-strong) transparent;
-  transition: background-color var(--dur) var(--ease-out);
 }
 
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
   }
+}
+
+/*
+ * A theme change the system makes, or a click where view transitions do not
+ * run, fades the page colours. During a view transition the new theme must be
+ * final at once, so the fade steps aside.
+ */
+:root:not([data-transition]),
+:root:not([data-transition]) body {
+  transition:
+    background-color var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out);
 }
 
 body {
@@ -34,7 +45,6 @@ body {
   /* Korean breaks between words, not syllables; Chinese and Japanese break between characters (below). */
   word-break: keep-all;
   overflow-wrap: break-word;
-  transition: color var(--dur) var(--ease-out);
 }
 
 /* Korean headings are in Jua, which has one weight; a faked bold would smear it. */
@@ -97,6 +107,17 @@ button {
 
 .link:focus-visible {
   border-radius: 4px;
+}
+
+/*
+ * View transitions (src/lib/motion.ts). Switching the language cross-fades the
+ * page (the browser's default). Switching the theme reveals the new one in a
+ * circle growing from the toggle, so neither snapshot fades.
+ */
+:root[data-transition='theme']::view-transition-old(root),
+:root[data-transition='theme']::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 /* ---- utilities ---- */

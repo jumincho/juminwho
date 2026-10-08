@@ -4,18 +4,50 @@
   background: var(--bg-sunk);
 }
 
-/* A row of soft bumps along the top edge: the footer is a cloud. */
-.footer::before {
+/*
+ * The top edge is a cloud: a row of soft bumps with a fainter, larger row
+ * behind it. Where the footer can clip sideways, each row reaches one tile
+ * past the page, so sliding it by one tile loops without a seam.
+ */
+.footer::before,
+.footer::after {
   content: '';
   position: absolute;
+  right: 0;
   bottom: 100%;
   left: 0;
-  right: 0;
+  pointer-events: none;
+}
+
+@supports (overflow-x: clip) {
+  .footer {
+    overflow-x: clip;
+  }
+
+  .footer::before {
+    right: -64px;
+  }
+
+  .footer::after {
+    right: -44px;
+  }
+}
+
+.footer::before {
+  height: 32px;
+  background: radial-gradient(circle at 50% 100%, var(--bg-sunk) 31px, transparent 32px) 0 0 / 64px 32px repeat-x;
+  opacity: 0.5;
+}
+
+.footer::after {
   height: 22px;
   background: radial-gradient(circle at 50% 100%, var(--bg-sunk) 21px, transparent 22px) 0 0 / 44px 22px repeat-x;
 }
 
+/* Above both rows of bumps, so Mongle sits on the cloud rather than in it. */
 .inner {
+  position: relative;
+  z-index: 1;
   display: grid;
   justify-items: center;
   gap: var(--space-2);
@@ -48,8 +80,30 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  @supports (overflow-x: clip) {
+    .footer::before {
+      animation: drift-wide 16s linear infinite;
+    }
+
+    .footer::after {
+      animation: drift-narrow 11s linear infinite;
+    }
+  }
+
   .mascot {
     animation: bob 3.6s ease-in-out infinite;
+  }
+}
+
+@keyframes drift-wide {
+  to {
+    transform: translateX(-64px);
+  }
+}
+
+@keyframes drift-narrow {
+  to {
+    transform: translateX(-44px);
   }
 }
 

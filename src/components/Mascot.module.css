@@ -1,0 +1,74 @@
+/* Mongle's own little motions; where it sits and how it bobs belong to the page that places it. */
+
+.mascot {
+  flex: none;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mascot :global(.eyes) {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: blink 6.4s ease-in-out var(--blink-delay, 0s) infinite;
+  }
+
+  .mascot :global(.sprout) {
+    transform-box: fill-box;
+    transform-origin: 30% 100%;
+    animation: sway 5.2s ease-in-out var(--blink-delay, 0s) infinite;
+  }
+
+  /* A poke makes it wobble like jelly, squashing onto its bottom. */
+  .body {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+  }
+
+  .mascot:active .body {
+    animation: squish 720ms var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    .mascot:hover .body {
+      animation: squish 720ms var(--ease-out);
+    }
+  }
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  98%,
+  100% {
+    transform: none;
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(-9deg);
+  }
+}
+
+@keyframes squish {
+  0%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: scale(1.14, 0.84);
+  }
+  50% {
+    transform: scale(0.94, 1.07);
+  }
+  75% {
+    transform: scale(1.03, 0.97);
+  }
+}

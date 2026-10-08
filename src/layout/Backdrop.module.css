@@ -6,6 +6,24 @@
   pointer-events: none;
 }
 
+/* The shader's canvas, stretched from a small drawing buffer: it is soft anyway. Hidden until it paints. */
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+/* Once the shader paints, it takes over from the CSS blobs. */
+.canvas[data-painting] {
+  opacity: 1;
+}
+
+.canvas[data-painting] ~ .blob {
+  visibility: hidden;
+}
+
 /* Radial gradients fade to nothing on their own, so no blur filter is needed. */
 .blob {
   position: absolute;
@@ -59,6 +77,16 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* The canvas fades in over the blobs, which stop at once and step aside when it is done. */
+  .canvas {
+    transition: opacity 900ms var(--ease-out);
+  }
+
+  .canvas[data-painting] ~ .blob {
+    animation-play-state: paused;
+    transition: visibility 0s 900ms;
+  }
+
   .a {
     animation: drift-a 46s ease-in-out infinite alternate;
   }

@@ -1,12 +1,15 @@
 import { useEffect, useLayoutEffect, useMemo, useState, type ReactNode } from 'react'
+import { flushSync } from 'react-dom'
 import type { Lang, Localized } from '../data/types'
 import { applyLang, readInitialLang, storeLang } from '../lib/i18n'
 import { LanguageContext, type LanguageValue } from '../lib/language-context'
+import { withViewTransition } from '../lib/motion'
 
 /**
  * Holds the page language: `?lang=` or the stored choice on arrival, English
- * otherwise. Korean pulls in the full Jua subset for its headings on demand;
- * other visitors only ever load the three characters of 조주민.
+ * otherwise. A switch cross-fades the page where view transitions run. Korean
+ * pulls in the full Jua subset for its headings on demand; other visitors only
+ * ever load the three characters of 조주민.
  */
 export default function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>(readInitialLang)
@@ -22,7 +25,7 @@ export default function LanguageProvider({ children }: { children: ReactNode }) 
       lang,
       setLang: (next) => {
         storeLang(next)
-        setLang(next)
+        withViewTransition('language', () => flushSync(() => setLang(next)))
       },
       t: <T,>(localized: Localized<T>) => localized[lang],
     }),

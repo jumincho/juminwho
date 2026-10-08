@@ -1,4 +1,5 @@
 import { Moon, Sun } from 'lucide-react'
+import type { MouseEvent } from 'react'
 import { labels } from '../data/profile'
 import { useLanguage } from '../hooks/useLanguage'
 import { useTheme } from '../hooks/useTheme'
@@ -11,11 +12,17 @@ export default function ThemeToggle() {
   const theme = useTheme()
   const label = t(theme === 'dark' ? labels.themeToLight : labels.themeToDark)
 
+  // The new theme spreads out from the middle of the button.
+  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
+    const box = event.currentTarget.getBoundingClientRect()
+    toggleTheme({ x: box.left + box.width / 2, y: box.top + box.height / 2 })
+  }
+
   return (
     <button
       type="button"
       className={styles.toggle}
-      onClick={() => toggleTheme()}
+      onClick={onClick}
       aria-label={label}
       title={label}
       data-current={theme}

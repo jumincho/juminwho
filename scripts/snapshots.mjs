@@ -7,14 +7,20 @@
  * Serves dist/ with Vite's preview server and drives Chromium at 375 px and
  * 1280 px in light and dark. Fails on console errors or failed requests,
  * horizontal overflow, a header nav that does not fit, broken images or
- * icons, fonts that did not load, a frozen age counter or clock, a missing
- * "JUMIN WHO?" after hover or scroll, a theme toggle or Local | Jumin switch
- * that does nothing, a status without "maybe…", a status that disagrees with
- * Jumin's routine at fixed moments, animations that keep running with
- * reduced motion, or a language (every one in profile.ts, at both widths)
- * that does not switch, does not fit or loses its hedge, or a language menu
- * that does not pick, remember and link. Full-page screenshots go to
- * snapshots/ (git-ignored) for a side-by-side look against the last build.
+ * icons, fonts that did not load, a frozen age counter or clock, a shader
+ * backdrop that does not paint and move, a missing "JUMIN WHO?" after hover
+ * or scroll, a theme toggle or Local | Jumin switch that does nothing, a
+ * status without "maybe…", a status that disagrees with Jumin's routine at
+ * fixed moments, animations (CSS or the shader) that keep running with
+ * reduced motion, CSS blobs that do not take over without WebGL, or a
+ * language (every one in profile.ts, at both widths) that does not switch,
+ * does not fit or loses its hedge, or a language menu that does not pick,
+ * remember and link. Full-page screenshots go to snapshots/ (git-ignored) for
+ * a side-by-side look against the last build.
+ *
+ * Headless Chromium draws WebGL in software, which the site declines
+ * (failIfMajorPerformanceCaveat), so the checks let the shader run anyway,
+ * except in the one that takes WebGL away.
  */
 import { mkdir } from 'node:fs/promises'
 import { preview } from 'vite'
@@ -50,6 +56,49 @@ const url = server.resolvedUrls.local[0]
 const browser = await launchChromium()
 const failures = []
 
+/** Lets the shader backdrop run on software WebGL, or takes WebGL away entirely. */
+const allowSoftwareWebGL = () => {
+  const getContext = HTMLCanvasElement.prototype.getContext
+  HTMLCanvasElement.prototype.getContext = function (type, attributes) {
+    return getContext.call(this, type, attributes && { ...attributes, failIfMajorPerformanceCaveat: false })
+  }
+}
+const blockWebGL = () => {
+  const getContext = HTMLCanvasElement.prototype.getContext
+  HTMLCanvasElement.prototype.getContext = function (type, ...rest) {
+    return /webgl/.test(type) ? null : getContext.call(this, type, ...rest)
+  }
+}
+
+/** A browser context for the checks: the shader allowed, unless `webgl` is false. */
+async function newContext(options, { webgl = true } = {}) {
+  const context = await browser.newContext(options)
+  await context.addInitScript(webgl ? allowSoftwareWebGL : blockWebGL)
+  return context
+}
+
+/** The backdrop: whether the shader paints and moves, and whether the CSS blobs drift and show. */
+const backdropState = (page) =>
+  page.evaluate(() => {
+    const canvas = document.querySelector('canvas')
+    const blobs = [...document.querySelectorAll('canvas ~ span')].slice(0, -1) // the last one is the grain
+    return {
+      painting: Boolean(canvas?.hasAttribute('data-painting')),
+      playing: Boolean(canvas?.hasAttribute('data-playing')),
+      drifting: blobs.some((blob) =>
+        blob.getAnimations().some((animation) => animation instanceof CSSAnimation && animation.playState === 'running'),
+      ),
+      blobsVisible: blobs.length > 0 && blobs.every((blob) => getComputedStyle(blob).visibility === 'visible'),
+    }
+  })
+
+/** Waits until `<html>` carries `value` in `attribute` (theme and language switches finish after a view transition). */
+const waitForRoot = (page, attribute, value) =>
+  page
+    .waitForFunction(([name, expected]) => document.documentElement.getAttribute(name) === expected, [attribute, value], { timeout: 3000 })
+    .then(() => true)
+    .catch(() => false)
+
 /** Opacity of the "JUMIN WHO?" face inside `selector`, or 0 when it is missing. */
 const aliasOpacity = (page, selector) =>
   page.evaluate(
@@ -63,7 +112,7 @@ const aliasOpacity = (page, selector) =>
 async function checkPage(vp, scheme) {
   const tag = `${vp.name}/${scheme}`
   const fail = (message) => failures.push(`${tag}: ${message}`)
-  const context = await browser.newContext({ viewport: vp, colorScheme: scheme })
+  const context = await newContext({ viewport: vp, colorScheme: scheme })
   const page = await context.newPage()
 
   page.on('console', (message) => message.type() === 'error' && fail(`console error: ${message.text()}`))
@@ -73,6 +122,11 @@ async function checkPage(vp, scheme) {
 
   await page.goto(url, { waitUntil: 'networkidle' })
   await page.evaluate(() => document.fonts.ready)
+
+  const backdrop = await backdropState(page)
+  if (!backdrop.painting) fail('the shader backdrop does not paint')
+  else if (!backdrop.playing) fail('the shader backdrop stands still')
+  else if (backdrop.drifting) fail('the CSS blobs keep drifting under the shader')
 
   const state = await page.evaluate(async () => {
     const heads = [...document.querySelectorAll('link[rel~="icon"], link[rel="apple-touch-icon"], link[rel="manifest"]')]
@@ -147,11 +201,11 @@ async function checkPage(vp, scheme) {
   await page.screenshot({ path: `${OUT}/${vp.name}-${scheme}-scrolled.png`, animations: 'disabled' })
 
   const toggle = page.locator('header button[data-current]')
+  const other = scheme === 'dark' ? 'light' : 'dark'
   await toggle.click()
-  const flipped = await page.evaluate(() => document.documentElement.dataset.theme)
+  if (!(await waitForRoot(page, 'data-theme', other))) fail(`the theme toggle does not switch ${scheme} → ${other}`)
   await toggle.click()
-  const restored = await page.evaluate(() => document.documentElement.dataset.theme)
-  if (flipped === scheme || restored !== scheme) fail(`theme toggle went ${scheme} → ${flipped} → ${restored}`)
+  if (!(await waitForRoot(page, 'data-theme', scheme))) fail(`the theme toggle does not switch back to ${scheme}`)
 
   for (const mode of ['local', 'jumin']) {
     await page.locator(`label[for="clock-${mode}"]`).click()
@@ -162,9 +216,9 @@ async function checkPage(vp, scheme) {
   console.log(`${failures.some((f) => f.startsWith(tag)) ? '✗' : '✓'} ${tag}`)
 }
 
-/** With reduced motion only the age counter may move, and it still ticks once a second. */
+/** With reduced motion only the age counter and the clock may move, once a second; the shader holds one frame. */
 async function checkReducedMotion() {
-  const context = await browser.newContext({ viewport: viewports[0], reducedMotion: 'reduce' })
+  const context = await newContext({ viewport: viewports[0], reducedMotion: 'reduce' })
   const page = await context.newPage()
   await page.goto(url, { waitUntil: 'networkidle' })
   await page.mouse.wheel(0, 240)
@@ -173,6 +227,9 @@ async function checkReducedMotion() {
     document.getAnimations().filter((animation) => animation.playState === 'running').length,
   )
   if (running > 0) failures.push(`reduced motion: ${running} animation(s) still running`)
+  const backdrop = await backdropState(page)
+  if (!backdrop.painting) failures.push('reduced motion: the shader backdrop does not paint its still frame')
+  if (backdrop.playing) failures.push('reduced motion: the shader backdrop keeps moving')
   const counter = page.locator('[data-live-age]')
   const before = await counter.textContent()
   await page.waitForTimeout(1200)
@@ -185,9 +242,26 @@ async function checkReducedMotion() {
   console.log(`${failures.some((f) => f.startsWith('reduced motion')) ? '✗' : '✓'} reduced motion`)
 }
 
+/** Without WebGL the CSS blobs stay and drift, and nothing complains. */
+async function checkWithoutWebGL() {
+  const fail = (message) => failures.push(`without WebGL: ${message}`)
+  const context = await newContext({ viewport: viewports[1] }, { webgl: false })
+  const page = await context.newPage()
+  page.on('console', (message) => message.type() === 'error' && fail(`console error: ${message.text()}`))
+  page.on('pageerror', (error) => fail(`page error: ${error.message}`))
+  await page.goto(url, { waitUntil: 'networkidle' })
+  const backdrop = await backdropState(page)
+  if (backdrop.painting) fail('the canvas claims to paint')
+  if (!backdrop.blobsVisible) fail('the CSS blobs are not showing')
+  if (!backdrop.drifting) fail('the CSS blobs do not drift')
+  await page.screenshot({ path: `${OUT}/mobile-light-css-blobs.png`, animations: 'disabled' })
+  await context.close()
+  console.log(`${failures.some((f) => f.startsWith('without WebGL')) ? '✗' : '✓'} without WebGL`)
+}
+
 /** The status card at fixed moments, seen from Los Angeles so the two clocks differ. */
 async function checkRoutine() {
-  const context = await browser.newContext({ viewport: viewports[0], timezoneId: 'America/Los_Angeles' })
+  const context = await newContext({ viewport: viewports[0], timezoneId: 'America/Los_Angeles' })
   const page = await context.newPage()
   for (const [kst, expected] of routineCases) {
     await page.clock.setFixedTime(new Date(`${kst}+09:00`))
@@ -204,7 +278,7 @@ async function checkLanguage(vp, code) {
   const scheme = vp.name === 'desktop' ? 'light' : 'dark'
   const tag = `${vp.name}/${code}`
   const fail = (message) => failures.push(`${tag}: ${message}`)
-  const context = await browser.newContext({ viewport: vp, colorScheme: scheme })
+  const context = await newContext({ viewport: vp, colorScheme: scheme })
   const page = await context.newPage()
   page.on('console', (message) => message.type() === 'error' && fail(`console error: ${message.text()}`))
   page.on('pageerror', (error) => fail(`page error: ${error.message}`))
@@ -238,24 +312,25 @@ async function checkLanguage(vp, code) {
 /** Picking a language in the menu switches the page, puts it in the address and remembers it. */
 async function checkLanguageMenu() {
   const fail = (message) => failures.push(`language menu: ${message}`)
-  const context = await browser.newContext({ viewport: viewports[0] })
+  const context = await newContext({ viewport: viewports[0] })
   const page = await context.newPage()
   await page.goto(url, { waitUntil: 'networkidle' })
-  const pick = async (name) => {
+  const pick = async ({ name, code }) => {
     await page.locator('header button[aria-haspopup="menu"]').click()
     await page.getByRole('menuitemradio', { name }).click()
+    if (!(await waitForRoot(page, 'lang', code))) fail(`picking ${name} does not switch the page`)
   }
   const [target, english] = [content.languages.at(-2), content.languages[0]]
 
   if ((await page.evaluate(() => document.documentElement.lang)) !== english.code) fail('the page does not start in English')
-  await pick(target.name)
+  await pick(target)
   const picked = await page.evaluate(() => ({ lang: document.documentElement.lang, search: location.search, stored: localStorage.getItem('juminwho:lang') }))
   if (picked.lang !== target.code) fail(`picking ${target.name} left <html lang> at "${picked.lang}"`)
   if (picked.search !== `?lang=${target.code}`) fail(`the address reads "${picked.search}"`)
   if (picked.stored !== target.code) fail('the choice was not stored')
   await page.goto(url, { waitUntil: 'networkidle' })
   if ((await page.evaluate(() => document.documentElement.lang)) !== target.code) fail('the stored choice is not used on the next visit')
-  await pick(english.name)
+  await pick(english)
   if ((await page.evaluate(() => location.search)) !== '') fail('English still carries ?lang= in the address')
 
   await context.close()
@@ -266,6 +341,7 @@ try {
   await mkdir(OUT, { recursive: true })
   for (const vp of viewports) for (const scheme of schemes) await checkPage(vp, scheme)
   await checkReducedMotion()
+  await checkWithoutWebGL()
   await checkRoutine()
   for (const vp of viewports) for (const { code } of content.languages.slice(1)) await checkLanguage(vp, code)
   await checkLanguageMenu()

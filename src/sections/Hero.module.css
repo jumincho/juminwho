@@ -260,6 +260,44 @@
 /* ---- motion ---- */
 
 @media (prefers-reduced-motion: no-preference) {
+  /*
+   * Arrival, once per page load: the intro and the facts rise in one after
+   * another, and the portrait plops down like a mochi (a transform only, so
+   * the photo is painted at once).
+   */
+  .greeting,
+  .name,
+  .nameKo,
+  .tagline,
+  .facts,
+  .contact {
+    animation: rise 720ms var(--ease-out) backwards;
+  }
+
+  .name {
+    animation-delay: 70ms;
+  }
+
+  .nameKo {
+    animation-delay: 140ms;
+  }
+
+  .tagline {
+    animation-delay: 210ms;
+  }
+
+  .facts {
+    animation-delay: 300ms;
+  }
+
+  .contact {
+    animation-delay: 380ms;
+  }
+
+  .portrait {
+    animation: plop 900ms var(--ease-out) 120ms backwards;
+  }
+
   .wave {
     animation: wave 3.2s ease-in-out infinite;
   }
@@ -286,6 +324,22 @@
 
   .mascot {
     animation: bob 3.6s ease-in-out infinite;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes plop {
+  from {
+    transform: translateY(-12px) scale(0.9, 0.86);
+  }
+  45% {
+    transform: translateY(4px) scale(1.04, 0.95);
   }
 }
 

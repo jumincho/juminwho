@@ -208,7 +208,7 @@ export function buildCards(c, lang, { Flag, LinkedInIcon, mascot, photo }) {
     'footer',
     'wide',
     `<div class="foot">
-      <div class="bumps">${'<span class="bump"></span>'.repeat(16)}</div>
+      <div class="bumps" data-anim="puff">${'<span class="bump"></span>'.repeat(16)}</div>
       <div class="foot-body">
         <p class="thanks">${esc(t(labels.thanks))}</p>
         <p class="wish">${esc(t(labels.signOff))}</p>

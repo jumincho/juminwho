@@ -4,7 +4,8 @@
  * like the site (docs/DESIGN.md, "모션").
  */
 
-g[class] {
+/* Zero specificity, so the classes below can move the pivot (:where adds none). */
+:where(g[class]) {
   transform-box: fill-box;
   transform-origin: center;
 }
@@ -170,6 +171,45 @@ g[class] {
 @keyframes bob {
   50% {
     transform: translateY(-6px) rotate(-4deg);
+  }
+}
+
+/* Mongle blinks and sways its sprout, as on the site (the groups come from public/favicon.svg). */
+.eyes {
+  animation: blink 6.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  98%,
+  100% {
+    transform: none;
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+.sprout {
+  transform-origin: 30% 100%;
+  animation: sway 5.2s ease-in-out infinite;
+}
+
+@keyframes sway {
+  50% {
+    transform: rotate(-9deg);
+  }
+}
+
+/* The footer's row of cloud bumps sways a little, back and forth. */
+.puff {
+  animation: puff 9s ease-in-out infinite alternate;
+}
+
+@keyframes puff {
+  to {
+    transform: translateX(-10px);
   }
 }
 

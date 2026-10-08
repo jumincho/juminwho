@@ -1,3 +1,4 @@
+import { withViewTransition } from './motion'
 import { subscribeToMedia } from './subscribe'
 
 export type Theme = 'light' | 'dark'
@@ -62,9 +63,32 @@ export function followSystemTheme(): void {
   })
 }
 
-/** Switches to the other theme and remembers the choice. */
-export function toggleTheme(): void {
-  const next: Theme = readTheme() === 'dark' ? 'light' : 'dark'
-  applyTheme(next)
-  storeTheme(next)
+/** The theme a transition is about to apply, so a quick second click still flips it back. */
+let pending: Theme | null = null
+
+/**
+ * Switches to the other theme and remembers the choice. Where view
+ * transitions run, the new theme spreads from `origin` (the toggle's centre,
+ * in viewport px) in a growing circle, like a lamp coming on.
+ */
+export function toggleTheme(origin?: { x: number; y: number }): void {
+  const next: Theme = (pending ?? readTheme()) === 'dark' ? 'light' : 'dark'
+  pending = next
+  const transition = withViewTransition('theme', () => {
+    applyTheme(next)
+    storeTheme(next)
+    if (pending === next) pending = null
+  })
+  if (!transition || !origin) return
+  const { x, y } = origin
+  const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))
+  transition.ready
+    .then(() => {
+      document.documentElement.animate(
+        { clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+        { duration: 720, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', pseudoElement: '::view-transition-new(root)' },
+      )
+    })
+    // `ready` rejects when another transition cuts this one short; the theme has switched anyway.
+    .catch(() => {})
 }
