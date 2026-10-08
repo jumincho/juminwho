@@ -10,12 +10,11 @@
  */
 import { readFile, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
-import { runnerImport } from 'vite'
 import { launchChromium } from './lib/browser.mjs'
+import { loadModules } from './lib/load-modules.mjs'
 
 const require = createRequire(import.meta.url)
-const { module: content } = await runnerImport('./src/data/profile.ts')
-const { labels, profile } = content
+const [{ labels, profile }] = await loadModules(['/src/data/profile.ts'])
 
 const mascot = await readFile('public/favicon.svg', 'utf8')
 const mascotUri = `data:image/svg+xml;base64,${Buffer.from(mascot).toString('base64')}`

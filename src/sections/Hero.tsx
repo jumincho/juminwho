@@ -6,12 +6,12 @@ import ExternalLink from '../components/ExternalLink'
 import LiveAge from '../components/LiveAge'
 import Mascot from '../components/Mascot'
 import NameFlip from '../components/NameFlip'
-import type { Tone } from '../components/Panel'
 import PlaceName from '../components/PlaceName'
 import { labels, profile } from '../data/profile'
 import { useLanguage } from '../hooks/useLanguage'
 import { useScrolled } from '../hooks/useScrolled'
 import { cx } from '../lib/cx'
+import type { Tone } from '../lib/tone'
 import styles from './Hero.module.css'
 
 interface FactProps {

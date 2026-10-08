@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react'
 import { labels } from '../data/profile'
 import { useLanguage } from '../hooks/useLanguage'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const YEAR_MS = 365.2425 * 24 * 60 * 60 * 1000
 const DECIMALS = 8
@@ -21,6 +22,7 @@ interface Props {
 export default function LiveAge({ birth, className }: Props) {
   const { t } = useLanguage()
   const spoken = t(labels.ageSpoken)
+  const reduceMotion = useReducedMotion()
   const digitsRef = useRef<HTMLSpanElement>(null)
   const spokenRef = useRef<HTMLSpanElement>(null)
   const birthMs = new Date(birth).getTime()
@@ -32,11 +34,10 @@ export default function LiveAge({ birth, className }: Props) {
     }
     if (spokenRef.current) spokenRef.current.textContent = spoken(Math.floor(years()))
 
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     paint()
-    const timer = window.setInterval(paint, reduce ? 1000 : 100)
+    const timer = window.setInterval(paint, reduceMotion ? 1000 : 100)
     return () => window.clearInterval(timer)
-  }, [birthMs, spoken])
+  }, [birthMs, spoken, reduceMotion])
 
   return (
     <>

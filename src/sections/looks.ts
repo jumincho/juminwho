@@ -1,7 +1,7 @@
 import { Award, BookOpen, Briefcase, GraduationCap, type LucideIcon } from 'lucide-react'
-import type { Tone } from '../components/Panel'
 import { sections, type SectionKey } from '../data/profile'
 import type { Translate } from '../lib/i18n'
+import type { Tone } from '../lib/tone'
 
 /** Icon and pastel tone of each section, shared by its panel and its nav link. */
 export const sectionLooks: Record<SectionKey, { icon: LucideIcon; tone: Tone }> = {

@@ -3,15 +3,8 @@
   flex: none;
 }
 
-/* Same round shape as the theme toggle next to it. */
 .toggle {
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background: var(--bg-sunk);
-  color: var(--ink);
+  composes: round from './RoundButton.module.css';
 }
 
 .toggle:hover,
@@ -105,20 +98,6 @@
 
 .item[aria-checked='true'] .check {
   visibility: visible;
-}
-
-@media (max-width: 40rem) {
-  .toggle {
-    width: 2.25rem;
-    height: 2.25rem;
-  }
-}
-
-@media (max-width: 26rem) {
-  .toggle {
-    width: 2rem;
-    height: 2rem;
-  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

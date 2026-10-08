@@ -1,8 +1,8 @@
 import { AlarmClock, Atom, Globe, Laptop, Moon, Sunrise, type LucideIcon } from 'lucide-react'
 import { useState } from 'react'
 import Mascot from '../components/Mascot'
-import Panel, { type Tone } from '../components/Panel'
-import { juminTime, languages } from '../data/profile'
+import Panel from '../components/Panel'
+import { juminTime } from '../data/profile'
 import type { RoutineState } from '../data/types'
 import { useClockMode } from '../hooks/useClockMode'
 import { useLanguage } from '../hooks/useLanguage'
@@ -21,6 +21,8 @@ import {
   type ClockMode,
   type Status,
 } from '../lib/clock'
+import { localeOf } from '../lib/i18n'
+import type { Tone } from '../lib/tone'
 import styles from './JuminTime.module.css'
 
 /** Icon and pastel tone of each state on the status card. */
@@ -92,7 +94,7 @@ export default function JuminTime() {
   const now = useNow()
   const [mode, setMode] = useClockMode()
   const [localZone] = useState(localTimeZone)
-  const locale = languages.find((language) => language.code === lang)!.locale
+  const locale = localeOf(lang)
 
   const jumin = wallClock(now, juminTime.timeZone)
   const shownZone = mode === 'jumin' ? juminTime.timeZone : localZone

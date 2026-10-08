@@ -1,0 +1,26 @@
+/* The round buttons at the end of the header bar (language, theme): one shape, shrinking with the bar. */
+
+.round {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--bg-sunk);
+  color: var(--ink);
+}
+
+@media (max-width: 40rem) {
+  .round {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+@media (max-width: 26rem) {
+  .round {
+    width: 2rem;
+    height: 2rem;
+  }
+}

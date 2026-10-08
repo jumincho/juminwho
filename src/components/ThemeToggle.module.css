@@ -1,12 +1,5 @@
 .toggle {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background: var(--bg-sunk);
-  color: var(--ink);
+  composes: round from './RoundButton.module.css';
   transition:
     transform var(--dur) var(--ease-spring),
     background-color var(--dur-fast) var(--ease-out);
@@ -48,20 +41,6 @@
 .toggle[data-current='dark'] .moon {
   opacity: 1;
   transform: none;
-}
-
-@media (max-width: 40rem) {
-  .toggle {
-    width: 2.25rem;
-    height: 2.25rem;
-  }
-}
-
-@media (max-width: 26rem) {
-  .toggle {
-    width: 2rem;
-    height: 2rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

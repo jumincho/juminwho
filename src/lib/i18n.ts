@@ -18,6 +18,9 @@ export type Translate = <T>(value: Localized<T>) => T
 
 export const isLang = (value: unknown): value is Lang => languages.some((language) => language.code === value)
 
+/** The locale dates are written in for a language, e.g. "ja-JP". */
+export const localeOf = (lang: Lang): string => languages.find((language) => language.code === lang)?.locale ?? lang
+
 /** The address's `?lang=`, else the visitor's last choice, else English. */
 export function readInitialLang(): Lang {
   const param = new URLSearchParams(window.location.search).get(LANG_PARAM)

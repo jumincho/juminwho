@@ -7,6 +7,9 @@ import './styles/tones.css'
 import './styles/global.css'
 import App from './App'
 import LanguageProvider from './components/LanguageProvider'
+import { followSystemTheme } from './lib/theme'
+
+followSystemTheme()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
