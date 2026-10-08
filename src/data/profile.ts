@@ -1,8 +1,9 @@
 /**
  * Every word on the page lives in this file; components only arrange it.
  *
- * Facts come from the LinkedIn profile (exported 2026-09) and the cited
- * publication records. Nothing is invented: when a fact changes, change it here.
+ * Facts come from the LinkedIn profile (last checked against its 2026-10
+ * export) and the cited publication records. Nothing is invented: when a fact
+ * changes, change it here.
  * `vite.config.ts` also reads `site` to fill the <head> tags, so keep this file
  * free of browser-only code.
  *
@@ -38,7 +39,7 @@ export const site = {
     'Jumin Cho, AI researcher and Ph.D. student in Computer Science at Jeonbuk National University.',
   url: 'https://jumincho.github.io/juminwho/',
   source: 'https://github.com/jumincho/juminwho',
-  lastUpdated: '2026-09',
+  lastUpdated: '2026-10',
 }
 
 const university: Localized = {
