@@ -20,26 +20,32 @@
 ## 기능
 
 - 말랑하고 포근한 분위기. 라이트 모드는 "크림 모닝", 다크 모드는 "코코아 나이트"입니다. 파스텔 쿠션 패널,
-  천천히 떠다니는 블롭, 구름 모양 푸터가 있습니다.
+  구름 모양 푸터, 페이지 뒤에서 천천히 떠다니는 파스텔 블롭이 있습니다.
+- 부드러운 모션. 블롭은 작은 WebGL 셰이더가 그려서, 모찌처럼 말랑하게 일렁이다가 서로 닿으면 하나로
+  녹아 붙습니다(WebGL을 쓸 수 없으면 CSS 블롭이 대신합니다). 페이지를 열면 첫 화면이 한 번 사뿐히 자리
+  잡고, 푸터의 구름 가장자리가 흘러가며, 시계 카드의 상태 아이콘도 저마다 조금씩 움직입니다. 모션 줄이기를
+  켠 방문자에게는 모두 멈춰 있습니다.
 - JUMIN WHO? 이름에 마우스를 올리거나 페이지를 스크롤하면 이름이 통통 튀며 "JUMIN WHO?"로 바뀝니다.
 - 1998-07-10부터 소수점 8자리까지 실시간으로 세는 나이 카운터.
 - 지금 주민은 몇 시일까요? 내 시간 | 주민 시간 스위치가 달린 시계 카드가 주민의 시간(KST)이나 방문자의 시간을
   보여 주고, 화면에는 드러나지 않는 평일·주말 일과표에 따라 지금 주민의 상태를 알려 줍니다: 아마도… 일하는
   중, 출근 준비 중, 자는 중, 또는 관측되기 전까지 모든 상태가 겹쳐 있는 양자 중첩 중.
 - 다섯 가지 언어: English(기본), 한국어, 简体中文, 繁體中文, 日本語. 헤더의 메뉴에서 고르면 그 선택을
-  기억하고, `?lang=ko` 같은 링크로 원하는 언어의 페이지를 바로 열 수 있습니다.
-- 복숭아 모찌 마스코트 몽글이. 파비콘, 앱 아이콘, 링크 미리보기(Open Graph) 이미지가 모두 이 그림에서
-  나옵니다.
+  기억하고, `?lang=ko` 같은 링크로 원하는 언어의 페이지를 바로 열 수 있으며, 언어를 바꾸면 페이지가
+  살며시 교차 페이드됩니다.
+- 복숭아 모찌 마스코트 몽글이. 눈을 깜빡이고 새싹을 살랑이며, 누르면 젤리처럼 출렁입니다. 파비콘, 앱
+  아이콘, 링크 미리보기(Open Graph) 이미지도 모두 이 그림에서 나옵니다.
 - 장소 앞의 동그란 국기 스티커: 주민의 위치와 각 논문을 발표한 곳.
-- 운영체제 설정을 따르다가 직접 고르면 그 값을 기억하는 테마 토글, 이메일 복사 버튼, 인쇄용 스타일.
+- 운영체제 설정을 따르다가 직접 고르면 그 값을 기억하는 테마 토글(새 테마가 버튼에서 동그랗게 퍼져
+  나옵니다), 이메일 복사 버튼, 인쇄용 스타일.
 - 모션 줄이기, 스크린리더, 키보드 탐색을 존중하고, 모든 글자가 WCAG AA 이상의 대비를 갖습니다.
 - 콘텐츠 파일은 하나뿐입니다. 모든 언어의 모든 문구가 `src/data/profile.ts`에 있습니다.
 - 같은 데이터와 디자인으로 `npm run github-profile`이 그려 내는, 다섯 언어의 GitHub 프로필 README.
 
 ## 기술 스택
 
-Vite 7, React 19, TypeScript, 디자인 토큰을 쓰는 CSS Modules, Fontsource(Fredoka, Nunito, Jua),
-lucide-react. 중국어와 일본어는 방문자 기기의 시스템 글꼴을 씁니다. 라우터, CMS, 백엔드는 없습니다.
+Vite 7, React 19, TypeScript, 디자인 토큰을 쓰는 CSS Modules, 배경을 그리는 작은 WebGL 셰이더(직접 작성),
+Fontsource(Fredoka, Nunito, Jua), lucide-react. 중국어와 일본어는 방문자 기기의 시스템 글꼴을 씁니다. 라우터, CMS, 백엔드는 없습니다.
 GitHub Actions가 사이트를 빌드해 GitHub Pages에 올립니다.
 
 ## 프로젝트 구조
@@ -48,6 +54,7 @@ GitHub Actions가 사이트를 빌드해 GitHub Pages에 올립니다.
 .
 ├── .github/workflows/deploy.yml  main에 푸시 → 린트 → 빌드 → GitHub Pages에 배포
 ├── docs/
+│   ├── CONTRIBUTING.md           작업 규칙: 콘텐츠, 언어, 확인, 브랜치와 커밋
 │   ├── DESIGN.md                 디자인 규칙: 색, 글꼴, 모양, 모션, 언어, 하지 말 것
 │   └── preview-*.jpg             README 미리보기 (npm run snapshots -- --readme)
 ├── public/                       빌드에 그대로 복사되는 파일
@@ -66,9 +73,10 @@ GitHub Actions가 사이트를 빌드해 GitHub Pages에 올립니다.
 │   ├── data/                     profile.ts(다섯 언어로 된 모든 콘텐츠)와 types.ts
 │   ├── sections/                 Hero, JuminTime(시계 카드), Publications, Experience, Education, Honors
 │   ├── components/               NameFlip, LiveAge, Panel, Timeline, Flag, PlaceName, LanguageMenu 등
-│   ├── layout/                   Header, Footer, Backdrop(떠다니는 블롭)
-│   ├── hooks/                    useLanguage, useScrolled, useActiveSection, useTheme, useNow, useClockMode
-│   ├── lib/                      i18n, theme, clock(시간대와 주민의 일과표), cx
+│   ├── layout/                   Header, Footer, Backdrop(셰이더 배경, 대신할 CSS 블롭)
+│   ├── hooks/                    useLanguage, useScrolled, useActiveSection, useTheme, useReducedMotion, useNow, useClockMode
+│   ├── lib/                      i18n, theme, motion(뷰 전환), mochi-field(배경 셰이더),
+│   │                             clock(시간대와 주민의 일과표), subscribe, tone, cx
 │   ├── styles/                   tokens.css(디자인 토큰), tones.css, global.css, fonts.css
 │   ├── App.tsx
 │   └── main.tsx
@@ -134,7 +142,8 @@ chromium`을 한 번 실행하거나, `PLAYWRIGHT_CHROMIUM=/path/to/chrome`으�
 
 ## 디자인
 
-규칙은 [docs/DESIGN.md](docs/DESIGN.md)에, 모든 색·크기·반경·시간 값은 `src/styles/tokens.css`에
+디자인 규칙은 [docs/DESIGN.md](docs/DESIGN.md)에, 작업 규칙(콘텐츠, 언어, 확인, 브랜치)은
+[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)에, 모든 색·크기·반경·시간 값은 `src/styles/tokens.css`에
 있습니다. 값을 직접 적지 말고 토큰을 쓰거나 새로 추가하세요.
 
 ## 배포
@@ -165,6 +174,7 @@ npm run github-profile -- path/to/repo  # 다른 체크아웃에 쓸 수도 있�
   그 글자를 가진 첫 글꼴을 씁니다.
 - 넓은 화면에서는 카드가 같은 높이로 두 장씩 나란히 놓이고, 휴대폰에서는 한 장씩 쌓입니다.
 - 히어로, 한눈에 보기(At a glance), 푸터 카드는 천천히 움직이고(이름이 9초 주기로 "JUMIN WHO?"로
-  바뀌고, 블롭이 떠다니고, 몽글이가 둥실거립니다), 모션 줄이기를 켠 사람에게는 가만히 있습니다.
+  바뀌고, 블롭이 떠다니고, 몽글이가 둥실거리며 눈을 깜빡이고 새싹을 흔들고, 푸터의 구름이 살랑입니다),
+  모션 줄이기를 켠 사람에게는 가만히 있습니다.
 - 생성기는 프로필 저장소에 `scripts/update-age.mjs`와 `.github/workflows/age.yml`도 씁니다. 이
   워크플로가 매일 00:05(KST)에 모든 언어의 한눈에 보기 카드 속 나이를 의존성 없이 다시 그립니다.

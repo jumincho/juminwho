@@ -19,21 +19,22 @@
 
 ## 特色
 
-- 柔軟、溫馨的氛圍。淺色模式是「奶油早晨」，深色模式是「可可夜晚」：粉彩色的軟墊面板、緩緩飄動的色塊和雲朵形狀的頁尾。
+- 柔軟、溫馨的氛圍。淺色模式是「奶油早晨」，深色模式是「可可夜晚」：粉彩色的軟墊面板、雲朵形狀的頁尾，以及在頁面後方緩緩飄動的粉彩色塊。
+- 輕柔的動態效果。色塊由一個小小的 WebGL 著色器繪製，像麻糬一樣軟軟地晃動，碰在一起時會融成一團（無法使用 WebGL 時由 CSS 色塊代替）。開啟頁面時，首個畫面會輕輕落定一次；頁尾的雲朵邊緣緩緩流動；時鐘卡上的每種狀態圖示也各有小動作。對偏好減少動態效果的訪客，這些都會保持靜止。
 - JUMIN WHO? 把滑鼠停在名字上，或者捲動頁面，名字就會彈一下，變成「JUMIN WHO?」。
 - 由 1998-07-10 起即時計算、準確至小數點後 8 位的年齡計數器。
 - Jumin 那邊現在幾點？附有「本地 | Jumin」開關的時鐘卡會顯示 Jumin 的時間（KST）或訪客的時間，並根據不會在頁面上顯示的平日與週末作息表，告訴你 Jumin 現在也許在做甚麼：也許……在工作、在準備上班、在睡覺，或者處於量子疊加態——在被觀測之前，所有狀態同時存在。
-- 五種語言：English（預設）、한국어、简体中文、繁體中文和日本語，可在頁首的選單中選擇。選擇會被記住，`?lang=zh-HK` 這樣的連結可以直接以該語言開啟頁面。
-- 桃子麻糬吉祥物 Mongle。網站圖示（favicon）、應用程式圖示和連結預覽（Open Graph）圖片都出自這幅畫。
+- 五種語言：English（預設）、한국어、简体中文、繁體中文和日本語，可在頁首的選單中選擇。選擇會被記住，`?lang=zh-HK` 這樣的連結可以直接以該語言開啟頁面，切換語言時頁面會柔和地淡入淡出。
+- 桃子麻糬吉祥物 Mongle。它會眨眼、搖動頭上的嫩芽，被戳一下會像啫喱一樣晃動。網站圖示（favicon）、應用程式圖示和連結預覽（Open Graph）圖片也都出自這幅畫。
 - 地名前的圓形國旗貼紙：Jumin 所在的地方，以及每篇論文發表的地方。
-- 跟隨操作系統設定、手動選擇後會記住的主題切換，複製電郵按鈕，以及打印樣式。
+- 跟隨操作系統設定、手動選擇後會記住的主題切換（新主題會從按鈕處以圓形擴散開來），複製電郵按鈕，以及打印樣式。
 - 尊重「減少動態效果」設定、屏幕閱讀器和鍵盤導航，所有文字的對比度都達到 WCAG AA 或以上。
 - 只有一個內容檔案：所有語言的所有文字都在 `src/data/profile.ts` 裏。
 - 以同一份資料和設計，由 `npm run github-profile` 生成的五種語言 GitHub 個人主頁 README。
 
 ## 技術棧
 
-Vite 7、React 19、TypeScript、使用設計令牌（design tokens）的 CSS Modules、Fontsource（Fredoka、Nunito 和 Jua）以及 lucide-react。中文和日文使用訪客裝置上的系統字型。沒有路由、CMS 或後端。GitHub Actions 負責建置網站並發佈到 GitHub Pages。
+Vite 7、React 19、TypeScript、使用設計令牌（design tokens）的 CSS Modules、親手編寫用來繪製背景的小型 WebGL 著色器、Fontsource（Fredoka、Nunito 和 Jua）以及 lucide-react。中文和日文使用訪客裝置上的系統字型。沒有路由、CMS 或後端。GitHub Actions 負責建置網站並發佈到 GitHub Pages。
 
 ## 專案結構
 
@@ -41,6 +42,7 @@ Vite 7、React 19、TypeScript、使用設計令牌（design tokens）的 CSS Mo
 .
 ├── .github/workflows/deploy.yml  推送到 main → 程式碼檢查 → 建置 → 部署到 GitHub Pages
 ├── docs/
+│   ├── CONTRIBUTING.md           工作規則：內容、語言、檢查、分支與提交
 │   ├── DESIGN.md                 設計規則：顏色、字型、形狀、動態效果、語言、禁忌
 │   └── preview-*.jpg             README 預覽圖（npm run snapshots -- --readme）
 ├── public/                       原封不動複製到建置結果
@@ -59,9 +61,10 @@ Vite 7、React 19、TypeScript、使用設計令牌（design tokens）的 CSS Mo
 │   ├── data/                     profile.ts（五種語言的全部內容）和 types.ts
 │   ├── sections/                 Hero、JuminTime（時鐘卡）、Publications、Experience、Education、Honors
 │   ├── components/               NameFlip、LiveAge、Panel、Timeline、Flag、PlaceName、LanguageMenu 等
-│   ├── layout/                   Header、Footer、Backdrop（飄動的色塊）
-│   ├── hooks/                    useLanguage、useScrolled、useActiveSection、useTheme、useNow、useClockMode
-│   ├── lib/                      i18n、theme、clock（時區和 Jumin 的作息表）、cx
+│   ├── layout/                   Header、Footer、Backdrop（著色器背景，以及後備的 CSS 色塊）
+│   ├── hooks/                    useLanguage、useScrolled、useActiveSection、useTheme、useReducedMotion、useNow、useClockMode
+│   ├── lib/                      i18n、theme、motion（視圖過渡）、mochi-field（背景著色器）、
+│   │                             clock（時區和 Jumin 的作息表）、subscribe、tone、cx
 │   ├── styles/                   tokens.css（設計令牌）、tones.css、global.css、fonts.css
 │   ├── App.tsx
 │   └── main.tsx
@@ -117,7 +120,7 @@ npm run dev        # http://localhost:5173
 
 ## 設計
 
-規則寫在 [docs/DESIGN.md](docs/DESIGN.md)（韓文）裏，所有顏色、尺寸、圓角和時長都在 `src/styles/tokens.css` 裏。請使用現有的令牌或新增令牌，不要直接寫死數值。
+設計規則寫在 [docs/DESIGN.md](docs/DESIGN.md) 裏，工作規則（內容、語言、檢查、分支）寫在 [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) 裏（均為韓文），所有顏色、尺寸、圓角和時長都在 `src/styles/tokens.css` 裏。請使用現有的令牌或新增令牌，不要直接寫死數值。
 
 ## 部署
 
@@ -138,5 +141,5 @@ npm run github-profile -- path/to/repo  # 或寫入其他檢出目錄
 - 每張圖片都是用網站的令牌、色調、字型、國旗和吉祥物在 Chromium 中排版的卡片（`scripts/github-profile/cards.css`），再匯出為淺色和深色兩個版本的 SVG。README 以 `<picture>` 按訪客的 GitHub 主題選擇其中一個。
 - 文字由 HarfBuzz 轉為輪廓，因此圖片不需要字型，在任何瀏覽器看起來都一樣。中文、日文和韓文正文以作為開發依賴安裝的 Noto Sans 繪製；和瀏覽器一樣，每個字元都由字型清單中第一個包含它的字型繪製。
 - 在寬屏幕上，卡片兩張一排、高度相同；在手機上則逐張疊起。
-- 開頭的主卡片、概覽（At a glance）和頁尾卡片會緩緩移動（名字以 9 秒為週期變成「JUMIN WHO?」，色塊飄動，Mongle 上下浮動），對偏好減少動態效果的訪客則保持靜止。
+- 開頭的主卡片、概覽（At a glance）和頁尾卡片會緩緩移動（名字以 9 秒為週期變成「JUMIN WHO?」，色塊飄動，Mongle 上下浮動、眨眼並搖動嫩芽，頁尾的雲朵輕輕擺動），對偏好減少動態效果的訪客則保持靜止。
 - 生成器還會把 `scripts/update-age.mjs` 和 `.github/workflows/age.yml` 寫入個人主頁存放庫。這個工作流程每天 00:05（KST）重新繪製每種語言概覽卡中的年齡，不需要任何依賴。

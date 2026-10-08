@@ -19,21 +19,22 @@
 
 ## 特点
 
-- 柔软、温馨的氛围。浅色模式是“奶油早晨”，深色模式是“可可夜晚”：粉彩色的软垫面板、缓缓飘动的色块和云朵形状的页脚。
+- 柔软、温馨的氛围。浅色模式是“奶油早晨”，深色模式是“可可夜晚”：粉彩色的软垫面板、云朵形状的页脚，以及在页面后方缓缓飘动的粉彩色块。
+- 轻柔的动效。色块由一个小小的 WebGL 着色器绘制，像麻糬一样软软地晃动，碰到一起时会融成一团（无法使用 WebGL 时由 CSS 色块代替）。打开页面时，首屏内容会轻轻落定一次；页脚的云朵边缘缓缓流动；时钟卡片上的每种状态图标也各有小动作。对偏好减弱动态效果的访客，这些都会静止不动。
 - JUMIN WHO? 把鼠标悬停在名字上，或者滚动页面，名字就会弹一下，变成“JUMIN WHO?”。
 - 从 1998-07-10 起实时计算、精确到小数点后 8 位的年龄计数器。
 - Jumin 那边现在几点？带有“本地 | Jumin”开关的时钟卡片会显示 Jumin 的时间（KST）或访客的时间，并根据不在页面上显示的工作日与周末作息表，告诉你 Jumin 现在也许在做什么：也许……在工作、在准备上班、在睡觉，或者处于量子叠加态——在被观测之前，所有状态同时存在。
-- 五种语言：English（默认）、한국어、简体中文、繁體中文和日本語，可在页头的菜单中选择。选择会被记住，`?lang=zh-CN` 这样的链接可以直接用该语言打开页面。
-- 桃子麻糬吉祥物 Mongle。网站图标（favicon）、应用图标和链接预览（Open Graph）图片都出自这幅画。
+- 五种语言：English（默认）、한국어、简体中文、繁體中文和日本語，可在页头的菜单中选择。选择会被记住，`?lang=zh-CN` 这样的链接可以直接用该语言打开页面，切换语言时页面会柔和地淡入淡出。
+- 桃子麻糬吉祥物 Mongle。它会眨眼、摇动头顶的嫩芽，被戳一下会像果冻一样晃动。网站图标（favicon）、应用图标和链接预览（Open Graph）图片也都出自这幅画。
 - 地名前的圆形国旗贴纸：Jumin 所在的地方，以及每篇论文发表的地方。
-- 跟随操作系统设置、手动选择后会记住的主题切换，复制邮箱按钮，以及打印样式。
+- 跟随操作系统设置、手动选择后会记住的主题切换（新主题会从按钮处以圆形扩散开来），复制邮箱按钮，以及打印样式。
 - 尊重“减弱动态效果”设置、屏幕阅读器和键盘导航，所有文字的对比度都达到 WCAG AA 或更高。
 - 只有一个内容文件：所有语言的所有文字都在 `src/data/profile.ts` 中。
 - 用同一份数据和设计，由 `npm run github-profile` 生成的五种语言的 GitHub 个人主页 README。
 
 ## 技术栈
 
-Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Modules、Fontsource（Fredoka、Nunito 和 Jua）以及 lucide-react。中文和日文使用访客设备上的系统字体。没有路由、CMS 或后端。GitHub Actions 负责构建网站并发布到 GitHub Pages。
+Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Modules、手写的绘制背景的小型 WebGL 着色器、Fontsource（Fredoka、Nunito 和 Jua）以及 lucide-react。中文和日文使用访客设备上的系统字体。没有路由、CMS 或后端。GitHub Actions 负责构建网站并发布到 GitHub Pages。
 
 ## 项目结构
 
@@ -41,6 +42,7 @@ Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Mo
 .
 ├── .github/workflows/deploy.yml  推送到 main → 代码检查 → 构建 → 部署到 GitHub Pages
 ├── docs/
+│   ├── CONTRIBUTING.md           工作规则：内容、语言、检查、分支与提交
 │   ├── DESIGN.md                 设计规则：颜色、字体、形状、动效、语言、禁忌
 │   └── preview-*.jpg             README 预览图（npm run snapshots -- --readme）
 ├── public/                       原样复制到构建产物中
@@ -59,9 +61,10 @@ Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Mo
 │   ├── data/                     profile.ts（五种语言的全部内容）和 types.ts
 │   ├── sections/                 Hero、JuminTime（时钟卡片）、Publications、Experience、Education、Honors
 │   ├── components/               NameFlip、LiveAge、Panel、Timeline、Flag、PlaceName、LanguageMenu 等
-│   ├── layout/                   Header、Footer、Backdrop（飘动的色块）
-│   ├── hooks/                    useLanguage、useScrolled、useActiveSection、useTheme、useNow、useClockMode
-│   ├── lib/                      i18n、theme、clock（时区和 Jumin 的作息表）、cx
+│   ├── layout/                   Header、Footer、Backdrop（着色器背景，以及备用的 CSS 色块）
+│   ├── hooks/                    useLanguage、useScrolled、useActiveSection、useTheme、useReducedMotion、useNow、useClockMode
+│   ├── lib/                      i18n、theme、motion（视图过渡）、mochi-field（背景着色器）、
+│   │                             clock（时区和 Jumin 的作息表）、subscribe、tone、cx
 │   ├── styles/                   tokens.css（设计令牌）、tones.css、global.css、fonts.css
 │   ├── App.tsx
 │   └── main.tsx
@@ -117,7 +120,7 @@ npm run dev        # http://localhost:5173
 
 ## 设计
 
-规则写在 [docs/DESIGN.md](docs/DESIGN.md)（韩文）中，所有颜色、尺寸、圆角和时长都在 `src/styles/tokens.css` 中。请使用现有的令牌或新增令牌，不要直接写死数值。
+设计规则写在 [docs/DESIGN.md](docs/DESIGN.md) 中，工作规则（内容、语言、检查、分支）写在 [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) 中（均为韩文），所有颜色、尺寸、圆角和时长都在 `src/styles/tokens.css` 中。请使用现有的令牌或新增令牌，不要直接写死数值。
 
 ## 部署
 
@@ -138,5 +141,5 @@ npm run github-profile -- path/to/repo  # 或写入其他检出目录
 - 每张图片都是用网站的令牌、色调、字体、国旗和吉祥物在 Chromium 中排版的卡片（`scripts/github-profile/cards.css`），再导出为浅色和深色两个版本的 SVG。README 用 `<picture>` 按访客的 GitHub 主题选择其中一个。
 - 文字由 HarfBuzz 转为轮廓，因此图片不需要字体，在任何浏览器中看起来都一样。中文、日文和韩文正文使用作为开发依赖安装的 Noto Sans 绘制；和浏览器一样，每个字符都由字体列表中第一个包含它的字体绘制。
 - 在宽屏上，卡片两张一排、高度相同；在手机上则依次堆叠。
-- 开头的主卡片、概览（At a glance）和页脚卡片会缓缓地动（名字以 9 秒为周期变成“JUMIN WHO?”，色块飘动，Mongle 上下浮动），对偏好减弱动态效果的访客则保持静止。
+- 开头的主卡片、概览（At a glance）和页脚卡片会缓缓地动（名字以 9 秒为周期变成“JUMIN WHO?”，色块飘动，Mongle 上下浮动、眨眼并摇动嫩芽，页脚的云朵轻轻摆动），对偏好减弱动态效果的访客则保持静止。
 - 生成器还会把 `scripts/update-age.mjs` 和 `.github/workflows/age.yml` 写入个人主页仓库。这个工作流每天 00:05（KST）重新绘制每种语言概览卡片中的年龄，不需要任何依赖。

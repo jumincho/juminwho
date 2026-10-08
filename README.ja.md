@@ -19,21 +19,22 @@
 
 ## 特徴
 
-- やわらかく、ほっこりした雰囲気。ライトモードは「クリームの朝」、ダークモードは「ココアの夜」です。パステルカラーのクッションのようなパネル、ゆっくり漂うブロブ、雲の形のフッターがあります。
+- やわらかく、ほっこりした雰囲気。ライトモードは「クリームの朝」、ダークモードは「ココアの夜」です。パステルカラーのクッションのようなパネル、雲の形のフッター、ページの奥でゆっくり漂うパステルカラーのブロブがあります。
+- やさしいモーション。ブロブは小さな WebGL シェーダーが描き、お餅のようにふるふると揺れて、触れ合うとひとつに溶け合います（WebGL が使えない環境では CSS のブロブが代わりを務めます）。ページを開くと最初の画面がふわりと一度だけ現れ、フッターの雲のふちが流れ、時計カードの状態アイコンもそれぞれ少しずつ動きます。モーション軽減を設定している訪問者には、すべて止まって見えます。
 - JUMIN WHO? 名前にカーソルを合わせるか、ページをスクロールすると、名前がぽよんと跳ねて「JUMIN WHO?」に変わります。
 - 1998-07-10 から小数点以下 8 桁までリアルタイムで数える年齢カウンター。
 - ジュミンは今、何時？ 「ローカル | ジュミン」の切り替えスイッチが付いた時計カードが、ジュミンの時間（KST）か訪問者の時間を表示し、画面には出さない平日・週末の日課表から、ジュミンが今たぶん何をしているかを教えてくれます。たぶん… 仕事中、出勤準備中、おやすみ中、または観測されるまであらゆる状態が重なり合った、量子の重ね合わせ中。
-- 5 つの言語：English（既定）、한국어、简体中文、繁體中文、日本語。ヘッダーのメニューで選ぶと選択を覚えておき、`?lang=ja` のようなリンクでその言語のページを直接開けます。
-- 桃のお餅のマスコット、Mongle。ファビコン、アプリアイコン、リンクプレビュー（Open Graph）画像はすべてこの絵から作られます。
+- 5 つの言語：English（既定）、한국어、简体中文、繁體中文、日本語。ヘッダーのメニューで選ぶと選択を覚えておき、`?lang=ja` のようなリンクでその言語のページを直接開けます。切り替えるとページがふわっとクロスフェードします。
+- 桃のお餅のマスコット、Mongle。まばたきをして芽を揺らし、つつくとゼリーのようにぷるんと揺れます。ファビコン、アプリアイコン、リンクプレビュー（Open Graph）画像もすべてこの絵から作られます。
 - 地名の前の丸い国旗ステッカー：ジュミンが拠点にしている場所と、各論文を発表した場所。
-- OS の設定に従い、自分で選ぶとそれを覚えるテーマ切り替え、メールアドレスのコピーボタン、印刷用スタイル。
+- OS の設定に従い、自分で選ぶとそれを覚えるテーマ切り替え（新しいテーマがボタンから円を描いて広がります）、メールアドレスのコピーボタン、印刷用スタイル。
 - モーション軽減の設定、スクリーンリーダー、キーボード操作に配慮し、すべての文字が WCAG AA 以上のコントラストを持ちます。
 - コンテンツのファイルは 1 つだけです。すべての言語のすべての文言が `src/data/profile.ts` にあります。
 - 同じデータとデザインから `npm run github-profile` が描き出す、5 言語の GitHub プロフィール README。
 
 ## 技術スタック
 
-Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules、Fontsource（Fredoka、Nunito、Jua）、lucide-react。中国語と日本語は訪問者のデバイスのシステムフォントを使います。ルーター、CMS、バックエンドはありません。GitHub Actions がサイトをビルドして GitHub Pages に公開します。
+Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules、背景を描く手書きの小さな WebGL シェーダー、Fontsource（Fredoka、Nunito、Jua）、lucide-react。中国語と日本語は訪問者のデバイスのシステムフォントを使います。ルーター、CMS、バックエンドはありません。GitHub Actions がサイトをビルドして GitHub Pages に公開します。
 
 ## プロジェクト構成
 
@@ -41,6 +42,7 @@ Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules�
 .
 ├── .github/workflows/deploy.yml  main へのプッシュ → リント → ビルド → GitHub Pages へデプロイ
 ├── docs/
+│   ├── CONTRIBUTING.md           作業のルール：コンテンツ、言語、チェック、ブランチとコミット
 │   ├── DESIGN.md                 デザインのルール：色、書体、形、モーション、言語、してはいけないこと
 │   └── preview-*.jpg             README のプレビュー（npm run snapshots -- --readme）
 ├── public/                       そのままビルドにコピーされるファイル
@@ -59,9 +61,10 @@ Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules�
 │   ├── data/                     profile.ts（5 言語のすべてのコンテンツ）と types.ts
 │   ├── sections/                 Hero、JuminTime（時計カード）、Publications、Experience、Education、Honors
 │   ├── components/               NameFlip、LiveAge、Panel、Timeline、Flag、PlaceName、LanguageMenu など
-│   ├── layout/                   Header、Footer、Backdrop（漂うブロブ）
-│   ├── hooks/                    useLanguage、useScrolled、useActiveSection、useTheme、useNow、useClockMode
-│   ├── lib/                      i18n、theme、clock（タイムゾーンとジュミンの日課表）、cx
+│   ├── layout/                   Header、Footer、Backdrop（シェーダーの背景と、代わりの CSS ブロブ）
+│   ├── hooks/                    useLanguage、useScrolled、useActiveSection、useTheme、useReducedMotion、useNow、useClockMode
+│   ├── lib/                      i18n、theme、motion（ビュー遷移）、mochi-field（背景のシェーダー）、
+│   │                             clock（タイムゾーンとジュミンの日課表）、subscribe、tone、cx
 │   ├── styles/                   tokens.css（デザイントークン）、tones.css、global.css、fonts.css
 │   ├── App.tsx
 │   └── main.tsx
@@ -117,7 +120,7 @@ npm run dev        # http://localhost:5173
 
 ## デザイン
 
-ルールは [docs/DESIGN.md](docs/DESIGN.md)（韓国語）に、すべての色、サイズ、角の丸み、時間の値は `src/styles/tokens.css` にあります。値を直接書かず、トークンを使うか新しく追加してください。
+デザインのルールは [docs/DESIGN.md](docs/DESIGN.md)、作業のルール（コンテンツ、言語、チェック、ブランチ）は [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) にあり（どちらも韓国語）、すべての色、サイズ、角の丸み、時間の値は `src/styles/tokens.css` にあります。値を直接書かず、トークンを使うか新しく追加してください。
 
 ## デプロイ
 
@@ -138,5 +141,5 @@ npm run github-profile -- path/to/repo  # 別のチェックアウトにも書�
 - 画像はすべて、サイトのトークン、トーン、フォント、国旗、マスコットを使って Chromium でレイアウトしたカード（`scripts/github-profile/cards.css`）を、ライトとダークの 2 種類の SVG に書き出したものです。README は `<picture>` で、閲覧者の GitHub のテーマに合うほうを選びます。
 - 文字は HarfBuzz でアウトライン化するので、画像にフォントは要らず、どのブラウザーでも同じに見えます。中国語、日本語、韓国語の本文は開発用の依存パッケージとしてインストールした Noto Sans で描き、ブラウザーと同じように、フォントの並びの中でその文字を持つ最初のフォントを使います。
 - 広い画面ではカードが同じ高さで 2 枚ずつ並び、スマートフォンでは 1 枚ずつ縦に積まれます。
-- ヒーロー、プロフィール（At a glance）、フッターのカードはゆっくり動き（名前が 9 秒周期で「JUMIN WHO?」に変わり、ブロブが漂い、Mongle がふわふわ揺れます）、モーション軽減を設定している人には静止して見えます。
+- ヒーロー、プロフィール（At a glance）、フッターのカードはゆっくり動き（名前が 9 秒周期で「JUMIN WHO?」に変わり、ブロブが漂い、Mongle がふわふわ揺れながらまばたきして芽を揺らし、フッターの雲がそよぎます）、モーション軽減を設定している人には静止して見えます。
 - 生成スクリプトは、プロフィールのリポジトリに `scripts/update-age.mjs` と `.github/workflows/age.yml` も書き出します。このワークフローが毎日 00:05（KST）に、すべての言語のプロフィールカードの年齢を、依存パッケージなしで描き直します。

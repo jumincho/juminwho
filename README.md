@@ -21,7 +21,11 @@ English · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [繁�
 ## Features
 
 - A soft, cozy look. Light mode is "cream morning", dark mode is "cocoa night": pastel cushion
-  panels, slowly drifting blobs and a cloud-shaped footer.
+  panels, a cloud-shaped footer and pastel blobs that drift slowly behind the page.
+- Gentle motion. A small WebGL shader draws the blobs, which wobble like mochi and melt into each
+  other where they meet (soft CSS blobs stand in where WebGL is not available). The first screen
+  settles in once when the page opens, the footer's cloud edge drifts, and each state on the clock
+  card idles in its own way. Everything stands still for visitors who prefer reduced motion.
 - JUMIN WHO? Hover over the name, or scroll the page, and it bounces into "JUMIN WHO?".
 - A live age counter, running from 1998-07-10 to eight decimal places.
 - What time is it for Jumin? A clock card with a Local | Jumin switch shows Jumin's time (KST) or
@@ -29,13 +33,13 @@ English · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [繁�
   the scenes: maybe… working, maybe… getting ready for work, maybe… asleep, or maybe… in
   superposition, every state at once until observed.
 - Five languages: English (the default), 한국어, 简体中文, 繁體中文 and 日本語, picked from a menu
-  in the header. The choice is remembered, and a link such as `?lang=ja` opens the page in that
-  language.
-- Mongle the mascot, a peach mochi that becomes the favicon, the app icons and the link-preview
-  (Open Graph) image.
+  in the header. The choice is remembered, a link such as `?lang=ja` opens the page in that
+  language, and switching cross-fades the page.
+- Mongle the mascot, a peach mochi that blinks, sways its sprout and wobbles like jelly when
+  poked. It is also the favicon, the app icons and the link-preview (Open Graph) image.
 - Round flag stickers in front of places: where Jumin is based, and where each paper was presented.
-- A theme toggle that follows the operating system until you pick one, a copy-email button and
-  print styles.
+- A theme toggle that follows the operating system until you pick one and spreads the new theme
+  from the button in a growing circle, a copy-email button and print styles.
 - Respect for reduced motion, screen readers and keyboard navigation, with WCAG AA contrast or
   better for all text.
 - One content file: every word on the page, in every language, lives in `src/data/profile.ts`.
@@ -44,8 +48,8 @@ English · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [繁�
 
 ## Tech stack
 
-Vite 7, React 19, TypeScript, CSS Modules with design tokens, Fontsource (Fredoka, Nunito and Jua)
-and lucide-react. Chinese and Japanese use the visitor's system fonts. There is no router, CMS or
+Vite 7, React 19, TypeScript, CSS Modules with design tokens, a small hand-written WebGL shader for
+the backdrop, Fontsource (Fredoka, Nunito and Jua) and lucide-react. Chinese and Japanese use the visitor's system fonts. There is no router, CMS or
 backend. GitHub Actions builds the site and publishes it to GitHub Pages.
 
 ## Project structure
@@ -54,6 +58,7 @@ backend. GitHub Actions builds the site and publishes it to GitHub Pages.
 .
 ├── .github/workflows/deploy.yml  push to main → lint → build → deploy to GitHub Pages
 ├── docs/
+│   ├── CONTRIBUTING.md           working rules: content, languages, checks, branches and commits
 │   ├── DESIGN.md                 design rules: colour, type, shape, motion, languages, don'ts
 │   └── preview-*.jpg             README previews (npm run snapshots -- --readme)
 ├── public/                       copied into the build as-is
@@ -72,9 +77,10 @@ backend. GitHub Actions builds the site and publishes it to GitHub Pages.
 │   ├── data/                     profile.ts (all content, in five languages) and types.ts
 │   ├── sections/                 Hero, JuminTime (the clock card), Publications, Experience, Education, Honors
 │   ├── components/               NameFlip, LiveAge, Panel, Timeline, Flag, PlaceName, LanguageMenu, …
-│   ├── layout/                   Header, Footer, Backdrop (the drifting blobs)
-│   ├── hooks/                    useLanguage, useScrolled, useActiveSection, useTheme, useNow, useClockMode
-│   ├── lib/                      i18n, theme, clock (time zones and Jumin's routine), cx
+│   ├── layout/                   Header, Footer, Backdrop (the shader backdrop, CSS blobs as a fallback)
+│   ├── hooks/                    useLanguage, useScrolled, useActiveSection, useTheme, useReducedMotion, useNow, useClockMode
+│   ├── lib/                      i18n, theme, motion (view transitions), mochi-field (the backdrop shader),
+│   │                             clock (time zones and Jumin's routine), subscribe, tone, cx
 │   ├── styles/                   tokens.css (design tokens), tones.css, global.css, fonts.css
 │   ├── App.tsx
 │   └── main.tsx
@@ -142,8 +148,10 @@ Edit `src/data/profile.ts` and nothing else; components never hold facts or word
 
 ## Design
 
-The rules live in [docs/DESIGN.md](docs/DESIGN.md) (in Korean), and every colour, size, radius and
-timing lives in `src/styles/tokens.css`. Use a token, or add one, instead of hard-coding a value.
+The design rules live in [docs/DESIGN.md](docs/DESIGN.md) and the working rules (content,
+languages, checks, branches) in [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md), both in Korean.
+Every colour, size, radius and timing lives in `src/styles/tokens.css`. Use a token, or add one,
+instead of hard-coding a value.
 
 ## Deployment
 
@@ -174,7 +182,8 @@ Commit and push in the profile repository afterwards. Never edit its READMEs or 
   would.
 - On wide screens the cards sit two to a row at equal heights; on phones they stack.
 - The hero, At a glance and footer cards move slowly (the name flips to "JUMIN WHO?" in a
-  9-second cycle, blobs drift, Mongle bobs) and stand still when the viewer prefers reduced motion.
+  9-second cycle, blobs drift, Mongle bobs, blinks and sways its sprout, the footer's cloud sways)
+  and stand still when the viewer prefers reduced motion.
 - The generator also writes `scripts/update-age.mjs` and `.github/workflows/age.yml` into the
   profile repository. The workflow redraws the age in every language's At a glance card every day
   at 00:05 KST, with no dependencies.
