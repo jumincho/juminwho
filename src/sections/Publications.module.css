@@ -68,6 +68,35 @@
   color: var(--ink-soft);
 }
 
+/* The paper's own page on this site: a soft pill under the authors. */
+.project {
+  display: inline-flex;
+  justify-self: start;
+  align-items: center;
+  gap: 0.35em;
+  margin-top: var(--space-1);
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--tone);
+  color: var(--tone-ink);
+  font-size: var(--text-sm);
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform var(--dur) var(--ease-spring);
+}
+
+.projectArrow {
+  width: 1em;
+  height: 1em;
+  transition: transform var(--dur) var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .project:hover .projectArrow {
+    transform: translateX(3px);
+  }
+}
+
 /* Jumin's own name: bold, with a marker stroke underneath. */
 .self {
   color: var(--ink);
@@ -76,7 +105,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .paper {
+  .paper,
+  .projectArrow {
     transition: none;
   }
 

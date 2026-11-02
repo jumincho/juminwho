@@ -1,8 +1,8 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import ExternalLink from '../components/ExternalLink'
 import Panel from '../components/Panel'
 import PlaceName from '../components/PlaceName'
-import { publications, selfNames } from '../data/profile'
+import { labels, publications, selfNames } from '../data/profile'
 import type { Publication } from '../data/types'
 import { useLanguage } from '../hooks/useLanguage'
 import { panelProps } from './looks'
@@ -48,11 +48,21 @@ export default function Publications() {
                   {paper.title}
                   <ArrowUpRight className={styles.arrow} />
                 </ExternalLink>
+              ) : paper.project ? (
+                <a href={`${import.meta.env.BASE_URL}${paper.project}`} className="link">
+                  {paper.title}
+                </a>
               ) : (
                 paper.title
               )}
             </h3>
             <Authors names={paper.authors} />
+            {paper.project && (
+              <a href={`${import.meta.env.BASE_URL}${paper.project}`} className={styles.project}>
+                {t(labels.projectPage)}
+                <ArrowRight className={styles.projectArrow} aria-hidden />
+              </a>
+            )}
           </li>
         ))}
       </ol>

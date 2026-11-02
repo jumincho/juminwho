@@ -170,6 +170,7 @@ export const publications: Publication[] = [
       country: { en: 'Italy', ko: '이탈리아', 'zh-CN': '意大利', 'zh-HK': '意大利', ja: 'イタリア' },
       countryCode: 'IT',
     },
+    project: 'forward-looking-guidance/',
   },
   {
     title:
@@ -475,6 +476,13 @@ export const labels = {
     ja: (city: string, country: string) => `${country}・${city}`,
   },
   advisor: { en: 'Advisor', ko: '지도교수', 'zh-CN': '导师', 'zh-HK': '導師', ja: '指導教員' },
+  projectPage: {
+    en: 'Project page',
+    ko: '프로젝트 페이지',
+    'zh-CN': '项目主页',
+    'zh-HK': '項目主頁',
+    ja: 'プロジェクトページ',
+  },
   present: { en: 'present', ko: '현재', 'zh-CN': '至今', 'zh-HK': '至今', ja: '現在' },
   expected: { en: 'expected', ko: '예정', 'zh-CN': '预计', 'zh-HK': '預計', ja: '予定' },
   certification: { en: 'Certification', ko: '자격증', 'zh-CN': '证书', 'zh-HK': '證書', ja: '資格' },

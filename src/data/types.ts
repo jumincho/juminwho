@@ -58,6 +58,8 @@ export interface Publication {
   place?: Place
   /** Primary source: publisher PDF or proceedings page. */
   href?: string
+  /** The paper's project page on this site, relative to the portfolio (e.g. "forward-looking-guidance/"). */
+  project?: string
 }
 
 export interface Honor {
