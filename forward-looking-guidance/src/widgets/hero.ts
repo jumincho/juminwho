@@ -4,6 +4,7 @@ import { icon } from '../lib/icons'
 import { mathTspans } from '../lib/math'
 import { prefersReducedMotion, watchVisibility } from '../lib/motion'
 import { tween } from '../lib/tween'
+import { motionPaused } from '../state'
 
 /**
  * The hero figure: a plan of operations runs one step at a time, and the
@@ -290,8 +291,10 @@ export function mountHero(container: HTMLElement): void {
   if (reduced) return
   setButton()
   container.append(button)
-  button.addEventListener('click', () => {
-    paused = !paused
+  // One switch for all of the hero's motion: this figure and the mark beside the title.
+  button.addEventListener('click', () => motionPaused.set(!motionPaused.get()))
+  motionPaused.subscribe((value) => {
+    paused = value
     // Pausing stops everything that moves, the pulse and the flowing arrow included.
     container.classList.toggle('is-paused', paused)
     setButton()

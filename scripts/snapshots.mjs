@@ -17,9 +17,10 @@
  * does not fit or loses its hedge, or a language menu that does not pick,
  * remember and link. The paper's project page (forward-looking-guidance/)
  * gets the same basics at both widths and in both themes, plus its figures:
- * each must mount, the stage picker, the backbone switch and the trace
- * stepper must respond, a theme picked there must carry over to the
- * portfolio, and nothing may move with reduced motion. Full-page screenshots
+ * each must mount, the title mark must paint, the stage picker, the backbone
+ * switch, the trace stepper and back-to-top must respond, a theme picked
+ * there must carry over to the portfolio, and nothing may move with reduced
+ * motion. Full-page screenshots
  * go to snapshots/ (git-ignored) for a side-by-side look against the last
  * build.
  *
@@ -380,6 +381,17 @@ async function checkProjectPage(vp, scheme) {
 
   await page.screenshot({ path: `${OUT}/project-${vp.name}-${scheme}.png`, fullPage: true, animations: 'disabled' })
 
+  // The pixel mark beside the title paints its beam.
+  const lit = await page.evaluate(() => {
+    const canvas = document.querySelector('#title-mark canvas')
+    if (!canvas) return 0
+    const { data } = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height)
+    let n = 0
+    for (let i = 0; i < data.length; i += 4) if (data[i + 1] > 150) n++
+    return n
+  })
+  if (lit === 0) fail('the title mark does not paint')
+
   // Figure 2: the stage picker moves the guidance and the measured effect.
   await page.locator('#pipeline-tools button', { hasText: /^Retrieval$/ }).click()
   const effect = await page.locator('.pl-effect-value').textContent()
@@ -401,6 +413,17 @@ async function checkProjectPage(vp, scheme) {
   const counter = await page.locator('#trace-tools .tr-counter').textContent()
   if (counter !== '8 / 8') fail(`the trace stops at ${counter}`)
   if (!(await next.isDisabled())) fail('"Next step" is still enabled on the last step')
+
+  // Back to top appears once the first screen is behind, and brings the page back up.
+  await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }))
+  await page.waitForTimeout(300)
+  if ((await page.locator('.to-top.is-visible').count()) !== 1) fail('the back-to-top button does not appear after scrolling')
+  await page.locator('.to-top').click()
+  const top = await page
+    .waitForFunction(() => window.scrollY === 0, null, { timeout: 3000 })
+    .then(() => true)
+    .catch(() => false)
+  if (!top) fail('the back-to-top button does not return to the top')
 
   // The theme toggle flips the page, and the portfolio (same origin, same key) keeps the choice.
   const other = scheme === 'dark' ? 'light' : 'dark'

@@ -73,6 +73,7 @@ const NAV_FOR: Record<string, string> = {
 export function initScroll(): void {
   const topbar = document.querySelector<HTMLElement>('.topbar')
   const progress = document.querySelector<HTMLElement>('.progress span')
+  const toTop = document.querySelector<HTMLButtonElement>('.to-top')
   const toc = document.querySelector<HTMLElement>('.toc')
   const title = document.getElementById('title')
   const sections = TOC_SECTIONS.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el)
@@ -107,8 +108,11 @@ export function initScroll(): void {
     // At the very bottom the last section may never reach the line; it is the one being read.
     if (max > 0 && y >= max - 2) id = sections[sections.length - 1]?.id ?? id
 
+    const read = String(max > 0 ? Math.min(1, Math.max(0, y / max)) : 0)
     topbar?.classList.toggle('is-scrolled', y > 4)
-    progress?.style.setProperty('--progress', String(max > 0 ? Math.min(1, Math.max(0, y / max)) : 0))
+    progress?.style.setProperty('--progress', read)
+    toTop?.style.setProperty('--progress', read)
+    toTop?.classList.toggle('is-visible', y > window.innerHeight * 0.9)
     markCurrent(id)
   }
   const queue = () => {
@@ -116,6 +120,15 @@ export function initScroll(): void {
     queued = true
     requestAnimationFrame(update)
   }
+  // Back to the top, and the keyboard focus with it.
+  toTop?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
+    const title = document.getElementById('title')
+    if (title) {
+      title.tabIndex = -1
+      title.focus({ preventScroll: true })
+    }
+  })
   window.addEventListener('scroll', queue, { passive: true })
   window.addEventListener('resize', queue)
   update()
@@ -190,46 +203,5 @@ export function initCopy(): void {
         if (label) label.textContent = 'Copy'
       }, 2200)
     })
-  })
-}
-
-/**
- * The letter's share button: the system share sheet where there is one
- * (phones, mostly), otherwise a button that copies the page's link.
- */
-export function initShare(): void {
-  const button = document.querySelector<HTMLButtonElement>('[data-share]')
-  const label = button?.querySelector('.share-label')
-  if (!button || !label) return
-  const url = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href ?? location.href
-  const native = typeof navigator.share === 'function'
-  label.textContent = native ? 'Share this page' : 'Copy link'
-  label.setAttribute('aria-live', 'polite')
-  button.hidden = false
-
-  let timer = 0
-  button.addEventListener('click', async () => {
-    if (native) {
-      try {
-        await navigator.share({ title: document.title, url })
-      } catch {
-        // Dismissed: nothing to do.
-      }
-      return
-    }
-    let copied = false
-    try {
-      await navigator.clipboard.writeText(url)
-      copied = true
-    } catch {
-      copied = false
-    }
-    label.textContent = copied ? 'Link copied' : url
-    button.classList.toggle('is-done', copied)
-    window.clearTimeout(timer)
-    timer = window.setTimeout(() => {
-      label.textContent = 'Copy link'
-      button.classList.remove('is-done')
-    }, 2200)
   })
 }

@@ -1,4 +1,4 @@
-/* Page chrome and the static blocks: top bar, table of contents, hero, stats, setup, comparison, citation, letter, footer. */
+/* Page chrome and the static blocks: top bar, table of contents, hero, stats, setup, comparison, citation, postcard, back to top, footer. */
 
 /* ---- top bar: back to the portfolio, section links, code and theme ---- */
 
@@ -245,41 +245,83 @@
   max-width: calc(62rem + 2 * var(--gutter));
 }
 
+/* The conference's own logo, one image per theme (the dark one has light lettering). */
 .venue {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.35rem 0.9rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--ink-2);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  box-shadow: var(--shadow-1);
+  display: flex;
+  justify-content: center;
 }
 
-.venue-dot {
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 50%;
-  background: var(--accent-fill);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+.venue-logo {
+  width: auto;
+  height: clamp(5.5rem, 4.6rem + 3vw, 7.75rem);
+}
+
+.venue-logo.for-dark,
+:root[data-theme='dark'] .venue-logo.for-light {
+  display: none;
+}
+
+:root[data-theme='dark'] .venue-logo.for-dark {
+  display: block;
 }
 
 .hero h1 {
-  margin-top: 1.4rem;
-  font-size: clamp(2.1rem, 1.2rem + 3.4vw, 3.6rem);
-  font-weight: 720;
-  line-height: 1.05;
-  letter-spacing: -0.038em;
+  margin-top: 1.1rem;
+  font-size: clamp(2.3rem, 1.2rem + 3.9vw, 4rem);
+  font-weight: 740;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
   text-wrap: balance;
+}
+
+.title-main {
+  display: block;
+}
+
+/* "Guidance" and its mark never part at a line break. */
+.title-keep {
+  white-space: nowrap;
+}
+
+/* The pixel display beside the title (widgets/mark.ts sizes it in whole pixels). */
+.title-mark {
+  display: inline-block;
+  margin-left: 0.24em;
+  line-height: 0;
+}
+
+.title-mark:empty {
+  width: 2.15em;
+  height: 0.86em;
+  border-radius: 0.16em;
+  background: #06110e;
+}
+
+.title-mark-canvas {
+  display: block;
+  image-rendering: pixelated;
+  background: #06110e;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.06) inset,
+    0 1px 2px rgb(6 17 14 / 0.35),
+    0 10px 26px -10px rgb(19 179 131 / 0.55);
+}
+
+:root[data-theme='dark'] .title-mark-canvas {
+  box-shadow:
+    0 0 0 1px rgb(63 213 155 / 0.18),
+    0 12px 32px -12px rgb(63 213 155 / 0.45);
 }
 
 .title-line {
   display: block;
+  max-width: 34em;
+  margin: 0.45em auto 0;
   color: var(--ink-3);
+  font-size: 0.5em;
   font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.022em;
 }
 
 .authors {
@@ -622,8 +664,7 @@
   overflow-x: auto;
 }
 
-.copy.is-done,
-.share.is-done {
+.copy.is-done {
   border-color: color-mix(in srgb, var(--accent-fill) 55%, var(--border));
   color: var(--accent);
 }
@@ -635,167 +676,345 @@
   line-height: 1.6;
 }
 
-.prose.small {
-  font-size: 0.98rem;
-}
-
-.refs {
-  margin-top: 2.5rem;
-  border-top: 1px solid var(--border);
-}
-
-.refs summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 0;
-  color: var(--ink-2);
-  font-weight: 600;
-}
-
-.refs .chevron {
-  color: var(--ink-4);
-  transition: transform var(--dur-2) var(--ease);
-}
-
-.refs[open] .chevron {
-  transform: rotate(90deg);
-}
-
-.refs ol {
-  display: grid;
-  gap: 0.75rem;
-  padding: 0 0 1rem 1.25rem;
-  list-style: decimal;
-  color: var(--ink-3);
-  font-size: 0.875rem;
-  line-height: 1.55;
-}
-
-.refs li:target {
-  color: var(--ink);
-}
-
-/* ---- a note to the visitor, with the QR code ---- */
+/* ---- a note to the visitor: the back of a classic postcard ---- */
 
 .thanks {
-  padding-bottom: clamp(3rem, 2rem + 4vw, 6rem);
+  padding-bottom: clamp(3.5rem, 2.5rem + 4vw, 6.5rem);
 }
 
-.letter {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: clamp(2rem, 1rem + 4vw, 4.5rem);
-  padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  background:
-    radial-gradient(36rem 18rem at 100% 0%, var(--accent-tint), transparent 70%),
-    var(--surface);
-  box-shadow: var(--shadow-3);
-  overflow: hidden;
-}
-
-.letter h2 {
-  margin-top: 0.75rem;
-  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.4rem);
-  font-weight: 680;
-  line-height: 1.15;
-  letter-spacing: -0.028em;
-}
-
-.letter-text {
-  max-width: 38rem;
-  margin-top: 1.4rem;
-  color: var(--ink-2);
-  font-family: var(--font-serif);
-  font-size: clamp(1.05rem, 1rem + 0.25vw, 1.15rem);
-  line-height: 1.75;
-}
-
-.letter-text p + p {
-  margin-top: 0.95em;
-}
-
-.signoff {
-  color: var(--ink-3);
-}
-
-.letter-text .signoff + .signature {
-  margin-top: 0.2em;
-}
-
-.signature {
-  color: var(--ink);
-  font-size: 1.6em;
-  font-style: italic;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-
-.letter-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: 1.75rem;
-}
-
-.qr {
-  display: grid;
-  justify-items: center;
-  gap: 0.9rem;
-  margin: 0;
+.thanks-head {
   text-align: center;
 }
 
-.qr img {
-  width: 12.5rem;
-  height: 12.5rem;
-  padding: 0.9rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-l);
-  background: #ffffff;
-  box-shadow: var(--shadow-2);
+.section h2.thanks-title {
+  margin: 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
 }
 
-.qr figcaption {
+/*
+ * A physical card, so it keeps its own paper and inks in both themes: cream
+ * stock with a little grain, a sepia print for the rules and labels, black ink
+ * for the message and blue fountain-pen ink for the hand-written parts.
+ */
+.postcard {
+  --paper: #fbf6ea;
+  --pc-ink: #2c2721;
+  --pc-sepia: #7b6a50;
+  --pc-rule: #d8cbb0;
+  --pc-pen: #23417a;
+  --pc-postmark: #2f3d63;
+  --pc-red: #b5382b;
+  position: relative;
+  max-width: 58rem;
+  margin: 1.4rem auto 0;
+  padding: clamp(1.4rem, 0.9rem + 2.4vw, 2.6rem) clamp(1.2rem, 0.6rem + 3vw, 3.1rem) clamp(1.6rem, 1rem + 2.4vw, 2.9rem);
+  border-radius: 5px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .28 0 0 0 0 .17 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
+    radial-gradient(120% 90% at 50% 40%, transparent 60%, rgb(150 120 70 / 0.1)),
+    var(--paper);
+  color: var(--pc-ink);
+  box-shadow:
+    0 1px 1px rgb(60 40 10 / 0.08),
+    0 3px 8px rgb(60 40 10 / 0.08),
+    0 34px 70px -34px rgb(60 40 10 / 0.42);
+  transform: rotate(-0.9deg);
+}
+
+:root[data-theme='dark'] .postcard {
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.04),
+    0 3px 10px rgb(0 0 0 / 0.4),
+    0 40px 80px -30px rgb(0 0 0 / 0.85);
+}
+
+/* Air-mail stripes along the top and bottom edges, in the colours of Rome's tricolore. */
+.postcard::before,
+.postcard::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: repeating-linear-gradient(-45deg, #0b8a4c 0 11px, transparent 11px 17px, #c62f2b 17px 28px, transparent 28px 34px);
+  opacity: 0.85;
+}
+
+.postcard::before {
+  top: 0;
+  border-radius: 5px 5px 0 0;
+}
+
+.postcard::after {
+  bottom: 0;
+  border-radius: 0 0 5px 5px;
+}
+
+.pc-heading {
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--pc-rule);
+  color: var(--pc-sepia);
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: 0.55em;
+  text-align: center;
+  text-indent: 0.55em;
+  text-transform: uppercase;
+}
+
+.pc-body {
   display: grid;
-  gap: 0.2rem;
-  max-width: 14rem;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
 }
 
-.qr strong {
-  font-size: 0.9375rem;
+.pc-label {
+  margin-bottom: 0.7rem;
+  color: var(--pc-sepia);
+  font-family: var(--font-serif);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.pc-message {
+  padding: 1.4rem clamp(1.2rem, 0.6rem + 2.4vw, 2.6rem) 0 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.09rem);
+  line-height: 1.72;
+  text-wrap: pretty;
+}
+
+.pc-message p + p {
+  margin-top: 0.8em;
+}
+
+.pc-message .pc-label + .pc-salute {
+  margin-top: 0;
+}
+
+.pc-salute {
+  font-style: italic;
+}
+
+.pc-signoff {
+  color: var(--pc-sepia);
+  font-style: italic;
+}
+
+.pc-message .pc-signoff {
+  margin-top: 1.3em;
+}
+
+.pc-message .pc-signature {
+  margin-top: 0.1em;
+  color: var(--pc-pen);
+  font-family: 'Allura', var(--font-serif);
+  font-size: 2.7em;
+  line-height: 1;
+  transform: rotate(-3deg);
+  transform-origin: left center;
+}
+
+.pc-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding: 1.4rem 0 0 clamp(1.2rem, 0.6rem + 2.4vw, 2.6rem);
+  border-left: 1px solid var(--pc-rule);
+}
+
+/* The stamp, top right, cancelled by a Rome postmark. */
+.pc-franking {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  min-height: 9rem;
+}
+
+.pc-stamp {
+  --r: 3.5px;
+  position: relative;
+  width: 7.2rem;
+  padding: calc(3 * var(--r)) calc(3 * var(--r)) calc(3 * var(--r) + 1.15rem);
+  background:
+    radial-gradient(var(--r), #0000 97%, #fffdf6) round calc(-1.5 * var(--r)) calc(-1.5 * var(--r)) / calc(3 * var(--r)) calc(3 * var(--r)),
+    linear-gradient(#fffdf6 0 0) no-repeat 50% / calc(100% - 3 * var(--r)) calc(100% - 3 * var(--r));
+  filter: drop-shadow(0 1px 1.5px rgb(60 40 10 / 0.25));
+  transform: rotate(4deg);
+}
+
+.pc-stamp img {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 6px 5px;
+  border: 1px solid #e3d5b8;
+  background: #f5ecd8;
+}
+
+.pc-stamp span {
+  position: absolute;
+  inset: auto 0 calc(3 * var(--r) + 0.1rem);
+  color: var(--pc-red);
+  font-family: var(--font-serif);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-align: center;
+  text-indent: 0.3em;
+  text-transform: uppercase;
+}
+
+.pc-postmark {
+  position: absolute;
+  top: 2.6rem;
+  right: 3.4rem;
+  width: 13.5rem;
+  height: auto;
+  color: var(--pc-postmark);
+  opacity: 0.62;
+  mix-blend-mode: multiply;
+  transform: rotate(-9deg);
+  pointer-events: none;
+}
+
+.pc-postmark-text {
+  font-family: var(--font-sans);
   font-weight: 650;
 }
 
-.qr figcaption > span {
-  color: var(--ink-3);
-  font-size: 0.75rem;
-  overflow-wrap: anywhere;
+/* The address, written by hand on printed rules. */
+.pc-address {
+  margin-top: auto;
 }
 
-.qr .share {
-  justify-self: center;
-  margin-top: 0.5rem;
+.pc-address p:not(.pc-label) {
+  padding: 0 0.3rem 0.1rem;
+  border-bottom: 1px solid var(--pc-rule);
+  color: var(--pc-pen);
+  font-family: 'Allura', var(--font-serif);
+  font-size: 1.85rem;
+  line-height: 1.45;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .postcard {
+    transition:
+      transform 600ms var(--ease),
+      box-shadow 600ms var(--ease);
+  }
+
+  .postcard:hover {
+    transform: rotate(-0.3deg) translateY(-3px);
+  }
 }
 
 @media (max-width: 760px) {
-  .letter {
+  .postcard {
+    transform: rotate(-0.5deg);
+  }
+
+  .pc-body {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .qr {
-    justify-self: start;
-    justify-items: start;
-    text-align: left;
+  .pc-message {
+    padding-right: 0;
   }
 
-  .qr .share {
-    justify-self: start;
+  /* Stamp first, at the right as on any card, then the address across the full width. */
+  .pc-side {
+    gap: 0.6rem;
+    margin-top: 1.6rem;
+    padding: 1.3rem 0 0;
+    border-top: 1px solid var(--pc-rule);
+    border-left: 0;
   }
+
+  .pc-franking {
+    min-height: 7.6rem;
+  }
+
+  .pc-stamp {
+    width: 6.2rem;
+  }
+
+  .pc-postmark {
+    top: 1.9rem;
+    right: 3rem;
+    width: 11.5rem;
+  }
+
+  .pc-address {
+    margin-top: 0;
+  }
+
+  .pc-address p:not(.pc-label) {
+    font-size: 1.6rem;
+  }
+}
+
+/* ---- back to top: a round button in the bottom right, ringed by reading progress ---- */
+
+.to-top {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--ink);
+  font-size: 1.1rem;
+  box-shadow: var(--shadow-2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px) scale(0.92);
+  transition:
+    opacity var(--dur-2) var(--ease),
+    transform var(--dur-2) var(--ease),
+    visibility var(--dur-2);
+}
+
+.to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.to-top:hover {
+  color: var(--accent);
+}
+
+.to-top > * {
+  grid-area: 1 / 1;
+}
+
+.to-top-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.to-top-ring circle {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 2.5;
+}
+
+.to-top-ring .to-top-bar {
+  stroke: var(--accent-fill);
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - 100 * var(--progress, 0));
+  stroke-linecap: round;
 }
 
 /* ---- footer ---- */
@@ -808,15 +1027,14 @@
 }
 
 .footer-inner {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.75rem 2rem;
+  text-align: center;
 }
 
-.footer-links {
-  display: flex;
-  gap: 1.25rem;
+/* Room for the back-to-top button, which floats over the bottom right. */
+@media (max-width: 760px) {
+  .footer {
+    padding-bottom: 5.5rem;
+  }
 }
 
 /* ---- print: the text and tables, without chrome ---- */
@@ -827,7 +1045,7 @@
   .hero-glow,
   .links,
   .figure-tools,
-  .letter-links,
+  .to-top,
   .copy {
     display: none !important;
   }
@@ -837,8 +1055,12 @@
   }
 
   .figure-frame,
-  .letter {
+  .postcard {
     box-shadow: none;
     break-inside: avoid;
+  }
+
+  .postcard {
+    transform: none;
   }
 }

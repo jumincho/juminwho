@@ -1,37 +1,28 @@
 /**
- * Renders the project page's QR code and link-preview image.
+ * Renders the project page's link-preview image.
  *
  *   npm run project-assets
  *
- * Writes forward-looking-guidance/assets/qr.svg (the page's canonical URL)
- * and public/forward-looking-guidance/og.png (1200 × 630, the URL its
- * og:image tag names), using the page's own tokens and fonts. Run it after
- * changing the page's URL, title or palette.
+ * Writes public/forward-looking-guidance/og.png (1200 × 630, the URL its
+ * og:image tag names) from the page's own tokens, fonts, the CIKM 2026 logo
+ * and the title mark (the same still frame the page shows with reduced
+ * motion). Run it after changing the page's title, palette or mark.
  */
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
-import QRCode from 'qrcode'
 import { launchChromium } from './lib/browser.mjs'
+import { loadModules } from './lib/load-modules.mjs'
 
 const require = createRequire(import.meta.url)
 const PAGE = 'forward-looking-guidance'
 
-const html = await readFile(`${PAGE}/index.html`, 'utf8')
-const url = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1]
-if (!url) throw new Error(`${PAGE}/index.html has no canonical link`)
+// The title mark, painted by the page's own code.
+const [mark] = await loadModules([`/${PAGE}/src/widgets/mark.ts`])
+const pixels = new Uint8ClampedArray(mark.COLS * mark.ROWS * 4)
+mark.paintMark(pixels, mark.STILL)
 
-// The QR code: dark modules on white, no quiet zone (the page frames it with padding).
-const qr = await QRCode.toString(url, {
-  type: 'svg',
-  errorCorrectionLevel: 'M',
-  margin: 0,
-  color: { dark: '#0b0f17ff', light: '#ffffffff' },
-})
-await writeFile(`${PAGE}/assets/qr.svg`, qr)
-console.log(`${PAGE}/assets/qr.svg → ${url}`)
-
-// The link preview.
 const tokens = await readFile(`${PAGE}/src/styles/tokens.css`, 'utf8')
+const logo = `data:image/webp;base64,${(await readFile(`${PAGE}/assets/cikm-2026-light.webp`)).toString('base64')}`
 const dataUri = async (file) => `data:font/woff2;base64,${(await readFile(require.resolve(file))).toString('base64')}`
 const fonts = `
 @font-face { font-family: 'Inter Variable'; font-weight: 100 900; src: url(${await dataUri('@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2')}) format('woff2'); }
@@ -57,18 +48,18 @@ ${fonts}
 ${tokens}
 * { box-sizing: border-box; margin: 0; }
 body { width: 1200px; height: 630px; overflow: hidden; background: var(--bg); color: var(--ink); font-family: var(--font-sans); }
-.og { position: relative; height: 100%; padding: 64px 72px; isolation: isolate; }
+.og { position: relative; height: 100%; padding: 48px 72px; isolation: isolate; }
 .og::before { content: ''; position: absolute; inset: 0; z-index: -1;
   background: radial-gradient(700px 360px at 85% 0%, var(--accent-soft), transparent 70%),
     repeating-linear-gradient(to right, color-mix(in srgb, var(--border) 70%, transparent) 0 1px, transparent 1px 64px),
     repeating-linear-gradient(to bottom, color-mix(in srgb, var(--border) 70%, transparent) 0 1px, transparent 1px 64px);
   mask-image: linear-gradient(to bottom, #000, transparent 85%); }
-.venue { display: inline-flex; align-items: center; gap: 12px; padding: 8px 18px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--ink-2); font-size: 20px; font-weight: 600; }
-.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent-fill); box-shadow: 0 0 0 4px var(--accent-soft); }
-h1 { margin-top: 30px; font-size: 58px; font-weight: 720; line-height: 1.06; letter-spacing: -0.035em; text-wrap: balance; }
-h1 span { display: block; color: var(--ink-3); font-weight: 600; }
-.authors { margin-top: 24px; color: var(--ink-2); font-size: 24px; font-weight: 550; }
-.diagram { position: absolute; left: 72px; right: 72px; bottom: 44px; }
+.logo { height: 104px; }
+h1 { display: flex; align-items: center; gap: 20px; margin-top: 18px; font-size: 66px; font-weight: 740; line-height: 1.04; letter-spacing: -0.04em; }
+canvas { width: 160px; height: 64px; border-radius: 12px; image-rendering: pixelated; box-shadow: 0 12px 28px -12px rgb(19 179 131 / 0.6); }
+.sub { margin-top: 10px; color: var(--ink-3); font-size: 33px; font-weight: 600; letter-spacing: -0.022em; }
+.authors { margin-top: 20px; color: var(--ink-2); font-size: 22px; font-weight: 550; }
+.diagram { position: absolute; left: 72px; right: 72px; bottom: 26px; }
 .track { stroke: var(--border-strong); stroke-width: 3; stroke-dasharray: 1 10; stroke-linecap: round; }
 .done { stroke: var(--ink-3); stroke-width: 3; stroke-linecap: round; }
 .region { fill: var(--accent-tint); stroke: var(--accent-fill); stroke-width: 2.5; stroke-dasharray: 8 8; }
@@ -81,8 +72,9 @@ h1 span { display: block; color: var(--ink-3); font-weight: 600; }
 .l.is-done { fill: var(--bg); } .l.is-active { fill: var(--on-accent); }
 .g { font-family: var(--font-math); font-size: 30px; fill: var(--accent); }
 </style></head><body><div class="og">
-  <p class="venue"><span class="dot"></span>CIKM 2026 · Rome, Italy</p>
-  <h1>Forward-Looking Guidance for Iterative RAG<span>in Multi-Hop Question Answering</span></h1>
+  <img class="logo" src="${logo}" alt="">
+  <h1>Forward-Looking Guidance <canvas width="${mark.COLS}" height="${mark.ROWS}"></canvas></h1>
+  <p class="sub">for Iterative RAG in Multi-Hop Question Answering</p>
   <p class="authors">Jumin Cho · Chanjun Park · Seung-Hoon Na · Hyun-Je Song</p>
   <div class="diagram">${diagram}</div>
 </div></body></html>`
@@ -90,7 +82,12 @@ h1 span { display: block; color: var(--ink-3); font-weight: 600; }
 const browser = await launchChromium()
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } })
 await page.setContent(card)
+await page.evaluate(
+  ([data, w, h]) => document.querySelector('canvas').getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(data), w, h), 0, 0),
+  [[...pixels], mark.COLS, mark.ROWS],
+)
 await page.evaluate(() => document.fonts.ready)
+await page.waitForFunction(() => document.querySelector('.logo').complete)
 await mkdir(`public/${PAGE}`, { recursive: true })
 await page.screenshot({ path: `public/${PAGE}/og.png` })
 await browser.close()
