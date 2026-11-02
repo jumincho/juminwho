@@ -7,6 +7,7 @@ import './styles/tokens.css'
 import './styles/base.css'
 import './styles/layout.css'
 import './styles/figures.css'
+import './styles/mark.css'
 
 import { byId } from './lib/dom'
 import { initCopy, initReveal, initScroll, initTheme } from './widgets/chrome'
@@ -17,6 +18,7 @@ import { mountMark } from './widgets/mark'
 import { mountMotivation } from './widgets/motivation'
 import { mountPipeline } from './widgets/pipeline'
 import { mountResults } from './widgets/results'
+import { mountRoute } from './widgets/route'
 import { mountTokens } from './widgets/tokens'
 import { mountTrace } from './widgets/trace'
 
@@ -45,3 +47,6 @@ mount('table-results', (el) => mountResults(el, byId('results-tools')))
 mount('fig-depth', (el) => mountDepth(el))
 mount('fig-tokens', (el) => mountTokens(el, byId('tokens-legend')))
 mount('fig-trace', (el) => mountTrace(el, byId('trace-tools')))
+
+const map = document.querySelector<HTMLElement>('.pc-map')
+if (map) mountRoute(map)

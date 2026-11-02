@@ -1,0 +1,97 @@
+/*
+ * The mark beside the title: the view through binoculars, looking down the
+ * path ahead (widgets/mark.ts places the path and the operations on it).
+ * Drawn in the page's own tokens, so it follows the theme.
+ */
+
+:root {
+  --lens-rim: rgb(15 23 42 / 0.15);
+  --lens-glint: rgb(255 255 255 / 0.75);
+}
+
+:root[data-theme='dark'] {
+  --lens-rim: rgb(0 0 0 / 0.55);
+  --lens-glint: rgb(255 255 255 / 0.14);
+}
+
+.title-mark {
+  display: inline-block;
+  margin-left: 0.2em;
+  line-height: 0;
+  vertical-align: -0.06em;
+}
+
+.bino {
+  fill: none;
+  stroke: none;
+  width: 1.62em;
+  height: 0.86em;
+  overflow: visible;
+  filter: drop-shadow(0 0.05em 0.1em rgb(6 122 89 / 0.18));
+}
+
+.bino-sky-top {
+  stop-color: var(--accent-soft);
+}
+
+.bino-sky-low {
+  stop-color: var(--surface);
+}
+
+.bino-land-far {
+  stop-color: var(--bg-soft);
+}
+
+.bino-land-near {
+  stop-color: var(--bg-muted);
+}
+
+.bino-horizon {
+  stroke: var(--border-strong);
+  stroke-width: 0.5;
+}
+
+.bino-glow-core {
+  stop-color: var(--accent-fill);
+  stop-opacity: 0.6;
+}
+
+.bino-glow-edge {
+  stop-color: var(--accent-fill);
+  stop-opacity: 0;
+}
+
+.bino-road {
+  fill: color-mix(in srgb, var(--accent-fill) 14%, var(--surface));
+  stroke: color-mix(in srgb, var(--accent-fill) 60%, transparent);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+.bino-dot {
+  fill: var(--accent-solid);
+}
+
+.bino-halo {
+  fill: var(--accent-fill);
+}
+
+/* A soft shadow just inside the rim of both lenses, as one shape, so the middle stays clear. */
+.bino-vignette {
+  fill: none;
+  stroke: var(--lens-rim);
+  stroke-width: 9;
+}
+
+.bino-glint {
+  fill: none;
+  stroke: var(--lens-glint);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.bino-frame {
+  fill: none;
+  stroke: var(--ink-2);
+  stroke-width: 1.7;
+}

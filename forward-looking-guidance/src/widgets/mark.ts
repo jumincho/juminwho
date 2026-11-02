@@ -1,270 +1,141 @@
+import { s } from '../lib/dom'
 import { prefersReducedMotion, watchVisibility } from '../lib/motion'
 import { motionPaused } from '../state'
 
 /**
- * The mark beside the title: a tiny pixel display in which the operation that
- * is running shines a beam over the operations still ahead. That beam is
- * forward-looking guidance. It is drawn the pixel-art way, after pixelfx
- * (github.com/patch-gg/pixelfx, MIT): a low-resolution frame, light
- * posterized into bands from a hot core to a dithered edge, motes that light
- * up inside the beam, stepped at 12 fps and scaled up by whole pixels.
+ * The mark beside the title: the view through a pair of binoculars, down a
+ * path that runs to a glow on the horizon. The operations still ahead wait
+ * along it, smaller the further off they are, and a slow focus travels from
+ * the nearest to the horizon, then starts again: forward-looking guidance,
+ * seeing what remains of the plan. The view sways a little, as binoculars do
+ * in the hand. It quickens while hovered, pauses with the hero's pause
+ * button, off screen and in hidden tabs, and holds still with reduced motion.
  */
 
-export const COLS = 40
-export const ROWS = 16
-const MID = 8
-const NODES = [5, 15, 25, 35]
-const STEP = 2.2 // seconds each operation runs
-const HOP = 0.32 // the light travelling to the next operation
-const END = 1.4 // the finished plan, before the loop starts again
-const CYCLE = NODES.length * STEP + END
-const FPS = 12
+const HORIZON = 30
+const NEAR = 2
+const FAR = 26
+const SPAN = 72 // screen y = HORIZON + SPAN / depth
+const DEPTHS = [3, 5, 8.5, 14.5] // the operations ahead, nearest first
+const SWEEP = 2.8 // seconds for the focus to reach the horizon
+const REST = 1.8 // and a pause before it looks again
+const PERIOD = SWEEP + REST
 
-type RGB = readonly [number, number, number]
-// Dark to bright, hue-shifted: shadows lean deep teal, highlights lean warm mint.
-const BG: RGB = [6, 17, 14]
-const DOT: RGB = [13, 33, 27]
-const RAMP: RGB[] = [
-  [12, 58, 45],
-  [16, 104, 78],
-  [35, 170, 122],
-  [118, 228, 180],
-  [222, 255, 240],
-]
-const TRACK: RGB = [28, 58, 49]
-const TRACK_DONE: RGB = [86, 116, 106]
-const DONE: RGB = [150, 178, 168]
-const AHEAD: RGB = [34, 118, 90]
-const WHITE: RGB = [246, 255, 251]
+const ease = (v: number) => (v < 0.5 ? 4 * v * v * v : 1 - (-2 * v + 2) ** 3 / 2)
 
-// 4×4 ordered (Bayer) thresholds: a pixel at strength a is drawn when a is above its cell's threshold.
-const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map((v) => (v + 0.5) / 16)
-// Fine strands through the beam: a fixed brightness per row.
-const STRANDS = Array.from({ length: ROWS }, (_, y) => 0.86 + 0.24 * Math.abs(Math.sin(y * 2.17 + 0.6)))
-
-const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v))
-const ease = (v: number) => 1 - (1 - v) ** 3
-
-class Frame {
-  readonly data: Uint8ClampedArray
-  constructor(data: Uint8ClampedArray) {
-    this.data = data
-  }
-  set(x: number, y: number, c: RGB): void {
-    if (x < 0 || y < 0 || x >= COLS || y >= ROWS) return
-    const i = (y * COLS + x) * 4
-    this.data[i] = c[0]
-    this.data[i + 1] = c[1]
-    this.data[i + 2] = c[2]
-    this.data[i + 3] = 255
-  }
-  /** Additive light on top of what is there. */
-  add(x: number, y: number, c: RGB, k: number): void {
-    if (k <= 0.01 || x < 0 || y < 0 || x >= COLS || y >= ROWS) return
-    const i = (y * COLS + x) * 4
-    for (let j = 0; j < 3; j++) this.data[i + j] = Math.min(255, this.data[i + j] + c[j] * k)
-  }
+/**
+ * Where the path is at a depth: its centre on screen and its half-width. It
+ * comes in at the bottom of the left lens and sweeps forward, to the right,
+ * into the distance of the right lens, clear of the notch between the lenses.
+ */
+export function roadAt(depth: number): { x: number; y: number; half: number } {
+  return { x: 82 - 48 * (NEAR / depth) ** 0.8, y: HORIZON + SPAN / depth, half: 30 / depth }
 }
 
-/** Strength of the beam from an operation at x0 at a pixel, 0 outside it. */
-function beamAt(x: number, y: number, x0: number, local: number, k: number): number {
-  const d = x - x0
-  if (d < 0) return 0
-  const half = 0.6 + d * 0.22
-  const q = (y - MID) / (half + 0.5)
-  if (q <= -1 || q >= 1) return 0
-  const profile = (1 - q * q) ** 1.5
-  const fall = clamp(1.12 - d / 36)
-  // A brighter band runs outward along the beam: looking ahead, again and again.
-  const wave = Math.max(0, Math.cos(2 * Math.PI * (d / 15 - local * 0.85))) ** 3
-  return profile * fall * STRANDS[y] * (0.78 + 0.42 * wave) * k
+/** The path as a filled shape: the near edge, out to the horizon and back. */
+export function roadPath(): string {
+  const depths = [1.8, 2.2, 2.7, 3.3, 4, 5, 6.2, 7.8, 9.8, 12.4, 15.6, 19.5, 23, FAR]
+  const left = depths.map((d) => roadAt(d)).map((r) => [r.x - r.half, r.y])
+  const right = depths.map((d) => roadAt(d)).map((r) => [r.x + r.half, r.y]).reverse()
+  return `M${[...left, ...right].map(([x, y]) => `${x.toFixed(2)} ${y.toFixed(2)}`).join('L')}Z`
 }
 
-function render(f: Frame, t: number, boost: number): void {
-  // Dark display with a faint dot grid.
-  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) f.set(x, y, x % 4 === 2 && y % 4 === 2 ? DOT : BG)
+/** Where the path meets the horizon. */
+export const VANISH = roadAt(FAR)
 
-  const tc = ((t % CYCLE) + CYCLE) % CYCLE
-  const finished = tc >= NODES.length * STEP
-  const c = finished ? NODES.length : Math.floor(tc / STEP)
-  const local = finished ? tc - NODES.length * STEP : tc - c * STEP
-  const hopping = !finished && c < NODES.length - 1 && local > STEP - HOP
-  const hop = hopping ? ease((local - (STEP - HOP)) / HOP) : 0
+export interface Dot {
+  cx: number
+  cy: number
+  r: number
+  opacity: number
+  halo: number
+}
 
-  // The track: solid where the plan has run, dotted ahead.
-  const ranTo = finished ? NODES[NODES.length - 1] : NODES[Math.min(c, NODES.length - 1)]
-  for (let x = NODES[0]; x <= NODES[NODES.length - 1]; x++) {
-    if (x <= ranTo) f.set(x, MID, TRACK_DONE)
-    else if (x % 2 === 0) f.set(x, MID, TRACK)
-  }
-
-  // The beam, posterized from a hot core to a dithered edge.
-  // The last operation has nothing left to look ahead to (its G is empty): no beam.
-  let k = 0
-  if (!finished && c < NODES.length - 1) {
-    const on = clamp(local / 0.35)
-    const off = hopping ? 1 - hop : 1
-    k = ease(on) * off * boost
-  }
-  const x0 = finished ? COLS : NODES[c] + 2
-  if (k > 0) {
-    for (let y = 1; y < ROWS - 1; y++) {
-      for (let x = x0; x < COLS; x++) {
-        const e = beamAt(x, y, x0, local, k)
-        if (e < 0.06) continue
-        if (e < 0.22) {
-          if (e / 0.22 > BAYER[((y & 3) << 2) | (x & 3)]) f.set(x, y, RAMP[0])
-          continue
-        }
-        f.set(x, y, RAMP[e > 0.92 ? 4 : e > 0.68 ? 3 : e > 0.44 ? 2 : 1])
-      }
-    }
-    // Motes drift forward and catch the light inside the beam.
-    for (let i = 0; i < 7; i++) {
-      const span = COLS - x0
-      if (span <= 1) break
-      const mx = x0 + Math.floor((t * (6 + i * 1.7) + i * 7.3) % span)
-      const my = Math.round(MID + Math.sin(t * (0.9 + i * 0.23) + i * 1.9) * (1 + (mx - x0) * 0.2))
-      const e = beamAt(mx, my, x0, local, k)
-      if (e > 0.18) f.set(mx, my, e > 0.6 ? WHITE : RAMP[3])
-    }
-  }
-
-  // The operations.
-  NODES.forEach((nx, i) => {
-    const plus = (col: RGB) => {
-      f.set(nx, MID, col)
-      f.set(nx - 1, MID, col)
-      f.set(nx + 1, MID, col)
-      f.set(nx, MID - 1, col)
-      f.set(nx, MID + 1, col)
-    }
-    if (i < c) {
-      plus(DONE)
-    } else if (i === c && !finished) {
-      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) f.set(nx + dx, MID + dy, WHITE)
-    } else {
-      // Ahead: a dark ring that the beam lights up, brightest when the scan passes over it.
-      const e = k > 0 ? beamAt(nx, MID, x0, local, k) : 0
-      const ring = e > 0.7 ? RAMP[4] : e > 0.4 ? RAMP[3] : e > 0.18 ? RAMP[2] : AHEAD
-      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (dx || dy) f.set(nx + dx, MID + dy, ring)
-      f.set(nx, MID, e > 0.4 ? WHITE : BG)
+/** The operations, the glow on the horizon and the sway of the view at t seconds. */
+export function sceneAt(t: number): { dots: Dot[]; glow: number; sway: [number, number] } {
+  const phase = (t % PERIOD) / SWEEP
+  const focus = phase <= 1 ? ease(phase) : -1 // 0 at the nearest operation, 1 at the horizon
+  const lit = (at: number, width: number) => (focus < 0 ? 0 : Math.exp(-(((focus - at) / width) ** 2)))
+  const dots = DEPTHS.map((depth, k) => {
+    const { x, y } = roadAt(depth)
+    const b = lit(k / DEPTHS.length, 0.13)
+    const far = (NEAR / depth) ** 0.3
+    return {
+      cx: x,
+      cy: y,
+      r: (3.3 * (NEAR / depth) ** 0.62 + 0.4) * (1 + 0.22 * b),
+      opacity: (0.55 + 0.45 * b) * (0.62 + 0.38 * far),
+      halo: b,
     }
   })
-
-  // Glow around the running operation, or the light hopping on to the next one.
-  if (!finished) {
-    const gx = hopping ? NODES[c] + (NODES[c + 1] - NODES[c]) * hop : NODES[c]
-    const gk = (hopping ? 1 : 0.55 + 0.25 * Math.sin(local * 5)) * boost
-    for (let dy = -3; dy <= 3; dy++) {
-      for (let dx = -3; dx <= 3; dx++) {
-        const r = Math.hypot(dx, dy)
-        if (r > 3.2) continue
-        f.add(Math.round(gx) + dx, MID + dy, RAMP[2], gk * (1 - r / 3.4) * 0.55)
-      }
-    }
-    if (hopping) {
-      const hx = Math.round(gx)
-      for (let j = 0; j < 4; j++) f.set(hx - j, MID, j === 0 ? WHITE : RAMP[4 - j])
-    }
-  } else {
-    // The plan is done: a brief sparkle on the last operation, then the loop starts again.
-    const s = clamp(1 - local / 0.9)
-    const nx = NODES[NODES.length - 1]
-    if (s > 0) {
-      for (let r = 1; r <= 3; r++) {
-        const col = RAMP[Math.max(1, 4 - r)]
-        if (s > r / 4) for (const [dx, dy] of [[r, 0], [-r, 0], [0, r], [0, -r]]) f.set(nx + dx, MID + dy, col)
-      }
-      f.set(nx, MID, WHITE)
-    }
-  }
-
-  // Faint scanlines.
-  for (let y = 1; y < ROWS; y += 2) {
-    for (let x = 0; x < COLS; x++) {
-      const i = (y * COLS + x) * 4
-      f.data[i] *= 0.9
-      f.data[i + 1] *= 0.9
-      f.data[i + 2] *= 0.9
-    }
-  }
+  return { dots, glow: 0.45 + 0.55 * lit(1, 0.16), sway: [0.7 * Math.sin(t * 0.8), 0.4 * Math.sin(t * 1.15 + 1)] }
 }
 
-/** The moment shown with reduced motion (and in the link preview): the first operation lighting up all three ahead. */
-export const STILL = 1
-
-/** Paints the frame at `t` seconds into `data`, COLS × ROWS RGBA pixels. */
-export function paintMark(data: Uint8ClampedArray, t: number, boost = 1): void {
-  render(new Frame(data), t, boost)
-}
+/** The moment shown with reduced motion and in the link preview: the focus on the second operation. */
+export const STILL = SWEEP * 0.42
 
 export function mountMark(holder: HTMLElement): void {
-  const canvas = document.createElement('canvas')
-  canvas.width = COLS
-  canvas.height = ROWS
-  canvas.className = 'title-mark-canvas'
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return
-  holder.replaceChildren(canvas)
-  const image = ctx.createImageData(COLS, ROWS)
-  const frame = new Frame(image.data)
+  const svg = holder.querySelector('svg')
+  const scene = svg?.querySelector<SVGGElement>('.bino-scene')
+  const glow = svg?.querySelector<SVGCircleElement>('.bino-glow')
+  const road = svg?.querySelector<SVGPathElement>('.bino-road')
+  const group = svg?.querySelector<SVGGElement>('.bino-nodes')
+  if (!svg || !scene || !glow || !road || !group) return
 
-  // Whole device pixels per frame pixel, so every pixel is the same size and edges stay crisp.
-  const fit = () => {
-    const size = parseFloat(getComputedStyle(holder).fontSize) || 48
-    const dpr = window.devicePixelRatio || 1
-    const cell = Math.max(1, Math.round((size * 0.86 * dpr) / ROWS))
-    const w = (COLS * cell) / dpr
-    const h = (ROWS * cell) / dpr
-    canvas.style.width = `${w}px`
-    canvas.style.height = `${h}px`
-    canvas.style.borderRadius = `${(cell * 3) / dpr}px`
-    // Centre it on the capitals beside it (Inter's caps stand about 0.73 em tall).
-    holder.style.verticalAlign = `${size * 0.365 - h / 2}px`
+  road.setAttribute('d', roadPath())
+  glow.setAttribute('cx', VANISH.x.toFixed(2))
+  glow.setAttribute('cy', (VANISH.y - 1.4).toFixed(2))
+  const nodes = DEPTHS.map(() => {
+    const halo = s('circle', { class: 'bino-halo' })
+    const dot = s('circle', { class: 'bino-dot' })
+    group.append(s('g', { class: 'bino-node' }, halo, dot))
+    return { halo, dot }
+  })
+
+  const draw = (t: number, sway = true) => {
+    const { dots, glow: g, sway: [dx, dy] } = sceneAt(t)
+    dots.forEach((d, k) => {
+      const { halo, dot } = nodes[k]
+      dot.setAttribute('cx', d.cx.toFixed(2))
+      dot.setAttribute('cy', d.cy.toFixed(2))
+      dot.setAttribute('r', d.r.toFixed(2))
+      dot.setAttribute('opacity', d.opacity.toFixed(3))
+      halo.setAttribute('cx', d.cx.toFixed(2))
+      halo.setAttribute('cy', d.cy.toFixed(2))
+      halo.setAttribute('r', (d.r * 2.8).toFixed(2))
+      halo.setAttribute('opacity', (0.3 * d.halo).toFixed(3))
+    })
+    glow.setAttribute('opacity', g.toFixed(3))
+    scene.setAttribute('transform', sway ? `translate(${dx.toFixed(2)} ${dy.toFixed(2)})` : '')
   }
-  fit()
-  if (typeof ResizeObserver === 'function') new ResizeObserver(fit).observe(holder.parentElement ?? holder)
-  window.matchMedia(`(resolution: ${window.devicePixelRatio || 1}dppx)`).addEventListener?.('change', fit)
 
-  const draw = (t: number) => {
-    render(frame, t, boost)
-    ctx.putImageData(image, 0, 0)
-  }
-
-  // With reduced motion the display holds one moment.
-  let boost = 1
   if (prefersReducedMotion()) {
-    draw(STILL)
+    draw(STILL, false)
     return
   }
 
-  let t = 0
+  let t = STILL
   let last = 0
-  let shown = -1
   let raf = 0
   let visible = false
+  let speed = 1
   let target = 1
   const loop = (now: number) => {
     raf = requestAnimationFrame(loop)
     const dt = last ? Math.min(0.1, (now - last) / 1000) : 0
     last = now
-    t += dt
-    boost += (target - boost) * Math.min(1, dt * 6)
-    const step = Math.floor(t * FPS)
-    if (step === shown) return
-    shown = step
-    draw(step / FPS)
+    speed += (target - speed) * Math.min(1, dt * 4)
+    t += dt * speed
+    draw(t)
   }
   const sync = () => {
     cancelAnimationFrame(raf)
     last = 0
     if (visible && !document.hidden && !motionPaused.get()) raf = requestAnimationFrame(loop)
-    else draw(Math.floor(t * FPS) / FPS)
   }
 
-  // Hovering makes it look harder.
-  holder.addEventListener('pointerenter', () => (target = 1.25))
+  // Hovering looks harder: the focus sweeps faster.
+  holder.addEventListener('pointerenter', () => (target = 2.2))
   holder.addEventListener('pointerleave', () => (target = 1))
   watchVisibility(holder, (isVisible) => {
     visible = isVisible
@@ -272,5 +143,5 @@ export function mountMark(holder: HTMLElement): void {
   })
   document.addEventListener('visibilitychange', sync)
   motionPaused.subscribe(sync)
-  draw(0)
+  draw(t)
 }

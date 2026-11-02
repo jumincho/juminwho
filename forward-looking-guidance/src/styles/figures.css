@@ -157,7 +157,7 @@
   opacity: 1;
 }
 
-.hero-head {
+.hero-arrowhead {
   fill: none;
   stroke: var(--accent-fill);
   stroke-width: 1.6;

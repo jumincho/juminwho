@@ -83,8 +83,8 @@ function build(L: Layout): Parts {
       {},
       s(
         'marker',
-        { id: 'hero-head', viewBox: '0 0 10 10', refX: 8, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' },
-        s('path', { d: 'M1 1.5 8.5 5 1 8.5', class: 'hero-head' }),
+        { id: 'hero-tip', viewBox: '0 0 10 10', refX: 8, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' },
+        s('path', { d: 'M1 1.5 8.5 5 1 8.5', class: 'hero-arrowhead' }),
       ),
     ),
   )
@@ -99,7 +99,7 @@ function build(L: Layout): Parts {
     s('text', { class: 'hero-kicker', 'text-anchor': 'middle', y: -fs - 6 }, 'REMAINING PLAN'),
     regionMath,
   )
-  const arrow = s('path', { class: 'hero-arrow', 'marker-end': 'url(#hero-head)' })
+  const arrow = s('path', { class: 'hero-arrow', 'marker-end': 'url(#hero-tip)' })
   svg.append(trackDone, region, regionLabel, arrow)
 
   const pulse = s('g', { class: 'hero-pulse-at' }, s('circle', { class: 'hero-pulse', r }))

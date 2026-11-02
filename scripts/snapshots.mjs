@@ -17,7 +17,8 @@
  * does not fit or loses its hedge, or a language menu that does not pick,
  * remember and link. The paper's project page (forward-looking-guidance/)
  * gets the same basics at both widths and in both themes, plus its figures:
- * each must mount, the title mark must paint, the stage picker, the backbone
+ * each must mount, the binocular mark and the postcard's flight must be in
+ * place, the stage picker, the backbone
  * switch, the trace stepper and back-to-top must respond, a theme picked
  * there must carry over to the portfolio, and nothing may move with reduced
  * motion. Full-page screenshots
@@ -381,16 +382,17 @@ async function checkProjectPage(vp, scheme) {
 
   await page.screenshot({ path: `${OUT}/project-${vp.name}-${scheme}.png`, fullPage: true, animations: 'disabled' })
 
-  // The pixel mark beside the title paints its beam.
-  const lit = await page.evaluate(() => {
-    const canvas = document.querySelector('#title-mark canvas')
-    if (!canvas) return 0
-    const { data } = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height)
-    let n = 0
-    for (let i = 0; i < data.length; i += 4) if (data[i + 1] > 150) n++
-    return n
-  })
-  if (lit === 0) fail('the title mark does not paint')
+  // The binocular mark beside the title has its path and the operations along it.
+  const mark = await page.evaluate(() => ({
+    road: document.querySelector('#title-mark .bino-road')?.getAttribute('d')?.length ?? 0,
+    dots: [...document.querySelectorAll('#title-mark .bino-dot')].filter((dot) => Number(dot.getAttribute('r')) > 0).length,
+  }))
+  if (mark.road === 0 || mark.dots === 0) fail('the binocular mark beside the title is empty')
+
+  // The postcard's map: the plane has flown from Seoul and is near Rome.
+  const plane = await page.evaluate(() => document.querySelector('.pc-plane')?.getAttribute('transform') ?? '')
+  const planeX = Number(plane.match(/translate\(([\d.]+)/)?.[1] ?? NaN)
+  if (!(planeX < 80)) fail(`the plane on the postcard's map is not near Rome (${plane || 'not placed'})`)
 
   // Figure 2: the stage picker moves the guidance and the measured effect.
   await page.locator('#pipeline-tools button', { hasText: /^Retrieval$/ }).click()
