@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import * as content from './src/data/profile'
 import { hangulFont } from './vite-plugins/hangulFont'
@@ -22,5 +23,12 @@ export default defineConfig({
   ],
   build: {
     target: 'es2022',
+    rollupOptions: {
+      // The portfolio, and the project page of the CIKM 2026 paper beside it.
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url)),
+        'forward-looking-guidance': fileURLToPath(new URL('./forward-looking-guidance/index.html', import.meta.url)),
+      },
+    },
   },
 })

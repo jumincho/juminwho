@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#090c11" media="(prefers-color-scheme: dark)" />
+    <title>Forward-Looking Guidance for Iterative RAG in Multi-Hop QA · CIKM 2026</title>
+    <meta
+      name="description"
+      content="Planning-based iterative RAG already knows the rest of its plan. Forward-looking guidance shows each operation the remaining plan, so intermediate outputs keep what later steps need. CIKM 2026."
+    />
+    <link rel="canonical" href="https://jumincho.github.io/juminwho/forward-looking-guidance/" />
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Jumin Cho" />
+    <meta property="og:url" content="https://jumincho.github.io/juminwho/forward-looking-guidance/" />
+    <meta property="og:title" content="Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering" />
+    <meta
+      property="og:description"
+      content="Show each step the rest of the plan: intermediate outputs keep what later steps need, with no extra model calls or retrieval. CIKM 2026."
+    />
+    <meta property="og:image" content="https://jumincho.github.io/juminwho/forward-looking-guidance/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="citation_title" content="Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering" />
+    <meta name="citation_author" content="Cho, Jumin" />
+    <meta name="citation_author" content="Park, Chanjun" />
+    <meta name="citation_author" content="Na, Seung-Hoon" />
+    <meta name="citation_author" content="Song, Hyun-Je" />
+    <meta name="citation_publication_date" content="2026/11/07" />
+    <meta
+      name="citation_conference_title"
+      content="Proceedings of the 35th ACM International Conference on Information and Knowledge Management"
+    />
+    <meta name="citation_doi" content="10.1145/3799682.3840073" />
+
+    <script>
+      // Theme before first paint. The key is shared with the portfolio (same origin), so the choice carries over.
+      ;(function () {
+        var stored = null
+        try {
+          stored = localStorage.getItem('juminwho:theme')
+        } catch (e) {}
+        var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+        document.documentElement.classList.add('js')
+      })()
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="back" href="../" title="Back to Jumin Cho's portfolio">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>
+          <span class="back-label">Portfolio</span>
+        </a>
+        <a class="wordmark" href="#top" aria-label="Back to top">Forward-Looking Guidance</a>
+        <nav class="topnav" aria-label="Sections">
+          <a href="#problem">Problem</a>
+          <a href="#method">Method</a>
+          <a href="#results">Results</a>
+          <a href="#analysis">Analysis</a>
+          <a href="#cite">Cite</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="icon-btn" href="https://github.com/jumincho/forward-looking-guidance" title="Code on GitHub" aria-label="Code on GitHub">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>
+          </a>
+          <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch theme">
+            <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></svg>
+            <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></svg>
+          </button>
+        </div>
+      </div>
+      <div class="progress" aria-hidden="true"><span></span></div>
+    </header>
+
+    <nav class="toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#top">Overview</a></li>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#method">Method</a></li>
+        <li><a href="#experiments">Experiments</a></li>
+        <li><a href="#results">Main results</a></li>
+        <li><a href="#analysis">Analysis</a></li>
+        <li><a href="#related">Related work</a></li>
+        <li><a href="#cite">Citation</a></li>
+        <li><a href="#thanks">A note to you</a></li>
+      </ol>
+    </nav>
+
+    <main id="main">
+      <!-- ================================================================ hero -->
+      <section class="hero" id="top" aria-labelledby="title">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="col hero-head">
+          <p class="venue" data-reveal>
+            <span class="venue-dot" aria-hidden="true"></span>
+            CIKM 2026 <span aria-hidden="true">·</span> Rome, Italy
+          </p>
+          <h1 id="title" data-reveal>
+            Forward-Looking Guidance for Iterative RAG
+            <span class="title-line">in Multi-Hop Question Answering</span>
+          </h1>
+          <p class="authors" data-reveal>
+            <span class="author"><a href="../" title="Portfolio">Jumin Cho</a><sup>1</sup><span class="sep">,</span></span>
+            <span class="author"><span>Chanjun Park</span><sup>2</sup><span class="sep">,</span></span>
+            <span class="author"><a href="https://nlp.unist.ac.kr/faculty.html">Seung-Hoon Na</a><sup>3</sup><span class="sep">,</span></span>
+            <span class="author"><a href="https://sites.google.com/site/songhyunje/Home">Hyun-Je Song</a><sup>1,✉</sup></span>
+          </p>
+          <p class="affiliations" data-reveal>
+            <span><sup>1</sup>Jeonbuk National University</span>
+            <span><sup>2</sup>Soongsil University</span>
+            <span><sup>3</sup>Ulsan National Institute of Science and Technology</span>
+            <span class="corresponding"><sup>✉</sup>Corresponding author</span>
+          </p>
+          <div class="links" data-reveal>
+            <button class="btn" type="button" disabled aria-label="Paper PDF, coming soon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg>
+              Paper <span class="soon">Soon</span>
+            </button>
+            <button class="btn" type="button" disabled aria-label="arXiv, coming soon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 12h-5" /><path d="M15 8h-5" /><path d="M19 17V5a2 2 0 0 0-2-2H4" /><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" /></svg>
+              arXiv <span class="soon">Soon</span>
+            </button>
+            <a class="btn btn-primary" href="https://github.com/jumincho/forward-looking-guidance">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>
+              Code
+            </a>
+            <a class="btn" href="#cite">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z" /><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z" /></svg>
+              BibTeX
+            </a>
+          </div>
+        </div>
+
+        <div class="wide hero-figure" data-reveal>
+          <figure class="figure-frame hero-frame">
+            <div id="hero-visual" class="hero-visual"></div>
+            <figcaption class="hero-caption">
+              Each operation runs with the rest of the plan in view: while resolving
+              <span class="m"><i>o</i><sub><i>i</i></sub></span>, the modules that produce intermediate outputs also read
+              <span class="m"><i>G</i><sub><i>i</i></sub> = (<i>o</i><sub><i>i</i>+1</sub>, …, <i>o</i><sub><i>n</i></sub>)</span>.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ================================================================ tl;dr -->
+      <section class="tldr" aria-labelledby="tldr-title">
+        <div class="col">
+          <p class="tldr-text" data-reveal>
+            <span class="tldr-label" id="tldr-title">TL;DR</span>
+            Planning-based iterative RAG already knows the rest of its plan. <strong>Forward-looking guidance</strong> shows
+            that remaining plan to the model while each step runs, so intermediate outputs keep the details later steps
+            will need, with no extra model calls and no extra retrieval.
+          </p>
+        </div>
+        <div class="wide">
+          <ul class="stats" data-reveal>
+            <li class="stat">
+              <span class="stat-value">+30<small>%</small></span>
+              <span class="stat-label">relative EM gain on MuSiQue that holds at every reasoning depth: 2, 3 and 4 hops</span>
+            </li>
+            <li class="stat">
+              <span class="stat-value">3<small> of </small>3</span>
+              <span class="stat-label">benchmarks where STRIDE+FG has the best EM with Qwen3-8B</span>
+            </li>
+            <li class="stat">
+              <span class="stat-value">0</span>
+              <span class="stat-label">extra model calls or retrieval steps: the guidance is text the planner already wrote</span>
+            </li>
+            <li class="stat">
+              <span class="stat-value"><small>&lt;</small>5<small>%</small></span>
+              <span class="stat-label">more extractor and reasoner tokens per question</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================================================================ abstract -->
+      <section class="section" id="abstract" aria-labelledby="abstract-title">
+        <div class="col">
+          <p class="eyebrow">Abstract</p>
+          <h2 id="abstract-title" class="visually-hidden">Abstract</h2>
+          <div class="prose abstract">
+            <p>
+              Multi-hop question answering aims to answer complex queries by identifying and integrating evidence
+              distributed across multiple documents. Existing iterative RAG approaches address this task by decomposing
+              complex questions into plans or sub-questions, followed by repeated retrieval, evidence extraction, and
+              reasoning to accumulate the information needed for the final answer. Nevertheless, intermediate outputs
+              produced during this iterative process are often optimized locally rather than guided by future reasoning
+              needs, making them useful for the current iteration but suboptimal for the overall multi-hop reasoning
+              process. We empirically investigate the potential of forward-looking guidance in iterative RAG, where the
+              remaining planned reasoning trajectory is incorporated into each iteration. We analyze its effect across
+              retrieval, evidence extraction, and reasoning, and find that such guidance is especially beneficial for
+              evidence extraction and reasoning, leading to more effective intermediate outputs and consistent
+              improvements over iterative RAG baselines.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ 1 problem -->
+      <section class="section" id="problem" aria-labelledby="problem-title">
+        <div class="col">
+          <p class="eyebrow"><span class="num">01</span> The problem</p>
+          <h2 id="problem-title">Locally adequate is not enough</h2>
+          <div class="prose">
+            <p>
+              Multi-hop questions spread their evidence across several documents, so iterative RAG answers them in
+              rounds: retrieve, extract, reason, repeat. Planning-based systems
+              <a class="cite" href="#ref-planrag">[Plan*RAG]</a> <a class="cite" href="#ref-resp">[ReSP]</a>
+              <a class="cite" href="#ref-stride">[STRIDE]</a> go a step further. They first write a plan, a sequence of
+              executable operations <span class="m"><i>o</i><sub>1</sub>, …, <i>o</i><sub><i>n</i></sub></span>, and then
+              carry it out according to its dependencies.
+            </p>
+            <p>
+              Yet each operation is executed with a focus on its immediate goal. <strong>An intermediate output may be
+              adequate for the current operation while failing to preserve information that later operations will
+              require.</strong> Below, the first operation asks where a person was born and is answered with
+              “Springfield”. That satisfies the operation, but leaves the next one, which must find an organization
+              located there, with no unambiguous target.
+            </p>
+          </div>
+        </div>
+        <div class="wide figure" data-reveal>
+          <div class="figure-frame">
+            <div class="figure-bar">
+              <p class="figure-title">Same plan, different first answer <span class="chip chip-accent">Interactive</span></p>
+              <div class="figure-tools" id="motivation-tools"></div>
+            </div>
+            <div class="figure-body" id="fig-motivation"></div>
+          </div>
+          <p class="caption">
+            <strong>Figure 1.</strong> A two-hop example where locally adequate execution is insufficient for subsequent
+            reasoning. The planner and the generated operations are identical in both settings; only what
+            <span class="m"><i>o</i><sub>1</sub></span> sees while it runs differs.
+          </p>
+        </div>
+      </section>
+
+      <!-- ================================================================ 2 method -->
+      <section class="section" id="method" aria-labelledby="method-title">
+        <div class="col">
+          <p class="eyebrow"><span class="num">02</span> Method</p>
+          <h2 id="method-title">Show each step the rest of the plan</h2>
+
+          <h3>Planning-based iterative RAG</h3>
+          <div class="prose">
+            <p>
+              Given a question <span class="m"><i>q</i></span>, a planner generates a high-level strategy and instantiates
+              it into executable operations:
+            </p>
+          </div>
+          <div class="eq" role="math" aria-label="o sub 1 through o sub n equals LLM plan of prompt plan and q">
+            <span class="m">(<i>o</i><sub>1</sub>, …, <i>o</i><sub><i>n</i></sub>) = LLM<sub>plan</sub>(prompt<sub>plan</sub>, <i>q</i>)</span>
+            <span class="no">(1)</span>
+          </div>
+          <div class="prose">
+            <p>
+              An operation may ask for an intermediate fact, request more evidence, rewrite a failed query, combine
+              earlier results or produce an answer, so the plan defines an execution trajectory rather than a set of
+              independent sub-questions. An executor carries it out while keeping an execution state
+              <span class="m"><i>S</i></span>: completed operations, their intermediate outputs, the facts collected so
+              far and what is still unresolved. For each ready operation <span class="m"><i>o</i><sub><i>i</i></sub></span>,
+              a controller chooses an action such as <em>retrieve</em>, <em>rewrite</em> or <em>answer</em>. Retrieve and
+              rewrite run three modules in sequence:
+            </p>
+          </div>
+          <div class="eq-group" id="eq-base">
+            <div class="eq"><span class="m"><i>D</i><sub><i>i</i></sub> = Retrieve(<i>o</i><sub><i>i</i></sub>, 𝒟)</span><span class="no">(2)</span></div>
+            <div class="eq"><span class="m"><i>f</i><sub><i>i</i></sub> = LLM<sub>ext</sub>(prompt<sub>ext</sub>, <i>o</i><sub><i>i</i></sub>, <i>D</i><sub><i>i</i></sub>)</span><span class="no">(3)</span></div>
+            <div class="eq"><span class="m"><i>r</i><sub><i>i</i></sub> = LLM<sub>rsn</sub>(prompt<sub>rsn</sub>, <i>o</i><sub><i>i</i></sub>, <i>f</i><sub><i>i</i></sub>, <i>S</i>)</span><span class="no">(4)</span></div>
+          </div>
+          <div class="prose">
+            <p>
+              The answer action skips retrieval and lets the reasoner work from the facts already in
+              <span class="m"><i>S</i></span>. The state is then updated with <span class="m"><i>f</i><sub><i>i</i></sub></span>
+              and <span class="m"><i>r</i><sub><i>i</i></sub></span>, and execution moves on until the plan is complete.
+            </p>
+          </div>
+
+          <h3>Forward-looking guidance</h3>
+          <div class="prose">
+            <p>
+              Notice what the extractor and the reasoner see: the current operation, the retrieved documents and the
+              state. <strong>Not the operations that will consume their output.</strong> Forward-looking guidance changes
+              only that. Before resolving <span class="m"><i>o</i><sub><i>i</i></sub></span>, it takes the remaining
+              execution trajectory
+            </p>
+          </div>
+          <div class="eq">
+            <span class="m"><span class="g"><i>G</i><sub><i>i</i></sub></span> = (<i>o</i><sub><i>i</i>+1</sub>, …, <i>o</i><sub><i>n</i></sub>)</span>
+            <span class="no">(5)</span>
+          </div>
+          <div class="prose">
+            <p>
+              and appends it as plain text, written <span class="m"><span class="op">⊕</span></span>, to the input of a
+              chosen stage. Everything else stays as it was: the plan, the action selection, the retriever and the number
+              of model calls. <span class="m"><i>G</i><sub><i>i</i></sub></span> is simply text the planner has already
+              produced. The question is where it should go.
+            </p>
+          </div>
+        </div>
+        <div class="wide figure" data-reveal>
+          <div class="figure-frame">
+            <div class="figure-bar">
+              <p class="figure-title">Where should the guidance go? <span class="chip chip-accent">Interactive</span></p>
+              <div class="figure-tools" id="pipeline-tools"></div>
+            </div>
+            <div class="figure-body" id="fig-pipeline"></div>
+          </div>
+          <p class="caption">
+            <strong>Figure 2.</strong> Forward-looking guidance in a planning-based iterative RAG pipeline. Choose a stage
+            to see where <span class="m"><i>G</i><sub><i>i</i></sub></span> enters, how the equations change, and the
+            change in EM over STRIDE (Table 1 of the paper: MuSiQue development subset, Qwen3-8B).
+          </p>
+        </div>
+        <div class="col">
+          <div class="prose">
+            <p>
+              <strong>Guidance belongs after retrieval.</strong> Adding the remaining operations to the retrieval query
+              lowers EM by .035: it mixes the current information need with future ones. After retrieval the same text
+              helps, because extraction and reasoning decide what the retrieved documents leave behind and how the current
+              result is phrased. Its main role is not to retrieve more documents, but to make better use of the documents
+              already retrieved. Using it in both stages works best (+.087 EM), so every +FG variant below uses
+              extraction and reasoning.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ 3 experiments -->
+      <section class="section" id="experiments" aria-labelledby="experiments-title">
+        <div class="col">
+          <p class="eyebrow"><span class="num">03</span> Experiments</p>
+          <h2 id="experiments-title">Setup</h2>
+          <p class="lead">
+            Forward-looking guidance is a plug-in, not a new QA pipeline. We add it to every compatible planning-based
+            method and keep everything else fixed.
+          </p>
+        </div>
+        <div class="wide">
+          <dl class="specs" data-reveal>
+            <div class="spec">
+              <dt>Benchmarks</dt>
+              <dd>
+                <strong>2WikiMultiHopQA</strong> <a class="cite" href="#ref-2wiki">[Ho+20]</a>,
+                <strong>HotpotQA</strong> <a class="cite" href="#ref-hotpotqa">[Yang+18]</a> and
+                <strong>MuSiQue</strong> <a class="cite" href="#ref-musique">[Trivedi+22]</a>. Following IRCoT and STRIDE,
+                each test set is extended to 1,000 questions by sampling 500 more from the training set. The retrieval
+                corpus combines gold supporting documents with non-supporting candidates.
+              </dd>
+            </div>
+            <div class="spec">
+              <dt>Metrics</dt>
+              <dd>
+                Exact Match (EM) is the main metric; token-level F1, Precision and Recall measure overlap with the gold
+                answer. All methods share STRIDE’s post-processing: string normalization and answer span extraction.
+              </dd>
+            </div>
+            <div class="spec">
+              <dt>Baselines</dt>
+              <dd>
+                Chain-of-Thought, RAG with Chain-of-Thought, and the iterative methods SelfAsk, Iter-RetGen, GenGround,
+                DualRAG and STRIDE. Guidance is added to the compatible planning-based ones:
+                <strong>SelfAsk+FG</strong>, <strong>DualRAG+FG</strong> and <strong>STRIDE+FG</strong>.
+              </dd>
+            </div>
+            <div class="spec">
+              <dt>Backbones</dt>
+              <dd>
+                <strong>Qwen3-8B</strong> (primary) and <strong>GPT-4o-mini</strong>. Extended thinking is disabled for
+                Qwen3-8B, so neither the baselines nor our method get an additional reasoning budget.
+              </dd>
+            </div>
+            <div class="spec">
+              <dt>Retrieval</dt>
+              <dd>
+                The retrieval configuration of STRIDE: an unsupervised Contriever encoder over a FAISS-GPU index.
+                <span class="m"><i>k</i></span> = 5 for non-planning baselines; planning-based methods use
+                <span class="m"><i>k</i></span> = 3 on 2WikiMultiHopQA and MuSiQue and <span class="m"><i>k</i></span> = 5
+                on HotpotQA.
+              </dd>
+            </div>
+            <div class="spec">
+              <dt>Decoding</dt>
+              <dd>
+                Temperature 1.0 and at most 512 generated tokens for every language-model call; at most
+                <span class="m"><i>T</i><sub>max</sub></span> = 5 execution iterations for every iterative method.
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ================================================================ 3.2 results -->
+      <section class="section section-tight" id="results" aria-labelledby="results-title">
+        <div class="col">
+          <p class="eyebrow"><span class="num">04</span> Main results</p>
+          <h2 id="results-title">Guidance improves the planners it is added to</h2>
+          <div class="prose">
+            <p>
+              Across both backbones, adding forward-looking guidance generally improves the corresponding baseline:
+              EM rises in 16 of the 18 method, dataset and backbone combinations, stays level in one and drops in one.
+              <strong>STRIDE+FG achieves the strongest overall performance</strong>, with the best EM on all three
+              datasets with Qwen3-8B and on 2WikiMultiHopQA and MuSiQue with GPT-4o-mini. The guidance is most effective
+              on top of a strong planning-based method, whose operations already organize execution and can be reused to
+              shape intermediate outputs.
+            </p>
+          </div>
+        </div>
+        <div class="wide figure" data-reveal>
+          <div class="figure-frame">
+            <div class="figure-bar">
+              <p class="figure-title">EM with and without guidance <span class="chip chip-accent">Interactive</span></p>
+              <div class="figure-tools" id="gains-tools"></div>
+            </div>
+            <div class="figure-body" id="fig-gains"></div>
+          </div>
+          <p class="caption">
+            <strong>Figure 3.</strong> EM of each compatible planning-based method before (○) and after (●) adding
+            forward-looking guidance, from Table 2. Each benchmark has its own axis. Every change is shown as it is,
+            including the two that do not improve.
+          </p>
+        </div>
+        <div class="wide figure" data-reveal>
+          <div class="figure-frame">
+            <div class="figure-bar">
+              <p class="figure-title">Full results <span class="chip">Table 2</span></p>
+              <div class="figure-tools" id="results-tools"></div>
+            </div>
+            <div id="table-results" class="table-wrap"></div>
+          </div>
+          <p class="caption">
+            <strong>Table 2.</strong> Main results under ordinary retrieval on the reproduced STRIDE setting. Best results
+            are in bold and second-best underlined within each backbone. Switch on the change to compare each +FG variant
+            with the method it extends.
+          </p>
+        </div>
+      </section>
+
+      <!-- ================================================================ 4 analysis -->
+      <section class="section" id="analysis" aria-labelledby="analysis-title">
+        <div class="col">
+          <p class="eyebrow"><span class="num">05</span> Analysis</p>
+          <h2 id="analysis-title">Why it works, and what it costs</h2>
+
+          <h3 id="depth">A steady ~30% gain at every depth</h3>
+          <div class="prose">
+            <p>
+              Deeper questions need intermediate outputs to stay useful over longer chains of operations, where a local
+              mistake or an underspecified result can derail everything after it. If the guidance really helps outputs
+              support later operations, its benefit should not be limited to shallow questions. MuSiQue annotates the gold
+              number of hops, so we group its 1,000 test questions by depth.
+            </p>
+          </div>
+        </div>
+        <div class="wide figure" data-reveal>
+          <div class="figure-frame">
+            <div class="figure-bar">
+              <p class="figure-title">MuSiQue EM by reasoning depth</p>
+              <div class="legend">
+                <span><i class="swatch swatch-base"></i>STRIDE</span>
+                <span><i class="swatch swatch-accent"></i>STRIDE+FG</span>
+              </div>
+            </div>
+            <div class="figure-body" id="fig-depth"></div>
+          </div>
+          <p class="caption">
+            <strong>Figure 4.</strong> MuSiQue EM by gold reasoning depth on the 1,000-question test set (Qwen3-8B,
+            Table 3). The relative gain over STRIDE is printed above each group.
+          </p>
+        </div>
+        <div class="col">
+          <div class="prose">
+            <p>
+              STRIDE+FG improves EM at every depth. The absolute gain shrinks for deeper questions
+              (+.098, +.079, +.045), since the task is harder and the baseline accuracy is lower, but the
+              <strong>relative gain stays at about 30% for every hop group</strong>.
+            </p>
+          </div>
+
+          <h3 id="cost">Almost free</h3>
+          <div class="prose">
+            <p>
+              Forward-looking guidance introduces no additional model calls or retrieval steps, as
+              <span class="m"><i>G</i><sub><i>i</i></sub></span> is simply appended to existing inputs. What it adds is
+              prompt text: per question, the extractor and reasoner of STRIDE+FG use 2–5% more tokens than STRIDE’s, and the
+              additional latency is negligible.
+            </p>
+          </div>
+        </div>
+        <div class="wide figure" data-reveal>
+          <div class="figure-frame">
+            <div class="figure-bar">
+              <p class="figure-title">LLM tokens per question</p>
+              <div class="legend" id="tokens-legend"></div>
+            </div>
+            <div class="figure-body" id="fig-tokens"></div>
+          </div>
+          <p class="caption">
+            <strong>Figure 5.</strong> Module-wise token cost per question of STRIDE and STRIDE+FG with Qwen3-8B across
+            the three benchmarks.
+          </p>
+        </div>
+
+        <div class="col">
+          <h3 id="case">Same evidence, a different survivor</h3>
+          <div class="prose">
+            <p>
+              A HotpotQA question, traced through both systems. The planner decomposes it into three operations and both
+              runs retrieve the same first evidence, which names the band <em>and</em> its members. Step through to see
+              which of the two survives into the next operation.
+            </p>
+          </div>
+        </div>
+        <div class="wide figure" data-reveal>
+          <div class="figure-frame">
+            <div class="figure-bar">
+              <p class="figure-title">Execution traces <span class="chip chip-accent">Step through</span></p>
+              <div class="figure-tools" id="trace-tools"></div>
+            </div>
+            <div class="figure-body" id="fig-trace"></div>
+          </div>
+          <p class="caption">
+            <strong>Figure 6.</strong> Execution traces of STRIDE and STRIDE+FG (Table 4). Forward-looking guidance changes
+            which value from the same evidence survives into the next operation.
+          </p>
+        </div>
+      </section>
+
+      <!-- ================================================================ 5 related -->
+      <section class="section" id="related" aria-labelledby="related-title">
+        <div class="col">
+          <p class="eyebrow"><span class="num">06</span> Related work</p>
+          <h2 id="related-title">Looking ahead, after retrieval</h2>
+          <div class="prose">
+            <p>
+              Planning-based systems make the decomposition explicit: Plan*RAG executes a sub-query graph, ReSP summarizes
+              and re-plans iteratively, and STRIDE separates strategic planning, dynamic control and grounded execution.
+              They improve how reasoning is decomposed and scheduled, but intermediate outputs are still produced locally.
+            </p>
+            <p>
+              Another line of work uses generated future content to improve retrieval. FLARE
+              <a class="cite" href="#ref-flare">[Jiang+23]</a> predicts an upcoming sentence and retrieves when generation
+              is uncertain; HyDE <a class="cite" href="#ref-hyde">[Gao+23]</a> embeds a hypothetical document as a
+              zero-shot query. Their look-ahead signal decides <em>what to fetch</em>. In planning-based iterative RAG the
+              future trajectory already exists as planned operations, so we expose it verbatim to the executor.
+            </p>
+          </div>
+        </div>
+        <div class="wide">
+          <div class="compare" data-reveal>
+            <div class="compare-card">
+              <p class="compare-kicker">Look-ahead retrieval</p>
+              <p class="compare-who">FLARE, HyDE</p>
+              <dl>
+                <div><dt>Future signal</dt><dd>Generated: a predicted sentence or a hypothetical document</dd></div>
+                <div><dt>Used for</dt><dd>Deciding what to fetch</dd></div>
+                <div><dt>Decides</dt><dd>Whether the needed evidence becomes reachable</dd></div>
+              </dl>
+            </div>
+            <div class="compare-card is-ours">
+              <p class="compare-kicker">Forward-looking guidance</p>
+              <p class="compare-who">This work</p>
+              <dl>
+                <div><dt>Future signal</dt><dd>Already there: the verbatim remaining operations of the plan</dd></div>
+                <div><dt>Used for</dt><dd>Evidence extraction and reasoning, after retrieval</dd></div>
+                <div><dt>Decides</dt><dd>How reachable evidence is selected, preserved and carried forward</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <blockquote class="pull" data-reveal>
+            <p>
+              Retrieval determines whether the needed evidence becomes reachable, while forward-looking guidance determines
+              how reachable evidence is selected, preserved, and carried through the remaining reasoning trajectory.
+            </p>
+          </blockquote>
+          <div class="prose">
+            <p>
+              <strong>The takeaway.</strong> Generated plans should be used not only to organize execution, but also to
+              guide the production of intermediate outputs that better support the remaining reasoning process.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ citation -->
+      <section class="section" id="cite" aria-labelledby="cite-title">
+        <div class="col">
+          <p class="eyebrow">Citation</p>
+          <h2 id="cite-title">Cite this work</h2>
+          <div class="bibtex" data-reveal>
+            <div class="bibtex-bar">
+              <span>BibTeX</span>
+              <button class="btn btn-sm copy" type="button" data-copy="#bibtex-text">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>
+                <span class="copy-label">Copy</span>
+              </button>
+            </div>
+            <pre id="bibtex-text"><code>@inproceedings{cho2026forward,
+  author    = {Cho, Jumin and Park, Chanjun and Na, Seung-Hoon and Song, Hyun-Je},
+  title     = {Forward-Looking Guidance for Iterative {RAG} in Multi-Hop Question Answering},
+  booktitle = {Proceedings of the 35th ACM International Conference on Information and Knowledge Management},
+  series    = {CIKM '26},
+  year      = {2026},
+  location  = {Rome, Italy},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  numpages  = {6},
+  doi       = {10.1145/3799682.3840073}
+}</code></pre>
+          </div>
+          <p class="acm-ref">
+            Jumin Cho, Chanjun Park, Seung-Hoon Na, and Hyun-Je Song. 2026. Forward-Looking Guidance for Iterative RAG in
+            Multi-Hop Question Answering. In <em>Proceedings of the 35th ACM International Conference on Information and
+            Knowledge Management (CIKM ’26)</em>, November 07–11, 2026, Rome, Italy. ACM, New York, NY, USA, 6 pages.
+          </p>
+
+          <h3>Acknowledgments</h3>
+          <div class="prose small">
+            <p>
+              This work was supported by the National Research Foundation of Korea (NRF) grant funded by the Korea
+              government (MSIT) (No. RS-2025-02263810) and the Institute of Information &amp; Communications Technology
+              Planning &amp; Evaluation (IITP) grant funded by the Korea government (MSIT) (IITP-2026-RS-2026-25615995, AI
+              Star Fellowship Support Program).
+            </p>
+          </div>
+
+          <details class="refs">
+            <summary>
+              <span>References cited on this page</span>
+              <svg class="icon chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+            </summary>
+            <ol>
+              <li id="ref-stride">
+                Wei Chen, Lili Zhao, Zhi Zheng, Huijun Hou, and Tong Xu. 2026. STRIDE: Strategic Iterative Decision-Making for
+                Retrieval-Augmented Multi-Hop Question Answering. In <em>SIGIR</em>.
+                <a class="link" href="https://doi.org/10.1145/3805712.3809703">doi:10.1145/3805712.3809703</a>
+              </li>
+              <li id="ref-planrag">
+                Prakhar Verma, Sukruta Prakash Midigeshi, Gaurav Sinha, Arno Solin, Nagarajan Natarajan, and Amit Sharma.
+                2025. Plan*RAG: Efficient Test-Time Planning for Retrieval Augmented Generation. In <em>ICLR 2025 Workshop on
+                Reasoning and Planning for LLMs</em>.
+                <a class="link" href="https://arxiv.org/abs/2410.20753">arXiv:2410.20753</a>
+              </li>
+              <li id="ref-resp">
+                Zhouyu Jiang, Mengshu Sun, Lei Liang, and Zhiqiang Zhang. 2025. Retrieve, Summarize, Plan: Advancing Multi-hop
+                Question Answering with an Iterative Approach. In <em>Companion Proceedings of the ACM Web Conference</em>.
+                <a class="link" href="https://doi.org/10.1145/3701716.3716889">doi:10.1145/3701716.3716889</a>
+              </li>
+              <li id="ref-flare">
+                Zhengbao Jiang, Frank F. Xu, Luyu Gao, Zhiqing Sun, Qian Liu, Jane Dwivedi-Yu, Yiming Yang, Jamie Callan, and
+                Graham Neubig. 2023. Active Retrieval Augmented Generation. In <em>EMNLP</em>.
+                <a class="link" href="https://doi.org/10.18653/v1/2023.emnlp-main.495">doi:10.18653/v1/2023.emnlp-main.495</a>
+              </li>
+              <li id="ref-hyde">
+                Luyu Gao, Xueguang Ma, Jimmy Lin, and Jamie Callan. 2023. Precise Zero-Shot Dense Retrieval without Relevance
+                Labels. In <em>ACL</em>.
+                <a class="link" href="https://doi.org/10.18653/v1/2023.acl-long.99">doi:10.18653/v1/2023.acl-long.99</a>
+              </li>
+              <li id="ref-2wiki">
+                Xanh Ho, Anh-Khoa Duong Nguyen, Saku Sugawara, and Akiko Aizawa. 2020. Constructing A Multi-hop QA Dataset for
+                Comprehensive Evaluation of Reasoning Steps. In <em>COLING</em>.
+                <a class="link" href="https://doi.org/10.18653/v1/2020.coling-main.580">doi:10.18653/v1/2020.coling-main.580</a>
+              </li>
+              <li id="ref-hotpotqa">
+                Zhilin Yang, Peng Qi, Saizheng Zhang, Yoshua Bengio, William W. Cohen, Ruslan Salakhutdinov, and Christopher D.
+                Manning. 2018. HotpotQA: A Dataset for Diverse, Explainable Multi-hop Question Answering. In <em>EMNLP</em>.
+                <a class="link" href="https://doi.org/10.18653/v1/D18-1259">doi:10.18653/v1/D18-1259</a>
+              </li>
+              <li id="ref-musique">
+                Harsh Trivedi, Niranjan Balasubramanian, Tushar Khot, and Ashish Sabharwal. 2022. MuSiQue: Multihop Questions via
+                Single-hop Question Composition. <em>TACL</em> 10.
+                <a class="link" href="https://doi.org/10.1162/tacl_a_00475">doi:10.1162/tacl_a_00475</a>
+              </li>
+            </ol>
+          </details>
+        </div>
+      </section>
+
+      <!-- ================================================================ thanks -->
+      <section class="section thanks" id="thanks" aria-labelledby="thanks-title">
+        <div class="wide">
+          <div class="letter" data-reveal>
+            <div class="letter-body">
+              <p class="eyebrow">A note to you</p>
+              <h2 id="thanks-title">Thank you for stopping by</h2>
+              <div class="letter-text">
+                <p>Dear visitor,</p>
+                <p>
+                  Thank you for scanning the QR code and finding your way here. This is a small piece of work, and the fact
+                  that you took a moment to look at it means a great deal to me.
+                </p>
+                <p>
+                  This paper is my first step as a researcher. Sharing it, here and in Rome, has been a quiet joy, and I am
+                  truly glad that you are part of it.
+                </p>
+                <p>
+                  I hope the rest of the conference is good to you: inspiring talks, warm conversations, and a little time
+                  to enjoy the city. And I hope our paths cross again somewhere down the road, each of us with something
+                  greater to share.
+                </p>
+                <p class="signoff">With sincere gratitude,</p>
+                <p class="signature">Jumin Cho</p>
+              </div>
+              <div class="letter-links">
+                <a class="btn btn-primary" href="../">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>
+                  Back to my portfolio
+                </a>
+                <a class="btn" href="https://github.com/jumincho/forward-looking-guidance">Code on GitHub</a>
+              </div>
+            </div>
+            <figure class="qr">
+              <img src="./assets/qr.svg" width="200" height="200" alt="QR code for this page" />
+              <figcaption>
+                <strong>Take this page with you</strong>
+                <span>jumincho.github.io/juminwho/forward-looking-guidance</span>
+                <button class="btn btn-sm share" type="button" data-share hidden>
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.59 13.51 6.83 3.98" /><path d="m15.41 6.51-6.82 3.98" /></svg>
+                  <span class="share-label">Share this page</span>
+                </button>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wide footer-inner">
+        <p>© 2026 Jumin Cho, Chanjun Park, Seung-Hoon Na and Hyun-Je Song. The paper is licensed under CC BY 4.0.</p>
+        <p class="footer-links">
+          <a class="link" href="../">Portfolio</a>
+          <a class="link" href="https://github.com/jumincho/forward-looking-guidance">Code</a>
+          <a class="link" href="#top">Back to top</a>
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

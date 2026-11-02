@@ -14,6 +14,12 @@ export default defineConfig([
     languageOptions: { ecmaVersion: 2022, globals: globals.browser },
   },
   {
+    // The project page: plain TypeScript in the browser, no React.
+    files: ['forward-looking-guidance/src/**/*.ts'],
+    extends: [js.configs.recommended, tseslint.configs.recommended],
+    languageOptions: { ecmaVersion: 2022, globals: globals.browser },
+  },
+  {
     // Build configuration, running in Node.
     files: ['*.ts', 'vite-plugins/**/*.ts'],
     extends: [js.configs.recommended, tseslint.configs.recommended],

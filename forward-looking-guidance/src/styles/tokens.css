@@ -1,0 +1,115 @@
+/*
+ * Design tokens for the project page. This page has its own look, separate
+ * from the cozy portfolio: a quiet research-lab style with one accent colour.
+ * Green marks forward-looking guidance and "ours" everywhere; slate marks
+ * the baseline; orange marks a failure.
+ */
+
+:root {
+  color-scheme: light;
+
+  --bg: #ffffff;
+  --bg-soft: #f7f8fa;
+  --bg-muted: #eff2f5;
+  --surface: #ffffff;
+  --border: #e3e7ec;
+  --border-strong: #cfd5dd;
+
+  --ink: #0b0f17;
+  --ink-2: #333b49;
+  --ink-3: #5b6474;
+  --ink-4: #8b93a1;
+
+  --accent: #067a59;
+  --accent-strong: #04654a;
+  --accent-fill: #13b383;
+  --accent-soft: #e6f6ef;
+  --accent-tint: #f2fbf7;
+  --accent-ring: rgb(19 179 131 / 0.32);
+  /* Solid fills that carry text, and the text on them (AA in both themes). */
+  --accent-solid: #067a59;
+  --on-accent: #ffffff;
+  --on-accent-fill: #04221a;
+
+  --base: #4d5b71;
+  --base-fill: #a3afc0;
+  --base-soft: #eef1f6;
+
+  --miss: #bf3f0a;
+  --miss-fill: #f4743b;
+  --miss-soft: #fff0e8;
+  --miss-solid: #bf3f0a;
+  --on-miss: #ffffff;
+
+  --link: #0a5fcc;
+  --focus: #2f6fed;
+  --selection: rgb(19 179 131 / 0.22);
+
+  --shadow-1: 0 1px 2px rgb(15 23 42 / 0.05);
+  --shadow-2: 0 1px 3px rgb(15 23 42 / 0.06), 0 10px 28px -12px rgb(15 23 42 / 0.16);
+  --shadow-3: 0 2px 6px rgb(15 23 42 / 0.06), 0 30px 60px -24px rgb(15 23 42 / 0.24);
+
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Source Serif 4 Variable', 'Iowan Old Style', Georgia, serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-math: 'Source Serif 4 Variable', 'STIX Two Math', 'Cambria Math', serif;
+
+  --radius-s: 8px;
+  --radius-m: 12px;
+  --radius-l: 18px;
+  --radius-xl: 26px;
+
+  --text-col: 42rem;
+  --wide-col: 72rem;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --topbar-h: 3.5rem;
+
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 140ms;
+  --dur-2: 260ms;
+  --dur-3: 520ms;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #090c11;
+  --bg-soft: #0e1218;
+  --bg-muted: #141a22;
+  --surface: #0f141b;
+  --border: #212935;
+  --border-strong: #2e3846;
+
+  --ink: #eef1f6;
+  --ink-2: #c4cbd6;
+  --ink-3: #939dab;
+  --ink-4: #5f6979;
+
+  --accent: #3fd59b;
+  --accent-strong: #74e6b8;
+  --accent-fill: #2fc28a;
+  --accent-soft: rgb(63 213 155 / 0.13);
+  --accent-tint: rgb(63 213 155 / 0.06);
+  --accent-ring: rgb(63 213 155 / 0.35);
+  --accent-solid: #3fd59b;
+  --on-accent: #04221a;
+
+  --base: #a9b4c4;
+  --base-fill: #5a677b;
+  --base-soft: rgb(169 180 196 / 0.1);
+
+  --miss: #ff9563;
+  --miss-fill: #f4743b;
+  --miss-soft: rgb(244 116 59 / 0.14);
+  --miss-solid: #ff9563;
+  --on-miss: #2a0d02;
+
+  --link: #73adff;
+  --focus: #6d9bff;
+  --selection: rgb(63 213 155 / 0.28);
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-2: 0 1px 3px rgb(0 0 0 / 0.4), 0 12px 30px -12px rgb(0 0 0 / 0.6);
+  --shadow-3: 0 2px 6px rgb(0 0 0 / 0.4), 0 30px 60px -24px rgb(0 0 0 / 0.7);
+}
