@@ -45,12 +45,19 @@ English · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [繁�
 - One content file: every word on the page, in every language, lives in `src/data/profile.ts`.
 - A matching GitHub profile README in the same five languages, drawn from the same data and design
   by `npm run github-profile`.
+- A project page for the CIKM 2026 paper, *Forward-Looking Guidance for Iterative RAG in Multi-Hop
+  Question Answering*, at [`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/) and linked from the paper's card.
+  It reads like a web version of the paper, in English and in its own quiet research-lab style:
+  redrawn figures, a stage picker that rewrites the equations, a results table with a backbone
+  switch, a step-through execution trace, and a closing note for visitors who scanned the poster's
+  QR code.
 
 ## Tech stack
 
 Vite 7, React 19, TypeScript, CSS Modules with design tokens, a small hand-written WebGL shader for
 the backdrop, Fontsource (Fredoka, Nunito and Jua) and lucide-react. Chinese and Japanese use the visitor's system fonts. There is no router, CMS or
 backend. GitHub Actions builds the site and publishes it to GitHub Pages.
+The project page is plain TypeScript without React, set in Inter, Source Serif 4 and JetBrains Mono.
 
 ## Project structure
 
@@ -61,14 +68,20 @@ backend. GitHub Actions builds the site and publishes it to GitHub Pages.
 │   ├── CONTRIBUTING.md           working rules: content, languages, checks, branches and commits
 │   ├── DESIGN.md                 design rules: colour, type, shape, motion, languages, don'ts
 │   └── preview-*.jpg             README previews (npm run snapshots -- --readme)
+├── forward-looking-guidance/     the paper's project page: a second entry point, plain TypeScript
+│   ├── index.html                its text, in English
+│   ├── assets/                   favicon.svg, and qr.svg made by npm run project-assets
+│   └── src/                      data/paper.ts (every number, from the paper), widgets/ (the figures), lib/, styles/
 ├── public/                       copied into the build as-is
 │   ├── favicon.svg               the mascot; every other icon starts here
 │   ├── favicon.ico, apple-touch-icon.png, icon-*.png, og-image.png   made by npm run icons
+│   ├── forward-looking-guidance/og.png   the project page's link preview (npm run project-assets)
 │   ├── manifest.webmanifest
 │   ├── jumin-cho.jpg
 │   └── 404.html                  sends old links (/blog, …) back to the home page
 ├── scripts/
 │   ├── icons.mjs                 renders the icons and the link-preview image
+│   ├── project-assets.mjs        renders the project page's QR code and link-preview image
 │   ├── snapshots.mjs             visual and behaviour checks for the build, in every language
 │   ├── github-profile.mjs        builds the GitHub profile README (jumincho/jumincho)
 │   ├── github-profile/           its cards, animations, README template and daily age updater
@@ -106,6 +119,7 @@ npm run dev        # http://localhost:5173
 | `npm run lint` | Runs ESLint |
 | `npm run snapshots` | Checks the build at 375 px and 1280 px, in light and dark and in every language, and saves screenshots to `snapshots/` |
 | `npm run icons` | Redraws the favicon, the app icons and the link-preview image from `favicon.svg` |
+| `npm run project-assets` | Redraws the project page's QR code and link-preview image |
 | `npm run github-profile` | Rebuilds the GitHub profile READMEs and their images in `../jumincho` (see below) |
 
 `snapshots`, `icons` and `github-profile` drive Chromium through Playwright. Run
@@ -145,6 +159,9 @@ Edit `src/data/profile.ts` and nothing else; components never hold facts or word
   image matches.
 - After any content change, run `npm run github-profile` and push the profile repository, so the
   GitHub profile says the same thing as the site.
+- The project page is the one exception: its text lives in `forward-looking-guidance/index.html` and
+  every number in `forward-looking-guidance/src/data/paper.ts`, transcribed from the paper. It is in
+  English only.
 
 ## Design
 
@@ -152,6 +169,8 @@ The design rules live in [docs/DESIGN.md](docs/DESIGN.md) and the working rules 
 languages, checks, branches) in [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md), both in Korean.
 Every colour, size, radius and timing lives in `src/styles/tokens.css`. Use a token, or add one,
 instead of hard-coding a value.
+The project page has its own tokens in `forward-looking-guidance/src/styles/tokens.css` and its own
+section in DESIGN.md.
 
 ## Deployment
 

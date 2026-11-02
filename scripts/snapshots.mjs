@@ -15,8 +15,13 @@
  * reduced motion, CSS blobs that do not take over without WebGL, or a
  * language (every one in profile.ts, at both widths) that does not switch,
  * does not fit or loses its hedge, or a language menu that does not pick,
- * remember and link. Full-page screenshots go to snapshots/ (git-ignored) for
- * a side-by-side look against the last build.
+ * remember and link. The paper's project page (forward-looking-guidance/)
+ * gets the same basics at both widths and in both themes, plus its figures:
+ * each must mount, the stage picker, the backbone switch and the trace
+ * stepper must respond, a theme picked there must carry over to the
+ * portfolio, and nothing may move with reduced motion. Full-page screenshots
+ * go to snapshots/ (git-ignored) for a side-by-side look against the last
+ * build.
  *
  * Headless Chromium draws WebGL in software, which the site declines
  * (failIfMajorPerformanceCaveat), so the checks let the shader run anyway,
@@ -309,6 +314,122 @@ async function checkLanguage(vp, code) {
   console.log(`${failures.some((f) => f.startsWith(tag)) ? '✗' : '✓'} ${tag}`)
 }
 
+/** Scrolls through the page once, so every first-view animation has started. */
+const scrollThrough = (page) =>
+  page.evaluate(async () => {
+    for (let y = 0; y < document.documentElement.scrollHeight; y += 500) {
+      window.scrollTo({ top: y, behavior: 'instant' })
+      await new Promise((resolve) => setTimeout(resolve, 60))
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  })
+
+/** The project page of the CIKM paper: loads clean, fits, and every figure mounts and responds. */
+async function checkProjectPage(vp, scheme) {
+  const tag = `project ${vp.name}/${scheme}`
+  const fail = (message) => failures.push(`${tag}: ${message}`)
+  const context = await browser.newContext({ viewport: vp, colorScheme: scheme })
+  const page = await context.newPage()
+  page.on('console', (message) => message.type() === 'error' && fail(`console error: ${message.text()}`))
+  page.on('pageerror', (error) => fail(`page error: ${error.message}`))
+  page.on('requestfailed', (request) => fail(`request failed: ${request.url()}`))
+  page.on('response', (response) => response.status() >= 400 && fail(`HTTP ${response.status()}: ${response.url()}`))
+
+  await page.goto(`${url}forward-looking-guidance/`, { waitUntil: 'networkidle' })
+  await page.evaluate(() => document.fonts.ready)
+  await scrollThrough(page)
+  await page.waitForTimeout(1500)
+
+  const state = await page.evaluate(async () => {
+    const ogImage = document.querySelector('meta[property="og:image"]')?.content ?? ''
+    const icon = document.querySelector('link[rel="icon"]')?.href
+    const missing = []
+    // og:image points at the live site; check the same file on this server.
+    for (const asset of [icon, new URL(ogImage.split('/').pop(), location.href).href]) {
+      if (!asset || !(await fetch(asset)).ok) missing.push(asset)
+    }
+    const count = (selector) => document.querySelectorAll(selector).length
+    return {
+      theme: document.documentElement.dataset.theme,
+      scrollWidth: document.documentElement.scrollWidth,
+      brokenImages: [...document.images].filter((img) => !img.complete || img.naturalWidth === 0).map((img) => img.src),
+      missing,
+      fonts: ['Inter Variable', 'Source Serif 4 Variable'].filter(
+        (family) => ![...document.fonts].some((face) => face.family.replace(/"/g, '') === family && face.status === 'loaded'),
+      ),
+      figures: {
+        hero: count('#hero-visual svg .hero-node'),
+        motivation: count('#fig-motivation .mv-cell'),
+        pipeline: count('#fig-pipeline .pl-node'),
+        gains: count('#fig-gains .gn-row'),
+        table: count('#table-results tbody tr.is-fg'),
+        depth: count('#fig-depth .dp-group'),
+        tokens: count('#fig-tokens .tk-row'),
+        trace: count('#fig-trace .tr-row'),
+      },
+      back: document.querySelector('.topbar .back')?.href,
+    }
+  })
+  if (state.theme !== scheme) fail(`data-theme is "${state.theme}", expected "${scheme}"`)
+  if (state.scrollWidth > vp.width) fail(`horizontal overflow (${state.scrollWidth}px > ${vp.width}px)`)
+  for (const src of state.brokenImages) fail(`image did not load: ${src}`)
+  for (const asset of state.missing) fail(`missing asset: ${asset}`)
+  for (const font of state.fonts) fail(`font not loaded: ${font}`)
+  for (const [figure, n] of Object.entries(state.figures)) if (n === 0) fail(`figure "${figure}" did not mount`)
+  if (state.back !== url) fail(`the back link goes to ${state.back}, not the portfolio`)
+
+  await page.screenshot({ path: `${OUT}/project-${vp.name}-${scheme}.png`, fullPage: true, animations: 'disabled' })
+
+  // Figure 2: the stage picker moves the guidance and the measured effect.
+  await page.locator('#pipeline-tools button', { hasText: /^Retrieval$/ }).click()
+  const effect = await page.locator('.pl-effect-value').textContent()
+  if (effect !== '−.035') fail(`picking Retrieval shows "${effect}", not "−.035"`)
+  await page.locator('#pipeline-tools button', { hasText: 'Extraction + Reasoning' }).click()
+  if ((await page.locator('.pl-eq.is-on').count()) !== 2) fail('Extraction + Reasoning does not mark equations (3) and (4)')
+
+  // Figure 3 and Table 2 share the backbone: switching one switches both.
+  await page.locator('#gains-tools button', { hasText: 'GPT-4o-mini' }).click()
+  const firstEm = await page.locator('#table-results tbody tr').first().locator('td').first().textContent()
+  if (!firstEm?.startsWith('.385')) fail(`after switching to GPT-4o-mini, CoT's 2Wiki EM reads "${firstEm}"`)
+  if ((await page.locator('#results-tools button[aria-pressed="true"]', { hasText: 'GPT-4o-mini' }).count()) !== 1) {
+    fail('the table does not follow the backbone switch')
+  }
+
+  // Figure 6: the stepper walks to the final answer.
+  const next = page.locator('#trace-tools .tr-next')
+  for (let i = 0; i < 7; i++) await next.click()
+  const counter = await page.locator('#trace-tools .tr-counter').textContent()
+  if (counter !== '8 / 8') fail(`the trace stops at ${counter}`)
+  if (!(await next.isDisabled())) fail('"Next step" is still enabled on the last step')
+
+  // The theme toggle flips the page, and the portfolio (same origin, same key) keeps the choice.
+  const other = scheme === 'dark' ? 'light' : 'dark'
+  await page.locator('.theme-toggle').click()
+  if (!(await waitForRoot(page, 'data-theme', other))) fail(`the theme toggle does not switch ${scheme} → ${other}`)
+  await page.goto(url, { waitUntil: 'networkidle' })
+  if ((await page.evaluate(() => document.documentElement.dataset.theme)) !== other) fail('the portfolio does not keep the theme picked here')
+
+  await context.close()
+  console.log(`${failures.some((f) => f.startsWith(tag)) ? '✗' : '✓'} ${tag}`)
+}
+
+/** With reduced motion the project page holds still: no looping hero, no flowing links, no growing bars. */
+async function checkProjectReducedMotion() {
+  const context = await browser.newContext({ viewport: viewports[0], reducedMotion: 'reduce' })
+  const page = await context.newPage()
+  await page.goto(`${url}forward-looking-guidance/`, { waitUntil: 'networkidle' })
+  await scrollThrough(page)
+  await page.waitForTimeout(400)
+  const running = await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running').length)
+  if (running > 0) failures.push(`project reduced motion: ${running} animation(s) still running`)
+  const active = () => page.evaluate(() => document.querySelector('#hero-visual .hero-node.is-active')?.textContent)
+  const before = await active()
+  await page.waitForTimeout(2600)
+  if ((await active()) !== before) failures.push('project reduced motion: the hero keeps stepping')
+  await context.close()
+  console.log(`${failures.some((f) => f.startsWith('project reduced motion')) ? '✗' : '✓'} project reduced motion`)
+}
+
 /** Picking a language in the menu switches the page, puts it in the address and remembers it. */
 async function checkLanguageMenu() {
   const fail = (message) => failures.push(`language menu: ${message}`)
@@ -345,6 +466,8 @@ try {
   await checkRoutine()
   for (const vp of viewports) for (const { code } of content.languages.slice(1)) await checkLanguage(vp, code)
   await checkLanguageMenu()
+  for (const vp of viewports) for (const scheme of schemes) await checkProjectPage(vp, scheme)
+  await checkProjectReducedMotion()
 } finally {
   await browser.close()
   await server.close()

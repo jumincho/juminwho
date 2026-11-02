@@ -31,10 +31,11 @@
 - 尊重「減少動態效果」設定、屏幕閱讀器和鍵盤導航，所有文字的對比度都達到 WCAG AA 或以上。
 - 只有一個內容檔案：所有語言的所有文字都在 `src/data/profile.ts` 裏。
 - 以同一份資料和設計，由 `npm run github-profile` 生成的五種語言 GitHub 個人主頁 README。
+- CIKM 2026 論文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* 的項目主頁（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)），可從論文卡片直接進入。它讀起來像網頁版的論文，以英文撰寫，並採用與個人主頁不同的、沉靜的研究實驗室風格：重新繪製的插圖、選擇階段便會改寫公式的選擇器、可切換骨幹模型的結果表、可逐步檢視的執行軌跡，以及寫給掃描海報上 QR code 而來的訪客的一封信。
 
 ## 技術棧
 
-Vite 7、React 19、TypeScript、使用設計令牌（design tokens）的 CSS Modules、親手編寫用來繪製背景的小型 WebGL 著色器、Fontsource（Fredoka、Nunito 和 Jua）以及 lucide-react。中文和日文使用訪客裝置上的系統字型。沒有路由、CMS 或後端。GitHub Actions 負責建置網站並發佈到 GitHub Pages。
+Vite 7、React 19、TypeScript、使用設計令牌（design tokens）的 CSS Modules、親手編寫用來繪製背景的小型 WebGL 著色器、Fontsource（Fredoka、Nunito 和 Jua）以及 lucide-react。中文和日文使用訪客裝置上的系統字型。沒有路由、CMS 或後端。GitHub Actions 負責建置網站並發佈到 GitHub Pages。項目主頁不使用 React，只以 TypeScript 編寫，字型為 Inter、Source Serif 4 和 JetBrains Mono。
 
 ## 專案結構
 
@@ -45,14 +46,20 @@ Vite 7、React 19、TypeScript、使用設計令牌（design tokens）的 CSS Mo
 │   ├── CONTRIBUTING.md           工作規則：內容、語言、檢查、分支與提交
 │   ├── DESIGN.md                 設計規則：顏色、字型、形狀、動態效果、語言、禁忌
 │   └── preview-*.jpg             README 預覽圖（npm run snapshots -- --readme）
+├── forward-looking-guidance/     論文項目主頁：第二個入口，不使用 React 的 TypeScript
+│   ├── index.html                頁面正文（英文）
+│   ├── assets/                   favicon.svg，以及由 npm run project-assets 生成的 qr.svg
+│   └── src/                      data/paper.ts（由論文轉錄的所有數字）、widgets/（插圖）、lib/、styles/
 ├── public/                       原封不動複製到建置結果
 │   ├── favicon.svg               吉祥物；其他圖示都由它生成
 │   ├── favicon.ico, apple-touch-icon.png, icon-*.png, og-image.png   由 npm run icons 生成
+│   ├── forward-looking-guidance/og.png   項目主頁的連結預覽圖（npm run project-assets）
 │   ├── manifest.webmanifest
 │   ├── jumin-cho.jpg
 │   └── 404.html                  把舊連結（/blog 等）帶回首頁
 ├── scripts/
 │   ├── icons.mjs                 繪製圖示和連結預覽圖
+│   ├── project-assets.mjs        繪製項目主頁的 QR code 和連結預覽圖
 │   ├── snapshots.mjs             在每種語言下檢查建置的外觀和行為
 │   ├── github-profile.mjs        生成 GitHub 個人主頁 README（jumincho/jumincho）
 │   ├── github-profile/           卡片、動畫、README 範本和每日執行的年齡更新腳本
@@ -90,6 +97,7 @@ npm run dev        # http://localhost:5173
 | `npm run lint` | 執行 ESLint |
 | `npm run snapshots` | 在 375px 和 1280px、淺色和深色、每種語言下檢查建置，並把截圖儲存到 `snapshots/` |
 | `npm run icons` | 根據 `favicon.svg` 重新繪製網站圖示、應用程式圖示和連結預覽圖 |
+| `npm run project-assets` | 重新繪製項目主頁的 QR code 和連結預覽圖 |
 | `npm run github-profile` | 在 `../jumincho` 重新生成 GitHub 個人主頁 README 和圖片（見下文） |
 
 `snapshots`、`icons` 和 `github-profile` 透過 Playwright 操作 Chromium。請先執行一次 `npx playwright install chromium`，或用 `PLAYWRIGHT_CHROMIUM=/path/to/chrome` 指向已安裝的瀏覽器。
@@ -117,10 +125,11 @@ npm run dev        # http://localhost:5173
 - 作息表（`juminTime.routine`）按 KST 列出一天中的時段，寫成 `{ from, to, state }`。`to` 早於 `from` 的時段會跨越午夜，屬於它開始的那一天。時段重疊時，較晚開始的時段優先。卡片從不顯示作息表本身，只顯示目前狀態，而且總是放在「maybe…」（繁體中文頁面上為「也許……」）之後。
 - 修改姓名、簡介、所屬機構或相片後，請執行 `npm run icons`，讓連結預覽圖保持一致。
 - 修改任何內容後，請執行 `npm run github-profile` 並推送個人主頁存放庫，讓 GitHub 個人主頁與網站內容一致。
+- 項目主頁是唯一的例外：正文在 `forward-looking-guidance/index.html` 裏，所有數字都由論文轉錄到 `forward-looking-guidance/src/data/paper.ts`，並且只用英文。
 
 ## 設計
 
-設計規則寫在 [docs/DESIGN.md](docs/DESIGN.md) 裏，工作規則（內容、語言、檢查、分支）寫在 [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) 裏（均為韓文），所有顏色、尺寸、圓角和時長都在 `src/styles/tokens.css` 裏。請使用現有的令牌或新增令牌，不要直接寫死數值。
+設計規則寫在 [docs/DESIGN.md](docs/DESIGN.md) 裏，工作規則（內容、語言、檢查、分支）寫在 [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) 裏（均為韓文），所有顏色、尺寸、圓角和時長都在 `src/styles/tokens.css` 裏。請使用現有的令牌或新增令牌，不要直接寫死數值。項目主頁在 `forward-looking-guidance/src/styles/tokens.css` 裏有自己的令牌，在 DESIGN.md 裏也有獨立的一節。
 
 ## 部署
 

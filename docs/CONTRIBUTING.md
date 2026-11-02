@@ -2,13 +2,17 @@
 
 이 저장소는 조주민(Jumin Cho)의 한 페이지 개인 사이트 <https://jumincho.github.io/juminwho/>와, 같은 내용으로
 만드는 GitHub 프로필 README(jumincho/jumincho)의 원본입니다. Vite + React 19 + TypeScript, CSS Modules로
-만듭니다. 무엇을 고치든 아래 규칙을 지킵니다. 디자인의 자세한 기준은 [DESIGN.md](DESIGN.md)에 있습니다.
+만듭니다. 같은 사이트의 `/forward-looking-guidance/`에는 CIKM 2026 논문의 프로젝트 페이지가 있습니다(React 없는
+두 번째 진입점). 무엇을 고치든 아래 규칙을 지킵니다. 디자인의 자세한 기준은 [DESIGN.md](DESIGN.md)에 있습니다.
 
 ## 콘텐츠
 
 - 콘텐츠(사실 정보와 화면 문구)는 전부 `src/data/profile.ts`에만 있습니다. JSX에 사실 정보를 직접 쓰지 않습니다.
 - 모든 사실은 LinkedIn 프로필이나 인용할 수 있는 기록으로 확인할 수 있어야 합니다. 지어낸 소개글이나 숫자는
   넣지 않습니다.
+- 논문 프로젝트 페이지만 예외입니다. 본문은 `forward-looking-guidance/index.html`, 숫자는
+  `forward-looking-guidance/src/data/paper.ts`에 둡니다. 숫자는 논문에서 그대로 옮기고, 바꿀 때마다 논문 PDF와
+  대조합니다.
 
 ## 언어
 
@@ -19,6 +23,8 @@
 - 언어는 `?lang=` → `localStorage`의 `juminwho:lang` → 영어 순서로 정합니다. 이 키와 매개변수는
   `src/lib/i18n.ts`와 `index.html`의 인라인 스크립트가 함께 씁니다.
 - 저장소 README도 `README.md`(영어)와 `README.<code>.md` 네 개가 있으니, 내용을 바꾸면 다섯 개를 함께 고칩니다.
+- 논문 프로젝트 페이지는 영어로만 씁니다. 포트폴리오의 논문 카드에 붙은 "Project page" 링크 문구는 `labels`에
+  다섯 언어로 둡니다.
 
 ## 디자인과 모션
 
@@ -28,9 +34,11 @@
   `prefers-reduced-motion: no-preference` 안에만 두고, 스크립트로 움직이는 것은 `src/lib/motion.ts`를 따릅니다.
 - 배경은 `src/lib/mochi-field.ts`의 작은 WebGL 셰이더가 그리고, WebGL을 쓸 수 없으면 CSS 블롭이 대신합니다. 두
   경로가 같은 자리, 같은 색으로 보이게 유지합니다.
-- 화면 전체가 움직이는 전환은 테마를 바꿀 때의 원과 언어를 바꿀 때의 교차 페이드뿐입니다. 스크롤에 따라
-  나타나는 효과, 패럴랙스, 화면을 밀거나 넘기는 페이지 전환, 자동 재생 캐러셀, 무거운 애니메이션·셰이더
-  라이브러리는 쓰지 않습니다.
+- 포트폴리오에서 화면 전체가 움직이는 전환은 테마를 바꿀 때의 원과 언어를 바꿀 때의 교차 페이드뿐입니다.
+  스크롤에 따라 나타나는 효과, 패럴랙스, 화면을 밀거나 넘기는 페이지 전환, 자동 재생 캐러셀, 무거운
+  애니메이션·셰이더 라이브러리는 쓰지 않습니다.
+- 논문 프로젝트 페이지는 DESIGN.md의 "논문 프로젝트 페이지" 절을 따릅니다. 포트폴리오와 테마 키
+  (`juminwho:theme`)를 함께 쓰므로, 한쪽에서 고른 테마가 다른 쪽에도 이어집니다.
 
 ## 반드시 유지할 아이덴티티 요소
 
@@ -55,6 +63,8 @@
   라이트/다크, 모든 언어, 모션 줄이기, WebGL이 없는 경우를 확인합니다.
 - 첫 화면이 바뀌면 `npm run snapshots -- --readme`로 README 미리보기도 새로 만듭니다.
 - 마스코트·팔레트·이름·소개를 바꾸면 `npm run icons`로 아이콘과 OG 이미지를 다시 만듭니다.
+- 프로젝트 페이지의 주소·제목·색을 바꾸면 `npm run project-assets`로 QR 코드와 링크 미리보기 이미지를 다시
+  만듭니다.
 - GitHub 프로필 README(jumincho/jumincho)는 `npm run github-profile`로 이 저장소에서 만듭니다
   (`scripts/github-profile/`). `profile.ts`·마스코트·팔레트를 바꾸면 다시 만들어 그 저장소의 `main`에 올리고,
   그 저장소의 README와 이미지는 직접 고치지 않습니다.
@@ -69,6 +79,8 @@
 ## 하지 말 것
 
 - 블로그·관리자 기능·Supabase·Mapbox는 2026-09 개편에서 제거했습니다. 다시 추가하지 않습니다.
+- 논문 PDF를 이 사이트에 올리거나 Paper·arXiv 버튼에 링크를 달지 않습니다(공개되기 전까지). 코드 저장소
+  jumincho/forward-looking-guidance는 이 저장소의 작업에서 고치지 않습니다.
 
 ## 논문 블로그 규칙 (블로그 기능을 복원할 경우에만 적용)
 
