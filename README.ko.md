@@ -43,16 +43,17 @@
 - 같은 데이터와 디자인으로 `npm run github-profile`이 그려 내는, 다섯 언어의 GitHub 프로필 README.
 - CIKM 2026 논문 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering*의 프로젝트
   페이지([`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)). 논문 카드에서 바로 이어집니다. 논문을 웹으로 읽는 듯한
-  영어 페이지이고, 포트폴리오와는 다른 차분한 연구실 스타일을 씁니다. 다시 그린 피규어, 단계를 고르면 수식이
-  바뀌는 선택기, 백본을 바꿔 볼 수 있는 결과표, 한 단계씩 따라가는 실행 기록, 그리고 포스터의 QR 코드로 찾아온
-  방문자에게 남기는 편지가 있습니다.
+  영어 페이지이고, 포트폴리오와는 다른 차분한 연구실 스타일을 씁니다. CIKM 2026 공식 로고, 실행 중인 단계가 남은
+  단계들 위로 빛을 비추는 제목 옆의 작은 픽셀 아트 마크, 다시 그린 피규어, 단계를 고르면 수식이 바뀌는 선택기,
+  백본을 바꿔 볼 수 있는 결과표, 한 단계씩 따라가는 실행 기록, 그리고 클래식한 엽서 뒷면에 쓴 감사 인사가
+  있습니다.
 
 ## 기술 스택
 
 Vite 7, React 19, TypeScript, 디자인 토큰을 쓰는 CSS Modules, 배경을 그리는 작은 WebGL 셰이더(직접 작성),
 Fontsource(Fredoka, Nunito, Jua), lucide-react. 중국어와 일본어는 방문자 기기의 시스템 글꼴을 씁니다. 라우터, CMS, 백엔드는 없습니다.
 GitHub Actions가 사이트를 빌드해 GitHub Pages에 올립니다.
-프로젝트 페이지는 React 없이 TypeScript로만 만들고, Inter, Source Serif 4, JetBrains Mono를 씁니다.
+프로젝트 페이지는 React 없이 TypeScript로만 만들고, Inter, Source Serif 4, JetBrains Mono, Allura를 씁니다.
 
 ## 프로젝트 구조
 
@@ -65,7 +66,7 @@ GitHub Actions가 사이트를 빌드해 GitHub Pages에 올립니다.
 │   └── preview-*.jpg             README 미리보기 (npm run snapshots -- --readme)
 ├── forward-looking-guidance/     논문 프로젝트 페이지: 두 번째 진입점, React 없는 TypeScript
 │   ├── index.html                페이지 본문(영어)
-│   ├── assets/                   favicon.svg, npm run project-assets로 만드는 qr.svg
+│   ├── assets/                   CIKM 2026 로고(라이트와 다크)
 │   └── src/                      data/paper.ts(논문에서 옮긴 모든 숫자), widgets/(피규어), lib/, styles/
 ├── public/                       빌드에 그대로 복사되는 파일
 │   ├── favicon.svg               마스코트. 다른 아이콘은 모두 여기서 만듭니다
@@ -76,7 +77,7 @@ GitHub Actions가 사이트를 빌드해 GitHub Pages에 올립니다.
 │   └── 404.html                  예전 링크(/blog 등)를 첫 화면으로 돌려보냄
 ├── scripts/
 │   ├── icons.mjs                 아이콘과 링크 미리보기 이미지를 그림
-│   ├── project-assets.mjs        프로젝트 페이지의 QR 코드와 링크 미리보기 이미지를 그림
+│   ├── project-assets.mjs        프로젝트 페이지의 링크 미리보기 이미지를 그림
 │   ├── snapshots.mjs             모든 언어에서 빌드의 화면과 동작을 점검
 │   ├── github-profile.mjs        GitHub 프로필 README(jumincho/jumincho)를 만듦
 │   ├── github-profile/           카드, 애니메이션, README 틀, 매일 도는 나이 갱신 스크립트
@@ -114,7 +115,7 @@ npm run dev        # http://localhost:5173
 | `npm run lint` | ESLint를 실행합니다 |
 | `npm run snapshots` | 375px와 1280px, 라이트와 다크, 모든 언어에서 빌드를 점검하고 스크린샷을 `snapshots/`에 남깁니다 |
 | `npm run icons` | `favicon.svg`로 파비콘, 앱 아이콘, 링크 미리보기 이미지를 다시 그립니다 |
-| `npm run project-assets` | 프로젝트 페이지의 QR 코드와 링크 미리보기 이미지를 다시 그립니다 |
+| `npm run project-assets` | 프로젝트 페이지의 링크 미리보기 이미지를 다시 그립니다 |
 | `npm run github-profile` | `../jumincho`에 GitHub 프로필 README와 이미지를 다시 만듭니다(아래 참고) |
 
 `snapshots`, `icons`, `github-profile`은 Playwright로 Chromium을 움직입니다. `npx playwright install

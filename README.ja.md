@@ -31,11 +31,11 @@
 - モーション軽減の設定、スクリーンリーダー、キーボード操作に配慮し、すべての文字が WCAG AA 以上のコントラストを持ちます。
 - コンテンツのファイルは 1 つだけです。すべての言語のすべての文言が `src/data/profile.ts` にあります。
 - 同じデータとデザインから `npm run github-profile` が描き出す、5 言語の GitHub プロフィール README。
-- CIKM 2026 の論文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* のプロジェクトページ（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)）。論文カードから直接開けます。論文をウェブで読むような英語のページで、ポートフォリオとは別の、落ち着いた研究室風のデザインです。描き直した図、ステージを選ぶと数式が書き換わるセレクター、バックボーンを切り替えられる結果表、1 ステップずつたどれる実行トレース、そしてポスターの QR コードから来てくれた訪問者への手紙があります。
+- CIKM 2026 の論文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* のプロジェクトページ（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)）。論文カードから直接開けます。論文をウェブで読むような英語のページで、ポートフォリオとは別の、落ち着いた研究室風のデザインです。CIKM 2026 の公式ロゴ、実行中のステップが先のステップを光で照らす、タイトル横の小さなピクセルアートのマーク、描き直した図、ステージを選ぶと数式が書き換わるセレクター、バックボーンを切り替えられる結果表、1 ステップずつたどれる実行トレース、そしてクラシックな絵はがきの裏に書いたお礼の言葉があります。
 
 ## 技術スタック
 
-Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules、背景を描く手書きの小さな WebGL シェーダー、Fontsource（Fredoka、Nunito、Jua）、lucide-react。中国語と日本語は訪問者のデバイスのシステムフォントを使います。ルーター、CMS、バックエンドはありません。GitHub Actions がサイトをビルドして GitHub Pages に公開します。プロジェクトページは React を使わず TypeScript だけで作り、Inter、Source Serif 4、JetBrains Mono を使います。
+Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules、背景を描く手書きの小さな WebGL シェーダー、Fontsource（Fredoka、Nunito、Jua）、lucide-react。中国語と日本語は訪問者のデバイスのシステムフォントを使います。ルーター、CMS、バックエンドはありません。GitHub Actions がサイトをビルドして GitHub Pages に公開します。プロジェクトページは React を使わず TypeScript だけで作り、Inter、Source Serif 4、JetBrains Mono、Allura を使います。
 
 ## プロジェクト構成
 
@@ -48,7 +48,7 @@ Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules�
 │   └── preview-*.jpg             README のプレビュー（npm run snapshots -- --readme）
 ├── forward-looking-guidance/     論文のプロジェクトページ：2 つ目のエントリーポイント、React なしの TypeScript
 │   ├── index.html                ページの本文（英語）
-│   ├── assets/                   favicon.svg と、npm run project-assets で作る qr.svg
+│   ├── assets/                   CIKM 2026 のロゴ（ライトとダーク）
 │   └── src/                      data/paper.ts（論文から写したすべての数値）、widgets/（図）、lib/、styles/
 ├── public/                       そのままビルドにコピーされるファイル
 │   ├── favicon.svg               マスコット。ほかのアイコンはすべてここから作ります
@@ -59,7 +59,7 @@ Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules�
 │   └── 404.html                  古いリンク（/blog など）をトップページへ戻す
 ├── scripts/
 │   ├── icons.mjs                 アイコンとリンクプレビュー画像を描く
-│   ├── project-assets.mjs        プロジェクトページの QR コードとリンクプレビュー画像を描く
+│   ├── project-assets.mjs        プロジェクトページのリンクプレビュー画像を描く
 │   ├── snapshots.mjs             すべての言語でビルドの見た目と動作をチェック
 │   ├── github-profile.mjs        GitHub プロフィール README（jumincho/jumincho）を生成
 │   ├── github-profile/           カード、アニメーション、README のテンプレート、毎日の年齢更新スクリプト
@@ -97,7 +97,7 @@ npm run dev        # http://localhost:5173
 | `npm run lint` | ESLint を実行します |
 | `npm run snapshots` | 375px と 1280px、ライトとダーク、すべての言語でビルドをチェックし、スクリーンショットを `snapshots/` に保存します |
 | `npm run icons` | `favicon.svg` からファビコン、アプリアイコン、リンクプレビュー画像を描き直します |
-| `npm run project-assets` | プロジェクトページの QR コードとリンクプレビュー画像を描き直します |
+| `npm run project-assets` | プロジェクトページのリンクプレビュー画像を描き直します |
 | `npm run github-profile` | `../jumincho` に GitHub プロフィールの README と画像を作り直します（下記参照） |
 
 `snapshots`、`icons`、`github-profile` は Playwright で Chromium を動かします。一度 `npx playwright install chromium` を実行するか、`PLAYWRIGHT_CHROMIUM=/path/to/chrome` で手元のブラウザーを指定してください。

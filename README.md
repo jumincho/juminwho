@@ -47,17 +47,18 @@ English · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [繁�
   by `npm run github-profile`.
 - A project page for the CIKM 2026 paper, *Forward-Looking Guidance for Iterative RAG in Multi-Hop
   Question Answering*, at [`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/) and linked from the paper's card.
-  It reads like a web version of the paper, in English and in its own quiet research-lab style:
-  redrawn figures, a stage picker that rewrites the equations, a results table with a backbone
-  switch, a step-through execution trace, and a closing note for visitors who scanned the poster's
-  QR code.
+  It reads like a web version of the paper, in English and in its own quiet research-lab style: the
+  official CIKM 2026 logo, a small pixel-art mark beside the title in which the running step shines
+  a beam over the steps ahead, redrawn figures, a stage picker that rewrites the equations, a
+  results table with a backbone switch, a step-through execution trace, and a thank-you note set as
+  the back of a classic postcard.
 
 ## Tech stack
 
 Vite 7, React 19, TypeScript, CSS Modules with design tokens, a small hand-written WebGL shader for
 the backdrop, Fontsource (Fredoka, Nunito and Jua) and lucide-react. Chinese and Japanese use the visitor's system fonts. There is no router, CMS or
 backend. GitHub Actions builds the site and publishes it to GitHub Pages.
-The project page is plain TypeScript without React, set in Inter, Source Serif 4 and JetBrains Mono.
+The project page is plain TypeScript without React, set in Inter, Source Serif 4, JetBrains Mono and Allura.
 
 ## Project structure
 
@@ -70,7 +71,7 @@ The project page is plain TypeScript without React, set in Inter, Source Serif 4
 │   └── preview-*.jpg             README previews (npm run snapshots -- --readme)
 ├── forward-looking-guidance/     the paper's project page: a second entry point, plain TypeScript
 │   ├── index.html                its text, in English
-│   ├── assets/                   favicon.svg, and qr.svg made by npm run project-assets
+│   ├── assets/                   the CIKM 2026 logo, for light and dark
 │   └── src/                      data/paper.ts (every number, from the paper), widgets/ (the figures), lib/, styles/
 ├── public/                       copied into the build as-is
 │   ├── favicon.svg               the mascot; every other icon starts here
@@ -81,7 +82,7 @@ The project page is plain TypeScript without React, set in Inter, Source Serif 4
 │   └── 404.html                  sends old links (/blog, …) back to the home page
 ├── scripts/
 │   ├── icons.mjs                 renders the icons and the link-preview image
-│   ├── project-assets.mjs        renders the project page's QR code and link-preview image
+│   ├── project-assets.mjs        renders the project page's link-preview image
 │   ├── snapshots.mjs             visual and behaviour checks for the build, in every language
 │   ├── github-profile.mjs        builds the GitHub profile README (jumincho/jumincho)
 │   ├── github-profile/           its cards, animations, README template and daily age updater
@@ -119,7 +120,7 @@ npm run dev        # http://localhost:5173
 | `npm run lint` | Runs ESLint |
 | `npm run snapshots` | Checks the build at 375 px and 1280 px, in light and dark and in every language, and saves screenshots to `snapshots/` |
 | `npm run icons` | Redraws the favicon, the app icons and the link-preview image from `favicon.svg` |
-| `npm run project-assets` | Redraws the project page's QR code and link-preview image |
+| `npm run project-assets` | Redraws the project page's link-preview image |
 | `npm run github-profile` | Rebuilds the GitHub profile READMEs and their images in `../jumincho` (see below) |
 
 `snapshots`, `icons` and `github-profile` drive Chromium through Playwright. Run

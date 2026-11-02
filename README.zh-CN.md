@@ -31,11 +31,11 @@
 - 尊重“减弱动态效果”设置、屏幕阅读器和键盘导航，所有文字的对比度都达到 WCAG AA 或更高。
 - 只有一个内容文件：所有语言的所有文字都在 `src/data/profile.ts` 中。
 - 用同一份数据和设计，由 `npm run github-profile` 生成的五种语言的 GitHub 个人主页 README。
-- CIKM 2026 论文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* 的项目主页（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)），可从论文卡片直接进入。它读起来像网页版的论文，使用英文，并采用与个人主页不同的、沉静的研究实验室风格：重新绘制的插图、选择阶段即可改写公式的选择器、可切换骨干模型的结果表、可逐步查看的执行轨迹，以及写给扫描海报二维码而来的访客的一封信。
+- CIKM 2026 论文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* 的项目主页（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)），可从论文卡片直接进入。它读起来像网页版的论文，使用英文，并采用与个人主页不同的、沉静的研究实验室风格：CIKM 2026 官方徽标、标题旁一个小小的像素画标志（正在执行的步骤把光照向之后的步骤）、重新绘制的插图、选择阶段即可改写公式的选择器、可切换骨干模型的结果表、可逐步查看的执行轨迹，以及写在一张经典明信片背面的感谢信。
 
 ## 技术栈
 
-Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Modules、手写的绘制背景的小型 WebGL 着色器、Fontsource（Fredoka、Nunito 和 Jua）以及 lucide-react。中文和日文使用访客设备上的系统字体。没有路由、CMS 或后端。GitHub Actions 负责构建网站并发布到 GitHub Pages。项目主页不使用 React，只用 TypeScript 编写，字体为 Inter、Source Serif 4 和 JetBrains Mono。
+Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Modules、手写的绘制背景的小型 WebGL 着色器、Fontsource（Fredoka、Nunito 和 Jua）以及 lucide-react。中文和日文使用访客设备上的系统字体。没有路由、CMS 或后端。GitHub Actions 负责构建网站并发布到 GitHub Pages。项目主页不使用 React，只用 TypeScript 编写，字体为 Inter、Source Serif 4、JetBrains Mono 和 Allura。
 
 ## 项目结构
 
@@ -48,7 +48,7 @@ Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Mo
 │   └── preview-*.jpg             README 预览图（npm run snapshots -- --readme）
 ├── forward-looking-guidance/     论文项目主页：第二个入口，不使用 React 的 TypeScript
 │   ├── index.html                页面正文（英文）
-│   ├── assets/                   favicon.svg，以及由 npm run project-assets 生成的 qr.svg
+│   ├── assets/                   CIKM 2026 徽标（浅色与深色）
 │   └── src/                      data/paper.ts（从论文中转录的所有数字）、widgets/（插图）、lib/、styles/
 ├── public/                       原样复制到构建产物中
 │   ├── favicon.svg               吉祥物；其他图标都由它生成
@@ -59,7 +59,7 @@ Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Mo
 │   └── 404.html                  把旧链接（/blog 等）送回首页
 ├── scripts/
 │   ├── icons.mjs                 绘制图标和链接预览图
-│   ├── project-assets.mjs        绘制项目主页的二维码和链接预览图
+│   ├── project-assets.mjs        绘制项目主页的链接预览图
 │   ├── snapshots.mjs             在每种语言下检查构建的外观和行为
 │   ├── github-profile.mjs        生成 GitHub 个人主页 README（jumincho/jumincho）
 │   ├── github-profile/           卡片、动画、README 模板和每天运行的年龄更新脚本
@@ -97,7 +97,7 @@ npm run dev        # http://localhost:5173
 | `npm run lint` | 运行 ESLint |
 | `npm run snapshots` | 在 375px 和 1280px、浅色和深色、每种语言下检查构建，并把截图保存到 `snapshots/` |
 | `npm run icons` | 根据 `favicon.svg` 重新绘制网站图标、应用图标和链接预览图 |
-| `npm run project-assets` | 重新绘制项目主页的二维码和链接预览图 |
+| `npm run project-assets` | 重新绘制项目主页的链接预览图 |
 | `npm run github-profile` | 在 `../jumincho` 中重新生成 GitHub 个人主页 README 及其图片（见下文） |
 
 `snapshots`、`icons` 和 `github-profile` 通过 Playwright 驱动 Chromium。请先运行一次 `npx playwright install chromium`，或者用 `PLAYWRIGHT_CHROMIUM=/path/to/chrome` 指向已有的浏览器。
