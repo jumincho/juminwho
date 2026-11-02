@@ -7,14 +7,12 @@ import './styles/tokens.css'
 import './styles/base.css'
 import './styles/layout.css'
 import './styles/figures.css'
-import './styles/mark.css'
 
 import { byId } from './lib/dom'
 import { initCopy, initReveal, initScroll, initTheme } from './widgets/chrome'
 import { mountDepth } from './widgets/depth'
 import { mountGains } from './widgets/gains'
 import { mountHero } from './widgets/hero'
-import { mountMark } from './widgets/mark'
 import { mountMotivation } from './widgets/motivation'
 import { mountPipeline } from './widgets/pipeline'
 import { mountResults } from './widgets/results'
@@ -38,7 +36,6 @@ function mount(id: string, run: (el: HTMLElement) => void): void {
   }
 }
 
-mount('title-mark', (el) => mountMark(el))
 mount('hero-visual', (el) => mountHero(el))
 mount('fig-motivation', (el) => mountMotivation(el, byId('motivation-tools')))
 mount('fig-pipeline', (el) => mountPipeline(el, byId('pipeline-tools')))

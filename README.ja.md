@@ -31,7 +31,7 @@
 - モーション軽減の設定、スクリーンリーダー、キーボード操作に配慮し、すべての文字が WCAG AA 以上のコントラストを持ちます。
 - コンテンツのファイルは 1 つだけです。すべての言語のすべての文言が `src/data/profile.ts` にあります。
 - 同じデータとデザインから `npm run github-profile` が描き出す、5 言語の GitHub プロフィール README。
-- CIKM 2026 の論文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* のプロジェクトページ（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)）。論文カードから直接開けます。論文をウェブで読むような英語のページで、ポートフォリオとは別の、落ち着いた研究室風のデザインです。CIKM 2026 の公式ロゴ、この先のステップが並ぶ道を双眼鏡で遠くまで見渡す、タイトル横の小さなマーク、描き直した図、ステージを選ぶと数式が書き換わるセレクター、バックボーンを切り替えられる結果表、1 ステップずつたどれる実行トレース、そして切手の下にソウルからローマへの飛行ルートの地図を載せた、クラシックな絵はがきの裏のお礼の言葉があります。
+- CIKM 2026 の論文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* のプロジェクトページ（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)）。論文カードから直接開けます。論文をウェブで読むような英語のページで、ポートフォリオとは別の、落ち着いた研究室風のデザインです。CIKM 2026 の公式ロゴ、描き直した図、ステージを選ぶと数式が書き換わるセレクター、バックボーンを切り替えられる結果表、1 ステップずつたどれる実行トレース、そして切手の下にソウルからローマへの飛行ルートの地図を載せた、クラシックな絵はがきの裏のお礼の言葉があります。
 
 ## 技術スタック
 

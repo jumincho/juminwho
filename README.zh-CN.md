@@ -31,7 +31,7 @@
 - 尊重“减弱动态效果”设置、屏幕阅读器和键盘导航，所有文字的对比度都达到 WCAG AA 或更高。
 - 只有一个内容文件：所有语言的所有文字都在 `src/data/profile.ts` 中。
 - 用同一份数据和设计，由 `npm run github-profile` 生成的五种语言的 GitHub 个人主页 README。
-- CIKM 2026 论文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* 的项目主页（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)），可从论文卡片直接进入。它读起来像网页版的论文，使用英文，并采用与个人主页不同的、沉静的研究实验室风格：CIKM 2026 官方徽标、标题旁一个小小的标志（用望远镜远眺一条摆着后续步骤的路）、重新绘制的插图、选择阶段即可改写公式的选择器、可切换骨干模型的结果表、可逐步查看的执行轨迹，以及写在一张经典明信片背面的感谢信，邮票下方的地图画着从首尔飞往罗马的航线。
+- CIKM 2026 论文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* 的项目主页（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)），可从论文卡片直接进入。它读起来像网页版的论文，使用英文，并采用与个人主页不同的、沉静的研究实验室风格：CIKM 2026 官方徽标、重新绘制的插图、选择阶段即可改写公式的选择器、可切换骨干模型的结果表、可逐步查看的执行轨迹，以及写在一张经典明信片背面的感谢信，邮票下方的地图画着从首尔飞往罗马的航线。
 
 ## 技术栈
 

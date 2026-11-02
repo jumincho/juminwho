@@ -4,34 +4,17 @@
  *   npm run project-assets
  *
  * Writes public/forward-looking-guidance/og.png (1200 × 630, the URL its
- * og:image tag names) from the page's own tokens, fonts, the CIKM 2026 logo
- * and the binocular mark beside the title (its markup from index.html, the
- * same still moment the page shows with reduced motion). Run it after
- * changing the page's title, palette or mark.
+ * og:image tag names) from the page's own tokens, fonts and the CIKM 2026
+ * logo. Run it after changing the page's title or palette.
  */
 import { mkdir, readFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { launchChromium } from './lib/browser.mjs'
-import { loadModules } from './lib/load-modules.mjs'
 
 const require = createRequire(import.meta.url)
 const PAGE = 'forward-looking-guidance'
 
-// The binocular mark: its markup from the page, its path and operations placed by the page's own code.
-const [mark] = await loadModules([`/${PAGE}/src/widgets/mark.ts`])
-const html = await readFile(`${PAGE}/index.html`, 'utf8')
-const still = mark.sceneAt(mark.STILL)
-const dots = still.dots
-  .map((d) => `<g><circle class="bino-halo" cx="${d.cx}" cy="${d.cy}" r="${d.r * 2.8}" opacity="${0.3 * d.halo}"/><circle class="bino-dot" cx="${d.cx}" cy="${d.cy}" r="${d.r}" opacity="${d.opacity}"/></g>`)
-  .join('')
-const binoculars = html
-  .match(/<svg class="bino"[\s\S]*?<\/svg>/)[0]
-  .replace('<path class="bino-road" />', `<path class="bino-road" d="${mark.roadPath()}" />`)
-  .replace('<g class="bino-nodes" />', `<g class="bino-nodes">${dots}</g>`)
-  .replace(/(<circle class="bino-glow"[^>]*opacity=")[^"]*"/, `$1${still.glow}"`)
-
 const tokens = await readFile(`${PAGE}/src/styles/tokens.css`, 'utf8')
-const markCss = await readFile(`${PAGE}/src/styles/mark.css`, 'utf8')
 const logo = `data:image/webp;base64,${(await readFile(`${PAGE}/assets/cikm-2026-light.webp`)).toString('base64')}`
 const dataUri = async (file) => `data:font/woff2;base64,${(await readFile(require.resolve(file))).toString('base64')}`
 const fonts = `
@@ -56,7 +39,6 @@ const card = `<!doctype html>
 <html data-theme="light"><head><meta charset="utf-8"><style>
 ${fonts}
 ${tokens}
-${markCss}
 * { box-sizing: border-box; margin: 0; }
 body { width: 1200px; height: 630px; overflow: hidden; background: var(--bg); color: var(--ink); font-family: var(--font-sans); }
 .og { position: relative; height: 100%; padding: 48px 72px; isolation: isolate; }
@@ -83,7 +65,7 @@ h1 { margin-top: 18px; font-size: 66px; font-weight: 740; line-height: 1.04; let
 .g { font-family: var(--font-math); font-size: 30px; fill: var(--accent); }
 </style></head><body><div class="og">
   <img class="logo" src="${logo}" alt="">
-  <h1>Forward-Looking Guidance<span class="title-mark">${binoculars}</span></h1>
+  <h1>Forward-Looking Guidance</h1>
   <p class="sub">for Iterative RAG in Multi-Hop Question Answering</p>
   <p class="authors">Jumin Cho · Chanjun Park · Seung-Hoon Na · Hyun-Je Song</p>
   <div class="diagram">${diagram}</div>

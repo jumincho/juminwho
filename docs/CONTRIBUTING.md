@@ -63,7 +63,7 @@
   라이트/다크, 모든 언어, 모션 줄이기, WebGL이 없는 경우를 확인합니다.
 - 첫 화면이 바뀌면 `npm run snapshots -- --readme`로 README 미리보기도 새로 만듭니다.
 - 마스코트·팔레트·이름·소개를 바꾸면 `npm run icons`로 아이콘과 OG 이미지를 다시 만듭니다.
-- 프로젝트 페이지의 제목·색·제목 마크를 바꾸면 `npm run project-assets`로 링크 미리보기 이미지를 다시 만듭니다.
+- 프로젝트 페이지의 제목이나 색을 바꾸면 `npm run project-assets`로 링크 미리보기 이미지를 다시 만듭니다.
 - GitHub 프로필 README(jumincho/jumincho)는 `npm run github-profile`로 이 저장소에서 만듭니다
   (`scripts/github-profile/`). `profile.ts`·마스코트·팔레트를 바꾸면 다시 만들어 그 저장소의 `main`에 올리고,
   그 저장소의 README와 이미지는 직접 고치지 않습니다.

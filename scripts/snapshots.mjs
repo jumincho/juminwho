@@ -17,8 +17,8 @@
  * does not fit or loses its hedge, or a language menu that does not pick,
  * remember and link. The paper's project page (forward-looking-guidance/)
  * gets the same basics at both widths and in both themes, plus its figures:
- * each must mount, the binocular mark and the postcard's flight must be in
- * place, the stage picker, the backbone
+ * each must mount, the postcard's flight must land, the stage picker, the
+ * backbone
  * switch, the trace stepper and back-to-top must respond, a theme picked
  * there must carry over to the portfolio, and nothing may move with reduced
  * motion. Full-page screenshots
@@ -381,13 +381,6 @@ async function checkProjectPage(vp, scheme) {
   if (state.back !== url) fail(`the back link goes to ${state.back}, not the portfolio`)
 
   await page.screenshot({ path: `${OUT}/project-${vp.name}-${scheme}.png`, fullPage: true, animations: 'disabled' })
-
-  // The binocular mark beside the title has its path and the operations along it.
-  const mark = await page.evaluate(() => ({
-    road: document.querySelector('#title-mark .bino-road')?.getAttribute('d')?.length ?? 0,
-    dots: [...document.querySelectorAll('#title-mark .bino-dot')].filter((dot) => Number(dot.getAttribute('r')) > 0).length,
-  }))
-  if (mark.road === 0 || mark.dots === 0) fail('the binocular mark beside the title is empty')
 
   // The postcard's map: the plane has flown from Seoul and is near Rome.
   const plane = await page.evaluate(() => document.querySelector('.pc-plane')?.getAttribute('transform') ?? '')

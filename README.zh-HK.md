@@ -31,7 +31,7 @@
 - 尊重「減少動態效果」設定、屏幕閱讀器和鍵盤導航，所有文字的對比度都達到 WCAG AA 或以上。
 - 只有一個內容檔案：所有語言的所有文字都在 `src/data/profile.ts` 裏。
 - 以同一份資料和設計，由 `npm run github-profile` 生成的五種語言 GitHub 個人主頁 README。
-- CIKM 2026 論文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* 的項目主頁（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)），可從論文卡片直接進入。它讀起來像網頁版的論文，以英文撰寫，並採用與個人主頁不同的、沉靜的研究實驗室風格：CIKM 2026 官方標誌、標題旁一個小小的標記（用望遠鏡遠眺一條擺着後續步驟的路）、重新繪製的插圖、選擇階段便會改寫公式的選擇器、可切換骨幹模型的結果表、可逐步檢視的執行軌跡，以及寫在一張經典明信片背面的感謝信，郵票下方的地圖畫着從首爾飛往羅馬的航線。
+- CIKM 2026 論文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* 的項目主頁（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)），可從論文卡片直接進入。它讀起來像網頁版的論文，以英文撰寫，並採用與個人主頁不同的、沉靜的研究實驗室風格：CIKM 2026 官方標誌、重新繪製的插圖、選擇階段便會改寫公式的選擇器、可切換骨幹模型的結果表、可逐步檢視的執行軌跡，以及寫在一張經典明信片背面的感謝信，郵票下方的地圖畫着從首爾飛往羅馬的航線。
 
 ## 技術棧
 

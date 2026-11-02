@@ -278,11 +278,6 @@
   display: block;
 }
 
-/* "Guidance" and its mark never part at a line break. */
-.title-keep {
-  white-space: nowrap;
-}
-
 .title-line {
   display: block;
   max-width: 34em;
