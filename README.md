@@ -48,10 +48,10 @@ English · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [繁�
 - A project page for the CIKM 2026 paper, *Forward-Looking Guidance for Iterative RAG in Multi-Hop
   Question Answering*, at [`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/) and linked from the paper's card.
   It reads like a web version of the paper, in English and in its own quiet research-lab style: the
-  official CIKM 2026 logo, a small pixel-art mark beside the title in which the running step shines
-  a beam over the steps ahead, redrawn figures, a stage picker that rewrites the equations, a
-  results table with a backbone switch, a step-through execution trace, and a thank-you note set as
-  the back of a classic postcard.
+  official CIKM 2026 logo, a small mark beside the title that looks through binoculars down the path
+  of the steps still ahead, redrawn figures, a stage picker that rewrites the equations, a results
+  table with a backbone switch, a step-through execution trace, and a thank-you note set as the back
+  of a classic postcard, with a map of the flight from Seoul to Rome under its stamp.
 
 ## Tech stack
 
@@ -71,7 +71,7 @@ The project page is plain TypeScript without React, set in Inter, Source Serif 4
 │   └── preview-*.jpg             README previews (npm run snapshots -- --readme)
 ├── forward-looking-guidance/     the paper's project page: a second entry point, plain TypeScript
 │   ├── index.html                its text, in English
-│   ├── assets/                   the CIKM 2026 logo, for light and dark
+│   ├── assets/                   the CIKM 2026 logo (light and dark) and the postcard's route map
 │   └── src/                      data/paper.ts (every number, from the paper), widgets/ (the figures), lib/, styles/
 ├── public/                       copied into the build as-is
 │   ├── favicon.svg               the mascot; every other icon starts here

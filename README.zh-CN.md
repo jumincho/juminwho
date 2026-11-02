@@ -31,7 +31,7 @@
 - 尊重“减弱动态效果”设置、屏幕阅读器和键盘导航，所有文字的对比度都达到 WCAG AA 或更高。
 - 只有一个内容文件：所有语言的所有文字都在 `src/data/profile.ts` 中。
 - 用同一份数据和设计，由 `npm run github-profile` 生成的五种语言的 GitHub 个人主页 README。
-- CIKM 2026 论文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* 的项目主页（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)），可从论文卡片直接进入。它读起来像网页版的论文，使用英文，并采用与个人主页不同的、沉静的研究实验室风格：CIKM 2026 官方徽标、标题旁一个小小的像素画标志（正在执行的步骤把光照向之后的步骤）、重新绘制的插图、选择阶段即可改写公式的选择器、可切换骨干模型的结果表、可逐步查看的执行轨迹，以及写在一张经典明信片背面的感谢信。
+- CIKM 2026 论文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* 的项目主页（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)），可从论文卡片直接进入。它读起来像网页版的论文，使用英文，并采用与个人主页不同的、沉静的研究实验室风格：CIKM 2026 官方徽标、标题旁一个小小的标志（用望远镜远眺一条摆着后续步骤的路）、重新绘制的插图、选择阶段即可改写公式的选择器、可切换骨干模型的结果表、可逐步查看的执行轨迹，以及写在一张经典明信片背面的感谢信，邮票下方的地图画着从首尔飞往罗马的航线。
 
 ## 技术栈
 
@@ -48,7 +48,7 @@ Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Mo
 │   └── preview-*.jpg             README 预览图（npm run snapshots -- --readme）
 ├── forward-looking-guidance/     论文项目主页：第二个入口，不使用 React 的 TypeScript
 │   ├── index.html                页面正文（英文）
-│   ├── assets/                   CIKM 2026 徽标（浅色与深色）
+│   ├── assets/                   CIKM 2026 徽标（浅色与深色）、明信片上的航线地图
 │   └── src/                      data/paper.ts（从论文中转录的所有数字）、widgets/（插图）、lib/、styles/
 ├── public/                       原样复制到构建产物中
 │   ├── favicon.svg               吉祥物；其他图标都由它生成

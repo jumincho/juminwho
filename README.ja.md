@@ -31,7 +31,7 @@
 - モーション軽減の設定、スクリーンリーダー、キーボード操作に配慮し、すべての文字が WCAG AA 以上のコントラストを持ちます。
 - コンテンツのファイルは 1 つだけです。すべての言語のすべての文言が `src/data/profile.ts` にあります。
 - 同じデータとデザインから `npm run github-profile` が描き出す、5 言語の GitHub プロフィール README。
-- CIKM 2026 の論文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* のプロジェクトページ（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)）。論文カードから直接開けます。論文をウェブで読むような英語のページで、ポートフォリオとは別の、落ち着いた研究室風のデザインです。CIKM 2026 の公式ロゴ、実行中のステップが先のステップを光で照らす、タイトル横の小さなピクセルアートのマーク、描き直した図、ステージを選ぶと数式が書き換わるセレクター、バックボーンを切り替えられる結果表、1 ステップずつたどれる実行トレース、そしてクラシックな絵はがきの裏に書いたお礼の言葉があります。
+- CIKM 2026 の論文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* のプロジェクトページ（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)）。論文カードから直接開けます。論文をウェブで読むような英語のページで、ポートフォリオとは別の、落ち着いた研究室風のデザインです。CIKM 2026 の公式ロゴ、この先のステップが並ぶ道を双眼鏡で遠くまで見渡す、タイトル横の小さなマーク、描き直した図、ステージを選ぶと数式が書き換わるセレクター、バックボーンを切り替えられる結果表、1 ステップずつたどれる実行トレース、そして切手の下にソウルからローマへの飛行ルートの地図を載せた、クラシックな絵はがきの裏のお礼の言葉があります。
 
 ## 技術スタック
 
@@ -48,7 +48,7 @@ Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules�
 │   └── preview-*.jpg             README のプレビュー（npm run snapshots -- --readme）
 ├── forward-looking-guidance/     論文のプロジェクトページ：2 つ目のエントリーポイント、React なしの TypeScript
 │   ├── index.html                ページの本文（英語）
-│   ├── assets/                   CIKM 2026 のロゴ（ライトとダーク）
+│   ├── assets/                   CIKM 2026 のロゴ（ライトとダーク）、絵はがきの飛行ルートの地図
 │   └── src/                      data/paper.ts（論文から写したすべての数値）、widgets/（図）、lib/、styles/
 ├── public/                       そのままビルドにコピーされるファイル
 │   ├── favicon.svg               マスコット。ほかのアイコンはすべてここから作ります

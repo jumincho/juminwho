@@ -43,10 +43,10 @@
 - 같은 데이터와 디자인으로 `npm run github-profile`이 그려 내는, 다섯 언어의 GitHub 프로필 README.
 - CIKM 2026 논문 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering*의 프로젝트
   페이지([`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)). 논문 카드에서 바로 이어집니다. 논문을 웹으로 읽는 듯한
-  영어 페이지이고, 포트폴리오와는 다른 차분한 연구실 스타일을 씁니다. CIKM 2026 공식 로고, 실행 중인 단계가 남은
-  단계들 위로 빛을 비추는 제목 옆의 작은 픽셀 아트 마크, 다시 그린 피규어, 단계를 고르면 수식이 바뀌는 선택기,
-  백본을 바꿔 볼 수 있는 결과표, 한 단계씩 따라가는 실행 기록, 그리고 클래식한 엽서 뒷면에 쓴 감사 인사가
-  있습니다.
+  영어 페이지이고, 포트폴리오와는 다른 차분한 연구실 스타일을 씁니다. CIKM 2026 공식 로고, 쌍안경으로 남은 단계들이
+  놓인 길을 멀리 내다보는 제목 옆의 작은 마크, 다시 그린 피규어, 단계를 고르면 수식이 바뀌는 선택기, 백본을 바꿔 볼
+  수 있는 결과표, 한 단계씩 따라가는 실행 기록, 그리고 우표 아래에 서울에서 로마까지의 비행 지도를 담은 클래식한
+  엽서 뒷면의 감사 인사가 있습니다.
 
 ## 기술 스택
 
@@ -66,7 +66,7 @@ GitHub Actions가 사이트를 빌드해 GitHub Pages에 올립니다.
 │   └── preview-*.jpg             README 미리보기 (npm run snapshots -- --readme)
 ├── forward-looking-guidance/     논문 프로젝트 페이지: 두 번째 진입점, React 없는 TypeScript
 │   ├── index.html                페이지 본문(영어)
-│   ├── assets/                   CIKM 2026 로고(라이트와 다크)
+│   ├── assets/                   CIKM 2026 로고(라이트와 다크), 엽서의 비행 지도
 │   └── src/                      data/paper.ts(논문에서 옮긴 모든 숫자), widgets/(피규어), lib/, styles/
 ├── public/                       빌드에 그대로 복사되는 파일
 │   ├── favicon.svg               마스코트. 다른 아이콘은 모두 여기서 만듭니다
