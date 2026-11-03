@@ -43,7 +43,7 @@
 - 같은 데이터와 디자인으로 `npm run github-profile`이 그려 내는, 다섯 언어의 GitHub 프로필 README.
 - CIKM 2026 논문 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering*의 프로젝트
   페이지([`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)). 논문 카드에서 바로 이어집니다. 논문의 요점만 짧게
-  소개하는 영어 페이지이고, 포트폴리오와는 다른 담백한 학술 페이지 스타일을 씁니다. CIKM 2026 공식 로고, 초록, 다시
+  소개하는 영어 페이지이고, 포트폴리오와는 다른 차분한 연구실 스타일을 씁니다. CIKM 2026 공식 로고, 초록, 다시
   그린 몇 개의 그림(단계를 고르는 차트, 백본을 바꿔 보는 결과와 접어 둔 전체 표, 한 단계씩 따라가는 실행 기록), 그리고
   우표 아래에 대한민국에서 이탈리아까지의 비행을 그린 세계지도를 담은 클래식한 엽서 뒷면의 감사 인사가 있습니다.
 

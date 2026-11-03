@@ -47,11 +47,11 @@ English · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [繁�
   by `npm run github-profile`.
 - A project page for the CIKM 2026 paper, *Forward-Looking Guidance for Iterative RAG in Multi-Hop
   Question Answering*, at [`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/) and linked from the paper's card.
-  It is a short English companion to the paper in a plain academic style: the official CIKM 2026
-  logo, the abstract, a few redrawn figures (a chart that doubles as a stage picker, results with a
-  backbone switch and the full table folded away, a step-through execution trace), and a thank-you
-  note set as the back of a classic postcard, with a world map of the flight from South Korea to
-  Italy under its stamp.
+  It is a short English companion to the paper in its own quiet research-lab style: the official
+  CIKM 2026 logo, the abstract, a few redrawn figures (a chart that doubles as a stage picker,
+  results with a backbone switch and the full table folded away, a step-through execution trace),
+  and a thank-you note set as the back of a classic postcard, with a world map of the flight from
+  South Korea to Italy under its stamp.
 
 ## Tech stack
 
