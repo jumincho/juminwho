@@ -12,7 +12,7 @@
   넣지 않습니다.
 - 논문 프로젝트 페이지만 예외입니다. 본문은 `forward-looking-guidance/index.html`, 숫자는
   `forward-looking-guidance/src/data/paper.ts`에 둡니다. 숫자는 논문에서 그대로 옮기고, 바꿀 때마다 논문 PDF와
-  대조합니다.
+  대조합니다. 논문을 다 옮기지 않고 요점만 소개합니다(분량과 표현은 DESIGN.md의 "논문 프로젝트 페이지" 절).
 
 ## 언어
 
