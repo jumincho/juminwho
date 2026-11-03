@@ -1,115 +1,33 @@
-/* Page chrome and the static blocks: top bar, table of contents, hero, stats, setup, comparison, citation, postcard, back to top, footer. */
+/* Page layout and the static blocks: header, title, sections and figures, BibTeX, the postcard, back to top, footer. */
 
-/* ---- top bar: back to the portfolio, section links, code and theme ---- */
+/* ---- header: back to the portfolio, and the theme ---- */
 
-.topbar {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 50;
-  height: var(--topbar-h);
-  border-bottom: 1px solid transparent;
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  backdrop-filter: saturate(1.6) blur(14px);
-  -webkit-backdrop-filter: saturate(1.6) blur(14px);
-  transition: border-color var(--dur-2) var(--ease);
-}
-
-.topbar.is-scrolled {
-  border-bottom-color: var(--border);
-}
-
-.topbar-inner {
+.site-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  height: 100%;
-  max-width: calc(var(--wide-col) + 2 * var(--gutter));
+  justify-content: space-between;
+  max-width: calc(var(--wide) + 2 * var(--gutter));
   margin-inline: auto;
-  padding-inline: calc(var(--gutter) - 0.5rem);
+  padding: 0.85rem var(--gutter) 0;
 }
 
 .back {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  height: 2.25rem;
-  padding: 0 0.85rem 0 0.7rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  color: var(--ink-2);
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition:
-    border-color var(--dur-1) var(--ease),
-    color var(--dur-1) var(--ease);
+  margin-left: -0.15rem;
+  color: var(--ink-3);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: color var(--dur-1) var(--ease);
 }
 
 .back:hover {
-  border-color: var(--ink-4);
   color: var(--ink);
 }
 
-.back .icon {
-  transition: transform var(--dur-2) var(--ease);
-}
-
-.back:hover .icon {
-  transform: translateX(-2px);
-}
-
-.wordmark {
-  overflow: hidden;
-  color: var(--ink);
-  font-size: 0.9375rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(4px);
-  transition:
-    opacity var(--dur-2) var(--ease),
-    transform var(--dur-2) var(--ease),
-    visibility var(--dur-2);
-}
-
-/* Hidden means out of the tab order too, until the title has scrolled away. */
-.topbar.is-past-title .wordmark {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-}
-
-.topnav {
-  display: flex;
-  gap: 0.15rem;
-  margin-left: auto;
-}
-
-.topnav a {
-  padding: 0.4rem 0.7rem;
-  border-radius: 999px;
-  color: var(--ink-3);
-  font-size: 0.875rem;
-  font-weight: 550;
-  transition:
-    color var(--dur-1) var(--ease),
-    background-color var(--dur-1) var(--ease);
-}
-
-.topnav a:hover {
-  color: var(--ink);
-}
-
-.topnav a[aria-current] {
-  background: var(--bg-muted);
-  color: var(--ink);
-}
-
-.topbar-actions {
-  display: flex;
-  gap: 0.15rem;
+.site-header .theme-toggle {
+  margin-right: -0.5rem;
 }
 
 .theme-toggle .moon,
@@ -121,128 +39,25 @@
   display: block;
 }
 
-.progress {
-  position: absolute;
-  inset: auto 0 -1px;
-  height: 2px;
+/* ---- columns ---- */
+
+main {
+  padding-inline: var(--gutter);
 }
 
-.progress span {
-  display: block;
-  height: 100%;
-  background: var(--accent-fill);
-  transform: scaleX(var(--progress, 0));
-  transform-origin: left;
+.hero,
+.teaser,
+.section,
+.thanks {
+  max-width: var(--wide);
+  margin-inline: auto;
 }
 
-@media (max-width: 860px) {
-  .topnav {
-    display: none;
-  }
-
-  .topbar-actions {
-    margin-left: auto;
-  }
-}
-
-@media (max-width: 420px) {
-  .wordmark {
-    display: none;
-  }
-}
-
-/* ---- table of contents in the left margin of wide screens ---- */
-
-.toc {
-  position: fixed;
-  top: calc(var(--topbar-h) + 3rem);
-  left: max(1.5rem, calc((100vw - var(--wide-col)) / 2 - 13rem));
-  z-index: 10;
-  display: none;
-  width: 11rem;
-}
-
-.toc-title {
-  margin-bottom: 0.6rem;
-  color: var(--ink-4);
-  font-size: 0.75rem;
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.toc ol {
-  display: grid;
-  gap: 0.1rem;
-  border-left: 1px solid var(--border);
-}
-
-.toc a {
-  display: block;
-  margin-left: -1px;
-  padding: 0.3rem 0 0.3rem 0.85rem;
-  border-left: 2px solid transparent;
-  color: var(--ink-3);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  line-height: 1.35;
-  transition:
-    color var(--dur-1) var(--ease),
-    border-color var(--dur-1) var(--ease);
-}
-
-.toc a:hover {
-  color: var(--ink);
-}
-
-.toc a[aria-current] {
-  border-left-color: var(--accent-fill);
-  color: var(--ink);
-  font-weight: 600;
-}
-
-/* Only where the margin beside the wide column is free: no overlap with figures. */
-@media (min-width: 1600px) {
-  .toc {
-    display: block;
-    opacity: 0;
-    visibility: hidden;
-    transition:
-      opacity var(--dur-2) var(--ease),
-      visibility var(--dur-2);
-  }
-
-  .toc.is-visible {
-    opacity: 1;
-    visibility: visible;
-  }
-}
-
-/* ---- hero ---- */
+/* ---- title block ---- */
 
 .hero {
-  position: relative;
-  padding-top: calc(var(--topbar-h) + clamp(3rem, 2rem + 5vw, 6.5rem));
+  padding-top: clamp(1.75rem, 1rem + 3vw, 3.25rem);
   text-align: center;
-  isolation: isolate;
-}
-
-.hero-glow {
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: -1;
-  height: 46rem;
-  background:
-    radial-gradient(42rem 24rem at 50% 4rem, var(--accent-tint), transparent 70%),
-    linear-gradient(to bottom, transparent, var(--bg) 92%),
-    repeating-linear-gradient(to right, color-mix(in srgb, var(--border) 55%, transparent) 0 1px, transparent 1px 72px),
-    repeating-linear-gradient(to bottom, color-mix(in srgb, var(--border) 55%, transparent) 0 1px, transparent 1px 72px);
-  mask-image: radial-gradient(60rem 34rem at 50% 0, #000 30%, transparent 75%);
-  -webkit-mask-image: radial-gradient(60rem 34rem at 50% 0, #000 30%, transparent 75%);
-}
-
-.hero-head {
-  max-width: calc(62rem + 2 * var(--gutter));
 }
 
 /* The conference's own logo, one image per theme (the dark one has light lettering). */
@@ -253,7 +68,7 @@
 
 .venue-logo {
   width: auto;
-  height: clamp(5.5rem, 4.6rem + 3vw, 7.75rem);
+  height: clamp(4rem, 3.5rem + 1.6vw, 5rem);
 }
 
 .venue-logo.for-dark,
@@ -266,107 +81,82 @@
 }
 
 .hero h1 {
-  margin-top: 1.1rem;
-  font-size: clamp(2.3rem, 1.2rem + 3.9vw, 4rem);
-  font-weight: 740;
-  line-height: 1.04;
-  letter-spacing: -0.04em;
+  max-width: var(--wide);
+  margin: 1.4rem auto 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.85rem, 1.2rem + 2.3vw, 2.6rem);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
-.title-main {
-  display: block;
-}
-
-.title-line {
-  display: block;
-  max-width: 34em;
-  margin: 0.45em auto 0;
-  color: var(--ink-3);
-  font-size: 0.5em;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.022em;
+/* On wide screens the title breaks where the phrase does. */
+@media (min-width: 760px) {
+  .title-line {
+    display: block;
+  }
 }
 
 .authors {
-  margin-top: 1.8rem;
-  font-size: clamp(1.02rem, 0.95rem + 0.3vw, 1.15rem);
-  font-weight: 550;
+  margin-top: 1.35rem;
+  font-size: clamp(1.02rem, 0.97rem + 0.25vw, 1.125rem);
 }
 
 .authors a {
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--border-strong);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.22em;
-  transition: text-decoration-color var(--dur-1) var(--ease);
+  color: var(--link);
+  white-space: nowrap;
 }
 
 .authors a:hover {
-  text-decoration-color: var(--accent-fill);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .authors sup,
 .affiliations sup {
-  margin-left: 0.08em;
+  margin-left: 0.06em;
   color: var(--ink-3);
   font-size: 0.68em;
-  font-weight: 600;
-}
-
-.author {
-  white-space: nowrap;
-}
-
-.authors .sep {
-  margin-right: 0.3em;
 }
 
 .affiliations {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.25rem 1.1rem;
-  margin-top: 0.7rem;
+  gap: 0.1rem 1.1rem;
+  margin-top: 0.4rem;
   color: var(--ink-3);
-  font-size: 0.9rem;
+  font-size: 0.9375rem;
 }
 
 .affiliations sup {
-  margin: 0 0.15em 0 0;
+  margin: 0 0.12em 0 0;
 }
 
 .links {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.6rem;
-  margin-top: 2rem;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
 }
 
-.hero-figure {
-  margin-top: clamp(2.5rem, 2rem + 3vw, 4rem);
-}
+/* ---- teaser ---- */
 
-.hero-frame {
-  margin: 0;
+.teaser {
+  margin-top: clamp(2.25rem, 1.75rem + 2vw, 3.25rem);
 }
 
 .hero-visual {
   position: relative;
   aspect-ratio: 1000 / 300;
   min-height: 12rem;
-  overflow: hidden;
-}
-
-.hero-caption {
-  padding: 0.95rem 1.25rem 1.1rem;
-  border-top: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);
   background: var(--bg-soft);
-  color: var(--ink-3);
-  font-size: 0.875rem;
+  overflow: hidden;
 }
 
 @media (max-width: 640px) {
@@ -375,258 +165,172 @@
   }
 }
 
-/* ---- tl;dr and the four numbers ---- */
+/* ---- sections: a heading and text in the reading column, figures wider ---- */
 
-.tldr {
-  padding-top: clamp(3rem, 2rem + 3vw, 4.5rem);
+.section {
+  padding-top: clamp(3rem, 2.25rem + 3vw, 4.5rem);
 }
 
-.tldr-text {
-  color: var(--ink-2);
+.section > h2,
+.section > .prose,
+.section > .bibtex {
+  max-width: var(--col);
+  margin-inline: auto;
+}
+
+.section > h2 {
   font-family: var(--font-serif);
-  font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem);
-  line-height: 1.55;
-  text-align: center;
-  text-wrap: balance;
-}
-
-.tldr-text strong {
-  color: var(--ink);
-  font-weight: 650;
-}
-
-.tldr-label {
-  display: inline-block;
-  margin-right: 0.5rem;
-  padding: 0.12rem 0.55rem;
-  border-radius: 6px;
-  background: var(--ink);
-  color: var(--bg);
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  vertical-align: 0.2em;
-}
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1px;
-  margin-top: 2.5rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-l);
-  background: var(--border);
-  overflow: hidden;
-}
-
-.stat {
-  display: grid;
-  align-content: start;
-  gap: 0.5rem;
-  padding: 1.4rem 1.4rem 1.5rem;
-  background: var(--surface);
-}
-
-.stat-value {
-  color: var(--accent);
-  font-size: clamp(2rem, 1.6rem + 1.2vw, 2.6rem);
-  font-weight: 720;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  font-variant-numeric: tabular-nums;
-}
-
-.stat-value small {
-  font-size: 0.55em;
-  font-weight: 650;
-  letter-spacing: 0;
-}
-
-.stat-label {
-  color: var(--ink-3);
-  font-size: 0.875rem;
-  line-height: 1.45;
-}
-
-@media (max-width: 860px) {
-  .stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 420px) {
-  .stat {
-    padding: 1.1rem;
-  }
-}
-
-/* ---- experimental setup ---- */
-
-.section-tight {
-  padding-top: clamp(2.5rem, 2rem + 2vw, 4rem);
-}
-
-.specs {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.spec {
-  padding: 1.25rem 1.3rem 1.35rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-l);
-  background: var(--surface);
-}
-
-.spec dt {
-  color: var(--ink-4);
-  font-size: 0.75rem;
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.spec dd {
-  margin-top: 0.55rem;
-  color: var(--ink-2);
-  font-size: 0.9375rem;
-  line-height: 1.55;
-}
-
-.spec strong {
-  color: var(--ink);
-  font-weight: 620;
-}
-
-@media (max-width: 960px) {
-  .specs {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 600px) {
-  .specs {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-/* ---- related work: two cards side by side ---- */
-
-.compare {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.compare-card {
-  padding: 1.5rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-l);
-  background: var(--surface);
-}
-
-.compare-card.is-ours {
-  border-color: color-mix(in srgb, var(--accent-fill) 45%, var(--border));
-  background: linear-gradient(to bottom, var(--accent-tint), var(--surface) 70%);
-  box-shadow: 0 0 0 4px var(--accent-soft);
-}
-
-.compare-kicker {
-  font-size: 1.05rem;
-  font-weight: 650;
+  font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.85rem);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  line-height: 1.2;
   letter-spacing: -0.01em;
 }
 
-.compare-card.is-ours .compare-kicker {
-  color: var(--accent);
+.section > * + * {
+  margin-top: 2.25rem;
 }
 
-.compare-who {
+.section > h2 + * {
+  margin-top: 0.9rem;
+}
+
+/* ---- figures ---- */
+
+.fig {
+  container-type: inline-size;
+}
+
+.fig-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.fig-controls:empty {
+  display: none;
+}
+
+.fig-panel {
+  padding: clamp(1rem, 0.6rem + 1.6vw, 1.75rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);
+}
+
+.fig figcaption,
+.fig-note {
+  max-width: var(--col);
+  margin: 0.85rem auto 0;
   color: var(--ink-3);
   font-size: 0.875rem;
-}
-
-.compare dl {
-  display: grid;
-  gap: 0.85rem;
-  margin-top: 1.1rem;
-}
-
-.compare dl > div {
-  display: grid;
-  grid-template-columns: 7rem minmax(0, 1fr);
-  gap: 0.75rem;
-  padding-top: 0.85rem;
-  border-top: 1px dashed var(--border);
-}
-
-.compare dt {
-  color: var(--ink-4);
-  font-size: 0.8125rem;
-  font-weight: 600;
-}
-
-.compare dd {
-  color: var(--ink-2);
-  font-size: 0.9375rem;
-  line-height: 1.5;
-}
-
-@media (max-width: 720px) {
-  .compare {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .compare dl > div {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.2rem;
-  }
-}
-
-.pull {
-  margin: 2.5rem 0 0;
-  padding: 0.2rem 0 0.2rem 1.4rem;
-  border-left: 3px solid var(--accent-fill);
-  color: var(--ink);
-  font-family: var(--font-serif);
-  font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem);
-  font-style: italic;
-  line-height: 1.5;
+  line-height: 1.55;
   text-wrap: pretty;
 }
 
-/* ---- citation ---- */
-
-.bibtex {
-  margin-top: 1.5rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-l);
-  background: var(--bg-soft);
-  overflow: hidden;
-}
-
-.bibtex-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.6rem 0.6rem 0.6rem 1.1rem;
-  border-bottom: 1px solid var(--border);
-  color: var(--ink-3);
-  font-size: 0.8125rem;
+.fig figcaption b {
+  color: var(--ink);
   font-weight: 600;
 }
 
+.fig .legend {
+  margin-bottom: 0.5rem;
+}
+
+.fig-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.25rem;
+}
+
+@media (min-width: 760px) {
+  /* Side by side, the two figures share their rows: legends, charts and captions line up. */
+  .fig-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto 1fr auto;
+    gap: 0 2.5rem;
+  }
+
+  .fig-row .fig {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+  }
+
+  .fig-row figcaption {
+    margin-left: 0;
+  }
+}
+
+/* Table 2, folded away under the chart that summarises it. */
+.more > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: var(--col);
+  margin-inline: auto;
+  color: var(--link);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+}
+
+.more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.more > summary::before {
+  content: '';
+  width: 0.4rem;
+  height: 0.4rem;
+  margin: 0 0.1rem 0 0.15rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--dur-2) var(--ease);
+}
+
+.more[open] > summary::before {
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.more > summary:hover span {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.more[open] > summary {
+  margin-bottom: 1.25rem;
+}
+
+/* ---- BibTeX ---- */
+
+.bibtex {
+  position: relative;
+}
+
 .bibtex pre {
-  padding: 1.1rem 1.2rem 1.25rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-m);
+  background: var(--bg-soft);
   color: var(--ink-2);
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  line-height: 1.7;
+  font-size: 0.78rem;
+  line-height: 1.65;
   overflow-x: auto;
+}
+
+.bibtex pre code {
+  font-size: 1em;
+}
+
+.bibtex .copy {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
 }
 
 .copy.is-done {
@@ -634,27 +338,10 @@
   color: var(--accent);
 }
 
-.acm-ref {
-  margin-top: 1rem;
-  color: var(--ink-3);
-  font-size: 0.875rem;
-  line-height: 1.6;
-}
-
 /* ---- a note to the visitor: the back of a classic postcard ---- */
 
 .thanks {
-  padding-bottom: clamp(3.5rem, 2.5rem + 4vw, 6.5rem);
-}
-
-.thanks-head {
-  text-align: center;
-}
-
-.section h2.thanks-title {
-  margin: 0;
-  font-size: 0.8125rem;
-  letter-spacing: 0.08em;
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem);
 }
 
 /*
@@ -684,7 +371,6 @@
     0 1px 1px rgb(60 40 10 / 0.08),
     0 3px 8px rgb(60 40 10 / 0.08),
     0 34px 70px -34px rgb(60 40 10 / 0.42);
-  transform: rotate(-0.9deg);
 }
 
 :root[data-theme='dark'] .postcard {
@@ -851,19 +537,10 @@
   font-weight: 650;
 }
 
-/* Under the stamp, a printed map with the flight drawn on it in pen: Seoul to Rome. */
+/* Under the stamp, a printed world map with the flight drawn on it in pen: South Korea to Italy. */
 .pc-map {
   position: relative;
   margin: 0;
-  /* A printed inset: the map fades into the paper at its edges. */
-  mask-image:
-    linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
-    linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
-  mask-composite: intersect;
-  -webkit-mask-image:
-    linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
-    linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
-  -webkit-mask-composite: source-in;
 }
 
 .pc-map img {
@@ -883,8 +560,8 @@
 .pc-route-line {
   fill: none;
   stroke: var(--pc-pen);
-  stroke-width: 1.3;
-  stroke-dasharray: 3.4 2.6;
+  stroke-width: 1.2;
+  stroke-dasharray: 3 2.4;
   stroke-linecap: round;
 }
 
@@ -899,17 +576,33 @@
 .pc-city {
   fill: var(--paper);
   stroke: var(--pc-pen);
-  stroke-width: 1.4;
+  stroke-width: 1.3;
 }
 
-.pc-city-name {
-  fill: var(--pc-pen);
-  font-family: 'Allura', var(--font-serif);
-  font-size: 17px;
+/* Round flag stickers beside each country, on a thin paper rim. */
+.pc-flag circle {
+  fill: #fffdf6;
+  stroke: rgb(60 40 10 / 0.28);
+  stroke-width: 0.6;
+}
+
+.pc-flag {
+  filter: drop-shadow(0 0.6px 0.8px rgb(60 40 10 / 0.3));
+}
+
+.pc-place {
+  fill: var(--pc-ink);
+  font-family: var(--font-serif);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
 }
 
 .pc-plane {
   fill: var(--pc-pen);
+  stroke: var(--paper);
+  stroke-width: 0.8;
+  paint-order: stroke;
 }
 
 /* The address, written by hand on printed rules. */
@@ -926,23 +619,7 @@
   line-height: 1.45;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .postcard {
-    transition:
-      transform 600ms var(--ease),
-      box-shadow 600ms var(--ease);
-  }
-
-  .postcard:hover {
-    transform: rotate(-0.3deg) translateY(-3px);
-  }
-}
-
 @media (max-width: 760px) {
-  .postcard {
-    transform: rotate(-0.5deg);
-  }
-
   .pc-body {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -983,7 +660,7 @@
   }
 }
 
-/* ---- back to top: a round button in the bottom right, ringed by reading progress ---- */
+/* ---- back to top ---- */
 
 .to-top {
   position: fixed;
@@ -992,22 +669,23 @@
   z-index: 40;
   display: grid;
   place-items: center;
-  width: 3rem;
-  height: 3rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--border);
   border-radius: 50%;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
-  color: var(--ink);
-  font-size: 1.1rem;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 1.05rem;
   box-shadow: var(--shadow-2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(8px) scale(0.92);
+  transform: translateY(6px);
   transition:
     opacity var(--dur-2) var(--ease),
     transform var(--dur-2) var(--ease),
-    visibility var(--dur-2);
+    visibility var(--dur-2),
+    border-color var(--dur-1) var(--ease),
+    color var(--dur-1) var(--ease);
 }
 
 .to-top.is-visible {
@@ -1017,76 +695,44 @@
 }
 
 .to-top:hover {
-  color: var(--accent);
-}
-
-.to-top > * {
-  grid-area: 1 / 1;
-}
-
-.to-top-ring {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.to-top-ring circle {
-  fill: none;
-  stroke: var(--border);
-  stroke-width: 2.5;
-}
-
-.to-top-ring .to-top-bar {
-  stroke: var(--accent-fill);
-  stroke-dasharray: 100;
-  stroke-dashoffset: calc(100 - 100 * var(--progress, 0));
-  stroke-linecap: round;
+  border-color: var(--border-strong);
+  color: var(--ink);
 }
 
 /* ---- footer ---- */
 
 .footer {
-  padding-block: 2rem 2.5rem;
+  padding: 1.75rem var(--gutter) 2.25rem;
   border-top: 1px solid var(--border);
-  color: var(--ink-3);
+  color: var(--ink-4);
   font-size: 0.8125rem;
-}
-
-.footer-inner {
   text-align: center;
 }
 
 /* Room for the back-to-top button, which floats over the bottom right. */
 @media (max-width: 760px) {
   .footer {
-    padding-bottom: 5.5rem;
+    padding-bottom: 5rem;
   }
 }
 
-/* ---- print: the text and tables, without chrome ---- */
+/* ---- print: the text and the figures, without the controls ---- */
 
 @media print {
-  .topbar,
-  .toc,
-  .hero-glow,
+  .site-header,
   .links,
-  .figure-tools,
+  .fig-controls,
   .to-top,
   .copy {
     display: none !important;
   }
 
-  .hero {
-    padding-top: 1rem;
-  }
-
-  .figure-frame,
+  .fig,
   .postcard {
-    box-shadow: none;
     break-inside: avoid;
   }
 
   .postcard {
-    transform: none;
+    box-shadow: none;
   }
 }

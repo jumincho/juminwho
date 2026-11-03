@@ -17,9 +17,9 @@
  * does not fit or loses its hedge, or a language menu that does not pick,
  * remember and link. The paper's project page (forward-looking-guidance/)
  * gets the same basics at both widths and in both themes, plus its figures:
- * each must mount, the postcard's flight must land, the stage picker, the
- * backbone
- * switch, the trace stepper and back-to-top must respond, a theme picked
+ * each must mount, the postcard's flight must land near Italy on a labelled
+ * world map, the stage rows of Figure 2, the backbone switch, the trace
+ * stepper and back-to-top must respond, a theme picked
  * there must carry over to the portfolio, and nothing may move with reduced
  * motion. Full-page screenshots
  * go to snapshots/ (git-ignored) for a side-by-side look against the last
@@ -369,7 +369,7 @@ async function checkProjectPage(vp, scheme) {
         tokens: count('#fig-tokens .tk-row'),
         trace: count('#fig-trace .tr-row'),
       },
-      back: document.querySelector('.topbar .back')?.href,
+      back: document.querySelector('.site-header .back')?.href,
     }
   })
   if (state.theme !== scheme) fail(`data-theme is "${state.theme}", expected "${scheme}"`)
@@ -382,17 +382,34 @@ async function checkProjectPage(vp, scheme) {
 
   await page.screenshot({ path: `${OUT}/project-${vp.name}-${scheme}.png`, fullPage: true, animations: 'disabled' })
 
-  // The postcard's map: the plane has flown from Seoul and is near Rome.
-  const plane = await page.evaluate(() => document.querySelector('.pc-plane')?.getAttribute('transform') ?? '')
-  const planeX = Number(plane.match(/translate\(([\d.]+)/)?.[1] ?? NaN)
-  if (!(planeX < 80)) fail(`the plane on the postcard's map is not near Rome (${plane || 'not placed'})`)
+  // The postcard's world map: both countries are named, and the plane flies from South Korea to just short of Rome.
+  await page.locator('.pc-map').scrollIntoViewIfNeeded()
+  const landed = await page
+    .waitForFunction(
+      () => {
+        const x = Number(document.querySelector('.pc-plane')?.getAttribute('transform')?.match(/translate\(([\d.]+)/)?.[1] ?? NaN)
+        return x > 160 && x < 175
+      },
+      null,
+      { timeout: 6000 },
+    )
+    .then(() => true)
+    .catch(() => false)
+  const map = await page.evaluate(() => ({
+    plane: document.querySelector('.pc-plane')?.getAttribute('transform') ?? '',
+    places: [...document.querySelectorAll('.pc-place')].map((el) => el.textContent),
+  }))
+  if (!landed) fail(`the plane on the postcard's map does not land near Italy (${map.plane || 'not placed'})`)
+  if (map.places.join() !== 'South Korea,Italy') fail(`the map is labelled "${map.places.join(', ')}"`)
 
-  // Figure 2: the stage picker moves the guidance and the measured effect.
-  await page.locator('#pipeline-tools button', { hasText: /^Retrieval$/ }).click()
-  const effect = await page.locator('.pl-effect-value').textContent()
-  if (effect !== '−.035') fail(`picking Retrieval shows "${effect}", not "−.035"`)
-  await page.locator('#pipeline-tools button', { hasText: 'Extraction + Reasoning' }).click()
-  if ((await page.locator('.pl-eq.is-on').count()) !== 2) fail('Extraction + Reasoning does not mark equations (3) and (4)')
+  // Figure 2: a row of the chart picks the stage, and the diagram moves the guidance there.
+  const stage = (name) => page.locator('#fig-pipeline .pl-bar-row', { hasText: name })
+  await stage(/^Retrieval/).click()
+  if ((await page.locator('#fig-pipeline .pl-pill.is-on.is-miss').count()) !== 1) fail('picking Retrieval does not mark the retriever')
+  if ((await stage(/^Retrieval/).getAttribute('aria-pressed')) !== 'true') fail('the Retrieval row is not pressed after picking it')
+  await stage(/^Extraction \+ Reasoning/).click()
+  const guided = await page.locator('#fig-pipeline .pl-pill.is-on').count()
+  if (guided !== 3) fail(`Extraction + Reasoning marks ${guided} modules, not the extractor and both reasoners`)
 
   // Figure 3 and Table 2 share the backbone: switching one switches both.
   await page.locator('#gains-tools button', { hasText: 'GPT-4o-mini' }).click()

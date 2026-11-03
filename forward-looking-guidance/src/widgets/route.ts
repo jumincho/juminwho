@@ -8,7 +8,7 @@ import { onFirstView, prefersReducedMotion } from '../lib/motion'
  */
 
 const DURATION = 3400
-const LANDED = 0.94 // how far along the route the plane stops
+const LANDED = 0.9 // how far along the route the plane stops: just short of Rome, so Italy stays visible
 
 const ease = (v: number) => (v < 0.5 ? 2 * v * v : 1 - (-2 * v + 2) ** 2 / 2)
 

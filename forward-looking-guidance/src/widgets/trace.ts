@@ -2,13 +2,12 @@ import { trace } from '../data/paper'
 import { h, html } from '../lib/dom'
 import { icon } from '../lib/icons'
 import { mathHtml } from '../lib/math'
-import { prefersReducedMotion, watchVisibility } from '../lib/motion'
 
 /**
  * Figure 6: Table 4 as a step-through. Both runs start from the same context;
  * each step reveals one row for both systems, with a note on what changed.
  * Rows ahead wait as compact placeholders, so the shape of the trace is
- * visible from the start.
+ * visible from the start. It moves only when the reader asks it to.
  */
 
 const MEMBERS = 'Thijs van Leer, Jan Akkerman, Martin Dresden'
@@ -59,7 +58,7 @@ export function mountTrace(container: HTMLElement, tools: HTMLElement | null): v
 
   const context = html(`<div class="tr-context">
     <div class="tr-q">
-      <span class="tr-k">Question <span class="chip">${trace.dataset}</span></span>
+      <span class="tr-k">${trace.dataset} question</span>
       <p>${escape(trace.question)}</p>
       <p class="tr-gold">Gold answer <strong>${escape(trace.answer)}</strong></p>
     </div>
@@ -101,35 +100,20 @@ export function mountTrace(container: HTMLElement, tools: HTMLElement | null): v
   })
 
   const head = html(`<div class="tr-head" aria-hidden="true"><span></span><span>STRIDE</span><span>STRIDE+FG <em>(ours)</em></span></div>`)
-  const progress = h('div', { class: 'tr-progress', role: 'group', 'aria-label': 'Steps' })
-  const dots = trace.steps.map((step, k) => {
-    const dot = h('button', { type: 'button', class: 'tr-dot', 'aria-label': `Step ${k + 1}: ${step.stage.replace(/_(\d)/, '$1')}` })
-    dot.addEventListener('click', () => {
-      stop()
-      go(k + 1)
-    })
-    progress.append(dot)
-    return dot
-  })
 
   const root = h('div', { class: 'tr' })
-  root.append(context, progress, head, rows)
+  root.append(context, head, rows)
   container.append(root)
 
+  const reset = h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Back to the first step', title: 'Restart' })
+  reset.append(html(icon('rotate-ccw')))
   const prev = h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Previous step', title: 'Previous step (←)' })
   prev.append(html(icon('chevron-left')))
   const counter = h('span', { class: 'tr-counter', 'aria-hidden': 'true' })
-  const next = h('button', { type: 'button', class: 'btn btn-sm btn-primary tr-next' })
-  const play = h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Play all steps', title: 'Play' })
-  const reset = h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Back to the first step', title: 'Restart' })
-  reset.append(html(icon('rotate-ccw')))
-  tools?.append(h('div', { class: 'tr-controls' }, reset, play, prev, counter, next))
+  const next = h('button', { type: 'button', class: 'btn btn-sm tr-next', title: 'Next step (→)' })
+  tools?.append(h('div', { class: 'tr-controls' }, reset, prev, counter, next))
 
   let at = 1
-  let timer = 0
-  let playing = false
-  let visible = false
-
   const go = (step: number) => {
     at = Math.min(total, Math.max(1, step))
     items.forEach((item, k) => {
@@ -138,81 +122,27 @@ export function mountTrace(container: HTMLElement, tools: HTMLElement | null): v
       item.classList.toggle('is-future', k + 1 > at)
       item.setAttribute('aria-current', String(k + 1 === at))
     })
-    dots.forEach((dot, k) => {
-      dot.classList.toggle('is-done', k + 1 <= at)
-      dot.setAttribute('aria-current', String(k + 1 === at))
-    })
-    note.innerHTML = `<p><span class="tr-note-k">Step ${at} of ${total}</span> ${NOTES[at - 1]}</p>`
+    note.innerHTML = `<p><span class="tr-note-k">Step ${at} of ${total}.</span>${NOTES[at - 1]}</p>`
     items[at - 1].after(note)
     counter.textContent = `${at} / ${total}`
+    reset.disabled = at === 1
     prev.disabled = at === 1
     next.disabled = at === total
-    next.replaceChildren(document.createTextNode(at === total ? 'Done' : 'Next step'), html(icon('chevron-right')))
+    next.replaceChildren(document.createTextNode('Next step'), html(icon('chevron-right')))
   }
 
-  const setPlaying = (on: boolean) => {
-    playing = on
-    play.replaceChildren(html(icon(on ? 'pause' : 'play')))
-    play.setAttribute('aria-label', on ? 'Pause' : 'Play all steps')
-    play.title = on ? 'Pause' : 'Play'
-  }
-  const stop = () => {
-    window.clearTimeout(timer)
-    setPlaying(false)
-  }
-  const tick = () => {
-    window.clearTimeout(timer)
-    if (!playing || !visible || document.hidden) return
-    timer = window.setTimeout(() => {
-      if (at >= total) {
-        stop()
-        return
-      }
-      go(at + 1)
-      tick()
-    }, 2600)
-  }
-
-  prev.addEventListener('click', () => {
-    stop()
-    go(at - 1)
-  })
-  next.addEventListener('click', () => {
-    stop()
-    go(at + 1)
-  })
-  reset.addEventListener('click', () => {
-    stop()
-    go(1)
-  })
-  play.addEventListener('click', () => {
-    if (playing) {
-      stop()
-      return
-    }
-    if (at >= total) go(1)
-    setPlaying(true)
-    tick()
-  })
+  prev.addEventListener('click', () => go(at - 1))
+  next.addEventListener('click', () => go(at + 1))
+  reset.addEventListener('click', () => go(1))
 
   // Arrow keys step through while focus is anywhere in the figure.
-  const frame = container.closest('.figure-frame') ?? root
-  frame.addEventListener('keydown', (event) => {
+  const figure = container.closest('.fig') ?? root
+  figure.addEventListener('keydown', (event) => {
     const key = (event as KeyboardEvent).key
     if (key !== 'ArrowLeft' && key !== 'ArrowRight') return
-    if ((event.target as HTMLElement).closest('.segmented')) return
     event.preventDefault()
-    stop()
     go(at + (key === 'ArrowRight' ? 1 : -1))
   })
 
-  watchVisibility(root, (isVisible) => {
-    visible = isVisible
-    tick()
-  })
-  document.addEventListener('visibilitychange', tick)
-
-  setPlaying(false)
-  if (prefersReducedMotion()) root.classList.add('is-still')
   go(1)
 }

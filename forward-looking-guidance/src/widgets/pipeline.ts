@@ -1,14 +1,13 @@
 import { stageEffects, type Stage } from '../data/paper'
-import { segmented } from '../lib/controls'
 import { h, html, s } from '../lib/dom'
 import { delta } from '../lib/format'
 import { mathHtml, mathTspans } from '../lib/math'
 
 /**
- * Figure 2: the planning-based pipeline, redrawn. Pick the stage that
- * receives G_i: the diagram, the equations and the measured change in EM
- * (Table 1) follow the choice. Wide screens get the full diagram; narrow ones
- * a vertical version of the same pipeline.
+ * Figure 2: the planning-based pipeline, redrawn, over the measured change in
+ * EM for each stage that can receive G_i (Table 1). Picking a row of the
+ * chart lights up that choice in the diagram. Wide screens get the full
+ * diagram; narrow ones a vertical version of the same pipeline.
  */
 
 type Module = 'retriever' | 'extractor' | 'reasoner' | 'answer'
@@ -19,24 +18,6 @@ const GUIDED: Record<Stage, Module[]> = {
   extraction: ['extractor'],
   reasoning: ['reasoner', 'answer'],
   'extraction+reasoning': ['extractor', 'reasoner', 'answer'],
-}
-
-const STAGES: { value: Stage; label: string }[] = [
-  { value: 'none', label: 'None' },
-  { value: 'retrieval', label: 'Retrieval' },
-  { value: 'extraction', label: 'Extraction' },
-  { value: 'reasoning', label: 'Reasoning' },
-  { value: 'extraction+reasoning', label: 'Extraction + Reasoning' },
-]
-
-const NOTES: Record<Stage, string> = {
-  none: 'STRIDE as published: each module sees the current operation, the evidence and the state, but not the plan ahead.',
-  retrieval:
-    'The remaining operations are appended to the retrieval query. EM drops: the query now mixes the current information need with future ones.',
-  extraction: 'The extractor sees what later operations will ask for, so it keeps facts that are optional now but needed later.',
-  reasoning: 'The reasoner phrases the intermediate output so that later operations can use it, in both the retrieve and the answer branch.',
-  'extraction+reasoning':
-    'Guidance after retrieval, in both stages that shape intermediate outputs. The best setting, used for every +FG variant.',
 }
 
 /* ---------------------------------------------------------------- diagram (wide) */
@@ -140,8 +121,8 @@ function buildDiagram(): { svg: SVGSVGElement; insertions: Insertion[] } {
     s('path', { class: 'pl-edge', d: `M508 ${Y_TOP}V${Y_BOT}` }),
     arrow(`M508 ${Y_TOP}H528`),
     arrow(`M508 ${Y_BOT}H528`),
-    label(530, Y_TOP - 42, 'IF RETRIEVE / REWRITE', 'pl-kicker', 11, 'start'),
-    label(530, Y_BOT - 42, 'IF ANSWER', 'pl-kicker', 11, 'start'),
+    label(530, Y_TOP - 42, 'If the action is retrieve or rewrite', 'pl-kicker', 12, 'start'),
+    label(530, Y_BOT - 42, 'If the action is answer', 'pl-kicker', 12, 'start'),
   )
 
   // Retrieve / rewrite: retriever → extractor → reasoner.
@@ -252,7 +233,7 @@ function buildFlow(): { el: HTMLElement; items: Map<Module, HTMLElement> } {
     h(
       'div',
       { class: 'pf-branches' },
-      h('div', { class: 'pf-branch' }, h('p', { class: 'pf-kicker' }, 'If retrieve / rewrite'), retrieve),
+      h('div', { class: 'pf-branch' }, h('p', { class: 'pf-kicker' }, 'If retrieve or rewrite'), retrieve),
       h('div', { class: 'pf-branch' }, h('p', { class: 'pf-kicker' }, 'If answer'), answer),
     ),
     html(`<p class="pf-loop">Update the execution state ${mathHtml('S')} and proceed to ${mathHtml('o_{i+1}')}</p>`),
@@ -260,35 +241,13 @@ function buildFlow(): { el: HTMLElement; items: Map<Module, HTMLElement> } {
   return { el, items }
 }
 
-/* ---------------------------------------------------------------- equations and ΔEM */
+/* ---------------------------------------------------------------- ΔEM, one row per choice */
 
-function buildEquations(): { el: HTMLElement; rows: Map<Module, HTMLElement> } {
-  const ins = `<span class="ins"><span class="m"><span class="op">⊕</span>${mathHtml('G_i', 'm g')}</span></span>`
-  const eq = (no: number, before: string, after: string) =>
-    `<div class="pl-eq"><span class="m">${before}${ins}${after}</span><span class="no">(${no})</span></div>`
-  const strip = (markup: string) => markup.replace(/^<span class="m">|<\/span>$/g, '')
-  const m = (source: string) => strip(mathHtml(source))
-
-  const el = h('div', { class: 'pl-eqs' })
-  el.append(
-    h('p', { class: 'pl-panel-k' }, 'What each module reads'),
-    html(eq(2, m('D_i = Retrieve(o_i'), m(', 𝒟)'))),
-    html(eq(3, m('f_i = LLM_{ext}(prompt_{ext}'), m(', o_i, D_i)'))),
-    html(eq(4, m('r_i = LLM_{rsn}(prompt_{rsn}'), m(', o_i, f_i, S)'))),
-    html(
-      `<p class="pl-eq-note">${mathHtml('⊕', 'm')} appends ${mathHtml('G_i')} as plain text to the retrieval query or to the module’s prompt; every other input stays as it was. ${mathHtml('G_i')} is text the planner already wrote, so no extra model call or retrieval step is added.</p>`,
-    ),
-  )
-  const [retrieve, extract, reason] = el.querySelectorAll<HTMLElement>('.pl-eq')
-  return {
-    el,
-    rows: new Map<Module, HTMLElement>([
-      ['retriever', retrieve],
-      ['extractor', extract],
-      ['reasoner', reason],
-    ]),
-  }
-}
+/** STRIDE itself heads the list: the zero every other row is measured from. */
+const CHOICES: { stage: Stage; label: string; delta: number }[] = [
+  { stage: 'none', label: 'None (STRIDE)', delta: 0 },
+  ...stageEffects,
+]
 
 function buildEffect(select: (stage: Stage) => void): { el: HTMLElement; update: (stage: Stage) => void } {
   const lo = -0.045
@@ -296,44 +255,30 @@ function buildEffect(select: (stage: Stage) => void): { el: HTMLElement; update:
   const pct = (v: number) => ((v - lo) / (hi - lo)) * 100
   const zero = pct(0)
 
-  const value = h('p', { class: 'pl-effect-value' })
-  const note = h('p', { class: 'pl-effect-note' })
-  const list = h('ul', { class: 'pl-bars', style: `--zero:${zero}%` })
-  const rows = stageEffects.map((effect) => {
-    const left = Math.min(pct(effect.delta), zero)
-    const width = Math.abs(pct(effect.delta) - zero)
+  const list = h('ul', { class: 'pl-bars', style: `--zero:${zero}%`, 'aria-label': 'Stage that receives the guidance' })
+  const rows = CHOICES.map((choice) => {
+    const left = Math.min(pct(choice.delta), zero)
+    const width = Math.abs(pct(choice.delta) - zero)
+    const tone = choice.delta < 0 ? 'is-neg' : choice.delta > 0 ? 'is-pos' : ''
     const button = h(
       'button',
-      { type: 'button', class: `pl-bar-row ${effect.delta < 0 ? 'is-neg' : 'is-pos'}`, 'aria-pressed': false },
-      h('span', { class: 'pl-bar-label' }, effect.label),
-      h(
-        'span',
-        { class: 'pl-bar-track', 'aria-hidden': 'true' },
-        h('span', { class: 'pl-bar', style: `left:${left}%;width:${width}%` }),
-      ),
-      h('span', { class: 'pl-bar-value' }, delta(effect.delta)),
+      { type: 'button', class: `pl-bar-row ${tone}`, 'aria-pressed': false },
+      h('span', { class: 'pl-bar-label' }, choice.label),
+      h('span', { class: 'pl-bar-track', 'aria-hidden': 'true' }, h('span', { class: 'pl-bar', style: `left:${left}%;width:${width}%` })),
+      h('span', { class: 'pl-bar-value' }, choice.delta ? delta(choice.delta) : '–'),
     )
-    button.addEventListener('click', () => select(effect.stage))
+    button.addEventListener('click', () => select(choice.stage))
     list.append(h('li', {}, button))
-    return { stage: effect.stage, button }
+    return { stage: choice.stage, button }
   })
 
   const el = h(
     'div',
     { class: 'pl-effect' },
-    h('p', { class: 'pl-panel-k' }, 'Change in EM over STRIDE'),
-    value,
-    note,
+    h('p', { class: 'pl-effect-head', 'aria-hidden': 'true' }, h('span', {}, 'Guidance added to'), h('span', {}, 'ΔEM')),
     list,
-    h('p', { class: 'pl-effect-source' }, 'Table 1 · MuSiQue development subset · Qwen3-8B'),
   )
-
   const update = (stage: Stage) => {
-    const effect = stageEffects.find((e) => e.stage === stage)
-    const d = effect?.delta ?? 0
-    value.textContent = delta(d)
-    value.className = `pl-effect-value ${d < 0 ? 'is-neg' : d > 0 ? 'is-pos' : ''}`
-    note.textContent = NOTES[stage]
     for (const row of rows) row.button.setAttribute('aria-pressed', String(row.stage === stage))
   }
   return { el, update }
@@ -341,14 +286,11 @@ function buildEffect(select: (stage: Stage) => void): { el: HTMLElement; update:
 
 /* ---------------------------------------------------------------- mount */
 
-export function mountPipeline(container: HTMLElement, tools: HTMLElement | null): void {
+export function mountPipeline(container: HTMLElement): void {
   const diagram = buildDiagram()
   const flow = buildFlow()
-  const equations = buildEquations()
 
-  let stage: Stage = 'extraction+reasoning'
-  const set = (next: Stage) => {
-    stage = next
+  const set = (stage: Stage) => {
     const guided = new Set(GUIDED[stage])
     const harmful = stage === 'retrieval'
     for (const { module, box, link, pill: tag } of diagram.insertions) {
@@ -363,22 +305,12 @@ export function mountPipeline(container: HTMLElement, tools: HTMLElement | null)
       item.classList.toggle('is-on', guided.has(module))
       item.classList.toggle('is-miss', guided.has(module) && harmful)
     }
-    for (const [module, row] of equations.rows) {
-      const on = module === 'reasoner' ? guided.has('reasoner') : guided.has(module)
-      row.classList.toggle('is-on', on)
-      row.classList.toggle('is-miss', on && harmful)
-    }
     effect.update(stage)
-    control.set(stage)
   }
 
-  const effect = buildEffect((next) => set(next))
-  const control = segmented<Stage>('Stage that receives the guidance', STAGES, stage, set)
-  tools?.append(control.el)
-
-  const panels = h('div', { class: 'pl-panels' }, equations.el, effect.el)
-  container.append(h('div', { class: 'pl-diagram' }, diagram.svg), flow.el, panels)
-  set(stage)
+  const effect = buildEffect(set)
+  container.append(h('div', { class: 'pl-diagram' }, diagram.svg), flow.el, effect.el)
+  set('extraction+reasoning')
 
   // In the narrow flow, an arrow at the end of a wrapped line would point at nothing.
   const chain = flow.el.querySelector<HTMLElement>('.pf-chain')

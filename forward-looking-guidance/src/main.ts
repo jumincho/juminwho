@@ -9,7 +9,7 @@ import './styles/layout.css'
 import './styles/figures.css'
 
 import { byId } from './lib/dom'
-import { initCopy, initReveal, initScroll, initTheme } from './widgets/chrome'
+import { initBackToTop, initCopy, initTheme } from './widgets/chrome'
 import { mountDepth } from './widgets/depth'
 import { mountGains } from './widgets/gains'
 import { mountHero } from './widgets/hero'
@@ -21,8 +21,7 @@ import { mountTokens } from './widgets/tokens'
 import { mountTrace } from './widgets/trace'
 
 initTheme()
-initScroll()
-initReveal()
+initBackToTop()
 initCopy()
 
 /** Mounts a figure if its slot is on the page; one failing figure must not take the others down. */
@@ -38,7 +37,7 @@ function mount(id: string, run: (el: HTMLElement) => void): void {
 
 mount('hero-visual', (el) => mountHero(el))
 mount('fig-motivation', (el) => mountMotivation(el, byId('motivation-tools')))
-mount('fig-pipeline', (el) => mountPipeline(el, byId('pipeline-tools')))
+mount('fig-pipeline', (el) => mountPipeline(el))
 mount('fig-gains', (el) => mountGains(el, byId('gains-tools')))
 mount('table-results', (el) => mountResults(el, byId('results-tools')))
 mount('fig-depth', (el) => mountDepth(el))

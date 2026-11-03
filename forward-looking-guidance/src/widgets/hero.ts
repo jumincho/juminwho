@@ -95,7 +95,7 @@ function build(L: Layout): Parts {
   const regionLabel = s(
     'g',
     { class: 'hero-region-label' },
-    s('text', { class: 'hero-kicker', 'text-anchor': 'middle', y: -fs - 6 }, 'REMAINING PLAN'),
+    s('text', { class: 'hero-kicker', 'text-anchor': 'middle', y: -fs - 6 }, 'Remaining plan'),
     regionMath,
   )
   const arrow = s('path', { class: 'hero-arrow', 'marker-end': 'url(#hero-tip)' })
