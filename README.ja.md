@@ -31,11 +31,11 @@
 - モーション軽減の設定、スクリーンリーダー、キーボード操作に配慮し、すべての文字が WCAG AA 以上のコントラストを持ちます。
 - コンテンツのファイルは 1 つだけです。すべての言語のすべての文言が `src/data/profile.ts` にあります。
 - 同じデータとデザインから `npm run github-profile` が描き出す、5 言語の GitHub プロフィール README。
-- CIKM 2026 の論文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* のプロジェクトページ（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)）。論文カードから直接開けます。論文の要点だけを短く紹介する英語のページで、ポートフォリオとは別の、落ち着いた研究室風のデザインです。CIKM 2026 の公式ロゴ、アブストラクト、描き直したいくつかの図（ステージを選べるチャート、バックボーンを切り替えられる結果と折りたたんだ全体の表、1 ステップずつたどれる実行トレース）、そして切手の下に韓国からイタリアへの飛行ルートを描いた世界地図を載せた、クラシックな絵はがきの裏のお礼の言葉があります。
+- CIKM 2026 の論文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* のプロジェクトページ（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)）。論文カードから直接開けます。論文の要点だけを短く紹介する英語のページで、ポートフォリオとは別の、落ち着いた研究室風のデザインです。CIKM 2026 の公式ロゴ、アブストラクト、描き直したいくつかの図（ステージを選べるチャート、バックボーンを切り替えられる結果と折りたたんだ全体の表、1 ステップずつたどれる実行トレース）があります。
 
 ## 技術スタック
 
-Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules、背景を描く手書きの小さな WebGL シェーダー、Fontsource（Fredoka、Nunito、Jua）、lucide-react。中国語と日本語は訪問者のデバイスのシステムフォントを使います。ルーター、CMS、バックエンドはありません。GitHub Actions がサイトをビルドして GitHub Pages に公開します。プロジェクトページは React を使わず TypeScript だけで作り、Inter、Source Serif 4、JetBrains Mono、Allura を使います。
+Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules、背景を描く手書きの小さな WebGL シェーダー、Fontsource（Fredoka、Nunito、Jua）、lucide-react。中国語と日本語は訪問者のデバイスのシステムフォントを使います。ルーター、CMS、バックエンドはありません。GitHub Actions がサイトをビルドして GitHub Pages に公開します。プロジェクトページは React を使わず TypeScript だけで作り、Inter、Source Serif 4、JetBrains Mono を使います。
 
 ## プロジェクト構成
 
@@ -48,7 +48,7 @@ Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules�
 │   └── preview-*.jpg             README のプレビュー（npm run snapshots -- --readme）
 ├── forward-looking-guidance/     論文のプロジェクトページ：2 つ目のエントリーポイント、React なしの TypeScript
 │   ├── index.html                ページの本文（英語）
-│   ├── assets/                   CIKM 2026 のロゴ（ライトとダーク）、絵はがきの世界地図
+│   ├── assets/                   CIKM 2026 のロゴ（ライトとダーク）
 │   └── src/                      data/paper.ts（論文から写したすべての数値）、widgets/（図）、lib/、styles/
 ├── public/                       そのままビルドにコピーされるファイル
 │   ├── favicon.svg               マスコット。ほかのアイコンはすべてここから作ります

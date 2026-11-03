@@ -31,11 +31,11 @@
 - 尊重“减弱动态效果”设置、屏幕阅读器和键盘导航，所有文字的对比度都达到 WCAG AA 或更高。
 - 只有一个内容文件：所有语言的所有文字都在 `src/data/profile.ts` 中。
 - 用同一份数据和设计，由 `npm run github-profile` 生成的五种语言的 GitHub 个人主页 README。
-- CIKM 2026 论文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* 的项目主页（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)），可从论文卡片直接进入。这是一个只简要介绍论文要点的英文页面，采用与个人主页不同的、沉静的研究实验室风格：CIKM 2026 官方徽标、摘要、几张重新绘制的插图（可选择阶段的图表、可切换骨干模型的结果和折叠起来的完整结果表、可逐步查看的执行轨迹），以及写在一张经典明信片背面的感谢信，邮票下方的世界地图画着从韩国飞往意大利的航线。
+- CIKM 2026 论文 *Forward-Looking Guidance for Iterative RAG in Multi-Hop Question Answering* 的项目主页（[`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/)），可从论文卡片直接进入。这是一个只简要介绍论文要点的英文页面，采用与个人主页不同的、沉静的研究实验室风格：CIKM 2026 官方徽标、摘要、几张重新绘制的插图（可选择阶段的图表、可切换骨干模型的结果和折叠起来的完整结果表、可逐步查看的执行轨迹）。
 
 ## 技术栈
 
-Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Modules、手写的绘制背景的小型 WebGL 着色器、Fontsource（Fredoka、Nunito 和 Jua）以及 lucide-react。中文和日文使用访客设备上的系统字体。没有路由、CMS 或后端。GitHub Actions 负责构建网站并发布到 GitHub Pages。项目主页不使用 React，只用 TypeScript 编写，字体为 Inter、Source Serif 4、JetBrains Mono 和 Allura。
+Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Modules、手写的绘制背景的小型 WebGL 着色器、Fontsource（Fredoka、Nunito 和 Jua）以及 lucide-react。中文和日文使用访客设备上的系统字体。没有路由、CMS 或后端。GitHub Actions 负责构建网站并发布到 GitHub Pages。项目主页不使用 React，只用 TypeScript 编写，字体为 Inter、Source Serif 4 和 JetBrains Mono。
 
 ## 项目结构
 
@@ -48,7 +48,7 @@ Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Mo
 │   └── preview-*.jpg             README 预览图（npm run snapshots -- --readme）
 ├── forward-looking-guidance/     论文项目主页：第二个入口，不使用 React 的 TypeScript
 │   ├── index.html                页面正文（英文）
-│   ├── assets/                   CIKM 2026 徽标（浅色与深色）、明信片上的世界地图
+│   ├── assets/                   CIKM 2026 徽标（浅色与深色）
 │   └── src/                      data/paper.ts（从论文中转录的所有数字）、widgets/（插图）、lib/、styles/
 ├── public/                       原样复制到构建产物中
 │   ├── favicon.svg               吉祥物；其他图标都由它生成

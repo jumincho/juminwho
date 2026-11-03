@@ -59,7 +59,7 @@ export function initTheme(): void {
 }
 
 /** Sections the table of contents and the top navigation point at, in page order. */
-const TOC_SECTIONS = ['top', 'abstract', 'method', 'results', 'analysis', 'example', 'cite', 'thanks']
+const TOC_SECTIONS = ['top', 'abstract', 'method', 'results', 'analysis', 'example', 'cite']
 /** Which top-bar link stands for a section. */
 const NAV_FOR: Record<string, string> = {
   method: 'method',

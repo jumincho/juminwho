@@ -17,9 +17,8 @@
  * does not fit or loses its hedge, or a language menu that does not pick,
  * remember and link. The paper's project page (forward-looking-guidance/)
  * gets the same basics at both widths and in both themes, plus its figures:
- * each must mount, the postcard's flight must land near Italy on a labelled
- * world map, the stage rows of Figure 2, the backbone switch, the trace
- * stepper and back-to-top must respond, a theme picked
+ * each must mount, the stage rows of Figure 2, the backbone switch, the
+ * trace stepper and back-to-top must respond, a theme picked
  * there must carry over to the portfolio, and nothing may move with reduced
  * motion. Full-page screenshots
  * go to snapshots/ (git-ignored) for a side-by-side look against the last
@@ -381,26 +380,6 @@ async function checkProjectPage(vp, scheme) {
   if (state.back !== url) fail(`the back link goes to ${state.back}, not the portfolio`)
 
   await page.screenshot({ path: `${OUT}/project-${vp.name}-${scheme}.png`, fullPage: true, animations: 'disabled' })
-
-  // The postcard's world map: both countries are named, and the plane flies from South Korea to just short of Rome.
-  await page.locator('.pc-map').scrollIntoViewIfNeeded()
-  const landed = await page
-    .waitForFunction(
-      () => {
-        const x = Number(document.querySelector('.pc-plane')?.getAttribute('transform')?.match(/translate\(([\d.]+)/)?.[1] ?? NaN)
-        return x > 160 && x < 175
-      },
-      null,
-      { timeout: 6000 },
-    )
-    .then(() => true)
-    .catch(() => false)
-  const map = await page.evaluate(() => ({
-    plane: document.querySelector('.pc-plane')?.getAttribute('transform') ?? '',
-    places: [...document.querySelectorAll('.pc-place')].map((el) => el.textContent),
-  }))
-  if (!landed) fail(`the plane on the postcard's map does not land near Italy (${map.plane || 'not placed'})`)
-  if (map.places.join() !== 'South Korea,Italy') fail(`the map is labelled "${map.places.join(', ')}"`)
 
   // Figure 2: a row of the chart picks the stage, and the diagram moves the guidance there.
   const stage = (name) => page.locator('#fig-pipeline .pl-bar-row', { hasText: name })

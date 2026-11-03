@@ -2,7 +2,6 @@ import '@fontsource-variable/inter/opsz.css'
 import '@fontsource-variable/source-serif-4/opsz.css'
 import '@fontsource-variable/source-serif-4/opsz-italic.css'
 import '@fontsource-variable/jetbrains-mono/wght.css'
-import '@fontsource/allura/latin-400.css'
 import './styles/tokens.css'
 import './styles/base.css'
 import './styles/layout.css'
@@ -16,7 +15,6 @@ import { mountHero } from './widgets/hero'
 import { mountMotivation } from './widgets/motivation'
 import { mountPipeline } from './widgets/pipeline'
 import { mountResults } from './widgets/results'
-import { mountRoute } from './widgets/route'
 import { mountTokens } from './widgets/tokens'
 import { mountTrace } from './widgets/trace'
 
@@ -44,6 +42,3 @@ mount('table-results', (el) => mountResults(el, byId('results-tools')))
 mount('fig-depth', (el) => mountDepth(el))
 mount('fig-tokens', (el) => mountTokens(el, byId('tokens-legend')))
 mount('fig-trace', (el) => mountTrace(el, byId('trace-tools')))
-
-const map = document.querySelector<HTMLElement>('.pc-map')
-if (map) mountRoute(map)

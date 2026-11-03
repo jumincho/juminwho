@@ -48,17 +48,15 @@ English · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [繁�
 - A project page for the CIKM 2026 paper, *Forward-Looking Guidance for Iterative RAG in Multi-Hop
   Question Answering*, at [`/forward-looking-guidance/`](https://jumincho.github.io/juminwho/forward-looking-guidance/) and linked from the paper's card.
   It is a short English companion to the paper in its own quiet research-lab style: the official
-  CIKM 2026 logo, the abstract, a few redrawn figures (a chart that doubles as a stage picker,
-  results with a backbone switch and the full table folded away, a step-through execution trace),
-  and a thank-you note set as the back of a classic postcard, with a world map of the flight from
-  South Korea to Italy under its stamp.
+  CIKM 2026 logo, the abstract, and a few redrawn figures (a chart that doubles as a stage picker,
+  results with a backbone switch and the full table folded away, a step-through execution trace).
 
 ## Tech stack
 
 Vite 7, React 19, TypeScript, CSS Modules with design tokens, a small hand-written WebGL shader for
 the backdrop, Fontsource (Fredoka, Nunito and Jua) and lucide-react. Chinese and Japanese use the visitor's system fonts. There is no router, CMS or
 backend. GitHub Actions builds the site and publishes it to GitHub Pages.
-The project page is plain TypeScript without React, set in Inter, Source Serif 4, JetBrains Mono and Allura.
+The project page is plain TypeScript without React, set in Inter, Source Serif 4 and JetBrains Mono.
 
 ## Project structure
 
@@ -71,7 +69,7 @@ The project page is plain TypeScript without React, set in Inter, Source Serif 4
 │   └── preview-*.jpg             README previews (npm run snapshots -- --readme)
 ├── forward-looking-guidance/     the paper's project page: a second entry point, plain TypeScript
 │   ├── index.html                its text, in English
-│   ├── assets/                   the CIKM 2026 logo (light and dark) and the postcard's world map
+│   ├── assets/                   the CIKM 2026 logo, light and dark
 │   └── src/                      data/paper.ts (every number, from the paper), widgets/ (the figures), lib/, styles/
 ├── public/                       copied into the build as-is
 │   ├── favicon.svg               the mascot; every other icon starts here

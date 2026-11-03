@@ -1,7 +1,7 @@
 {
   "name": "juminwho",
   "private": true,
-  "version": "3.6.1",
+  "version": "3.7.0",
   "description": "One-page cozy personal site for Jumin Cho (JUMIN WHO?)",
   "type": "module",
   "engines": {
@@ -23,7 +23,6 @@
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "@fontsource-variable/nunito": "^5.3.0",
     "@fontsource-variable/source-serif-4": "^5.3.1",
-    "@fontsource/allura": "^5.3.0",
     "lucide-react": "^1.47.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
