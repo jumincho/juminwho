@@ -75,7 +75,8 @@ export function mountTokens(container: HTMLElement, legend: HTMLElement | null):
         )
         const inside = s('g', { class: 'tk-inside' })
         if (x1 - x0 > 46) inside.append(s('text', { class: 'tk-in is-ext', x: x0 + 9, y: by + barH / 2 + 4.5 }, int(ext)))
-        if (x2 - x1 > 38) inside.append(s('text', { class: 'tk-in is-rsn', x: x1 + 8, y: by + barH / 2 + 4.5 }, int(rsn)))
+        // Three digits at 11 px need about 20 px, plus the 8 px inset: label any segment that leaves a little room.
+        if (x2 - x1 > 32) inside.append(s('text', { class: 'tk-in is-rsn', x: x1 + 8, y: by + barH / 2 + 4.5 }, int(rsn)))
         const total = s('text', { class: 'tk-total', x: x2 + 8, y: by + barH / 2 + 4.5 }, int(totals[k]))
         if (k === 1) {
           total.append(s('tspan', { class: 'tk-pct', dx: 6 }, percent(totals[1] / totals[0] - 1)))

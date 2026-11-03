@@ -1,4 +1,4 @@
-/* Reset, type and the shared pieces: prose, math, buttons and the figure controls. */
+/* Reset, type and the shared building blocks: prose, math, buttons, controls, chips, figure cards, reveal. */
 
 *,
 *::before,
@@ -11,7 +11,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   background: var(--bg);
-  scroll-padding-top: 1.5rem;
+  scroll-padding-top: calc(var(--topbar-h) + 1.5rem);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -66,7 +66,7 @@ ol {
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 [hidden] {
@@ -93,8 +93,8 @@ ol {
   top: 0.75rem;
   left: 0.75rem;
   z-index: 100;
-  padding: 0.5rem 0.9rem;
-  border-radius: var(--radius-m);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
   background: var(--ink);
   color: var(--bg);
   font-weight: 600;
@@ -172,23 +172,25 @@ code {
 
 /* ---- buttons ---- */
 
-/* The links under the title: dark, rounded, as on most paper pages. */
+/* The links under the title: dark pills; a link that is not out yet stays light, with a "Soon" badge. */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  height: 2.5rem;
-  padding: 0 1.05rem;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding: 0 1.15rem;
   border: 1px solid var(--ink);
   border-radius: 999px;
   background: var(--ink);
   color: var(--bg);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
+  box-shadow: var(--shadow-1);
   transition:
-    background-color var(--dur-1) var(--ease),
-    border-color var(--dur-1) var(--ease);
+    transform var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    background-color var(--dur-1) var(--ease);
 }
 
 .btn .icon {
@@ -198,41 +200,51 @@ code {
 .btn:not(:disabled):hover {
   border-color: var(--ink-2);
   background: var(--ink-2);
+  transform: translateY(-1px);
+}
+
+.btn:not(:disabled):active {
+  transform: translateY(0);
 }
 
 .btn:disabled {
-  opacity: 0.4;
+  border-color: var(--border-strong);
+  background: var(--bg-soft);
+  color: var(--ink-3);
+  box-shadow: none;
 }
 
-.btn small {
-  font-size: 0.78em;
-  font-weight: 400;
-  opacity: 0.85;
+.btn .soon {
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: var(--bg-muted);
+  color: var(--ink-3);
+  font-size: 0.6875rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .btn-sm {
-  gap: 0.35rem;
-  height: 2rem;
-  padding: 0 0.75rem;
-  border-radius: var(--radius-m);
-  font-size: 0.8125rem;
+  height: 2.25rem;
+  padding: 0 0.9rem;
+  font-size: 0.875rem;
 }
 
 .btn-sm .icon {
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
-/* A quiet, outlined variant for small actions inside the page. */
+/* The outlined pill, for small actions inside the page. */
 .btn-line {
   border-color: var(--border-strong);
   background: var(--surface);
-  color: var(--ink-2);
+  color: var(--ink);
 }
 
 .btn-line:not(:disabled):hover {
   border-color: var(--ink-4);
   background: var(--surface);
-  color: var(--ink);
 }
 
 .icon-btn {
@@ -240,7 +252,7 @@ code {
   place-items: center;
   width: 2.25rem;
   height: 2.25rem;
-  border-radius: var(--radius-m);
+  border-radius: 999px;
   color: var(--ink-3);
   font-size: 1.05rem;
   transition:
@@ -257,15 +269,16 @@ code {
   opacity: 0.35;
 }
 
-/* ---- segmented control: one pressed option among several ---- */
+/* ---- segmented control: radio-like buttons with a sliding thumb ---- */
 
 .segmented {
   position: relative;
   display: inline-flex;
   max-width: 100%;
-  padding: 2px;
-  border-radius: var(--radius-m);
-  background: var(--bg-muted);
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-soft);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -276,10 +289,10 @@ code {
 
 .segmented-thumb {
   position: absolute;
-  top: 2px;
-  bottom: 2px;
+  top: 3px;
+  bottom: 3px;
   left: 0;
-  border-radius: 6px;
+  border-radius: 999px;
   background: var(--surface);
   box-shadow:
     var(--shadow-1),
@@ -290,11 +303,11 @@ code {
 .segmented button {
   position: relative;
   z-index: 1;
-  padding: 0.3rem 0.8rem;
-  border-radius: 6px;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
   color: var(--ink-3);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
   white-space: nowrap;
   transition: color var(--dur-1) var(--ease);
 }
@@ -306,6 +319,7 @@ code {
 
 .segmented button:focus-visible {
   outline-offset: -2px;
+  border-radius: 999px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -321,17 +335,17 @@ code {
 .switch {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   padding: 0.25rem 0.1rem;
   color: var(--ink-2);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .switch-track {
   position: relative;
-  width: 2.1rem;
-  height: 1.2rem;
+  width: 2.25rem;
+  height: 1.3rem;
   border-radius: 999px;
   background: var(--border-strong);
   transition: background-color var(--dur-2) var(--ease);
@@ -341,8 +355,8 @@ code {
   position: absolute;
   top: 2px;
   left: 2px;
-  width: calc(1.2rem - 4px);
-  height: calc(1.2rem - 4px);
+  width: calc(1.3rem - 4px);
+  height: calc(1.3rem - 4px);
   border-radius: 50%;
   background: #ffffff;
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
@@ -354,7 +368,28 @@ code {
 }
 
 .switch[aria-checked='true'] .switch-knob {
-  transform: translateX(0.9rem);
+  transform: translateX(0.95rem);
+}
+
+/* ---- chips and tags ---- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--bg-muted);
+  color: var(--ink-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.chip-accent {
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 /* ---- legends ---- */
@@ -363,9 +398,10 @@ code {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.3rem 1rem;
+  gap: 0.35rem 1.1rem;
   color: var(--ink-3);
   font-size: 0.8125rem;
+  font-weight: 550;
 }
 
 .legend span {
@@ -378,7 +414,7 @@ code {
   display: inline-block;
   width: 0.7rem;
   height: 0.7rem;
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 .swatch-base {
@@ -387,6 +423,63 @@ code {
 
 .swatch-accent {
   background: var(--accent-fill);
+}
+
+/* ---- figure cards: a frame with a title bar, the figure, and the caption underneath ---- */
+
+.figure-frame {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+}
+
+.figure-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-soft);
+}
+
+.figure-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9375rem;
+  font-weight: 650;
+}
+
+.figure-title .chip {
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.figure-body {
+  padding: clamp(1rem, 0.6rem + 1.6vw, 2rem);
+}
+
+/* ---- reveal on first view (decorative; content is visible without scripts) ---- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 700ms var(--ease),
+      transform 700ms var(--ease);
+  }
+
+  .js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* With reduced motion nothing on this page moves: state changes land at once. */

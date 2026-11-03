@@ -1,8 +1,8 @@
 /*
- * Design tokens for the project page. It has its own look, separate from the
- * portfolio: plain academic typography with one accent colour. Green marks
- * forward-looking guidance and "ours" in every figure, slate marks the
- * baseline and orange marks a failure.
+ * Design tokens for the project page. This page has its own look, separate
+ * from the cozy portfolio: a quiet research-lab style with one accent colour.
+ * Green marks forward-looking guidance and "ours" everywhere; slate marks
+ * the baseline; orange marks a failure.
  */
 
 :root {
@@ -45,22 +45,24 @@
   --focus: #2f6fed;
   --selection: rgb(19 179 131 / 0.22);
 
-  --shadow-1: 0 1px 2px rgb(15 23 42 / 0.06);
-  --shadow-2: 0 1px 3px rgb(15 23 42 / 0.08), 0 6px 16px -6px rgb(15 23 42 / 0.16);
+  --shadow-1: 0 1px 2px rgb(15 23 42 / 0.05);
+  --shadow-2: 0 1px 3px rgb(15 23 42 / 0.06), 0 10px 28px -12px rgb(15 23 42 / 0.16);
 
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-serif: 'Source Serif 4 Variable', 'Iowan Old Style', Georgia, serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
   --font-math: 'Source Serif 4 Variable', 'STIX Two Math', 'Cambria Math', serif;
 
-  --radius-s: 5px;
-  --radius-m: 8px;
-  --radius-l: 10px;
+  --radius-s: 8px;
+  --radius-m: 12px;
+  --radius-l: 18px;
+  --radius-xl: 26px;
 
   /* Running text and captions share one column; figures may use the wider one. */
   --col: 44rem;
   --wide: 60rem;
-  --gutter: clamp(1rem, 4vw, 2rem);
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --topbar-h: 3.5rem;
 
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -108,5 +110,5 @@
   --selection: rgb(63 213 155 / 0.28);
 
   --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4);
-  --shadow-2: 0 1px 3px rgb(0 0 0 / 0.45), 0 6px 18px -6px rgb(0 0 0 / 0.6);
+  --shadow-2: 0 1px 3px rgb(0 0 0 / 0.4), 0 12px 30px -12px rgb(0 0 0 / 0.6);
 }

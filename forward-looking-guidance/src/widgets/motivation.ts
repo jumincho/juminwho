@@ -21,9 +21,10 @@ interface Cell {
 
 const STEPS = 4
 
-const lanes: { id: 'base' | 'ours'; title: string; cells: Cell[] }[] = [
+const lanes: { id: 'base' | 'ours'; tag: string; title: string; cells: Cell[] }[] = [
   {
     id: 'base',
+    tag: 'A',
     title: 'Baseline',
     cells: [
       { kicker: `Run ${mathHtml('o_1')}`, body: 'Where was the person born?', note: `Sees only ${mathHtml('o_1')}.` },
@@ -38,6 +39,7 @@ const lanes: { id: 'base' | 'ours'; title: string; cells: Cell[] }[] = [
   },
   {
     id: 'ours',
+    tag: 'B',
     title: 'With forward-looking guidance',
     cells: [
       {
@@ -64,7 +66,10 @@ function cell(laneIndex: number, stepIndex: number, data: Cell): HTMLElement {
     // Grid positions for both layouts: lanes as rows on wide screens, as columns on narrow ones.
     style: `--dr:${laneIndex + 1};--dc:${stepIndex + 2};--mr:${stepIndex + 2};--mc:${laneIndex + 1}`,
   })
-  el.append(html(`<span class="mv-kicker">${data.kicker}</span>`), html(`<p class="mv-body">${data.body}</p>`))
+  el.append(
+    html(`<span class="mv-kicker"><span class="mv-num">${stepIndex + 1}</span><span>${data.kicker}</span></span>`),
+    html(`<p class="mv-body">${data.body}</p>`),
+  )
   if (data.note) el.append(html(`<p class="mv-note">${data.note}</p>`))
   if (data.badge) {
     el.append(
@@ -95,7 +100,12 @@ export function mountMotivation(container: HTMLElement, tools: HTMLElement | nul
   const grid = h('ol', { class: 'mv-grid', 'aria-label': 'Execution of the plan, step by step, in both settings' })
   lanes.forEach((lane, laneIndex) => {
     grid.append(
-      h('li', { class: `mv-lane-title lane-${lane.id}`, style: `--dr:${laneIndex + 1};--dc:1;--mr:1;--mc:${laneIndex + 1}` }, lane.title),
+      h(
+        'li',
+        { class: `mv-lane-title lane-${lane.id}`, style: `--dr:${laneIndex + 1};--dc:1;--mr:1;--mc:${laneIndex + 1}` },
+        h('span', { class: 'mv-tag' }, lane.tag),
+        h('span', {}, lane.title),
+      ),
     )
     lane.cells.forEach((data, stepIndex) => {
       const el = cell(laneIndex, stepIndex, data)
@@ -113,7 +123,11 @@ export function mountMotivation(container: HTMLElement, tools: HTMLElement | nul
 
   const show = (step: number) => {
     at = step
-    for (const el of cells) el.classList.toggle('is-shown', Number(el.dataset.step) <= step)
+    for (const el of cells) {
+      const k = Number(el.dataset.step)
+      el.classList.toggle('is-shown', k <= step)
+      el.classList.toggle('is-current', k === step)
+    }
   }
 
   const play = () => {

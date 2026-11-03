@@ -58,7 +58,7 @@ export function mountTrace(container: HTMLElement, tools: HTMLElement | null): v
 
   const context = html(`<div class="tr-context">
     <div class="tr-q">
-      <span class="tr-k">${trace.dataset} question</span>
+      <span class="tr-k">Question <span class="chip">${trace.dataset}</span></span>
       <p>${escape(trace.question)}</p>
       <p class="tr-gold">Gold answer <strong>${escape(trace.answer)}</strong></p>
     </div>
@@ -101,8 +101,16 @@ export function mountTrace(container: HTMLElement, tools: HTMLElement | null): v
 
   const head = html(`<div class="tr-head" aria-hidden="true"><span></span><span>STRIDE</span><span>STRIDE+FG <em>(ours)</em></span></div>`)
 
+  const progress = h('div', { class: 'tr-progress', role: 'group', 'aria-label': 'Steps' })
+  const dots = trace.steps.map((step, k) => {
+    const dot = h('button', { type: 'button', class: 'tr-dot', 'aria-label': `Step ${k + 1}: ${step.stage.replace(/_(\d)/, '$1')}` })
+    dot.addEventListener('click', () => go(k + 1))
+    progress.append(dot)
+    return dot
+  })
+
   const root = h('div', { class: 'tr' })
-  root.append(context, head, rows)
+  root.append(context, progress, head, rows)
   container.append(root)
 
   const reset = h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Back to the first step', title: 'Restart' })
@@ -121,6 +129,10 @@ export function mountTrace(container: HTMLElement, tools: HTMLElement | null): v
       item.classList.toggle('is-current', k + 1 === at)
       item.classList.toggle('is-future', k + 1 > at)
       item.setAttribute('aria-current', String(k + 1 === at))
+    })
+    dots.forEach((dot, k) => {
+      dot.classList.toggle('is-done', k + 1 <= at)
+      dot.setAttribute('aria-current', String(k + 1 === at))
     })
     note.innerHTML = `<p><span class="tr-note-k">Step ${at} of ${total}.</span>${NOTES[at - 1]}</p>`
     items[at - 1].after(note)

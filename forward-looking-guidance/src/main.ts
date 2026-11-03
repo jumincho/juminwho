@@ -9,7 +9,7 @@ import './styles/layout.css'
 import './styles/figures.css'
 
 import { byId } from './lib/dom'
-import { initBackToTop, initCopy, initTheme } from './widgets/chrome'
+import { initCopy, initReveal, initScroll, initTheme } from './widgets/chrome'
 import { mountDepth } from './widgets/depth'
 import { mountGains } from './widgets/gains'
 import { mountHero } from './widgets/hero'
@@ -21,7 +21,8 @@ import { mountTokens } from './widgets/tokens'
 import { mountTrace } from './widgets/trace'
 
 initTheme()
-initBackToTop()
+initScroll()
+initReveal()
 initCopy()
 
 /** Mounts a figure if its slot is on the page; one failing figure must not take the others down. */

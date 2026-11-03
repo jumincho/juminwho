@@ -1,7 +1,10 @@
 import { h } from '../lib/dom'
 import { prefersReducedMotion } from '../lib/motion'
 
-/** The page around the figures: the theme, the back-to-top button and the BibTeX copy button. */
+/**
+ * The page around the figures: theme, top bar, reading progress, the table of
+ * contents with its scrollspy, reveal-on-scroll and the BibTeX copy button.
+ */
 
 type Theme = 'light' | 'dark'
 
@@ -55,27 +58,69 @@ export function initTheme(): void {
   })
 }
 
-/** The round button in the bottom right: shown once the title is out of sight, it scrolls back up. */
-export function initBackToTop(): void {
-  const button = document.querySelector<HTMLButtonElement>('.to-top')
-  if (!button) return
+/** Sections the table of contents and the top navigation point at, in page order. */
+const TOC_SECTIONS = ['top', 'abstract', 'method', 'results', 'analysis', 'example', 'cite', 'thanks']
+/** Which top-bar link stands for a section. */
+const NAV_FOR: Record<string, string> = {
+  method: 'method',
+  results: 'results',
+  analysis: 'analysis',
+  example: 'example',
+  cite: 'cite',
+}
+
+export function initScroll(): void {
+  const topbar = document.querySelector<HTMLElement>('.topbar')
+  const progress = document.querySelector<HTMLElement>('.progress span')
+  const toTop = document.querySelector<HTMLButtonElement>('.to-top')
+  const toc = document.querySelector<HTMLElement>('.toc')
+  const title = document.getElementById('title')
+  const sections = TOC_SECTIONS.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el)
+  const tocLinks = new Map([...document.querySelectorAll<HTMLAnchorElement>('.toc a')].map((a) => [a.hash.slice(1), a]))
+  const navLinks = new Map([...document.querySelectorAll<HTMLAnchorElement>('.topnav a')].map((a) => [a.hash.slice(1), a]))
+
+  let current = ''
+  const markCurrent = (id: string) => {
+    if (id === current) return
+    current = id
+    for (const [key, link] of tocLinks) {
+      if (key === id) link.setAttribute('aria-current', 'location')
+      else link.removeAttribute('aria-current')
+    }
+    for (const [key, link] of navLinks) {
+      if (key === NAV_FOR[id]) link.setAttribute('aria-current', 'location')
+      else link.removeAttribute('aria-current')
+    }
+  }
 
   let queued = false
   const update = () => {
     queued = false
-    button.classList.toggle('is-visible', window.scrollY > window.innerHeight * 0.9)
+    // Read everything first, then write, so the scroll handler never forces a second layout.
+    const y = window.scrollY
+    const max = document.documentElement.scrollHeight - window.innerHeight
+    const line = window.innerHeight * 0.32
+    let id = sections[0]?.id ?? ''
+    for (const section of sections) {
+      if (section.getBoundingClientRect().top <= line) id = section.id
+    }
+    // At the very bottom the last section may never reach the line; it is the one being read.
+    if (max > 0 && y >= max - 2) id = sections[sections.length - 1]?.id ?? id
+
+    const read = String(max > 0 ? Math.min(1, Math.max(0, y / max)) : 0)
+    topbar?.classList.toggle('is-scrolled', y > 4)
+    progress?.style.setProperty('--progress', read)
+    toTop?.style.setProperty('--progress', read)
+    toTop?.classList.toggle('is-visible', y > window.innerHeight * 0.9)
+    markCurrent(id)
   }
   const queue = () => {
     if (queued) return
     queued = true
     requestAnimationFrame(update)
   }
-  window.addEventListener('scroll', queue, { passive: true })
-  window.addEventListener('resize', queue)
-  update()
-
   // Back to the top, and the keyboard focus with it.
-  button.addEventListener('click', () => {
+  toTop?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
     const title = document.getElementById('title')
     if (title) {
@@ -83,6 +128,46 @@ export function initBackToTop(): void {
       title.focus({ preventScroll: true })
     }
   })
+  window.addEventListener('scroll', queue, { passive: true })
+  window.addEventListener('resize', queue)
+  update()
+
+  // The wordmark and the table of contents appear once the title has scrolled away.
+  if (title && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      const past = !entry.isIntersecting && entry.boundingClientRect.top < 0
+      topbar?.classList.toggle('is-past-title', past)
+      toc?.classList.toggle('is-visible', past)
+    }).observe(title)
+  }
+}
+
+/**
+ * Fades blocks in the first time they scroll into view. The inline script in
+ * index.html hides them before first paint; `fx-ready` tells the stylesheet
+ * this module is running, and without it a failsafe animation shows them anyway.
+ */
+export function initReveal(): void {
+  const items = [...document.querySelectorAll<HTMLElement>('[data-reveal]')]
+  document.documentElement.classList.add('fx-ready')
+  if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
+    items.forEach((el) => el.classList.add('is-in'))
+    return
+  }
+  document.querySelectorAll<HTMLElement>('.hero [data-reveal]').forEach((el, index) => {
+    el.style.transitionDelay = `${index * 70}ms`
+  })
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue
+        entry.target.classList.add('is-in')
+        observer.unobserve(entry.target)
+      }
+    },
+    { rootMargin: '0px 0px -6% 0px', threshold: 0.06 },
+  )
+  items.forEach((el) => observer.observe(el))
 }
 
 /** `<button data-copy="#selector">` copies that element's text. */

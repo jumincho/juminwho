@@ -1,33 +1,115 @@
 /* Page layout and the static blocks: header, title, sections and figures, BibTeX, the postcard, back to top, footer. */
 
-/* ---- header: back to the portfolio, and the theme ---- */
+/* ---- top bar: back to the portfolio, section links, code and theme ---- */
 
-.site-header {
+.topbar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  height: var(--topbar-h);
+  border-bottom: 1px solid transparent;
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  backdrop-filter: saturate(1.6) blur(14px);
+  -webkit-backdrop-filter: saturate(1.6) blur(14px);
+  transition: border-color var(--dur-2) var(--ease);
+}
+
+.topbar.is-scrolled {
+  border-bottom-color: var(--border);
+}
+
+.topbar-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 0.75rem;
+  height: 100%;
   max-width: calc(var(--wide) + 2 * var(--gutter));
   margin-inline: auto;
-  padding: 0.85rem var(--gutter) 0;
+  padding-inline: calc(var(--gutter) - 0.5rem);
 }
 
 .back {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  margin-left: -0.15rem;
-  color: var(--ink-3);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  transition: color var(--dur-1) var(--ease);
+  height: 2.25rem;
+  padding: 0 0.85rem 0 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition:
+    border-color var(--dur-1) var(--ease),
+    color var(--dur-1) var(--ease);
 }
 
 .back:hover {
+  border-color: var(--ink-4);
   color: var(--ink);
 }
 
-.site-header .theme-toggle {
-  margin-right: -0.5rem;
+.back .icon {
+  transition: transform var(--dur-2) var(--ease);
+}
+
+.back:hover .icon {
+  transform: translateX(-2px);
+}
+
+.wordmark {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition:
+    opacity var(--dur-2) var(--ease),
+    transform var(--dur-2) var(--ease),
+    visibility var(--dur-2);
+}
+
+/* Hidden means out of the tab order too, until the title has scrolled away. */
+.topbar.is-past-title .wordmark {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.topnav {
+  display: flex;
+  gap: 0.15rem;
+  margin-left: auto;
+}
+
+.topnav a {
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  color: var(--ink-3);
+  font-size: 0.875rem;
+  font-weight: 550;
+  transition:
+    color var(--dur-1) var(--ease),
+    background-color var(--dur-1) var(--ease);
+}
+
+.topnav a:hover {
+  color: var(--ink);
+}
+
+.topnav a[aria-current] {
+  background: var(--bg-muted);
+  color: var(--ink);
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 0.15rem;
 }
 
 .theme-toggle .moon,
@@ -37,6 +119,103 @@
 
 :root[data-theme='dark'] .theme-toggle .moon {
   display: block;
+}
+
+.progress {
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 2px;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent-fill);
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left;
+}
+
+@media (max-width: 860px) {
+  .topnav {
+    display: none;
+  }
+
+  .topbar-actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .wordmark {
+    display: none;
+  }
+}
+
+/* ---- table of contents in the left margin of wide screens ---- */
+
+.toc {
+  position: fixed;
+  top: calc(var(--topbar-h) + 3rem);
+  left: max(1.5rem, calc((100vw - var(--wide)) / 2 - 13rem));
+  z-index: 10;
+  display: none;
+  width: 11rem;
+}
+
+.toc-title {
+  margin-bottom: 0.6rem;
+  color: var(--ink-4);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.toc ol {
+  display: grid;
+  gap: 0.1rem;
+  border-left: 1px solid var(--border);
+}
+
+.toc a {
+  display: block;
+  margin-left: -1px;
+  padding: 0.3rem 0 0.3rem 0.85rem;
+  border-left: 2px solid transparent;
+  color: var(--ink-3);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.35;
+  transition:
+    color var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease);
+}
+
+.toc a:hover {
+  color: var(--ink);
+}
+
+.toc a[aria-current] {
+  border-left-color: var(--accent-fill);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Only where the margin beside the wide column is free: no overlap with figures. */
+@media (min-width: 1440px) {
+  .toc {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--dur-2) var(--ease),
+      visibility var(--dur-2);
+  }
+
+  .toc.is-visible {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 /* ---- columns ---- */
@@ -56,8 +235,25 @@ main {
 /* ---- title block ---- */
 
 .hero {
-  padding-top: clamp(1.75rem, 1rem + 3vw, 3.25rem);
+  padding-top: calc(var(--topbar-h) + clamp(2.5rem, 1.75rem + 4vw, 5.5rem));
   text-align: center;
+}
+
+/* The glow and the grid behind the title. The hero box is only as wide as the figures, so the glow is
+   placed against the page itself (no positioned ancestor) and spans the whole window, under the content. */
+
+.hero-glow {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: 46rem;
+  background:
+    radial-gradient(42rem 24rem at 50% 4rem, var(--accent-tint), transparent 70%),
+    linear-gradient(to bottom, transparent, var(--bg) 92%),
+    repeating-linear-gradient(to right, color-mix(in srgb, var(--border) 55%, transparent) 0 1px, transparent 1px 72px),
+    repeating-linear-gradient(to bottom, color-mix(in srgb, var(--border) 55%, transparent) 0 1px, transparent 1px 72px);
+  mask-image: radial-gradient(60rem 34rem at 50% 0, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(60rem 34rem at 50% 0, #000 30%, transparent 75%);
 }
 
 /* The conference's own logo, one image per theme (the dark one has light lettering). */
@@ -143,20 +339,30 @@ main {
   margin-top: 1.5rem;
 }
 
-/* ---- teaser ---- */
+/* ---- teaser: a card, its caption along the bottom ---- */
 
 .teaser {
-  margin-top: clamp(2.25rem, 1.75rem + 2vw, 3.25rem);
+  margin-top: clamp(2.5rem, 2rem + 3vw, 4rem);
+}
+
+.hero-frame {
+  margin: 0;
 }
 
 .hero-visual {
   position: relative;
   aspect-ratio: 1000 / 300;
   min-height: 12rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-l);
-  background: var(--bg-soft);
   overflow: hidden;
+}
+
+.hero-caption {
+  padding: 0.95rem 1.25rem 1.1rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--ink-3);
+  font-size: 0.875rem;
+  text-align: left;
 }
 
 @media (max-width: 640px) {
@@ -195,34 +401,26 @@ main {
   margin-top: 0.9rem;
 }
 
-/* ---- figures ---- */
+/* ---- figures: a card (base.css), then the caption in the reading column ---- */
 
-.fig {
+/* Each figure lays itself out from its card's width, not the window's. (Only the card: the figure around it
+   is a subgrid in the side-by-side row, and a container's layout containment would break that.) */
+.figure-frame {
   container-type: inline-size;
 }
 
-.fig-controls {
+.figure-tools {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem 0.75rem;
-  margin-bottom: 0.85rem;
-}
-
-.fig-controls:empty {
-  display: none;
-}
-
-.fig-panel {
-  padding: clamp(1rem, 0.6rem + 1.6vw, 1.75rem);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-l);
+  max-width: 100%;
 }
 
 .fig figcaption,
 .fig-note {
   max-width: var(--col);
-  margin: 0.85rem auto 0;
+  margin: 1rem auto 0;
   color: var(--ink-3);
   font-size: 0.875rem;
   line-height: 1.55;
@@ -230,12 +428,8 @@ main {
 }
 
 .fig figcaption b {
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.fig .legend {
-  margin-bottom: 0.5rem;
+  color: var(--ink-2);
+  font-weight: 650;
 }
 
 .fig-row {
@@ -244,22 +438,27 @@ main {
   gap: 2.25rem;
 }
 
-@media (min-width: 760px) {
-  /* Side by side, the two figures share their rows: legends, charts and captions line up. */
+@media (min-width: 900px) {
+  /* Side by side, the two cards share their rows: same height, and the captions line up. */
   .fig-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: auto 1fr auto;
-    gap: 0 2.5rem;
+    grid-template-rows: 1fr auto;
+    gap: 0 1.5rem;
   }
 
   .fig-row .fig {
     display: grid;
-    grid-row: span 3;
+    grid-row: span 2;
     grid-template-rows: subgrid;
   }
 
   .fig-row figcaption {
     margin-left: 0;
+  }
+
+  /* Half-width cards: a little less padding, so the charts keep room for their numbers. */
+  .fig-row .figure-body {
+    padding: 1.25rem;
   }
 }
 
@@ -305,32 +504,38 @@ main {
   margin-bottom: 1.25rem;
 }
 
-/* ---- BibTeX ---- */
+.more .table-wrap {
+  padding: 0.35rem 0.6rem 0.9rem;
+}
+
+/* ---- citation: BibTeX on a card ---- */
 
 .bibtex {
-  position: relative;
+  margin-top: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);
+  background: var(--bg-soft);
+  overflow: hidden;
+}
+
+.bibtex-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.6rem 0.6rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink-3);
+  font-size: 0.8125rem;
+  font-weight: 600;
 }
 
 .bibtex pre {
-  padding: 1rem 1.15rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-m);
-  background: var(--bg-soft);
+  padding: 1.1rem 1.2rem 1.25rem;
   color: var(--ink-2);
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  line-height: 1.65;
+  font-size: 0.8125rem;
+  line-height: 1.7;
   overflow-x: auto;
-}
-
-.bibtex pre code {
-  font-size: 1em;
-}
-
-.bibtex .copy {
-  position: absolute;
-  top: 0.55rem;
-  right: 0.55rem;
 }
 
 .copy.is-done {
@@ -660,7 +865,7 @@ main {
   }
 }
 
-/* ---- back to top ---- */
+/* ---- back to top: a round button in the bottom right, ringed by reading progress ---- */
 
 .to-top {
   position: fixed;
@@ -669,23 +874,22 @@ main {
   z-index: 40;
   display: grid;
   place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border: 1px solid var(--border);
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
-  background: var(--surface);
-  color: var(--ink-2);
-  font-size: 1.05rem;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--ink);
+  font-size: 1.1rem;
   box-shadow: var(--shadow-2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(6px);
+  transform: translateY(8px) scale(0.92);
   transition:
     opacity var(--dur-2) var(--ease),
     transform var(--dur-2) var(--ease),
-    visibility var(--dur-2),
-    border-color var(--dur-1) var(--ease),
-    color var(--dur-1) var(--ease);
+    visibility var(--dur-2);
 }
 
 .to-top.is-visible {
@@ -695,8 +899,30 @@ main {
 }
 
 .to-top:hover {
-  border-color: var(--border-strong);
-  color: var(--ink);
+  color: var(--accent);
+}
+
+.to-top > * {
+  grid-area: 1 / 1;
+}
+
+.to-top-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.to-top-ring circle {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 2.5;
+}
+
+.to-top-ring .to-top-bar {
+  stroke: var(--accent-fill);
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - 100 * var(--progress, 0));
+  stroke-linecap: round;
 }
 
 /* ---- footer ---- */
@@ -716,23 +942,26 @@ main {
   }
 }
 
-/* ---- print: the text and the figures, without the controls ---- */
+/* ---- print: the text and the figures, without chrome ---- */
 
 @media print {
-  .site-header,
+  .topbar,
+  .toc,
+  .hero-glow,
   .links,
-  .fig-controls,
+  .figure-tools,
   .to-top,
   .copy {
     display: none !important;
   }
 
-  .fig,
-  .postcard {
-    break-inside: avoid;
+  .hero {
+    padding-top: 1rem;
   }
 
+  .figure-frame,
   .postcard {
     box-shadow: none;
+    break-inside: avoid;
   }
 }

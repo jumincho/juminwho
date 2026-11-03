@@ -369,7 +369,7 @@ async function checkProjectPage(vp, scheme) {
         tokens: count('#fig-tokens .tk-row'),
         trace: count('#fig-trace .tr-row'),
       },
-      back: document.querySelector('.site-header .back')?.href,
+      back: document.querySelector('.topbar .back')?.href,
     }
   })
   if (state.theme !== scheme) fail(`data-theme is "${state.theme}", expected "${scheme}"`)

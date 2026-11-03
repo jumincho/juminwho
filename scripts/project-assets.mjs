@@ -41,7 +41,12 @@ ${fonts}
 ${tokens}
 * { box-sizing: border-box; margin: 0; }
 body { width: 1200px; height: 630px; overflow: hidden; background: var(--bg); color: var(--ink); font-family: var(--font-sans); }
-.og { position: relative; height: 100%; padding: 46px 72px; text-align: center; }
+.og { position: relative; height: 100%; padding: 46px 72px; text-align: center; isolation: isolate; }
+.og::before { content: ''; position: absolute; inset: 0; z-index: -1;
+  background: radial-gradient(700px 360px at 50% 0%, var(--accent-soft), transparent 70%),
+    repeating-linear-gradient(to right, color-mix(in srgb, var(--border) 70%, transparent) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(to bottom, color-mix(in srgb, var(--border) 70%, transparent) 0 1px, transparent 1px 64px);
+  mask-image: linear-gradient(to bottom, #000, transparent 85%); }
 .logo { display: block; height: 92px; margin: 0 auto; }
 h1 { margin-top: 20px; font-family: var(--font-serif); font-size: 52px; font-weight: 600; line-height: 1.14; letter-spacing: -0.01em; }
 h1 span { display: block; }
