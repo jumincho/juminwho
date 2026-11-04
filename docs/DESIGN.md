@@ -304,7 +304,7 @@ WCAG AA 이상입니다. 저자 이름은 링크 색(`--link`)으로 씁니다.
 **첫 화면.** 학회는 글자 칩이 아니라 CIKM 2026 공식 로고(`assets/cikm-2026-*.webp`)로 보여 줍니다. 원본은 배경이
 투명한 그림이고, 다크 테마용은 "CIKM 2026" 글자와 지평선만 밝게 바꾼 것입니다(건물과 점 색은 그대로). 제목은
 세리프 한 덩어리로 쓰고, 넓은 화면에서는 "…for Iterative RAG" 뒤에서 줄을 바꿉니다. 그 아래 저자, 소속, 링크
-버튼(Code와 BibTeX는 어두운 알약, 아직 공개되지 않은 Paper와 arXiv는 "Soon" 배지가 붙은 밝은 비활성 알약)이 옵니다.
+버튼(Paper, Code, BibTeX는 어두운 알약, 아직 공개되지 않은 arXiv는 "Soon" 배지가 붙은 밝은 비활성 알약)이 옵니다.
 교신저자 표시(✉)는 두지 않습니다.
 
 **글꼴과 수식.** 제목과 본문은 Source Serif 4, 캡션과 그림 속 글자, 버튼은 Inter, BibTeX는 JetBrains Mono입니다.
@@ -327,7 +327,8 @@ WCAG AA 이상입니다. 저자 이름은 링크 색(`--link`)으로 씁니다.
 가기는 오른쪽 아래에 떠 있는 둥근 버튼(읽은 만큼 차오르는 테두리)이 맡습니다. 첫 화면을 지나면 나타나고, 누르면 맨 위로 가면서 키보드
 포커스도 제목으로 옮깁니다.
 
-**콘텐츠.** 영어로만 씁니다. 논문 PDF는 올리지 않고, Paper와 arXiv 버튼은 공개 전까지 "Soon" 배지가 붙은 비활성
+**콘텐츠.** 영어로만 씁니다. 논문 PDF는 올리지 않습니다. Paper 버튼은 ACM Digital Library의 논문 페이지
+(<https://dl.acm.org/doi/10.1145/3799682.3840073>)로 연결하고, arXiv 버튼은 공개 전까지 "Soon" 배지가 붙은 비활성
 버튼으로 둡니다. Code 버튼은 <https://github.com/jumincho/forward-looking-guidance>로 연결합니다. 페이지에는 QR
 코드를 두지 않습니다. 링크 미리보기 이미지는 `npm run project-assets`로 만듭니다.
 
