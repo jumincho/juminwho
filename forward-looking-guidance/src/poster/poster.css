@@ -528,10 +528,20 @@ body {
   color: var(--miss);
 }
 
-/* 𝒟 (the corpus) is outside the static serif's subset: FreeSerif, a TrueType face, has it. */
-.ps-script {
-  font-family: 'FreeSerif', var(--font-math);
-  font-style: normal;
+/*
+ * 𝒟, the corpus, as LaTeX's \mathcal{D} draws it: the outline of D from KaTeX's Caligraphic face
+ * (MIT), sized like a glyph of the surrounding text (advance 0.771 em, ascent 0.789, descent 0.143).
+ * No installed face has a calligraphic D; the one script D there is a copperplate swash that reads
+ * as a broken character.
+ */
+.ps-cal {
+  display: inline-block;
+  width: 0.771em;
+  height: 0.932em;
+  margin: 0 0.04em 0 0.06em;
+  overflow: visible;
+  vertical-align: -0.143em;
+  fill: currentColor;
 }
 
 .ps-eq-no {
