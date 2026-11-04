@@ -1,12 +1,15 @@
 /*
- * The poster: one A0 portrait sheet (841 × 1189 mm). It is laid out on a 1540 px wide canvas,
- * where the figures look as they do on a desktop screen, and `.is-print` scales that canvas up
- * to the sheet when the PDF is made: 841 mm is 3178.58 px at 96 px per inch, 2.064 times 1540.
- * One canvas px is about 0.55 mm, so a size in px is about 1.55 times that size in pt on paper:
- * body text 20 px ≈ 31 pt, the smallest chart labels 11 px ≈ 17 pt.
+ * The poster: one A0 portrait sheet (841 × 1189 mm), set the way recent spotlight and oral posters at
+ * ICLR, NeurIPS and ICML are: a coloured title band, a highlights box that carries the whole paper in
+ * three points, then numbered sections in two columns, each closing on its takeaway.
  *
- * Paper rules: no shadows, filters or masks (a PDF would carry them as pixels), one accent colour,
- * exact colours in print.
+ * It is laid out on a 1540 px wide canvas, where the figures look as they do on a desktop screen, and
+ * `.is-print` scales that canvas up to the sheet when the PDF is made: 841 mm is 3178.58 px at 96 px
+ * per inch, 2.064 times 1540. One canvas px is about 0.55 mm, so a size in px is about 1.55 times that
+ * size in pt on paper: body text 19 px ≈ 29 pt, the smallest chart labels 11 px ≈ 17 pt.
+ *
+ * Paper rules: no shadows, filters or masks (a PDF would carry them as pixels), exact colours in print,
+ * and no character outside the static fonts (see main.ts) unless a TrueType face is named for it.
  */
 
 @page {
@@ -19,10 +22,20 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Source Serif 4', Georgia, serif;
   --font-math: 'Source Serif 4', 'STIX Two Math', serif;
+  /* Arrows and other symbols the static subsets lack, from a TrueType face. */
+  --font-symbol: 'DejaVu Sans', sans-serif;
   --poster-w: 1540px;
   --poster-h: 2177.2px; /* 1189 mm at the canvas scale */
   --poster-scale: 2.064015;
-  --pad: 50px;
+  --pad: 48px;
+  /* The title band: the accent, deepened, and the text on it. */
+  --band: #0c3b2f;
+  --band-ink: #ffffff;
+  --band-ink-2: #b6e7d3;
+  --band-ink-3: #8cc9b1;
+  /* The highlights box. */
+  --hl-bg: #edf7f2;
+  --hl-border: #cce8da;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
@@ -45,12 +58,12 @@ body {
   flex-direction: column;
   width: var(--poster-w);
   height: var(--poster-h);
-  padding: var(--pad) var(--pad) 36px;
+  padding-bottom: 22px;
   overflow: hidden;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-size: 20px;
+  font-size: 19px;
   line-height: 1.42;
 }
 
@@ -59,18 +72,27 @@ body {
   transform-origin: 0 0;
 }
 
-/* ---- header: the conference, the title and authors, the way to the project page ---- */
+/* ---- title band: the conference, the title and authors, the way to the project page ---- */
 
 .ps-head {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 36px;
+  gap: 40px;
+  padding: 22px var(--pad);
+  background: var(--band);
+  color: var(--band-ink);
+}
+
+.ps-logo-tile {
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: #ffffff;
 }
 
 .ps-logo {
   width: auto;
-  height: 168px;
+  height: 150px;
 }
 
 .ps-heading h1 {
@@ -82,53 +104,57 @@ body {
 
 .ps-title-main {
   display: block;
-  font-size: 72px;
+  font-size: 68px;
   line-height: 1.04;
   white-space: nowrap;
 }
 
 .ps-title-line {
   display: block;
-  margin-top: 6px;
-  color: var(--ink-2);
-  font-size: 35px;
+  margin-top: 4px;
+  color: var(--band-ink-2);
+  font-size: 36px;
   line-height: 1.15;
 }
 
 .ps-authors {
-  margin-top: 16px;
-  font-size: 26px;
+  margin-top: 14px;
+  font-size: 25px;
   font-weight: 500;
 }
 
 .ps-authors sup,
 .ps-affil sup {
   margin-left: 1px;
-  color: var(--ink-3);
+  color: var(--band-ink-3);
   font-size: 0.62em;
 }
 
 .ps-affil {
   display: flex;
   flex-wrap: wrap;
-  gap: 2px 22px;
-  margin-top: 4px;
-  color: var(--ink-3);
-  font-size: 19px;
+  gap: 0 20px;
+  margin-top: 2px;
+  color: var(--band-ink-2);
+  font-size: 18px;
 }
 
 .ps-affil sup {
   margin: 0 2px 0 0;
 }
 
+/* The code is version 4, 33 modules of 4.4 px: 17 px of white all round is the 4-module quiet zone. */
 .ps-qr {
   margin: 0;
+  padding: 17px 17px 10px;
+  border-radius: 18px;
+  background: #ffffff;
   text-align: center;
 }
 
 .ps-qr-code {
-  width: 166px;
-  height: 166px;
+  width: 146px;
+  height: 146px;
 }
 
 .ps-qr-code svg {
@@ -137,26 +163,43 @@ body {
   height: 100%;
 }
 
-/* Kept 4 modules (20 px) clear of the code, as the quiet zone. */
 .ps-qr figcaption {
-  margin-top: 20px;
-  color: var(--ink-2);
+  margin-top: 17px;
+  color: var(--ink);
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 650;
+  line-height: 1.2;
 }
 
-/* ---- the idea: one sentence, the plan in motion, four numbers ---- */
+/* ---- highlights: the idea in a sentence, three points, the plan in motion ---- */
 
-.ps-hero {
-  margin-top: 20px;
+.ps-highlights {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 690px;
+  align-items: center;
+  gap: 30px;
+  margin: 22px var(--pad) 0;
+  padding: 22px 22px 22px 32px;
+  border: 1.5px solid var(--hl-border);
+  border-radius: 24px;
+  background: var(--hl-bg);
+}
+
+.ps-kicker {
+  color: var(--accent);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .ps-headline {
+  margin-top: 4px;
   font-family: var(--font-serif);
   font-optical-sizing: auto;
-  font-size: 56px;
+  font-size: 46px;
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1.05;
   letter-spacing: -0.012em;
 }
 
@@ -165,169 +208,369 @@ body {
   font-style: normal;
 }
 
-.ps-lede {
-  margin-top: 10px;
-  color: var(--ink-2);
-  font-size: 22px;
-  line-height: 1.45;
+.ps-hl-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
 }
 
-.ps-panel {
-  margin-top: 12px;
-  border: 1.5px solid var(--border);
+.ps-hl-list li,
+.ps-bullets li {
+  position: relative;
+  padding-left: 26px;
+}
+
+.ps-hl-list li::before,
+.ps-bullets li::before {
+  content: '';
+  position: absolute;
+  top: 0.5em;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--accent-fill);
+}
+
+.ps-hl-list b,
+.ps-bullets b {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.pos,
+.ps-hl-list b.pos {
+  color: var(--accent);
+}
+
+.neg,
+.ps-hl-list b.neg {
+  color: var(--miss);
+}
+
+/*
+ * The teaser is drawn at 560 × 242 and scaled to the panel's inner size (687 × 297), so its nodes and
+ * labels come out about 23% larger than the page draws them.
+ */
+.ps-teaser {
+  height: 300px;
+  overflow: hidden;
+  border: 1.5px solid var(--hl-border);
   border-radius: 18px;
   background: var(--surface);
 }
 
-/*
- * The teaser is drawn at 1100 × 212 and scaled to the panel's inner width (1440 − 3 px of border),
- * so its nodes and labels are about 30% larger than the page draws them and fill the band.
- */
-.ps-teaser {
-  position: relative;
-  height: 280px;
-  margin-top: 16px;
-  overflow: hidden;
-  background: var(--bg-soft);
-}
-
-/* The teaser's key sits in its empty top-left corner; the drawing's own key would meet the card below the nodes. */
-.ps-teaser .hero-legend {
-  display: none;
-}
-
-.ps-teaser-key {
-  position: absolute;
-  top: 16px;
-  left: 24px;
-  font-size: 17px;
-}
-
 .ps-teaser .hero-visual {
   position: relative;
-  width: 1100px;
-  height: 212px;
-  overflow: hidden;
-  transform: scale(1.30636);
+  width: 560px;
+  height: 242px;
+  transform: scale(1.2268);
   transform-origin: 0 0;
 }
 
-.ps-numbers {
+/* ---- two columns of numbered sections ---- */
+
+.ps-columns {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 60px;
+  margin: 24px var(--pad) 0;
+  /* The rule between the columns, down the middle of the gap. */
+  background: linear-gradient(var(--border), var(--border)) 50% 0 / 1.5px 100% no-repeat;
 }
 
-.ps-numbers li {
-  padding: 0 24px;
-  border-left: 1.5px solid var(--border);
-}
-
-.ps-numbers li:first-child {
-  padding-left: 0;
-  border-left: 0;
-}
-
-.ps-numbers b {
-  display: block;
-  color: var(--accent);
-  font-size: 60px;
-  font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-}
-
-.ps-numbers span {
-  display: block;
-  margin-top: 4px;
-  color: var(--ink-2);
-  font-size: 18px;
-  line-height: 1.28;
-}
-
-/* ---- sections ---- */
-
-.ps-section {
-  margin-top: 20px;
+.ps-section + .ps-section {
+  margin-top: 22px;
 }
 
 .ps-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
   font-family: var(--font-serif);
   font-optical-sizing: auto;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.01em;
 }
 
+.ps-num {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--accent-solid);
+  color: var(--on-accent);
+  font-family: var(--font-sans);
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
 .ps-text {
-  margin-top: 6px;
+  margin-top: 12px;
   color: var(--ink-2);
-  font-size: 20px;
+}
+
+.ps-text b {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.ps-text u {
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.ps-bullets {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+  color: var(--ink-2);
+}
+
+.ps-panel {
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
 }
 
 .ps-figure {
-  padding: 16px 22px;
+  margin-top: 14px;
+  padding: 16px 20px;
   container-type: inline-size;
 }
 
-.ps-columns {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 32px;
-}
-
-/* Each column stretches its panel, so the two panels end on one line. */
-.ps-columns .ps-section {
+.ps-fig-title {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 18px;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 650;
 }
 
-.ps-columns .ps-panel {
-  flex: 1;
+.ps-fig-note {
+  color: var(--ink-3);
+  font-size: 16.5px;
+  font-weight: 500;
 }
 
 .ps-legend {
-  margin-bottom: 8px;
   font-size: 17px;
 }
 
-.ps-legend-note {
-  margin-left: auto;
+.ps-legend .swatch {
+  width: 14px;
+  height: 14px;
+}
+
+.ps-takeaway {
+  margin-top: 12px;
+  padding: 9px 14px 10px 16px;
+  border-left: 5px solid var(--accent-fill);
+  border-radius: 0 12px 12px 0;
+  background: var(--accent-tint);
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1.4;
+}
+
+.ps-takeaway > b:first-child {
+  margin-right: 4px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ---- equations (2) to (4): G_i where it goes, and where it does not ---- */
+
+.ps-eqs {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 13px 20px 12px;
+  border-radius: 16px;
+  background: var(--bg-soft);
+}
+
+.ps-eq {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 24.5px;
+  line-height: 1.35;
+}
+
+.ps-eq .m sub {
+  font-size: 0.66em;
+}
+
+.ps-eq .ins {
+  padding: 0 3px 0 1px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.ps-eq.is-off .ins {
+  background: var(--miss-soft);
+  color: var(--miss);
+}
+
+/* 𝒟 (the corpus) is outside the static serif's subset: FreeSerif, a TrueType face, has it. */
+.ps-script {
+  font-family: 'FreeSerif', var(--font-math);
+  font-style: normal;
+}
+
+.ps-eq-no {
+  color: var(--ink-3);
+  font-family: var(--font-serif);
+  font-size: 20px;
+}
+
+.ps-eq-note {
+  margin-top: 2px;
+  color: var(--ink-3);
+  font-size: 17px;
+}
+
+/* ---- the main results table ---- */
+
+.ps-table-wrap {
+  padding: 10px 16px 12px;
+}
+
+.ps-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.ps-table th,
+.ps-table td {
+  padding: 4px 6px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ps-table thead th {
+  color: var(--ink-3);
+  font-size: 16.5px;
+  font-weight: 650;
+}
+
+.ps-table thead tr:first-child th {
+  padding-top: 2px;
+  color: var(--ink);
+  font-size: 17.5px;
+}
+
+.ps-table .ps-t-group {
+  border-bottom: 1.5px solid var(--border-strong);
+}
+
+.ps-table thead tr:last-child th {
+  border-bottom: 2px solid var(--ink-3);
+}
+
+/* A hairline between the two backbones. */
+.ps-table tr > :nth-child(4) {
+  border-right: 1.5px solid var(--border);
+}
+
+.ps-table thead tr:first-child > :nth-child(2) {
+  border-right: 1.5px solid var(--border);
+}
+
+.ps-table thead tr:last-child > :nth-child(3) {
+  border-right: 1.5px solid var(--border);
+}
+
+.ps-table thead tr:last-child > :nth-child(4) {
+  border-right: 0;
+}
+
+.ps-table tbody + tbody {
+  border-top: 1.5px solid var(--border);
+}
+
+.ps-table tbody:last-child {
+  border-bottom: 2px solid var(--ink-3);
+}
+
+.ps-table .ps-t-method {
+  padding-left: 4px;
+  color: var(--ink);
+  font-size: 17.5px;
+  font-weight: 550;
+  text-align: left;
+}
+
+.ps-table td {
+  color: var(--ink-2);
+  font-size: 18px;
+  line-height: 1.15;
+}
+
+.ps-table tr.is-fg > * {
+  background: var(--accent-tint);
+}
+
+.ps-table tr.is-fg .ps-t-method {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.ps-t-value {
+  display: block;
+}
+
+.ps-table td.is-best .ps-t-value {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.ps-table td.is-second .ps-t-value {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.ps-t-delta {
+  display: block;
+  margin-top: 1px;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.ps-t-delta.is-up {
+  color: var(--accent);
+}
+
+.ps-t-delta.is-down {
+  color: var(--miss);
+}
+
+.ps-t-delta.is-flat {
   color: var(--ink-4);
 }
 
-.ps-dot {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-}
-
-.ps-dot.is-base {
-  border: 2px solid var(--base);
-  background: var(--surface);
-}
-
-.ps-dot.is-fg,
-.ps-dot.is-running {
-  background: var(--accent-solid);
-}
-
-.ps-dot.is-done {
-  background: var(--ink);
-}
-
-.ps-dot.is-next {
-  border: 2px solid var(--accent-fill);
-  background: var(--surface);
-}
+/* ---- footer ---- */
 
 .ps-foot {
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  margin-top: auto;
+  margin: auto var(--pad) 0;
   padding-top: 10px;
   border-top: 1.5px solid var(--border);
   color: var(--ink-3);
@@ -337,7 +580,7 @@ body {
 .ps-foot b {
   margin-right: 8px;
   color: var(--ink);
-  font-weight: 600;
+  font-weight: 650;
 }
 
 /* ---- the page's figures, on paper ---- */
@@ -351,28 +594,38 @@ body {
   display: none;
 }
 
-/* Figure 1 keeps its two lanes; cells take only the height their text needs. */
+/* Figure 1: the two runs side by side, question and plan above them. */
 .poster .mv {
-  gap: 10px;
+  gap: 12px;
 }
 
-.poster .mv-grid {
-  gap: 10px 26px;
-}
-
-.poster .mv-cell {
-  min-height: 0;
-  padding: 8px 14px 10px;
+.poster .mv-context {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 12px;
 }
 
 .poster .mv-question,
 .poster .mv-plan {
-  padding: 8px 14px 10px;
+  padding: 9px 13px 10px;
 }
 
 .poster .mv-question p,
 .poster .mv-plan ol {
   margin-top: 2px;
+}
+
+.poster .mv-grid {
+  gap: 18px 14px;
+}
+
+.poster .mv-cell {
+  min-height: 0;
+  gap: 3px;
+  padding: 8px 12px 10px;
+}
+
+.poster .mv-cell.is-current {
+  box-shadow: none;
 }
 
 .poster .mv-num {
@@ -381,7 +634,23 @@ body {
   font-size: 12px;
 }
 
-/* Of Figure 2, the poster keeps the measured effect of each stage; the teaser shows the mechanism. */
+/* The arrow between steps, drawn with borders instead of the page's CSS mask: a chevron in the 18 px gap. */
+.poster .mv-cell:not([data-step='4'])::after {
+  top: auto;
+  right: auto;
+  bottom: -11px;
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 12px;
+  border-right: 2.5px solid var(--ink-4);
+  border-bottom: 2.5px solid var(--ink-4);
+  background: none;
+  mask: none;
+  -webkit-mask: none;
+  transform: rotate(45deg);
+}
+
+/* Of Figure 2, section 2 keeps the measured effect of each stage (Table 1). */
 .ps-effect .pl-diagram,
 .ps-effect .pf {
   display: none;
@@ -389,29 +658,49 @@ body {
 
 .ps-effect .pl-effect {
   max-width: none;
-  margin: 0;
+  margin: 8px 0 0;
   padding: 0;
   border: 0;
   background: none;
 }
 
+.ps-effect .pl-effect-head,
 .ps-effect .pl-bar-row {
-  padding-block: 0.3rem;
+  grid-template-columns: 15rem minmax(0, 1fr) 4.2rem;
+}
+
+.ps-effect .pl-effect-head {
+  font-size: 16.5px;
+}
+
+.ps-effect .pl-bar-row {
+  padding-block: 4px;
+  font-size: 18px;
+}
+
+.ps-effect .pl-bar-row[aria-pressed='true'] {
+  box-shadow: none;
+  outline: 1.5px solid var(--border-strong);
+  outline-offset: -1.5px;
+}
+
+.ps-effect .pl-bar-track {
+  height: 16px;
 }
 
 /* The real case: what each run keeps from the same evidence, and where that leads. */
 .ps-case {
   display: grid;
-  align-content: center;
   gap: 0;
+  padding-block: 4px;
 }
 
 .ps-case-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 6px 16px;
-  padding: 12px 0;
+  gap: 4px 16px;
+  padding: 10px 0;
 }
 
 .ps-case-row + .ps-case-row {
@@ -438,10 +727,10 @@ body {
 .ps-case-kept {
   grid-column: 1 / -1;
   color: var(--ink-2);
-  font-size: 19px;
-  line-height: 1.5;
+  font-size: 18.5px;
+  line-height: 1.45;
 }
 
 .poster .ps-case .tr-verdict {
-  font-size: 18px;
+  font-size: 17.5px;
 }

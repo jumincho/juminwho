@@ -57,8 +57,9 @@ try {
         figures: {
           teaser: count('#hero-visual svg .hero-node'),
           motivation: count('#fig-motivation .mv-cell'),
-          gains: count('#fig-gains .gn-row'),
           effect: count('#fig-pipeline .pl-bar-row'),
+          table: count('#tbl-results tbody tr'),
+          depth: count('#fig-depth .dp-group'),
           case: count('.ps-case-row'),
           qr: count('#qr svg'),
         },

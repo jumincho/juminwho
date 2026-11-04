@@ -7,15 +7,17 @@
     <title>Poster · Forward-Looking Guidance for Iterative RAG in Multi-Hop QA · CIKM 2026</title>
     <!--
       The CIKM 2026 poster: A0 portrait (841 × 1189 mm), printed from this page by `npm run poster`.
-      It is laid out on a 1540 px wide canvas (1 px ≈ 0.55 mm, so a size in px is about 1.55 times
-      that size in pt on the print) and scaled up to the paper only when the PDF is made.
+      It is laid out on a 1540 px wide canvas (1 px is about 0.55 mm, so a size in px is about 1.55
+      times that size in pt on the print) and scaled up to the paper only when the PDF is made.
       It is not part of the site build.
     -->
   </head>
   <body>
     <main class="poster">
       <header class="ps-head">
-        <img class="ps-logo" src="./assets/cikm-2026-full.png" width="952" height="736" alt="CIKM 2026, Rome, Italy, 7–11 November" />
+        <div class="ps-logo-tile">
+          <img class="ps-logo" src="./assets/cikm-2026-full.png" width="952" height="736" alt="CIKM 2026, Rome, Italy, 7–11 November" />
+        </div>
         <div class="ps-heading">
           <h1>
             <span class="ps-title-main">Forward-Looking Guidance</span>
@@ -36,81 +38,107 @@
         </figure>
       </header>
 
-      <section class="ps-hero">
-        <p class="ps-headline">Let each step see <em>the rest of the plan.</em></p>
-        <p class="ps-lede">
-          Planning-based iterative RAG resolves its plan <span class="m"><i>o</i><sub>1</sub>, …, <i>o</i><sub><i>n</i></sub></span> one operation at a
-          time. Forward-looking guidance also shows the current step the operations still to come,
-          <span class="m"><i>G</i><sub><i>i</i></sub> = (<i>o</i><sub><i>i</i>+1</sub>, …, <i>o</i><sub><i>n</i></sub>)</span>, which the planner has
-          already written: no extra model calls, no extra retrieval.
-        </p>
-        <div class="ps-panel ps-teaser">
-          <div id="hero-visual" class="hero-visual"></div>
-          <p class="legend ps-teaser-key">
-            <span><i class="ps-dot is-done"></i>resolved</span><span><i class="ps-dot is-running"></i>running</span><span><i class="ps-dot is-next"></i>remaining, shown as guidance</span>
-          </p>
+      <!-- The whole paper in one box: the idea, where it goes, what it gains. -->
+      <section class="ps-highlights">
+        <div class="ps-hl-text">
+          <p class="ps-kicker">TL;DR</p>
+          <p class="ps-headline">Let each step see<br /> <em>the rest of the plan.</em></p>
+          <ul class="ps-hl-list">
+            <li>
+              <b>Forward-looking guidance (FG)</b> lets each step also read the operations still ahead,
+              <span class="m"><i>G</i><sub><i>i</i></sub> = (<i>o</i><sub><i>i</i>+1</sub>, …, <i>o</i><sub><i>n</i></sub>)</span>: no extra model calls, no extra retrieval.
+            </li>
+            <li>
+              <b>After retrieval, not in it.</b> In extraction and reasoning, <b class="pos">+.087 EM</b>; in the retrieval query, <b class="neg">−.035</b>.
+            </li>
+            <li>
+              <b>Consistent.</b> EM rises in <b class="pos">16 of 18</b> settings (3 planners × 3 datasets × 2 LLMs); on MuSiQue, by about <b class="pos">30%</b> at every hop depth.
+            </li>
+          </ul>
         </div>
-        <ul class="ps-numbers">
-          <li><b>+.087</b><span>EM for STRIDE on MuSiQue,<br />.288 to .375 with Qwen3-8B</span></li>
-          <li><b>16 / 18</b><span>settings with higher EM:<br />3 planners × 3 datasets × 2 LLMs</span></li>
-          <li><b>30%</b><span>relative EM gain on MuSiQue<br />at 2, 3 and 4 hops alike</span></li>
-          <li><b>+2–5%</b><span>tokens per question,<br />with no extra model calls</span></li>
-        </ul>
-      </section>
-
-      <section class="ps-section">
-        <h2>Why look ahead?</h2>
-        <p class="ps-text">
-          Each step sees only its own operation, so its output can be right for that step and still leave out what the next step
-          needs.
-        </p>
-        <div class="ps-panel ps-figure"><div id="fig-motivation"></div></div>
-      </section>
-
-      <section class="ps-section">
-        <h2>Results</h2>
-        <p class="ps-text">
-          Added to SelfAsk, DualRAG and STRIDE, guidance raises EM in 16 of 18 settings; STRIDE+FG is the strongest system with both
-          backbones.
-        </p>
-        <div class="ps-panel ps-figure">
-          <p class="legend ps-legend">
-            <span><i class="ps-dot is-base"></i>without guidance</span><span><i class="ps-dot is-fg"></i>with forward-looking guidance</span><span class="ps-legend-note">Qwen3-8B, exact match</span>
-          </p>
-          <div id="fig-gains"></div>
-        </div>
+        <div class="ps-teaser"><div id="hero-visual" class="hero-visual"></div></div>
       </section>
 
       <div class="ps-columns">
-        <section class="ps-section">
-          <h2>Where to add guidance</h2>
-          <p class="ps-text">
-            One stage of STRIDE at a time (MuSiQue dev, Qwen3-8B): it hurts in the retrieval query and helps after it.
-          </p>
-          <div class="ps-panel ps-figure ps-effect"><div id="fig-pipeline"></div></div>
-        </section>
-        <section class="ps-section">
-          <h2>A real case</h2>
-          <p class="ps-text">HotpotQA: “Which person that recorded the album <i>Focus Plays Focus</i> was born on 24 December 1946?” Both runs read the same evidence.</p>
-          <div class="ps-panel ps-figure ps-case tr">
-            <div class="ps-case-row">
-              <p class="ps-case-who">STRIDE</p>
-              <span class="tr-verdict is-bad"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>No answer</span>
-              <p class="ps-case-kept">keeps <mark class="is-lost">Focus (the band)</mark>, so <span class="m"><i>o</i><sub>2</sub></span> asks for a band’s birth date</p>
+        <div class="ps-col">
+          <section class="ps-section">
+            <h2><span class="ps-num">1</span>Motivation</h2>
+            <p class="ps-text">
+              Planning-based iterative RAG (SelfAsk, DualRAG, STRIDE) resolves a plan
+              <span class="m"><i>o</i><sub>1</sub>, …, <i>o</i><sub><i>n</i></sub></span> one operation at a time, and each step sees only its own operation.
+            </p>
+            <div class="ps-panel ps-figure"><div id="fig-motivation"></div></div>
+            <p class="ps-takeaway"><b>Takeaway.</b> Each output should also serve the steps that follow.</p>
+          </section>
+
+          <section class="ps-section">
+            <h2><span class="ps-num">2</span>Forward-looking guidance</h2>
+            <p class="ps-text">
+              At step <span class="m"><i>i</i></span>, the remaining plan <span class="m"><i>G</i><sub><i>i</i></sub></span> is appended
+              (<span class="op">⊕</span>) to a module’s input:
+            </p>
+            <div class="ps-eqs">
+              <p class="ps-eq is-off">
+                <span class="m"><i>D</i><sub><i>i</i></sub> = Retrieve(<i>o</i><sub><i>i</i></sub><span class="ins"><span class="op">⊕</span><i>G</i><sub><i>i</i></sub></span>, <span class="ps-script">𝒟</span>)</span>
+                <span class="ps-eq-no">(2)</span>
+              </p>
+              <p class="ps-eq">
+                <span class="m"><i>f</i><sub><i>i</i></sub> = LLM<sub>ext</sub>(prompt<sub>ext</sub><span class="ins"><span class="op">⊕</span><i>G</i><sub><i>i</i></sub></span>, <i>o</i><sub><i>i</i></sub>, <i>D</i><sub><i>i</i></sub>)</span>
+                <span class="ps-eq-no">(3)</span>
+              </p>
+              <p class="ps-eq">
+                <span class="m"><i>r</i><sub><i>i</i></sub> = LLM<sub>rsn</sub>(prompt<sub>rsn</sub><span class="ins"><span class="op">⊕</span><i>G</i><sub><i>i</i></sub></span>, <i>o</i><sub><i>i</i></sub>, <i>f</i><sub><i>i</i></sub>, <i>S</i>)</span>
+                <span class="ps-eq-no">(4)</span>
+              </p>
             </div>
-            <div class="ps-case-row is-fg">
-              <p class="ps-case-who">STRIDE+FG <span>also reads <span class="m"><i>o</i><sub>2</sub></span>: the birth date of each person</span></p>
-              <span class="tr-verdict is-good"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg>Jan Akkerman</span>
-              <p class="ps-case-kept">keeps <mark class="is-kept">Thijs van Leer, Jan Akkerman, Martin Dresden, Hans Cleuver</mark></p>
+            <div class="ps-panel ps-figure ps-effect">
+              <p class="ps-fig-title"><span>Which module should read <span class="m"><i>G</i><sub><i>i</i></sub></span>?</span> <span class="ps-fig-note">STRIDE, MuSiQue dev, Qwen3-8B</span></p>
+              <div id="fig-pipeline"></div>
             </div>
-          </div>
-        </section>
+            <p class="ps-takeaway"><b>Takeaway.</b> Look ahead after retrieval: use (3) and (4), not (2).</p>
+          </section>
+        </div>
+
+        <div class="ps-col">
+          <section class="ps-section">
+            <h2><span class="ps-num">3</span>Main results</h2>
+            <p class="ps-text">EM, 1,000 test questions each; <b>bold</b> best, <u>underlined</u> second, Δ under +FG.</p>
+            <div class="ps-panel ps-figure ps-table-wrap"><div id="tbl-results"></div></div>
+            <p class="ps-takeaway"><b>Takeaway.</b> FG lifts all three planners; STRIDE+FG is best on average.</p>
+          </section>
+
+          <section class="ps-section">
+            <h2><span class="ps-num">4</span>Analysis</h2>
+            <div class="ps-panel ps-figure">
+              <p class="ps-fig-title">MuSiQue EM by gold hop count <span class="legend ps-legend"><span><i class="swatch swatch-base"></i>STRIDE</span><span><i class="swatch swatch-accent"></i>STRIDE+FG</span></span></p>
+              <div id="fig-depth"></div>
+            </div>
+            <p class="ps-takeaway"><b>Takeaway.</b> The gain holds at every depth, for 2–5% more tokens.</p>
+          </section>
+
+          <section class="ps-section">
+            <h2><span class="ps-num">5</span>Case study</h2>
+            <p class="ps-text">HotpotQA: “Which person that recorded the album <i>Focus Plays Focus</i> was born on 24 December 1946?” Both runs read the same evidence.</p>
+            <div class="ps-panel ps-figure ps-case tr">
+              <div class="ps-case-row">
+                <p class="ps-case-who">STRIDE</p>
+                <span class="tr-verdict is-bad"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>No answer</span>
+                <p class="ps-case-kept">keeps <mark class="is-lost">Focus (the band)</mark>, so <span class="m"><i>o</i><sub>2</sub></span> asks for a band’s birth date</p>
+              </div>
+              <div class="ps-case-row is-fg">
+                <p class="ps-case-who">STRIDE+FG <span>also reads <span class="m"><i>o</i><sub>2</sub></span>: the birth date of each person</span></p>
+                <span class="tr-verdict is-good"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg>Jan Akkerman</span>
+                <p class="ps-case-kept">keeps <mark class="is-kept">Thijs van Leer, Jan Akkerman, Martin Dresden, Hans Cleuver</mark></p>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
 
       <footer class="ps-foot">
         <span><b>Paper</b> doi.org/10.1145/3799682.3840073</span>
         <span><b>Code</b> github.com/jumincho/forward-looking-guidance</span>
-        <span><b>CIKM 2026</b> Rome, Italy</span>
+        <span><b>Project page</b> jumincho.github.io/juminwho/forward-looking-guidance</span>
       </footer>
     </main>
 
