@@ -18,10 +18,9 @@ import '../styles/figures.css'
 import './poster.css'
 
 import QRCode from 'qrcode'
-import { backbones, column, datasets, mainResults, type Backbone, type Dataset } from '../data/paper'
+import { backbones, column, datasets, depthResults, mainResults, type Backbone, type Dataset } from '../data/paper'
 import { byId, h, html } from '../lib/dom'
-import { delta, score } from '../lib/format'
-import { mountDepth } from '../widgets/depth'
+import { delta, int, percent, score } from '../lib/format'
 import { mountHero } from '../widgets/hero'
 import { mountMotivation } from '../widgets/motivation'
 import { mountPipeline } from '../widgets/pipeline'
@@ -96,6 +95,34 @@ function resultsTable(): HTMLTableElement {
   return table
 }
 
+/**
+ * Table 3 on the poster: one bar per depth, STRIDE's EM with the gain from FG stacked on it, and the
+ * relative gain beside it, so the near-constant 30% reads down one column.
+ */
+function depthBars(): HTMLElement {
+  const max = 0.45
+  const at = (value: number) => `${((value / max) * 100).toFixed(2)}%`
+  const list = h('ul', { class: 'ps-dp' })
+  for (const d of depthResults) {
+    list.append(
+      h(
+        'li',
+        { class: `ps-dp-row${d.group === 'Overall' ? ' is-overall' : ''}` },
+        h('span', { class: 'ps-dp-label' }, h('b', {}, d.group), h('small', {}, `n = ${int(d.questions)}`)),
+        h(
+          'span',
+          { class: 'ps-dp-track' },
+          h('span', { class: 'ps-dp-base', style: `width:${at(d.stride)}` }),
+          h('span', { class: 'ps-dp-gain', style: `left:${at(d.stride)};width:${at(d.fg - d.stride)}` }),
+        ),
+        h('span', { class: 'ps-dp-values' }, `${score(d.stride)} `, h('span', { class: 'ps-arrow' }, '→'), ' ', h('b', {}, score(d.fg))),
+        h('span', { class: 'ps-dp-rel' }, percent(d.relative)),
+      ),
+    )
+  }
+  return list
+}
+
 function mount(id: string, run: (el: HTMLElement) => void): void {
   const el = byId(id)
   if (el) run(el)
@@ -105,7 +132,7 @@ mount('hero-visual', (el) => mountHero(el))
 mount('fig-motivation', (el) => mountMotivation(el, null))
 mount('fig-pipeline', (el) => mountPipeline(el))
 mount('tbl-results', (el) => el.replaceChildren(resultsTable()))
-mount('fig-depth', (el) => mountDepth(el, { height: 282 }))
+mount('fig-depth', (el) => el.replaceChildren(depthBars()))
 
 async function finish(): Promise<void> {
   // A vector QR code with no margin of its own: the poster's layout keeps the quiet zone around it.

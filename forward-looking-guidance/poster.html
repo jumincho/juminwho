@@ -109,37 +109,51 @@
 
           <section class="ps-section">
             <h2><span class="ps-num">4</span>Analysis</h2>
-            <div class="ps-panel ps-figure">
-              <p class="ps-fig-title">MuSiQue EM by gold hop count <span class="legend ps-legend"><span><i class="swatch swatch-base"></i>STRIDE</span><span><i class="swatch swatch-accent"></i>STRIDE+FG</span></span></p>
+            <div class="ps-panel ps-figure ps-depth">
+              <p class="ps-fig-title"><span>MuSiQue EM by gold hop count</span> <span class="legend ps-legend"><span><i class="swatch swatch-base"></i>STRIDE</span><span><i class="swatch swatch-accent"></i>gain with FG</span><span><i class="ps-dp-key">%</i>relative gain</span></span></p>
               <div id="fig-depth"></div>
             </div>
             <p class="ps-takeaway"><b>Takeaway.</b> The gain holds at every depth, for 2–5% more tokens.</p>
           </section>
 
+          <!-- Table 4 of the paper, one row per operation of the plan: what each system does with it. -->
           <section class="ps-section">
             <h2><span class="ps-num">5</span>Case study</h2>
-            <p class="ps-text">HotpotQA: “Which person that recorded the album <i>Focus Plays Focus</i> was born on 24 December 1946?” Both runs read the same evidence.</p>
+            <p class="ps-text">HotpotQA: “Which person that recorded the album <i>Focus Plays Focus</i> was born on 24 December 1946?” Both runs read the same passage for <span class="m"><i>o</i><sub>1</sub></span>.</p>
             <div class="ps-panel ps-figure ps-case tr">
-              <div class="ps-case-row">
-                <p class="ps-case-who">STRIDE</p>
-                <span class="tr-verdict is-bad"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>No answer</span>
-                <p class="ps-case-kept">keeps <mark class="is-lost">Focus (the band)</mark>, so <span class="m"><i>o</i><sub>2</sub></span> asks for a band’s birth date</p>
-              </div>
-              <div class="ps-case-row is-fg">
-                <p class="ps-case-who">STRIDE+FG <span>also reads <span class="m"><i>o</i><sub>2</sub></span>: the birth date of each person</span></p>
-                <span class="tr-verdict is-good"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg>Jan Akkerman</span>
-                <p class="ps-case-kept">keeps <mark class="is-kept">Thijs van Leer, Jan Akkerman, Martin Dresden, Hans Cleuver</mark></p>
-              </div>
+              <table class="ps-case-table">
+                <colgroup><col class="ps-case-c-plan" /><col class="ps-case-c-base" /><col class="ps-case-c-fg" /></colgroup>
+                <thead>
+                  <tr>
+                    <th scope="col">Plan</th>
+                    <th scope="col">STRIDE</th>
+                    <th scope="col" class="is-fg">STRIDE+FG</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><span class="m"><i>o</i><sub>1</sub></span>Who recorded the album?</th>
+                    <td><mark class="is-lost">Focus</mark> (the band)<small>drops the members</small></td>
+                    <td><mark class="is-kept">Focus</mark> + Thijs van Leer, Jan Akkerman, Martin Dresden, Hans Cleuver</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span class="m"><i>o</i><sub>2</sub></span>Birth date of each person?</th>
+                    <td>birth date of Focus?<small>unresolved: a band has none</small></td>
+                    <td>birth date of each member?<small>Jan Akkerman: 24 Dec 1946</small></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span class="m"><i>o</i><sub>3</sub></span>Who was born on 24 Dec 1946?</th>
+                    <td class="ps-case-end"><span class="tr-verdict is-bad"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>No answer</span></td>
+                    <td class="ps-case-end"><span class="tr-verdict is-good"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg>Jan Akkerman</span></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+            <p class="ps-takeaway"><b>Takeaway.</b> Knowing <span class="m"><i>o</i><sub>2</sub></span>, step 1 keeps the people, not just the band.</p>
           </section>
         </div>
       </div>
 
-      <footer class="ps-foot">
-        <span><b>Paper</b> doi.org/10.1145/3799682.3840073</span>
-        <span><b>Code</b> github.com/jumincho/forward-looking-guidance</span>
-        <span><b>Project page</b> jumincho.github.io/juminwho/forward-looking-guidance</span>
-      </footer>
     </main>
 
     <script type="module" src="./src/poster/main.ts"></script>

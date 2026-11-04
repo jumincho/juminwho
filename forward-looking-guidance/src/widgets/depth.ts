@@ -15,11 +15,10 @@ function bar(x: number, y: number, w: number, base: number, r = 5): string {
   return `M${x} ${base}V${y + k}Q${x} ${y} ${x + k} ${y}H${x + w - k}Q${x + w} ${y} ${x + w} ${y + k}V${base}Z`
 }
 
-/** `height` overrides the chart's height (the poster draws it a little shorter). */
-export function mountDepth(container: HTMLElement, options: { height?: number } = {}): void {
+export function mountDepth(container: HTMLElement): void {
   const draw = (width: number) => {
     const narrow = width < 560
-    const height = options.height ?? (narrow ? 290 : 320)
+    const height = narrow ? 290 : 320
     const margin = { top: 70, right: 8, bottom: 52, left: 34 }
     const plotBottom = height - margin.bottom
     const y = linear([0, 0.5], [plotBottom, margin.top])

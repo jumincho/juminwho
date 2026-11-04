@@ -58,7 +58,7 @@ body {
   flex-direction: column;
   width: var(--poster-w);
   height: var(--poster-h);
-  padding-bottom: 22px;
+  padding-bottom: 40px;
   overflow: hidden;
   background: var(--bg);
   color: var(--ink);
@@ -79,7 +79,7 @@ body {
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 40px;
-  padding: 22px var(--pad);
+  padding: 19px var(--pad);
   background: var(--band);
   color: var(--band-ink);
 }
@@ -179,7 +179,7 @@ body {
   align-items: center;
   gap: 30px;
   margin: 22px var(--pad) 0;
-  padding: 22px 22px 22px 32px;
+  padding: 18px 20px 18px 32px;
   border: 1.5px solid var(--hl-border);
   border-radius: 24px;
   background: var(--hl-bg);
@@ -210,8 +210,8 @@ body {
 
 .ps-hl-list {
   display: grid;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 6px;
+  margin-top: 12px;
 }
 
 .ps-hl-list li,
@@ -280,7 +280,7 @@ body {
 }
 
 .ps-section + .ps-section {
-  margin-top: 22px;
+  margin-top: 20px;
 }
 
 .ps-section h2 {
@@ -374,7 +374,7 @@ body {
 
 .ps-takeaway {
   margin-top: 12px;
-  padding: 9px 14px 10px 16px;
+  padding: 8px 14px 9px 16px;
   border-left: 5px solid var(--accent-fill);
   border-radius: 0 12px 12px 0;
   background: var(--accent-tint);
@@ -386,6 +386,109 @@ body {
 .ps-takeaway > b:first-child {
   margin-right: 4px;
   color: var(--accent);
+  font-weight: 700;
+}
+
+/* ---- MuSiQue EM by depth: one bar per depth, the gain from FG stacked on STRIDE ---- */
+
+.ps-depth {
+  padding-block: 12px 10px;
+}
+
+.ps-dp {
+  display: grid;
+  margin-top: 6px;
+}
+
+.ps-dp-row {
+  display: grid;
+  grid-template-columns: 158px minmax(0, 1fr) 124px 76px;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+}
+
+.ps-dp-row.is-overall {
+  margin-top: 3px;
+  border-top: 1.5px solid var(--border);
+  padding-top: 9px;
+}
+
+.ps-dp-label b {
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.ps-dp-label small {
+  margin-left: 8px;
+  color: var(--ink-3);
+  font-size: 15.5px;
+}
+
+.ps-dp-track {
+  position: relative;
+  height: 18px;
+}
+
+.ps-dp-base,
+.ps-dp-gain {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.ps-dp-base {
+  left: 0;
+  border-radius: 4px 0 0 4px;
+  background: var(--base-fill);
+}
+
+.ps-dp-gain {
+  border-radius: 0 4px 4px 0;
+  background: var(--accent-fill);
+}
+
+.ps-dp-values {
+  color: var(--ink-2);
+  font-size: 17.5px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ps-dp-values b {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* → is outside the static Inter subset: DejaVu Sans, a TrueType face, has it. */
+.ps-arrow {
+  color: var(--ink-4);
+  font-family: var(--font-symbol);
+}
+
+.ps-dp-rel {
+  justify-self: end;
+  padding: 1px 9px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 16.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The legend's key for the relative-gain chips. */
+.ps-dp-key {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-style: normal;
   font-weight: 700;
 }
 
@@ -457,7 +560,7 @@ body {
 
 .ps-table th,
 .ps-table td {
-  padding: 4px 6px;
+  padding: 3px 6px;
   text-align: center;
   white-space: nowrap;
 }
@@ -564,25 +667,6 @@ body {
   color: var(--ink-4);
 }
 
-/* ---- footer ---- */
-
-.ps-foot {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  margin: auto var(--pad) 0;
-  padding-top: 10px;
-  border-top: 1.5px solid var(--border);
-  color: var(--ink-3);
-  font-size: 17px;
-}
-
-.ps-foot b {
-  margin-right: 8px;
-  color: var(--ink);
-  font-weight: 650;
-}
-
 /* ---- the page's figures, on paper ---- */
 
 /* No raster effects: the teaser's card is flat, and its dot grid stays on screen. */
@@ -629,9 +713,34 @@ body {
 }
 
 .poster .mv-num {
-  width: 18px;
-  height: 18px;
-  font-size: 12px;
+  width: 19px;
+  height: 19px;
+  font-size: 12.5px;
+}
+
+/* The left column has room to spare: Figure 1's smallest text, a size up. */
+.poster .mv-label,
+.poster .mv-kicker,
+.poster .mv-note,
+.poster .mv-badge {
+  font-size: 14.5px;
+}
+
+.poster .mv-question p,
+.poster .mv-plan li {
+  font-size: 16.5px;
+}
+
+.poster .mv-lane-title {
+  font-size: 16px;
+}
+
+.poster .mv-body {
+  font-size: 16.5px;
+}
+
+.poster .mv-cell[data-step='2'] .mv-body {
+  font-size: 20px;
 }
 
 /* The arrow between steps, drawn with borders instead of the page's CSS mask: a chevron in the 18 px gap. */
@@ -688,49 +797,97 @@ body {
   height: 16px;
 }
 
-/* The real case: what each run keeps from the same evidence, and where that leads. */
+/*
+ * The real case (Table 4): one row per operation of the plan, one column per system, so the
+ * reader follows the plan down and sees where the baseline loses the members.
+ */
 .ps-case {
-  display: grid;
-  gap: 0;
-  padding-block: 4px;
+  padding: 6px 16px 8px;
 }
 
-.ps-case-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 4px 16px;
-  padding: 10px 0;
+.ps-case-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 
-.ps-case-row + .ps-case-row {
-  border-top: 1.5px solid var(--border);
+.ps-case-c-plan {
+  width: 30%;
 }
 
-.ps-case-who {
+.ps-case-c-base {
+  width: 31%;
+}
+
+.ps-case-table th,
+.ps-case-table td {
+  padding: 8px 8px 9px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.ps-case-table thead th {
+  padding-block: 6px 8px;
+  border-bottom: 2px solid var(--ink-3);
   color: var(--ink);
-  font-size: 19px;
-  font-weight: 650;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
-.ps-case-row.is-fg .ps-case-who {
+.ps-case-table thead th:first-child {
+  color: var(--ink-3);
+  font-weight: 650;
+  vertical-align: bottom;
+}
+
+.ps-case-table thead th.is-fg {
   color: var(--accent);
 }
 
-.ps-case-who > span {
-  margin-left: 8px;
-  color: var(--ink-3);
-  font-size: 17px;
-  font-weight: 450;
+.ps-case-table tbody tr + tr > * {
+  border-top: 1.5px solid var(--border);
 }
 
-.ps-case-kept {
-  grid-column: 1 / -1;
+.ps-case-table tbody th {
   color: var(--ink-2);
-  font-size: 18.5px;
-  line-height: 1.45;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.ps-case-table tbody th .m {
+  margin-right: 6px;
+  color: var(--ink);
+  font-size: 19px;
+  font-weight: 400;
+}
+
+/* The answers sit on one line with the pill, in the middle of the row. */
+.ps-case-table td.ps-case-end {
+  vertical-align: middle;
+}
+
+.ps-case-table td {
+  color: var(--ink);
+  font-size: 17.5px;
+  line-height: 1.35;
+}
+
+/* The +FG column, on the same tint as the +FG rows of the results table. */
+.ps-case-table td:last-child,
+.ps-case-table thead th.is-fg {
+  background: var(--accent-tint);
+}
+
+.ps-case-table small {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink-3);
+  font-size: 15.5px;
+  line-height: 1.3;
 }
 
 .poster .ps-case .tr-verdict {
-  font-size: 17.5px;
+  font-size: 17px;
 }

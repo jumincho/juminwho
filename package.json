@@ -1,7 +1,7 @@
 {
   "name": "juminwho",
   "private": true,
-  "version": "3.9.0",
+  "version": "3.9.1",
   "description": "One-page cozy personal site for Jumin Cho (JUMIN WHO?)",
   "type": "module",
   "engines": {
