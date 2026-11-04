@@ -69,6 +69,7 @@ The project page is plain TypeScript without React, set in Inter, Source Serif 4
 │   └── preview-*.jpg             README previews (npm run snapshots -- --readme)
 ├── forward-looking-guidance/     the paper's project page: a second entry point, plain TypeScript
 │   ├── index.html                its text, in English
+│   ├── poster.html               the CIKM 2026 poster (A0 portrait), printed by npm run poster; not part of the site
 │   ├── assets/                   the CIKM 2026 logo, light and dark
 │   └── src/                      data/paper.ts (every number, from the paper), widgets/ (the figures), lib/, styles/
 ├── public/                       copied into the build as-is
@@ -81,6 +82,7 @@ The project page is plain TypeScript without React, set in Inter, Source Serif 4
 ├── scripts/
 │   ├── icons.mjs                 renders the icons and the link-preview image
 │   ├── project-assets.mjs        renders the project page's link-preview image
+│   ├── poster.mjs                prints the poster to an A0 PDF in dist-poster/
 │   ├── snapshots.mjs             visual and behaviour checks for the build, in every language
 │   ├── github-profile.mjs        builds the GitHub profile README (jumincho/jumincho)
 │   ├── github-profile/           its cards, animations, README template and daily age updater
@@ -119,6 +121,7 @@ npm run dev        # http://localhost:5173
 | `npm run snapshots` | Checks the build at 375 px and 1280 px, in light and dark and in every language, and saves screenshots to `snapshots/` |
 | `npm run icons` | Redraws the favicon, the app icons and the link-preview image from `favicon.svg` |
 | `npm run project-assets` | Redraws the project page's link-preview image |
+| `npm run poster` | Prints the CIKM 2026 poster to an A0 PDF (dist-poster/poster.pdf) |
 | `npm run github-profile` | Rebuilds the GitHub profile READMEs and their images in `../jumincho` (see below) |
 
 `snapshots`, `icons` and `github-profile` drive Chromium through Playwright. Run

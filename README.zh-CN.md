@@ -48,6 +48,7 @@ Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Mo
 │   └── preview-*.jpg             README 预览图（npm run snapshots -- --readme）
 ├── forward-looking-guidance/     论文项目主页：第二个入口，不使用 React 的 TypeScript
 │   ├── index.html                页面正文（英文）
+│   ├── poster.html               CIKM 2026 海报（A0 纵向），由 npm run poster 输出，不属于网站
 │   ├── assets/                   CIKM 2026 徽标（浅色与深色）
 │   └── src/                      data/paper.ts（从论文中转录的所有数字）、widgets/（插图）、lib/、styles/
 ├── public/                       原样复制到构建产物中
@@ -60,6 +61,7 @@ Vite 7、React 19、TypeScript、使用设计令牌（design tokens）的 CSS Mo
 ├── scripts/
 │   ├── icons.mjs                 绘制图标和链接预览图
 │   ├── project-assets.mjs        绘制项目主页的链接预览图
+│   ├── poster.mjs                将海报输出为 A0 PDF（dist-poster/）
 │   ├── snapshots.mjs             在每种语言下检查构建的外观和行为
 │   ├── github-profile.mjs        生成 GitHub 个人主页 README（jumincho/jumincho）
 │   ├── github-profile/           卡片、动画、README 模板和每天运行的年龄更新脚本
@@ -98,6 +100,7 @@ npm run dev        # http://localhost:5173
 | `npm run snapshots` | 在 375px 和 1280px、浅色和深色、每种语言下检查构建，并把截图保存到 `snapshots/` |
 | `npm run icons` | 根据 `favicon.svg` 重新绘制网站图标、应用图标和链接预览图 |
 | `npm run project-assets` | 重新绘制项目主页的链接预览图 |
+| `npm run poster` | 将 CIKM 2026 海报输出为 A0 PDF（dist-poster/poster.pdf） |
 | `npm run github-profile` | 在 `../jumincho` 中重新生成 GitHub 个人主页 README 及其图片（见下文） |
 
 `snapshots`、`icons` 和 `github-profile` 通过 Playwright 驱动 Chromium。请先运行一次 `npx playwright install chromium`，或者用 `PLAYWRIGHT_CHROMIUM=/path/to/chrome` 指向已有的浏览器。

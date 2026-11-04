@@ -1,0 +1,447 @@
+/*
+ * The poster: one A0 portrait sheet (841 × 1189 mm). It is laid out on a 1540 px wide canvas,
+ * where the figures look as they do on a desktop screen, and `.is-print` scales that canvas up
+ * to the sheet when the PDF is made: 841 mm is 3178.58 px at 96 px per inch, 2.064 times 1540.
+ * One canvas px is about 0.55 mm, so a size in px is about 1.55 times that size in pt on paper:
+ * body text 20 px ≈ 31 pt, the smallest chart labels 11 px ≈ 17 pt.
+ *
+ * Paper rules: no shadows, filters or masks (a PDF would carry them as pixels), one accent colour,
+ * exact colours in print.
+ */
+
+@page {
+  size: 841mm 1189mm;
+  margin: 0;
+}
+
+:root {
+  /* The static font families (see main.ts) in place of the page's variable ones. */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Source Serif 4', Georgia, serif;
+  --font-math: 'Source Serif 4', 'STIX Two Math', serif;
+  --poster-w: 1540px;
+  --poster-h: 2177.2px; /* 1189 mm at the canvas scale */
+  --poster-scale: 2.064015;
+  --pad: 50px;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+html,
+body {
+  margin: 0;
+  background: #ffffff;
+}
+
+.is-print body {
+  width: 841mm;
+  height: 1189mm;
+  overflow: hidden;
+}
+
+.poster {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--poster-w);
+  height: var(--poster-h);
+  padding: var(--pad) var(--pad) 36px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 20px;
+  line-height: 1.42;
+}
+
+.is-print .poster {
+  transform: scale(var(--poster-scale));
+  transform-origin: 0 0;
+}
+
+/* ---- header: the conference, the title and authors, the way to the project page ---- */
+
+.ps-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 36px;
+}
+
+.ps-logo {
+  width: auto;
+  height: 168px;
+}
+
+.ps-heading h1 {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+.ps-title-main {
+  display: block;
+  font-size: 72px;
+  line-height: 1.04;
+  white-space: nowrap;
+}
+
+.ps-title-line {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink-2);
+  font-size: 35px;
+  line-height: 1.15;
+}
+
+.ps-authors {
+  margin-top: 16px;
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.ps-authors sup,
+.ps-affil sup {
+  margin-left: 1px;
+  color: var(--ink-3);
+  font-size: 0.62em;
+}
+
+.ps-affil {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 22px;
+  margin-top: 4px;
+  color: var(--ink-3);
+  font-size: 19px;
+}
+
+.ps-affil sup {
+  margin: 0 2px 0 0;
+}
+
+.ps-qr {
+  margin: 0;
+  text-align: center;
+}
+
+.ps-qr-code {
+  width: 166px;
+  height: 166px;
+}
+
+.ps-qr-code svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Kept 4 modules (20 px) clear of the code, as the quiet zone. */
+.ps-qr figcaption {
+  margin-top: 20px;
+  color: var(--ink-2);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* ---- the idea: one sentence, the plan in motion, four numbers ---- */
+
+.ps-hero {
+  margin-top: 20px;
+}
+
+.ps-headline {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+}
+
+.ps-headline em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.ps-lede {
+  margin-top: 10px;
+  color: var(--ink-2);
+  font-size: 22px;
+  line-height: 1.45;
+}
+
+.ps-panel {
+  margin-top: 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+}
+
+/*
+ * The teaser is drawn at 1100 × 212 and scaled to the panel's inner width (1440 − 3 px of border),
+ * so its nodes and labels are about 30% larger than the page draws them and fill the band.
+ */
+.ps-teaser {
+  position: relative;
+  height: 280px;
+  margin-top: 16px;
+  overflow: hidden;
+  background: var(--bg-soft);
+}
+
+/* The teaser's key sits in its empty top-left corner; the drawing's own key would meet the card below the nodes. */
+.ps-teaser .hero-legend {
+  display: none;
+}
+
+.ps-teaser-key {
+  position: absolute;
+  top: 16px;
+  left: 24px;
+  font-size: 17px;
+}
+
+.ps-teaser .hero-visual {
+  position: relative;
+  width: 1100px;
+  height: 212px;
+  overflow: hidden;
+  transform: scale(1.30636);
+  transform-origin: 0 0;
+}
+
+.ps-numbers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+.ps-numbers li {
+  padding: 0 24px;
+  border-left: 1.5px solid var(--border);
+}
+
+.ps-numbers li:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.ps-numbers b {
+  display: block;
+  color: var(--accent);
+  font-size: 60px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.ps-numbers span {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink-2);
+  font-size: 18px;
+  line-height: 1.28;
+}
+
+/* ---- sections ---- */
+
+.ps-section {
+  margin-top: 20px;
+}
+
+.ps-section h2 {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.ps-text {
+  margin-top: 6px;
+  color: var(--ink-2);
+  font-size: 20px;
+}
+
+.ps-figure {
+  padding: 16px 22px;
+  container-type: inline-size;
+}
+
+.ps-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+
+/* Each column stretches its panel, so the two panels end on one line. */
+.ps-columns .ps-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.ps-columns .ps-panel {
+  flex: 1;
+}
+
+.ps-legend {
+  margin-bottom: 8px;
+  font-size: 17px;
+}
+
+.ps-legend-note {
+  margin-left: auto;
+  color: var(--ink-4);
+}
+
+.ps-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.ps-dot.is-base {
+  border: 2px solid var(--base);
+  background: var(--surface);
+}
+
+.ps-dot.is-fg,
+.ps-dot.is-running {
+  background: var(--accent-solid);
+}
+
+.ps-dot.is-done {
+  background: var(--ink);
+}
+
+.ps-dot.is-next {
+  border: 2px solid var(--accent-fill);
+  background: var(--surface);
+}
+
+.ps-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1.5px solid var(--border);
+  color: var(--ink-3);
+  font-size: 17px;
+}
+
+.ps-foot b {
+  margin-right: 8px;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---- the page's figures, on paper ---- */
+
+/* No raster effects: the teaser's card is flat, and its dot grid stays on screen. */
+.poster .hero-card rect {
+  filter: none;
+}
+
+.poster .hero-visual::before {
+  display: none;
+}
+
+/* Figure 1 keeps its two lanes; cells take only the height their text needs. */
+.poster .mv {
+  gap: 10px;
+}
+
+.poster .mv-grid {
+  gap: 10px 26px;
+}
+
+.poster .mv-cell {
+  min-height: 0;
+  padding: 8px 14px 10px;
+}
+
+.poster .mv-question,
+.poster .mv-plan {
+  padding: 8px 14px 10px;
+}
+
+.poster .mv-question p,
+.poster .mv-plan ol {
+  margin-top: 2px;
+}
+
+.poster .mv-num {
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+}
+
+/* Of Figure 2, the poster keeps the measured effect of each stage; the teaser shows the mechanism. */
+.ps-effect .pl-diagram,
+.ps-effect .pf {
+  display: none;
+}
+
+.ps-effect .pl-effect {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.ps-effect .pl-bar-row {
+  padding-block: 0.3rem;
+}
+
+/* The real case: what each run keeps from the same evidence, and where that leads. */
+.ps-case {
+  display: grid;
+  align-content: center;
+  gap: 0;
+}
+
+.ps-case-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 16px;
+  padding: 12px 0;
+}
+
+.ps-case-row + .ps-case-row {
+  border-top: 1.5px solid var(--border);
+}
+
+.ps-case-who {
+  color: var(--ink);
+  font-size: 19px;
+  font-weight: 650;
+}
+
+.ps-case-row.is-fg .ps-case-who {
+  color: var(--accent);
+}
+
+.ps-case-who > span {
+  margin-left: 8px;
+  color: var(--ink-3);
+  font-size: 17px;
+  font-weight: 450;
+}
+
+.ps-case-kept {
+  grid-column: 1 / -1;
+  color: var(--ink-2);
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+.poster .ps-case .tr-verdict {
+  font-size: 18px;
+}

@@ -48,6 +48,7 @@ Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules�
 │   └── preview-*.jpg             README のプレビュー（npm run snapshots -- --readme）
 ├── forward-looking-guidance/     論文のプロジェクトページ：2 つ目のエントリーポイント、React なしの TypeScript
 │   ├── index.html                ページの本文（英語）
+│   ├── poster.html               CIKM 2026 のポスター（A0 縦）、npm run poster で出力、サイトには含めない
 │   ├── assets/                   CIKM 2026 のロゴ（ライトとダーク）
 │   └── src/                      data/paper.ts（論文から写したすべての数値）、widgets/（図）、lib/、styles/
 ├── public/                       そのままビルドにコピーされるファイル
@@ -60,6 +61,7 @@ Vite 7、React 19、TypeScript、デザイントークンを使う CSS Modules�
 ├── scripts/
 │   ├── icons.mjs                 アイコンとリンクプレビュー画像を描く
 │   ├── project-assets.mjs        プロジェクトページのリンクプレビュー画像を描く
+│   ├── poster.mjs                ポスターを A0 の PDF に出力（dist-poster/）
 │   ├── snapshots.mjs             すべての言語でビルドの見た目と動作をチェック
 │   ├── github-profile.mjs        GitHub プロフィール README（jumincho/jumincho）を生成
 │   ├── github-profile/           カード、アニメーション、README のテンプレート、毎日の年齢更新スクリプト
@@ -98,6 +100,7 @@ npm run dev        # http://localhost:5173
 | `npm run snapshots` | 375px と 1280px、ライトとダーク、すべての言語でビルドをチェックし、スクリーンショットを `snapshots/` に保存します |
 | `npm run icons` | `favicon.svg` からファビコン、アプリアイコン、リンクプレビュー画像を描き直します |
 | `npm run project-assets` | プロジェクトページのリンクプレビュー画像を描き直します |
+| `npm run poster` | CIKM 2026 のポスターを A0 の PDF（dist-poster/poster.pdf）に出力します |
 | `npm run github-profile` | `../jumincho` に GitHub プロフィールの README と画像を作り直します（下記参照） |
 
 `snapshots`、`icons`、`github-profile` は Playwright で Chromium を動かします。一度 `npx playwright install chromium` を実行するか、`PLAYWRIGHT_CHROMIUM=/path/to/chrome` で手元のブラウザーを指定してください。

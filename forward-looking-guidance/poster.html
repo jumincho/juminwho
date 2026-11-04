@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1540" />
+    <meta name="robots" content="noindex" />
+    <title>Poster · Forward-Looking Guidance for Iterative RAG in Multi-Hop QA · CIKM 2026</title>
+    <!--
+      The CIKM 2026 poster: A0 portrait (841 × 1189 mm), printed from this page by `npm run poster`.
+      It is laid out on a 1540 px wide canvas (1 px ≈ 0.55 mm, so a size in px is about 1.55 times
+      that size in pt on the print) and scaled up to the paper only when the PDF is made.
+      It is not part of the site build.
+    -->
+  </head>
+  <body>
+    <main class="poster">
+      <header class="ps-head">
+        <img class="ps-logo" src="./assets/cikm-2026-full.png" width="952" height="736" alt="CIKM 2026, Rome, Italy, 7–11 November" />
+        <div class="ps-heading">
+          <h1>
+            <span class="ps-title-main">Forward-Looking Guidance</span>
+            <span class="ps-title-line">for Iterative RAG in Multi-Hop Question Answering</span>
+          </h1>
+          <p class="ps-authors">
+            Jumin Cho<sup>1</sup>, Chanjun Park<sup>2</sup>, Seung-Hoon Na<sup>3</sup>, Hyun-Je Song<sup>1</sup>
+          </p>
+          <p class="ps-affil">
+            <span><sup>1</sup>Jeonbuk National University</span>
+            <span><sup>2</sup>Soongsil University</span>
+            <span><sup>3</sup>Ulsan National Institute of Science and Technology</span>
+          </p>
+        </div>
+        <figure class="ps-qr">
+          <div id="qr" class="ps-qr-code" role="img" aria-label="QR code for the project page"></div>
+          <figcaption>Project page</figcaption>
+        </figure>
+      </header>
+
+      <section class="ps-hero">
+        <p class="ps-headline">Let each step see <em>the rest of the plan.</em></p>
+        <p class="ps-lede">
+          Planning-based iterative RAG resolves its plan <span class="m"><i>o</i><sub>1</sub>, …, <i>o</i><sub><i>n</i></sub></span> one operation at a
+          time. Forward-looking guidance also shows the current step the operations still to come,
+          <span class="m"><i>G</i><sub><i>i</i></sub> = (<i>o</i><sub><i>i</i>+1</sub>, …, <i>o</i><sub><i>n</i></sub>)</span>, which the planner has
+          already written: no extra model calls, no extra retrieval.
+        </p>
+        <div class="ps-panel ps-teaser">
+          <div id="hero-visual" class="hero-visual"></div>
+          <p class="legend ps-teaser-key">
+            <span><i class="ps-dot is-done"></i>resolved</span><span><i class="ps-dot is-running"></i>running</span><span><i class="ps-dot is-next"></i>remaining, shown as guidance</span>
+          </p>
+        </div>
+        <ul class="ps-numbers">
+          <li><b>+.087</b><span>EM for STRIDE on MuSiQue,<br />.288 to .375 with Qwen3-8B</span></li>
+          <li><b>16 / 18</b><span>settings with higher EM:<br />3 planners × 3 datasets × 2 LLMs</span></li>
+          <li><b>30%</b><span>relative EM gain on MuSiQue<br />at 2, 3 and 4 hops alike</span></li>
+          <li><b>+2–5%</b><span>tokens per question,<br />with no extra model calls</span></li>
+        </ul>
+      </section>
+
+      <section class="ps-section">
+        <h2>Why look ahead?</h2>
+        <p class="ps-text">
+          Each step sees only its own operation, so its output can be right for that step and still leave out what the next step
+          needs.
+        </p>
+        <div class="ps-panel ps-figure"><div id="fig-motivation"></div></div>
+      </section>
+
+      <section class="ps-section">
+        <h2>Results</h2>
+        <p class="ps-text">
+          Added to SelfAsk, DualRAG and STRIDE, guidance raises EM in 16 of 18 settings; STRIDE+FG is the strongest system with both
+          backbones.
+        </p>
+        <div class="ps-panel ps-figure">
+          <p class="legend ps-legend">
+            <span><i class="ps-dot is-base"></i>without guidance</span><span><i class="ps-dot is-fg"></i>with forward-looking guidance</span><span class="ps-legend-note">Qwen3-8B, exact match</span>
+          </p>
+          <div id="fig-gains"></div>
+        </div>
+      </section>
+
+      <div class="ps-columns">
+        <section class="ps-section">
+          <h2>Where to add guidance</h2>
+          <p class="ps-text">
+            One stage of STRIDE at a time (MuSiQue dev, Qwen3-8B): it hurts in the retrieval query and helps after it.
+          </p>
+          <div class="ps-panel ps-figure ps-effect"><div id="fig-pipeline"></div></div>
+        </section>
+        <section class="ps-section">
+          <h2>A real case</h2>
+          <p class="ps-text">HotpotQA: “Which person that recorded the album <i>Focus Plays Focus</i> was born on 24 December 1946?” Both runs read the same evidence.</p>
+          <div class="ps-panel ps-figure ps-case tr">
+            <div class="ps-case-row">
+              <p class="ps-case-who">STRIDE</p>
+              <span class="tr-verdict is-bad"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>No answer</span>
+              <p class="ps-case-kept">keeps <mark class="is-lost">Focus (the band)</mark>, so <span class="m"><i>o</i><sub>2</sub></span> asks for a band’s birth date</p>
+            </div>
+            <div class="ps-case-row is-fg">
+              <p class="ps-case-who">STRIDE+FG <span>also reads <span class="m"><i>o</i><sub>2</sub></span>: the birth date of each person</span></p>
+              <span class="tr-verdict is-good"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg>Jan Akkerman</span>
+              <p class="ps-case-kept">keeps <mark class="is-kept">Thijs van Leer, Jan Akkerman, Martin Dresden, Hans Cleuver</mark></p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="ps-foot">
+        <span><b>Paper</b> doi.org/10.1145/3799682.3840073</span>
+        <span><b>Code</b> github.com/jumincho/forward-looking-guidance</span>
+        <span><b>CIKM 2026</b> Rome, Italy</span>
+      </footer>
+    </main>
+
+    <script type="module" src="./src/poster/main.ts"></script>
+  </body>
+</html>

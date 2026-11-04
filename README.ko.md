@@ -65,6 +65,7 @@ GitHub Actions가 사이트를 빌드해 GitHub Pages에 올립니다.
 │   └── preview-*.jpg             README 미리보기 (npm run snapshots -- --readme)
 ├── forward-looking-guidance/     논문 프로젝트 페이지: 두 번째 진입점, React 없는 TypeScript
 │   ├── index.html                페이지 본문(영어)
+│   ├── poster.html               CIKM 2026 포스터(A0 세로), npm run poster로 출력, 사이트에는 포함하지 않음
 │   ├── assets/                   CIKM 2026 로고(라이트와 다크)
 │   └── src/                      data/paper.ts(논문에서 옮긴 모든 숫자), widgets/(피규어), lib/, styles/
 ├── public/                       빌드에 그대로 복사되는 파일
@@ -77,6 +78,7 @@ GitHub Actions가 사이트를 빌드해 GitHub Pages에 올립니다.
 ├── scripts/
 │   ├── icons.mjs                 아이콘과 링크 미리보기 이미지를 그림
 │   ├── project-assets.mjs        프로젝트 페이지의 링크 미리보기 이미지를 그림
+│   ├── poster.mjs                포스터를 A0 PDF로 출력(dist-poster/)
 │   ├── snapshots.mjs             모든 언어에서 빌드의 화면과 동작을 점검
 │   ├── github-profile.mjs        GitHub 프로필 README(jumincho/jumincho)를 만듦
 │   ├── github-profile/           카드, 애니메이션, README 틀, 매일 도는 나이 갱신 스크립트
@@ -115,6 +117,7 @@ npm run dev        # http://localhost:5173
 | `npm run snapshots` | 375px와 1280px, 라이트와 다크, 모든 언어에서 빌드를 점검하고 스크린샷을 `snapshots/`에 남깁니다 |
 | `npm run icons` | `favicon.svg`로 파비콘, 앱 아이콘, 링크 미리보기 이미지를 다시 그립니다 |
 | `npm run project-assets` | 프로젝트 페이지의 링크 미리보기 이미지를 다시 그립니다 |
+| `npm run poster` | CIKM 2026 포스터를 A0 PDF(dist-poster/poster.pdf)로 출력합니다 |
 | `npm run github-profile` | `../jumincho`에 GitHub 프로필 README와 이미지를 다시 만듭니다(아래 참고) |
 
 `snapshots`, `icons`, `github-profile`은 Playwright로 Chromium을 움직입니다. `npx playwright install
