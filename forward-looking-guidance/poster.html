@@ -44,8 +44,10 @@
           <p class="ps-headline">Let each step see<br /> <em>the rest of the plan.</em></p>
           <ul class="ps-hl-list">
             <li>
-              <b>Iterative RAG for multi-hop QA</b> writes a plan <span class="m"><i>o</i><sub>1</sub>, …, <i>o</i><sub><i>n</i></sub></span> and resolves it one operation
-              at a time: retrieve, extract, reason.
+              <b>Multi-hop QA</b> answers questions whose evidence is spread across several documents, so a single retrieval step often falls short.
+            </li>
+            <li>
+              <b>Iterative RAG</b> repeats retrieval, extraction and reasoning. <span class="ps-nowrap">Planning-based</span> variants follow a plan <span class="m"><i>o</i><sub>1</sub>, …, <i>o</i><sub><i>n</i></sub></span> written in advance.
             </li>
             <li>
               <b>But each step sees only its own operation.</b> Its output can satisfy that step and still miss what a later step needs.
@@ -63,13 +65,11 @@
         <div class="ps-col">
           <section class="ps-section">
             <h2><span class="ps-num">1</span>Motivation</h2>
-            <p class="ps-text">
-              Planning-based iterative RAG (SelfAsk, DualRAG, STRIDE) writes the whole plan before execution, yet each step
-              resolves only its own operation.
-            </p>
+            <p class="ps-text">In planning-based methods, each step resolves only its own operation.</p>
             <div class="ps-panel ps-figure"><div id="fig-motivation"></div></div>
             <p class="ps-text">
-              FG leaves retrieval as it is, so both runs read the same documents. What changes is what the output of <span class="m"><i>o</i><sub>1</sub></span> keeps for <span class="m"><i>o</i><sub>2</sub></span>.
+              FG leaves the retrieval query as it is, so both runs read the same documents for <span class="m"><i>o</i><sub>1</sub></span>. What changes is what the
+              output of <span class="m"><i>o</i><sub>1</sub></span> keeps for <span class="m"><i>o</i><sub>2</sub></span>.
             </p>
           </section>
 
@@ -99,8 +99,8 @@
               <div id="fig-pipeline"></div>
             </div>
             <p class="ps-text">
-              <b>Why not in retrieval?</b> In the query, <span class="m"><i>G</i><sub><i>i</i></sub></span> mixes later information needs into the current one.
-              After retrieval, it only shapes what the step keeps.
+              <b>Why not in retrieval?</b> In the query, <span class="m"><i>G</i><sub><i>i</i></sub></span> can mix later information needs into the current one.
+              After retrieval, it shapes what the step keeps and writes.
             </p>
           </section>
         </div>
@@ -110,21 +110,21 @@
             <h2><span class="ps-num">3</span>Main results</h2>
             <p class="ps-text">EM, 1,000 test questions each. <b>Bold</b> best, <u>underlined</u> second, Δ under +FG.</p>
             <div class="ps-panel ps-figure ps-table-wrap"><div id="tbl-results"></div></div>
-            <p class="ps-text">FG improves EM in <b>16 of 18</b> settings (3 planners × 3 datasets × 2 LLMs). STRIDE+FG is best on average.</p>
+            <p class="ps-text">FG improves EM in <b>16 of 18</b> settings (3 baselines × 3 datasets × 2 LLMs). STRIDE+FG is best on average.</p>
           </section>
 
           <section class="ps-section">
             <h2><span class="ps-num">4</span>Analysis</h2>
             <p class="ps-text">
-              On MuSiQue, FG lifts STRIDE from .288 to <b>.375</b> EM, and the gain holds as questions get deeper: about 30% at 2, 3 and 4 hops alike.
+              With Qwen3-8B on MuSiQue, FG lifts STRIDE from .288 to <b>.375</b> EM, a relative gain of about 30% at 2, 3 and 4 hops alike.
             </p>
             <div class="ps-panel ps-figure ps-depth">
               <p class="ps-fig-title"><span>MuSiQue EM by gold hop count</span> <span class="legend ps-legend"><span><i class="swatch swatch-base"></i>STRIDE</span><span><i class="swatch swatch-accent"></i>gain with FG</span><span><i class="ps-dp-key">%</i>relative gain</span></span></p>
               <div id="fig-depth"></div>
             </div>
-            <p class="ps-text">FG adds no model calls, and only 2–5% more tokens per question:</p>
+            <p class="ps-text">No extra model calls, and only 2–5% more extractor and reasoner tokens:</p>
             <div class="ps-panel ps-figure ps-tokens">
-              <p class="ps-fig-title"><span>LLM tokens per question, Qwen3-8B</span> <span id="tokens-legend" class="legend ps-legend"></span></p>
+              <p class="ps-fig-title"><span>Extractor and reasoner tokens per question, Qwen3-8B</span> <span id="tokens-legend" class="legend ps-legend"></span></p>
               <div id="fig-tokens"></div>
             </div>
           </section>
@@ -133,7 +133,7 @@
 
       <!-- The one takeaway, under both columns. -->
       <p class="ps-takeaway ps-final">
-        <b>Takeaway.</b> If the plan is already written, let each step read the rest of it, in extraction and reasoning, not in retrieval.
+        <b>Takeaway.</b> If the plan is already written, let each step read the rest of it, after retrieval.
       </p>
     </main>
 

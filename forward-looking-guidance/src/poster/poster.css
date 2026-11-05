@@ -58,7 +58,7 @@ body {
   flex-direction: column;
   width: var(--poster-w);
   height: var(--poster-h);
-  padding-bottom: 40px;
+  padding-bottom: 36px;
   overflow: hidden;
   background: var(--bg);
   color: var(--ink);
@@ -202,7 +202,7 @@ body {
 
 .ps-hl-list {
   display: grid;
-  gap: 6px;
+  gap: 4px;
   margin-top: 12px;
 }
 
@@ -228,6 +228,11 @@ body {
 .ps-bullets b {
   color: var(--ink);
   font-weight: 650;
+}
+
+/* A term that must not break at its hyphen. */
+.ps-nowrap {
+  white-space: nowrap;
 }
 
 .pos,
@@ -382,11 +387,13 @@ body {
   font-weight: 700;
 }
 
-/* The poster's one takeaway, under both columns. */
+/* The poster's one takeaway, under both columns, set large. */
 .ps-final {
-  margin: 20px var(--pad) 0;
-  padding: 11px 18px 12px 20px;
-  font-size: 21px;
+  margin: 16px var(--pad) 0;
+  padding: 10px 22px 11px 24px;
+  border-left-width: 7px;
+  font-size: 27px;
+  line-height: 1.3;
 }
 
 /* ---- MuSiQue EM by depth: one bar per depth, the gain from FG stacked on STRIDE ---- */
@@ -718,7 +725,7 @@ body {
 }
 
 .poster .mv-grid {
-  gap: 18px 14px;
+  gap: 16px 14px;
 }
 
 .poster .mv-cell {
@@ -762,11 +769,11 @@ body {
   font-size: 19px;
 }
 
-/* The arrow between steps, drawn with borders instead of the page's CSS mask: a chevron in the 18 px gap. */
+/* The arrow between steps, drawn with borders instead of the page's CSS mask: a chevron in the 16 px gap. */
 .poster .mv-cell:not([data-step='4'])::after {
   top: auto;
   right: auto;
-  bottom: -11px;
+  bottom: -10px;
   left: calc(50% - 6px);
   width: 12px;
   height: 12px;

@@ -329,11 +329,11 @@ WCAG AA 이상입니다. 저자 이름은 링크 색(`--link`)으로 씁니다.
 
 **포스터.** 학회 포스터(`poster.html`, A0 세로 841 × 1189 mm)는 최근 ICLR, NeurIPS, ICML의 스포트라이트·oral
 포스터처럼 짭니다. 맨 위에 짙은 초록 제목 띠(왼쪽에 CIKM 2026 로고만, 오른쪽에 프로젝트 페이지로 가는 약 8 cm QR),
-그 아래 헤드라인과 세 줄 소개(과제: 반복 RAG로 푸는 multi-hop QA, 문제: 각 단계는 자기 operation만 봄, 아이디어: FG)를
-담은 상자와 티저 그림을 둡니다. 이 상자에는 "TL;DR" 같은 요약 라벨과 결과 수치를 넣지 않습니다(수치는 아래 섹션에 있음).
+그 아래 헤드라인과 네 줄 소개(multi-hop QA, iterative RAG와 planning-based 방식, 문제: 각 단계는 자기 operation만 봄,
+아이디어: FG)를 담은 상자와 티저 그림을 둡니다. 기존 방법은 시스템 이름을 들지 않고 일반적으로 서술합니다. 이 상자에는 "TL;DR" 같은 요약 라벨과 결과 수치를 넣지 않습니다(수치는 아래 섹션에 있음).
 이어서 두 단에 번호를 붙인 네 섹션(1 Motivation: Figure 1과 "FG는 검색을 바꾸지 않는다"는 설명, 2 Forward-looking
 guidance: 식 (2)–(4)와 기호 풀이, 단계별 효과, "왜 검색에는 넣지 않나", 3 Main results: EM 표와 16/18 문장, 4 Analysis:
-MuSiQue 깊이별 EM 막대와 토큰 비용)이 오고, Takeaway는 섹션마다 두지 않고 맨 아래에 한 줄만 둡니다. Case study는
+MuSiQue 깊이별 EM 막대와 토큰 비용)이 오고, Takeaway는 섹션마다 두지 않고 맨 아래에 크게 한 줄만 둡니다. Case study는
 Motivation과 내용이 겹쳐 넣지 않습니다. 링크는 QR 하나로 충분하므로(프로젝트
 페이지에 논문과 코드 링크가 있음) 아래쪽에 URL을 적지 않고, 사사 문구도 넣지 않습니다. 이 페이지의 그림과 색, 글꼴을
 그대로 쓰고, `npm run poster`로 PDF를 출력합니다(`dist-poster/`, 사이트 빌드에는 넣지 않음). 1540 px 폭의 캔버스에 배치한
