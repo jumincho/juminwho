@@ -2,12 +2,12 @@
  * Self-hosted fonts (Fontsource), split by unicode-range so a browser only
  * downloads the slices the page uses.
  *   Fredoka — rounded display face for the name and headings
- *   Nunito  — rounded body face; its digits are tabular, which keeps the
+ *   Nunito  — rounded body face. Its digits are tabular, which keeps the
  *             live age counter from jittering
  * The Hangul display face (Jua) is subset at build time from
  * src/data/profile.ts: main.tsx loads the three characters of 조주민 on every
  * page, and the Korean page loads the rest on demand (vite-plugins/hangulFont.ts).
- * Chinese and Japanese use the visitor's system fonts; tokens.css picks them
+ * Chinese and Japanese use the visitor's system fonts, and tokens.css picks them
  * per language.
  */
 @import '@fontsource-variable/fredoka/wght.css';

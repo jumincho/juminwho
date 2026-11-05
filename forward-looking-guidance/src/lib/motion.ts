@@ -20,7 +20,7 @@ export function onFirstView(el: Element, callback: () => void, threshold = 0.35)
   observer.observe(el)
 }
 
-/** Calls `callback(true|false)` whenever `el` enters or leaves the viewport; returns a stop function. */
+/** Calls `callback(true|false)` whenever `el` enters or leaves the viewport. Returns a stop function. */
 export function watchVisibility(el: Element, callback: (visible: boolean) => void): () => void {
   if (!('IntersectionObserver' in window)) {
     callback(true)

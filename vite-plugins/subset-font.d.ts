@@ -1,4 +1,4 @@
-// subset-font ships no type declarations; this covers the part hangulFont.ts uses.
+// subset-font ships no type declarations. This covers the part hangulFont.ts uses.
 declare module 'subset-font' {
   interface SubsetOptions {
     targetFormat?: 'sfnt' | 'woff' | 'woff2' | 'truetype'

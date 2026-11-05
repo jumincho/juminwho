@@ -153,7 +153,7 @@
   }
 }
 
-/* Below 352px the mascot alone stands in for the name; the hero still shows it. */
+/* Below 352px the mascot alone stands in for the name. The hero still shows it. */
 @media (max-width: 22rem) {
   .brand {
     padding-right: 3px;

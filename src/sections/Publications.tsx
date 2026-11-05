@@ -8,7 +8,7 @@ import { useLanguage } from '../hooks/useLanguage'
 import { panelProps } from './looks'
 import styles from './Publications.module.css'
 
-/** "CIKM 2026" already carries its year; "NTCIR-18" becomes "NTCIR-18 · 2025". */
+/** "CIKM 2026" already carries its year. "NTCIR-18" becomes "NTCIR-18 · 2025". */
 function venueLabel({ venue, year }: Publication): string {
   return venue.includes(String(year)) ? venue : `${venue} · ${year}`
 }

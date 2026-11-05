@@ -69,11 +69,11 @@ The project page is plain TypeScript without React, set in Inter, Source Serif 4
 │   └── preview-*.jpg             README previews (npm run snapshots -- --readme)
 ├── forward-looking-guidance/     the paper's project page: a second entry point, plain TypeScript
 │   ├── index.html                its text, in English
-│   ├── poster.html               the CIKM 2026 poster (A0 portrait), printed by npm run poster; not part of the site
+│   ├── poster.html               the CIKM 2026 poster (A0 portrait), printed by npm run poster, not part of the site
 │   ├── assets/                   the CIKM 2026 logo, light and dark
 │   └── src/                      data/paper.ts (every number, from the paper), widgets/ (the figures), lib/, styles/
 ├── public/                       copied into the build as-is
-│   ├── favicon.svg               the mascot; every other icon starts here
+│   ├── favicon.svg               the mascot, which every other icon starts from
 │   ├── favicon.ico, apple-touch-icon.png, icon-*.png, og-image.png   made by npm run icons
 │   ├── forward-looking-guidance/og.png   the project page's link preview (npm run project-assets)
 │   ├── manifest.webmanifest
@@ -130,16 +130,16 @@ you already have.
 
 ## Editing the content
 
-Edit `src/data/profile.ts` and nothing else; components never hold facts or wording.
+Edit `src/data/profile.ts` and nothing else. Components never hold facts or wording.
 
 | Export | Holds |
 | --- | --- |
 | `languages` | The languages in menu order, with their region tags, own names and date locales |
-| `site` | Page title, description, address and last-updated month; the `<head>` tags are built from it |
+| `site` | Page title, description, address and last-updated month. The `<head>` tags are built from it |
 | `profile` | Name, alias, Korean name, tagline, affiliation, location, birth instant, email, photo and links |
 | `sections` | Section order, titles and navigation labels |
 | `publications`, `selfNames` | Papers, with venue and place, and the spellings of Jumin's name to highlight |
-| `experience`, `education` | Timeline entries; periods are `{ from, to?, expected? }` |
+| `experience`, `education` | Timeline entries, with periods as `{ from, to?, expected? }` |
 | `honors`, `certifications` | Awards and certifications |
 | `juminTime` | The clock card: Jumin's time zone, the weekday and weekend routine, and its wording |
 | `labels` | Greetings, labels, button names and screen-reader text |
@@ -151,7 +151,7 @@ Edit `src/data/profile.ts` and nothing else; components never hold facts or word
 - Korean text is welcome anywhere. The build subsets the Korean display font (Jua) to exactly the
   characters in use: the three of 조주민 on every page, the rest only once the page is in Korean.
 - Places (`profile.location` and each paper's `place`) take a city, a country and an ISO country
-  code. Korea, Italy and Japan have flag drawings in `src/components/Flag.tsx`; any other code
+  code. Korea, Italy and Japan have flag drawings in `src/components/Flag.tsx`. Any other code
   shows a map pin until you add one.
 - The routine (`juminTime.routine`) lists stretches of the day in KST as `{ from, to, state }`. A
   stretch whose `to` comes before its `from` runs past midnight and belongs to the day it starts
@@ -199,9 +199,9 @@ Commit and push in the profile repository afterwards. Never edit its READMEs or 
   version. The README picks one with `<picture>`, following the viewer's GitHub theme.
 - Text is turned into outlines with HarfBuzz, so the images need no fonts and look the same in
   every browser. Chinese, Japanese and Korean body text uses Noto Sans, installed as a development
-  dependency; each character is drawn by the first font in the stack that has it, as a browser
+  dependency. Each character is drawn by the first font in the stack that has it, as a browser
   would.
-- On wide screens the cards sit two to a row at equal heights; on phones they stack.
+- On wide screens the cards sit two to a row at equal heights. On phones they stack.
 - The hero, At a glance and footer cards move slowly (the name flips to "JUMIN WHO?" in a
   9-second cycle, blobs drift, Mongle bobs, blinks and sways its sprout, the footer's cloud sways)
   and stand still when the viewer prefers reduced motion.

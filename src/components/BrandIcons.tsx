@@ -2,7 +2,7 @@ import type { SVGProps } from 'react'
 
 /*
  * Brand marks drawn to match lucide-react's outline style (24px grid, 2px
- * round strokes). lucide dropped brand icons in v1; these paths are from its
+ * round strokes). lucide dropped brand icons in v1. These paths are from its
  * last release that shipped them (ISC licence, lucide.dev).
  */
 

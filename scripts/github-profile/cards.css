@@ -2,7 +2,7 @@
  * Layout for the GitHub profile images. It uses the site's tokens (inlined
  * before this file), and only what lib/export-scene.mjs can translate:
  * solid colours, borders, radii, text, inline SVG and <img>. Text uses the
- * site's font stacks; every character must be drawn by one of the families
+ * site's font stacks. Every character must be drawn by one of the families
  * lib/fonts.mjs knows, or the export stops and says which.
  */
 
@@ -33,7 +33,7 @@ body {
   word-break: keep-all;
 }
 
-/* As on the site: Chinese and Japanese break between characters; Jua is never fake-bolded. */
+/* As on the site: Chinese and Japanese break between characters. Jua is never fake-bolded. */
 :lang(ja),
 :lang(zh) {
   word-break: normal;
@@ -52,7 +52,7 @@ svg {
   display: block;
 }
 
-/* Each frame becomes one SVG; its padding leaves room for the drop shadows. */
+/* Each frame becomes one SVG. Its padding leaves room for the drop shadows. */
 .frame {
   padding: 10px 12px 20px;
 }
@@ -227,7 +227,7 @@ svg {
   white-space: nowrap;
 }
 
-/* Text sits high in its line box; lift the flag to its visual middle. */
+/* Text sits high in its line box. Lift the flag to its visual middle. */
 .fact-value .flag {
   top: -1.5px;
 }

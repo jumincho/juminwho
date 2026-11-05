@@ -5,7 +5,7 @@ import { onFirstView, prefersReducedMotion } from '../lib/motion'
 
 /**
  * Figure 1: the Springfield example. Both runs share the question and the
- * plan; they play out side by side, step by step, the first time the figure
+ * plan. They play out side by side, step by step, the first time the figure
  * is seen, and show where the baseline loses the detail the next operation needs.
  */
 
@@ -148,7 +148,7 @@ export function mountMotivation(container: HTMLElement, tools: HTMLElement | nul
   replay.addEventListener('click', play)
   tools?.append(replay)
 
-  // Everything is visible until the figure is reached; then it plays once from the start.
+  // Everything is visible until the figure is reached. Then it plays once from the start.
   show(STEPS)
   if (!prefersReducedMotion()) onFirstView(root, play, 0.3)
 }

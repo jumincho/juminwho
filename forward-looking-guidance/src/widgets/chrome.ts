@@ -104,7 +104,7 @@ export function initScroll(): void {
     for (const section of sections) {
       if (section.getBoundingClientRect().top <= line) id = section.id
     }
-    // At the very bottom the last section may never reach the line; it is the one being read.
+    // At the very bottom the last section may never reach the line. It is the one being read.
     if (max > 0 && y >= max - 2) id = sections[sections.length - 1]?.id ?? id
 
     const read = String(max > 0 ? Math.min(1, Math.max(0, y / max)) : 0)
@@ -144,7 +144,7 @@ export function initScroll(): void {
 
 /**
  * Fades blocks in the first time they scroll into view. The inline script in
- * index.html hides them before first paint; `fx-ready` tells the stylesheet
+ * index.html hides them before first paint. `fx-ready` tells the stylesheet
  * this module is running, and without it a failsafe animation shows them anyway.
  */
 export function initReveal(): void {
@@ -195,7 +195,7 @@ export function initCopy(): void {
       }
       button.classList.toggle('is-done', copied)
       if (label) label.textContent = copied ? 'Copied' : 'Selected'
-      status.textContent = copied ? 'BibTeX copied to the clipboard' : 'BibTeX selected; press Ctrl+C or ⌘C to copy'
+      status.textContent = copied ? 'BibTeX copied to the clipboard' : 'BibTeX selected. Press Ctrl+C or ⌘C to copy'
       window.clearTimeout(timer)
       timer = window.setTimeout(() => {
         button.classList.remove('is-done')

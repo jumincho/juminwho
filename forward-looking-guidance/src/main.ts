@@ -23,7 +23,7 @@ initScroll()
 initReveal()
 initCopy()
 
-/** Mounts a figure if its slot is on the page; one failing figure must not take the others down. */
+/** Mounts a figure if its slot is on the page. One failing figure must not take the others down. */
 function mount(id: string, run: (el: HTMLElement) => void): void {
   const el = byId(id)
   if (!el) return

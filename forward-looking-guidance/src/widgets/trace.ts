@@ -15,7 +15,7 @@ const MEMBERS = 'Thijs van Leer, Jan Akkerman, Martin Dresden'
 /** What each step shows, in the words of the paper's case study. */
 const NOTES = [
   `Before resolving ${mathHtml('o_1')}, STRIDE+FG also reads the operations that remain, ${mathHtml('o_2')} and ${mathHtml('o_3')}. STRIDE sees only ${mathHtml('o_1')}.`,
-  'Same evidence, different facts. With later operations in view, STRIDE+FG keeps the individual line-up; STRIDE keeps only the band.',
+  'Same evidence, different facts. With later operations in view, STRIDE+FG keeps the individual line-up. STRIDE keeps only the band.',
   `STRIDE answers ${mathHtml('o_1')} with the band Focus: locally valid, but not the person-valued output that ${mathHtml('o_2')} requires.`,
   `The names carry into the query for ${mathHtml('o_2')}. STRIDE asks for the birth date of a band.`,
   'Both retrievals return a page on Jan Akkerman.',
@@ -38,7 +38,7 @@ const MARKS: { stride?: string[]; fg?: string[]; shared?: boolean }[] = [
 
 const escape = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;')
 
-/** Operation names (o_2) become math; marked phrases are wrapped once each. */
+/** Operation names (o_2) become math. Marked phrases are wrapped once each. */
 function rich(text: string, marks: string[] = [], tone = ''): string {
   let out = escape(text).replace(/\bo_(\d)/g, (_, k: string) => mathHtml(`o_${k}`))
   for (const phrase of marks) {

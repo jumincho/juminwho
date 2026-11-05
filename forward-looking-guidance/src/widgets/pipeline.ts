@@ -7,7 +7,7 @@ import { mathHtml, mathTspans } from '../lib/math'
  * Figure 2: the planning-based pipeline, redrawn, over the measured change in
  * EM for each stage that can receive G_i (Table 1). Picking a row of the
  * chart lights up that choice in the diagram. Wide screens get the full
- * diagram; narrow ones a vertical version of the same pipeline.
+ * diagram, narrow ones a vertical version of the same pipeline.
  */
 
 type Module = 'retriever' | 'extractor' | 'reasoner' | 'answer'
@@ -58,7 +58,7 @@ function arrow(d: string, className = 'pl-edge'): SVGPathElement {
   return s('path', { class: className, d, 'marker-end': 'url(#pl-head)' })
 }
 
-/** SVG text in `size` px; the size is an attribute, not CSS, because subscripts are sized from it. */
+/** SVG text in `size` px. The size is an attribute, not CSS, because subscripts are sized from it. */
 function label(x: number, y: number, source: string, className: string, size: number, anchor = 'middle'): SVGTextElement {
   const t = s('text', { class: className, x, y, 'font-size': size, 'text-anchor': anchor })
   t.append(...mathTspans(source, size, 'pl-t'))
@@ -73,7 +73,7 @@ interface Insertion {
 }
 
 function pill(cx: number, cy: number): SVGGElement {
-  // Diagram pills read "+ G_i", as in the paper's figure; the equations keep ⊕.
+  // Diagram pills read "+ G_i", as in the paper's figure. The equations keep ⊕.
   const t = label(cx, cy + 4.5, '+ G_i', 'pl-pill-text', 13)
   return s('g', { class: 'pl-pill' }, s('rect', { x: cx - 27, y: cy - 11, width: 54, height: 22, rx: 11 }), t)
 }
@@ -84,7 +84,7 @@ function buildDiagram(): { svg: SVGSVGElement; insertions: Insertion[] } {
     viewBox: `0 0 ${W} ${H}`,
     role: 'img',
     'aria-label':
-      'Pipeline: the question goes to a planner, which writes operations o1 to on. A controller selects an operation and an action. Retrieve or rewrite runs a retriever, an extractor and a reasoner; answer runs a reasoner over the accumulated facts. The execution state is updated and the next operation follows. The remaining operations, G i, can be appended to the retriever, the extractor or the reasoner.',
+      'Pipeline: the question goes to a planner, which writes operations o1 to on. A controller selects an operation and an action. Retrieve or rewrite runs a retriever, an extractor and a reasoner. Answer runs a reasoner over the accumulated facts. The execution state is updated and the next operation follows. The remaining operations, G i, can be appended to the retriever, the extractor or the reasoner.',
   })
   svg.append(
     s(

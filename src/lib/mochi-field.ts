@@ -14,7 +14,7 @@ import { subscribeToTheme } from './theme'
 
 type Rgb = [number, number, number]
 
-/** Longest side of the drawing buffer in px; smaller screens draw at half their CSS size. */
+/** Longest side of the drawing buffer in px. Smaller screens draw at half their CSS size. */
 const MAX_SIDE = 640
 const SCALE = 0.5
 const FRAME_MS = 1000 / 30
@@ -28,7 +28,7 @@ const TOKENS = ['--blob-a', '--blob-b', '--blob-c', '--blob-d'] as const
  * fractions of its width and height, `offset` the resting centre from there.
  * Each blob drifts by `drift` and swells by `swell` and back over `period`
  * seconds. The first four sit where the CSS fallback's blobs do
- * (Backdrop.module.css); two small ones roam between them and now and then
+ * (Backdrop.module.css). Two small ones roam between them and now and then
  * melt into a big one.
  */
 const BLOBS = [
@@ -124,7 +124,7 @@ function link(gl: WebGLRenderingContext): WebGLProgram | null {
     gl.attachShader(program, fragment)
     gl.linkProgram(program)
   }
-  // The program keeps what it needs; the shaders themselves can go.
+  // The program keeps what it needs. The shaders themselves can go.
   gl.deleteShader(vertex)
   gl.deleteShader(fragment)
   if (program && gl.getProgramParameter(program, gl.LINK_STATUS)) return program
@@ -207,7 +207,7 @@ export function startMochiField(canvas: HTMLCanvasElement): (() => void) | undef
       const phase = 0.5 - 0.5 * Math.cos((2 * Math.PI * time) / period)
       const x = (anchor[0] * width) / vmax + offset[0] + drift[0] * phase
       const y = (anchor[1] * height) / vmax + offset[1] + drift[1] * phase
-      // CSS measures y downwards; the shader upwards.
+      // CSS measures y downwards, the shader upwards.
       return [x, height / vmax - y, radius * (1 + swell * phase)]
     })
     gl.uniform3fv(uBlobs, blobs)
@@ -229,7 +229,7 @@ export function startMochiField(canvas: HTMLCanvasElement): (() => void) | undef
     last = now
     draw(seconds)
   }
-  /** Moves while motion is welcome; with reduced motion, holds the frame it is on. */
+  /** Moves while motion is welcome. With reduced motion, holds the frame it is on. */
   const play = () => {
     cancelAnimationFrame(frame)
     last = 0

@@ -5,7 +5,7 @@ export type Theme = 'light' | 'dark'
 
 /**
  * localStorage key for an explicit theme choice. The inline script in
- * index.html reads the same key before first paint; keep the two in sync.
+ * index.html reads the same key before first paint. Keep the two in sync.
  */
 export const THEME_STORAGE_KEY = 'juminwho:theme'
 
@@ -53,7 +53,7 @@ export function subscribeToTheme(listener: () => void): () => void {
 
 /**
  * Runs once at start-up. index.html has already applied the stored or system
- * theme; this aligns the theme-color metas with it, then keeps following the
+ * theme. This aligns the theme-color metas with it, then keeps following the
  * operating system until the visitor picks a theme.
  */
 export function followSystemTheme(): void {
@@ -89,6 +89,6 @@ export function toggleTheme(origin?: { x: number; y: number }): void {
         { duration: 720, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', pseudoElement: '::view-transition-new(root)' },
       )
     })
-    // `ready` rejects when another transition cuts this one short; the theme has switched anyway.
+    // `ready` rejects when another transition cuts this one short. The theme has switched anyway.
     .catch(() => {})
 }

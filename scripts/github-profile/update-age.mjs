@@ -5,7 +5,7 @@
  * redraws the digits in each language's glance card. The digits are outlined
  * glyphs with fixed ids (age-0 … age-9, age-dot) and equal widths, so this
  * only rewrites the <use> elements inside <g id="age">, whose data-digit and
- * data-dot give the advances in font units; no fonts are needed.
+ * data-dot give the advances in font units. No fonts are needed.
  */
 import { readFile, writeFile } from 'node:fs/promises'
 

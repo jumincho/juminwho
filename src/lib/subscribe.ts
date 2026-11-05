@@ -34,7 +34,7 @@ export function subscribeToViewport(listener: () => void): () => void {
 
 const mediaSubscriptions = new Map<string, (listener: () => void) => () => void>()
 
-/** A subscription to one media query; the same function every time for the same query. */
+/** A subscription to one media query, the same function every time for the same query. */
 export function subscribeToMedia(query: string): (listener: () => void) => () => void {
   let subscribe = mediaSubscriptions.get(query)
   if (!subscribe) {

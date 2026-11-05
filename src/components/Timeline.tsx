@@ -23,7 +23,7 @@ function PeriodLabel({ period: { from, to, expected } }: { period: Period }) {
 
 const isOngoing = ({ to, expected }: Period) => !to || Boolean(expected)
 
-/** Newest-first list of periods joined by a dotted thread; ongoing entries glow. */
+/** Newest-first list of periods joined by a dotted thread. Ongoing entries glow. */
 export default function Timeline({ items }: { items: TimelineEntry[] }) {
   const { t } = useLanguage()
   return (

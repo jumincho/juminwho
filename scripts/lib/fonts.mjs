@@ -4,7 +4,7 @@
  * Korean text. Chromium lays the cards out with exactly these files (see
  * fontFaceRules), and HarfBuzz turns the text into outlines with them, so the
  * exported SVGs need no fonts at all. SVGs shown through <img> (GitHub
- * READMEs) cannot be trusted to load embedded fonts in every browser; paths
+ * READMEs) cannot be trusted to load embedded fonts in every browser. Paths
  * render the same everywhere.
  *
  * Most families come as Fontsource unicode-range slices. A character is set
@@ -71,7 +71,7 @@ function allFaces() {
   return facesPromise
 }
 
-/** @font-face rules for the page that lays the cards out; `url` maps a face id to where the page fetches it. */
+/** @font-face rules for the page that lays the cards out. `url` maps a face id to where the page fetches it. */
 export async function fontFaceRules(url = (id) => `/fonts/${id}`) {
   const range = (face) => face.ranges.map(([lo, hi]) => `U+${lo.toString(16)}${hi > lo ? `-${hi.toString(16)}` : ''}`).join(',')
   return (await allFaces())

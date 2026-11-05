@@ -9,5 +9,5 @@ export interface LanguageValue {
   t: Translate
 }
 
-/** Filled by <LanguageProvider>; read it with useLanguage(). */
+/** Filled by <LanguageProvider>. Read it with useLanguage(). */
 export const LanguageContext = createContext<LanguageValue | null>(null)

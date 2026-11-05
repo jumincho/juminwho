@@ -20,7 +20,7 @@
 ## 特色
 
 - 柔軟、溫馨的氛圍。淺色模式是「奶油早晨」，深色模式是「可可夜晚」：粉彩色的軟墊面板、雲朵形狀的頁尾，以及在頁面後方緩緩飄動的粉彩色塊。
-- 輕柔的動態效果。色塊由一個小小的 WebGL 著色器繪製，像麻糬一樣軟軟地晃動，碰在一起時會融成一團（無法使用 WebGL 時由 CSS 色塊代替）。開啟頁面時，首個畫面會輕輕落定一次；頁尾的雲朵邊緣緩緩流動；時鐘卡上的每種狀態圖示也各有小動作。對偏好減少動態效果的訪客，這些都會保持靜止。
+- 輕柔的動態效果。色塊由一個小小的 WebGL 著色器繪製，像麻糬一樣軟軟地晃動，碰在一起時會融成一團（無法使用 WebGL 時由 CSS 色塊代替）。開啟頁面時，首個畫面會輕輕落定一次。頁尾的雲朵邊緣緩緩流動，時鐘卡上的每種狀態圖示也各有小動作。對偏好減少動態效果的訪客，這些都會保持靜止。
 - JUMIN WHO? 把滑鼠停在名字上，或者捲動頁面，名字就會彈一下，變成「JUMIN WHO?」。
 - 由 1998-07-10 起即時計算、準確至小數點後 8 位的年齡計數器。
 - Jumin 那邊現在幾點？附有「本地 | Jumin」開關的時鐘卡會顯示 Jumin 的時間（KST）或訪客的時間，並根據不會在頁面上顯示的平日與週末作息表，告訴你 Jumin 現在也許在做甚麼：也許……在工作、在準備上班、在睡覺，或者處於量子疊加態——在被觀測之前，所有狀態同時存在。
@@ -52,7 +52,7 @@ Vite 7、React 19、TypeScript、使用設計令牌（design tokens）的 CSS Mo
 │   ├── assets/                   CIKM 2026 標誌（淺色與深色）
 │   └── src/                      data/paper.ts（由論文轉錄的所有數字）、widgets/（插圖）、lib/、styles/
 ├── public/                       原封不動複製到建置結果
-│   ├── favicon.svg               吉祥物；其他圖示都由它生成
+│   ├── favicon.svg               吉祥物，其他圖示都由它生成
 │   ├── favicon.ico, apple-touch-icon.png, icon-*.png, og-image.png   由 npm run icons 生成
 │   ├── forward-looking-guidance/og.png   項目主頁的連結預覽圖（npm run project-assets）
 │   ├── manifest.webmanifest
@@ -107,16 +107,16 @@ npm run dev        # http://localhost:5173
 
 ## 修改內容
 
-只需修改 `src/data/profile.ts`；元件裏沒有任何事實資料或文字。
+只需修改 `src/data/profile.ts`。元件裏沒有任何事實資料或文字。
 
 | 匯出 | 內容 |
 | --- | --- |
 | `languages` | 按選單順序排列的語言，以及各自的地區代碼、以該語言書寫的名稱和日期地區設定 |
-| `site` | 頁面標題、描述、網址和最後更新月份；`<head>` 標籤由此生成 |
+| `site` | 頁面標題、描述、網址和最後更新月份，`<head>` 標籤由此生成 |
 | `profile` | 姓名、別名、韓文姓名、簡介、所屬機構、所在地、出生時刻、電郵、相片和連結 |
 | `sections` | 欄目順序、標題和導覽標籤 |
 | `publications`、`selfNames` | 論文（附會議和舉辦地），以及要突出顯示的本人姓名寫法 |
-| `experience`、`education` | 時間線項目；時段寫成 `{ from, to?, expected? }` |
+| `experience`、`education` | 時間線項目，時段寫成 `{ from, to?, expected? }` |
 | `honors`、`certifications` | 獎項和證書 |
 | `juminTime` | 時鐘卡：Jumin 的時區、平日與週末作息表及其文字 |
 | `labels` | 問候語、標籤、按鈕名稱和屏幕閱讀器文字 |
@@ -124,7 +124,7 @@ npm run dev        # http://localhost:5173
 
 - 文字採用 `Localized` 格式：每種語言一項，寫成 `{ en, ko, 'zh-CN', 'zh-HK', ja }`，缺少任何一種翻譯，TypeScript 都會報錯。專有名詞保持原樣：論文標題、作者和會議名稱按發表時的寫法，實驗室、LinkedIn 和 GitHub 也保持不變。
 - 韓文可以寫在任何地方。建置時會把韓文標題字型（Jua）精簡到實際用到的字元：조주민 這三個字在每個頁面都會載入，其餘的只在頁面語言為韓文時載入。
-- 地點（`profile.location` 和每篇論文的 `place`）由城市、國家和 ISO 國家代碼組成。韓國、意大利和日本在 `src/components/Flag.tsx` 裏有國旗圖案；其他代碼在加入圖案之前會顯示為地圖圖釘。
+- 地點（`profile.location` 和每篇論文的 `place`）由城市、國家和 ISO 國家代碼組成。韓國、意大利和日本在 `src/components/Flag.tsx` 裏有國旗圖案。其他代碼在加入圖案之前會顯示為地圖圖釘。
 - 作息表（`juminTime.routine`）按 KST 列出一天中的時段，寫成 `{ from, to, state }`。`to` 早於 `from` 的時段會跨越午夜，屬於它開始的那一天。時段重疊時，較晚開始的時段優先。卡片從不顯示作息表本身，只顯示目前狀態，而且總是放在「maybe…」（繁體中文頁面上為「也許……」）之後。
 - 修改姓名、簡介、所屬機構或相片後，請執行 `npm run icons`，讓連結預覽圖保持一致。
 - 修改任何內容後，請執行 `npm run github-profile` 並推送個人主頁存放庫，讓 GitHub 個人主頁與網站內容一致。
@@ -151,7 +151,7 @@ npm run github-profile -- path/to/repo  # 或寫入其他檢出目錄
 
 - 每種語言各有一個 README：個人主頁上顯示的英文 `README.md`，以及其他語言的 `README.<code>.md`。頂部的一排語言膠囊把它們連在一起。
 - 每張圖片都是用網站的令牌、色調、字型、國旗和吉祥物在 Chromium 中排版的卡片（`scripts/github-profile/cards.css`），再匯出為淺色和深色兩個版本的 SVG。README 以 `<picture>` 按訪客的 GitHub 主題選擇其中一個。
-- 文字由 HarfBuzz 轉為輪廓，因此圖片不需要字型，在任何瀏覽器看起來都一樣。中文、日文和韓文正文以作為開發依賴安裝的 Noto Sans 繪製；和瀏覽器一樣，每個字元都由字型清單中第一個包含它的字型繪製。
-- 在寬屏幕上，卡片兩張一排、高度相同；在手機上則逐張疊起。
+- 文字由 HarfBuzz 轉為輪廓，因此圖片不需要字型，在任何瀏覽器看起來都一樣。中文、日文和韓文正文以作為開發依賴安裝的 Noto Sans 繪製。和瀏覽器一樣，每個字元都由字型清單中第一個包含它的字型繪製。
+- 在寬屏幕上，卡片兩張一排、高度相同。在手機上則逐張疊起。
 - 開頭的主卡片、概覽（At a glance）和頁尾卡片會緩緩移動（名字以 9 秒為週期變成「JUMIN WHO?」，色塊飄動，Mongle 上下浮動、眨眼並搖動嫩芽，頁尾的雲朵輕輕擺動），對偏好減少動態效果的訪客則保持靜止。
 - 生成器還會把 `scripts/update-age.mjs` 和 `.github/workflows/age.yml` 寫入個人主頁存放庫。這個工作流程每天 00:05（KST）重新繪製每種語言概覽卡中的年齡，不需要任何依賴。

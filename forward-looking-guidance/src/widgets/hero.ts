@@ -161,7 +161,7 @@ function build(L: Layout): Parts {
 }
 
 /**
- * Shows step `step` of the loop: 1…n runs o_step; n + 1 is the finished plan.
+ * Shows step `step` of the loop: 1…n runs o_step, and n + 1 is the finished plan.
  * Positions slide with CSS transitions and tweens unless `animate` is false.
  */
 function apply(L: Layout, P: Parts, step: number, animate: boolean): void {

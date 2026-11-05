@@ -2,7 +2,7 @@ import { s } from './dom'
 
 /**
  * Math set by hand, from a small TeX-like notation: "G_i = (o_{i+1}, …, o_n)".
- * A single Latin letter is a variable and goes italic; longer words such as
+ * A single Latin letter is a variable and goes italic. Longer words such as
  * LLM or Retrieve stay upright, as do digits and operators. `_x` or `_{…}` is
  * a subscript. The same source renders as HTML (for text) or as SVG tspans
  * (for figures), so labels look alike everywhere.
@@ -88,7 +88,7 @@ export function mathTspans(source: string, fontSize: number, className = 'svg-ma
       }
       return op
     }
-    // Variables take the math face in italic; words keep the face of the surrounding text.
+    // Variables take the math face in italic. Words keep the face of the surrounding text.
     const span = s('tspan', { class: token.italic ? `${className} is-var` : className }, token.text)
     if (token.italic) span.setAttribute('font-style', 'italic')
     if (token.sub) span.setAttribute('font-size', String(Math.round(fontSize * 0.72 * 10) / 10))

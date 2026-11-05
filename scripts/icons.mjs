@@ -120,7 +120,7 @@ const outputs = {
   'apple-touch-icon.png': await render(iconPage(0.78, true), 180, 180, false),
   'icon-192.png': await render(iconPage(1), 192, 192, true),
   'icon-512.png': await render(iconPage(1), 512, 512, true),
-  // Maskable icons are cropped to a circle of 80% of the side; keep the mascot inside it.
+  // Maskable icons are cropped to a circle of 80% of the side. Keep the mascot inside it.
   'icon-maskable-512.png': await render(iconPage(0.6, true), 512, 512, false),
   'favicon.ico': toIco([
     { size: 16, png: await render(iconPage(1), 16, 16, true) },

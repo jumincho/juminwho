@@ -8,7 +8,7 @@ import { withViewTransition } from '../lib/motion'
 /**
  * Holds the page language: `?lang=` or the stored choice on arrival, English
  * otherwise. A switch cross-fades the page where view transitions run. Korean
- * pulls in the full Jua subset for its headings on demand; other visitors only
+ * pulls in the full Jua subset for its headings on demand. Other visitors only
  * ever load the three characters of 조주민.
  */
 export default function LanguageProvider({ children }: { children: ReactNode }) {

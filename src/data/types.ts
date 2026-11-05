@@ -1,6 +1,6 @@
 /** Shapes of the content in `profile.ts`. */
 
-/** The languages the site speaks, in menu order; English is the default. */
+/** The languages the site speaks, in menu order. English is the default. */
 export type Lang = 'en' | 'ko' | 'zh-CN' | 'zh-HK' | 'ja'
 
 /**
@@ -44,7 +44,7 @@ export interface TimelineEntry {
 export interface Place {
   city: Localized
   country: Localized
-  /** ISO 3166-1 alpha-2 code; picks the flag drawn next to the city. */
+  /** ISO 3166-1 alpha-2 code, which picks the flag drawn next to the city. */
   countryCode: string
 }
 
@@ -67,12 +67,12 @@ export interface Honor {
   org: Localized
 }
 
-/** What Jumin is maybe doing; the wording lives in `juminTime.states`. */
+/** What Jumin is maybe doing. The wording lives in `juminTime.states`. */
 export type RoutineState = 'asleep' | 'ready' | 'working' | 'superposition'
 
 /**
  * One stretch of Jumin's day, in Jumin's time zone, from `from` up to `to`
- * ("HH:MM"). A `to` at or before `from` runs past midnight; the stretch still
+ * ("HH:MM"). A `to` at or before `from` runs past midnight. The stretch still
  * belongs to the day it starts on, so Friday's evening lasts into Saturday.
  */
 export interface RoutineSpan {

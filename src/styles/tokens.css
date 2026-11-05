@@ -23,7 +23,7 @@
 
   /* ---- accents ---- */
   --accent: #ae4b33; /* link hover, focus ring */
-  --alias: #d2603f; /* "JUMIN WHO?"; display sizes only (3.6:1) */
+  --alias: #d2603f; /* "JUMIN WHO?", display sizes only (3.6:1) */
   --highlight: #ffe2a3; /* marker stroke behind emphasised words */
   --cloud: #ffffff;
   --selection: rgb(255 179 143 / 0.45);
@@ -65,7 +65,7 @@
 
   /* ---- type ---- */
   /*
-   * Latin comes from Fredoka and Nunito; the rest falls through to the system
+   * Latin comes from Fredoka and Nunito. The rest falls through to the system
    * fonts for the page language (`--font-cjk`, set below per <html lang>).
    * The Noto names are what the GitHub profile generator lays cards out with.
    */
@@ -107,7 +107,7 @@
   --radius-lg: 24px;
   --radius-xl: 36px;
   --radius-pill: 999px;
-  /* Three blob outlines; the morph animations cycle between them. */
+  /* Three blob outlines. The morph animations cycle between them. */
   --blob-1: 58% 42% 55% 45% / 50% 56% 44% 50%;
   --blob-2: 44% 56% 42% 58% / 58% 44% 56% 42%;
   --blob-3: 52% 48% 60% 40% / 42% 60% 40% 58%;

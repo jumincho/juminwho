@@ -5,7 +5,7 @@ export const DEFAULT_LANG: Lang = 'en'
 
 /**
  * localStorage key for a language picked in the menu. The inline script in
- * index.html reads the same key and parameter before first paint; keep the
+ * index.html reads the same key and parameter before first paint. Keep the
  * three in sync.
  */
 export const LANG_STORAGE_KEY = 'juminwho:lang'

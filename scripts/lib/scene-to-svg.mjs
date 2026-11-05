@@ -140,7 +140,7 @@ export async function sceneToSvg(scene, { shadow, css = '', label = '' }) {
         body.push(item.age ? await ageRun(item) : await textRun(item))
         break
       case 'svg':
-        // Nested drawings may carry ids (the mascot's gradient); keep them unique per file.
+        // Nested drawings may carry ids (the mascot's gradient). Keep them unique per file.
         body.push(item.markup.replace(/\bid="([^"]+)"/g, (_, id) => `id="${id}-${uid}"`).replace(/url\(#([^)]+)\)/g, (_, id) => `url(#${id}-${uid})`))
         uid++
         break

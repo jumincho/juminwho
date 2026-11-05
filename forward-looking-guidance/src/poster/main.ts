@@ -1,5 +1,5 @@
 // Static cuts, not the page's variable fonts: Chromium writes variable fonts into a PDF as Type 3
-// glyph procedures, which some print preflights reject; static ones go in as ordinary TrueType.
+// glyph procedures, which some print preflights reject. Static ones go in as ordinary TrueType.
 import '@fontsource/inter/400.css'
 import '@fontsource/inter/400-italic.css'
 import '@fontsource/inter/500.css'

@@ -42,12 +42,12 @@ body {
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Korean breaks between words, not syllables; Chinese and Japanese break between characters (below). */
+  /* Korean breaks between words, not syllables. Chinese and Japanese break between characters (below). */
   word-break: keep-all;
   overflow-wrap: break-word;
 }
 
-/* Korean headings are in Jua, which has one weight; a faked bold would smear it. */
+/* Korean headings are in Jua, which has one weight. A faked bold would smear it. */
 :lang(ko) {
   font-synthesis-weight: none;
 }

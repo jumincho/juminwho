@@ -242,7 +242,7 @@ export function buildLanguagePills(c) {
   return { html: `<div class="row">${html}</div>`, frames }
 }
 
-/** Pairs shown side by side on wide screens; the shorter one grows to match. */
+/** Pairs shown side by side on wide screens. The shorter one grows to match. */
 export const rows = [
   ['glance', 'publications'],
   ['experience', 'education'],

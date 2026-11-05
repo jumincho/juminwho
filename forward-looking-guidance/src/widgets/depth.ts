@@ -23,7 +23,7 @@ export function mountDepth(container: HTMLElement): void {
     const plotBottom = height - margin.bottom
     const y = linear([0, 0.5], [plotBottom, margin.top])
 
-    // Four groups; Overall stands a little apart.
+    // Four groups. Overall stands a little apart.
     const slots = depthResults.length + 0.5
     const slot = (width - margin.left - margin.right) / slots
     const groupX = (g: number) => margin.left + slot * (g + (g === depthResults.length - 1 ? 0.5 : 0)) + slot / 2

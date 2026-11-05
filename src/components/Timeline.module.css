@@ -17,7 +17,7 @@
 }
 
 /*
- * Every date pill has the same shape; a planned end date gets a separate
+ * Every date pill has the same shape. A planned end date gets a separate
  * dashed "expected" tag under it (beside it on narrow screens), so no pill
  * grows wider than the rest.
  */

@@ -142,7 +142,7 @@ async function checkPage(vp, scheme) {
     const assets = [
       ...heads.map((link) => link.href),
       ...manifest.icons.map((icon) => new URL(icon.src, manifestUrl).href),
-      // og:image points at the live site; check the same file on this server.
+      // og:image points at the live site. Check the same file on this server.
       new URL(ogImage.split('/').pop(), location.href).href,
     ]
     const missing = []
@@ -222,7 +222,7 @@ async function checkPage(vp, scheme) {
   console.log(`${failures.some((f) => f.startsWith(tag)) ? '✗' : '✓'} ${tag}`)
 }
 
-/** With reduced motion only the age counter and the clock may move, once a second; the shader holds one frame. */
+/** With reduced motion only the age counter and the clock may move, once a second. The shader holds one frame. */
 async function checkReducedMotion() {
   const context = await newContext({ viewport: viewports[0], reducedMotion: 'reduce' })
   const page = await context.newPage()
@@ -345,7 +345,7 @@ async function checkProjectPage(vp, scheme) {
     const ogImage = document.querySelector('meta[property="og:image"]')?.content ?? ''
     const icon = document.querySelector('link[rel="icon"]')?.href
     const missing = []
-    // og:image points at the live site; check the same file on this server.
+    // og:image points at the live site. Check the same file on this server.
     for (const asset of [icon, new URL(ogImage.split('/').pop(), location.href).href]) {
       if (!asset || !(await fetch(asset)).ok) missing.push(asset)
     }

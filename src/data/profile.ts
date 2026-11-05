@@ -1,5 +1,5 @@
 /**
- * Every word on the page lives in this file; components only arrange it.
+ * Every word on the page lives in this file. Components only arrange it.
  *
  * Facts come from the LinkedIn profile (last checked against its 2026-10
  * export) and the cited publication records. Nothing is invented: when a fact
@@ -24,7 +24,7 @@ import type {
   TimelineEntry,
 } from './types'
 
-/** Menu order. English is the default; `?lang=ko` (etc.) opens the page in another language. */
+/** Menu order. English is the default. `?lang=ko` (etc.) opens the page in another language. */
 export const languages: Language[] = [
   { code: 'en', region: 'US', name: 'English', locale: 'en-US' },
   { code: 'ko', region: 'KR', name: '한국어', locale: 'ko-KR' },
@@ -104,7 +104,7 @@ export const profile = {
   github: { label: 'GitHub', href: 'https://github.com/jumincho' },
 }
 
-/** Page sections in reading order; the header navigation follows this order. */
+/** Page sections in reading order. The header navigation follows this order. */
 export const sections = {
   publications: {
     id: 'publications',
@@ -459,7 +459,7 @@ export const labels = {
     'zh-HK': (years: number) => `${years} 歲`,
     ja: (years: number) => `${years}歳`,
   },
-  /** "Computer Science, Jeonbuk National University" in English; the university comes first elsewhere. */
+  /** "Computer Science, Jeonbuk National University" in English. The university comes first elsewhere. */
   affiliationOrder: {
     en: <T>(department: T, university: T) => [department, ', ', university],
     ko: <T>(department: T, university: T) => [university, ' ', department],
@@ -467,7 +467,7 @@ export const labels = {
     'zh-HK': <T>(department: T, university: T) => [university, ' ', department],
     ja: <T>(department: T, university: T) => [university, ' ', department],
   },
-  /** "Rome, Italy" in English; country first elsewhere. */
+  /** "Rome, Italy" in English, country first elsewhere. */
   place: {
     en: (city: string, country: string) => `${city}, ${country}`,
     ko: (city: string, country: string) => `${country} ${city}`,
@@ -538,7 +538,7 @@ export const labels = {
 
 /** Wording and addresses used only by the GitHub profile README (scripts/github-profile.mjs). */
 export const githubProfile = {
-  /** Shows README.md; the other languages open as files in the repository. */
+  /** Shows README.md. The other languages open as files in the repository. */
   profile: 'https://github.com/jumincho',
   repository: 'https://github.com/jumincho/jumincho',
   glance: { en: 'At a glance', ko: '한눈에 보기', 'zh-CN': '概览', 'zh-HK': '概覽', ja: 'プロフィール' } satisfies Localized,

@@ -18,7 +18,7 @@ export default function NameFlip({ name, alias, flipped = false }: Props) {
   const [hovered, setHovered] = useState(false)
 
   const onPointerEnter = (event: PointerEvent) => {
-    // A tap would flip and immediately flip back; touch gets the scroll flip only.
+    // A tap would flip and immediately flip back. Touch gets the scroll flip only.
     if (event.pointerType !== 'touch') setHovered(true)
   }
 

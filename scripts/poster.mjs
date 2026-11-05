@@ -6,7 +6,7 @@
  * Serves the page with Vite, opens it in Chromium with reduced motion (every figure in one
  * complete, still state), and checks it before printing: every figure mounted, nothing runs
  * past the sheet, and no text (subscripts aside) is smaller than 16 pt at A0. Then writes dist-poster/poster.pdf
- * (841 × 1189 mm; text and figures stay vector, fonts embedded as TrueType, never Type 3) and a PNG
+ * (841 × 1189 mm, text and figures as vectors, fonts embedded as TrueType, never Type 3) and a PNG
  * preview beside it.
  */
 import { mkdir } from 'node:fs/promises'
@@ -81,7 +81,7 @@ try {
   await page.emulateMedia({ media: 'screen', reducedMotion: 'reduce' })
   const pdf = await page.pdf({ path: `${OUT}/poster.pdf`, preferCSSPageSize: true, printBackground: true })
   // A character outside the static fonts' subsets falls back to a system font, which Chromium may
-  // write as a Type 3 font; some print preflights reject those.
+  // write as a Type 3 font. Some print preflights reject those.
   if (pdf.includes('/Type3')) failures.push('a glyph went into the PDF as a Type 3 font: a character outside the static font subsets?')
 } finally {
   await browser.close()

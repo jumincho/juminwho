@@ -907,7 +907,7 @@
   }
 }
 
-/* the measured effect of each choice (Table 1); a row is also how a choice is picked */
+/* the measured effect of each choice (Table 1), where a row is also how a choice is picked */
 
 .pl-effect {
   max-width: 36rem;

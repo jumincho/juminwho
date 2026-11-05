@@ -5,7 +5,7 @@ import styles from './Backdrop.module.css'
 /**
  * Pastel blobs drifting slowly behind the page, under a whisper of paper
  * grain. A WebGL shader draws them where the device runs it well
- * (lib/mochi-field.ts); everywhere else the CSS blobs float the same way.
+ * (lib/mochi-field.ts). Everywhere else the CSS blobs float the same way.
  */
 export default function Backdrop() {
   const canvasRef = useRef<HTMLCanvasElement>(null)

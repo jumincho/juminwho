@@ -531,7 +531,7 @@ body {
 /*
  * 𝒟, the corpus, as LaTeX's \mathcal{D} draws it: the outline of D from KaTeX's Caligraphic face
  * (MIT), sized like a glyph of the surrounding text (advance 0.771 em, ascent 0.789, descent 0.143).
- * No installed face has a calligraphic D; the one script D there is a copperplate swash that reads
+ * No installed face has a calligraphic D. The one script D there is a copperplate swash that reads
  * as a broken character.
  */
 .ps-cal {

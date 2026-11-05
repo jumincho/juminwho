@@ -45,7 +45,7 @@ const drawings: Record<string, ReactNode> = {
   ),
 }
 
-/** Round flag for an ISO 3166-1 alpha-2 code; a map pin when there is no drawing yet. */
+/** Round flag for an ISO 3166-1 alpha-2 code, or a map pin when there is no drawing yet. */
 export default function Flag({ code }: { code: string }) {
   const drawing = drawings[code.toUpperCase()]
   if (!drawing) return <MapPin className={styles.pin} />

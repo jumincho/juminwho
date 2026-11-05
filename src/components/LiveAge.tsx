@@ -15,7 +15,7 @@ interface Props {
 /**
  * Age in years since `birth`, to 8 decimal places. The last digit moves about
  * three times a second (1e-8 year ≈ 0.32 s), so the text is repainted every
- * 100 ms straight into the DOM and React never re-renders; with reduced motion
+ * 100 ms straight into the DOM and React never re-renders. With reduced motion
  * it updates once a second. The racing digits are hidden from screen readers,
  * which get the whole number of years instead.
  */

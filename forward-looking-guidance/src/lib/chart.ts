@@ -9,7 +9,7 @@ export function responsive(container: HTMLElement, draw: (width: number) => void
     // The content box: the chart sits inside the container's padding.
     const style = getComputedStyle(container)
     const width = Math.floor(container.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight))
-    // Below this the container is mid-layout (or hidden); a chart drawn now would be nonsense.
+    // Below this the container is mid-layout (or hidden). A chart drawn now would be nonsense.
     if (width < 200 || width === last) return
     last = width
     draw(width)

@@ -154,7 +154,7 @@ code {
   line-height: 0;
 }
 
-/* Few text faces have ⊕; take it from a math face where one is installed, at text size. */
+/* Few text faces have ⊕. Take it from a math face where one is installed, at text size. */
 .op,
 .svg-op {
   font-family: 'STIX Two Math', 'Cambria Math', 'Latin Modern Math', 'Segoe UI Symbol', 'DejaVu Sans', var(--font-math);
@@ -172,7 +172,7 @@ code {
 
 /* ---- buttons ---- */
 
-/* The links under the title: dark pills; a link that is not out yet stays light, with a "Soon" badge. */
+/* The links under the title: dark pills. A link that is not out yet stays light, with a "Soon" badge. */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -465,7 +465,7 @@ code {
   padding: clamp(1rem, 0.6rem + 1.6vw, 2rem);
 }
 
-/* ---- reveal on first view (decorative; content is visible without scripts) ---- */
+/* ---- reveal on first view (decorative, content is visible without scripts) ---- */
 
 @media (prefers-reduced-motion: no-preference) {
   .js [data-reveal] {

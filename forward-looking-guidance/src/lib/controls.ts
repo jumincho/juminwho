@@ -26,7 +26,7 @@ export function segmented<T extends string>(
   const place = () => {
     const pressed = buttons.find((button) => button.dataset.value === current)
     if (!pressed || !pressed.offsetWidth) return
-    // The first placement jumps; only later changes slide.
+    // The first placement jumps. Only later changes slide.
     if (!placed) thumb.style.transition = 'none'
     thumb.style.width = `${pressed.offsetWidth}px`
     thumb.style.transform = `translateX(${pressed.offsetLeft}px)`

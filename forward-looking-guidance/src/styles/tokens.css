@@ -1,8 +1,8 @@
 /*
  * Design tokens for the project page. This page has its own look, separate
  * from the cozy portfolio: a quiet research-lab style with one accent colour.
- * Green marks forward-looking guidance and "ours" everywhere; slate marks
- * the baseline; orange marks a failure.
+ * Green marks forward-looking guidance and "ours" everywhere, slate marks
+ * the baseline, and orange marks a failure.
  */
 
 :root {
@@ -58,7 +58,7 @@
   --radius-l: 18px;
   --radius-xl: 26px;
 
-  /* Running text and captions share one column; figures may use the wider one. */
+  /* Running text and captions share one column. Figures may use the wider one. */
   --col: 44rem;
   --wide: 60rem;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
