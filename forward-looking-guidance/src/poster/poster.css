@@ -249,8 +249,9 @@ body {
 }
 
 /*
- * The teaser is drawn at 560 × 242 and scaled to the panel's inner size (687 × 297), so its nodes and
- * labels come out about 23% larger than the page draws them.
+ * The teaser is drawn at 580 × 250 and scaled to the panel's inner size (687 × 296), so its nodes and
+ * labels come out about 18% larger than the page draws them, with room between the running step's
+ * card and the key below it.
  */
 .ps-teaser {
   height: 300px;
@@ -262,9 +263,9 @@ body {
 
 .ps-teaser .hero-visual {
   position: relative;
-  width: 560px;
-  height: 242px;
-  transform: scale(1.2268);
+  width: 580px;
+  height: 250px;
+  transform: scale(1.1845);
   transform-origin: 0 0;
 }
 

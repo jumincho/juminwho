@@ -31,7 +31,9 @@ function layoutFor(width: number, height: number): Layout {
   const narrow = width < 560
   const n = narrow ? 4 : 5
   const r = narrow ? 17 : Math.round(Math.min(27, Math.max(21, width * 0.021)))
-  const margin = narrow ? 40 : Math.max(100, width * 0.11)
+  // Wide figures keep at least 110 px between operations, so the running step's card (156 px wide)
+  // clears the output chip (36 px) of the step before it.
+  const margin = narrow ? 40 : Math.max(Math.min(100, (width - 4 * 110) / 2), width * 0.11)
   const xs = Array.from({ length: n }, (_, k) => Math.round(margin + (k * (width - 2 * margin)) / (n - 1)))
   return {
     width,
