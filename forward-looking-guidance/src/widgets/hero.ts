@@ -217,20 +217,16 @@ function apply(L: Layout, P: Parts, step: number, animate: boolean): void {
   const cx = Math.min(Math.max((x1 + x2) / 2, half), L.width - half)
   P.regionLabel.style.transform = `translate(${cx}px, ${y - r - pad - 14}px)`
 
-  // Guidance flows from the remaining plan into the running step's extractor and reasoner:
-  // into the card's side where there is room, else down into its top.
-  const sx = x1 + Math.min(18, (x2 - x1) / 4)
-  const sy = y + r + pad
-  const cardTop = y + r + card.gap
+  // Guidance flows from the remaining plan into the running step's extractor and reasoner: down from
+  // the plan's lower edge and into the card's side. The card's top sits level with that edge, so the
+  // arrow always enters from the side, starting far enough right of the card to curve in. A figure too
+  // tight for that shows no arrow rather than a stub.
   const side = cardX + card.w / 2 + 7
-  if (sx - side >= 24) {
-    const ey = cardTop + card.h / 2
-    P.arrow.setAttribute('d', `M${sx} ${sy} C${sx} ${ey}, ${sx} ${ey}, ${side} ${ey}`)
-  } else {
-    const ex = Math.min(sx, cardX + card.w / 2 - 16)
-    const mid = (sy + cardTop) / 2
-    P.arrow.setAttribute('d', `M${sx} ${sy} C${sx} ${mid}, ${ex} ${mid}, ${ex} ${cardTop - 5}`)
-  }
+  const sx = Math.min(Math.max(x1 + 18, side + 28), x2 - 18)
+  const sy = y + r + pad
+  if (sx - side < 24) return
+  const ey = y + r + card.gap + card.h / 2
+  P.arrow.setAttribute('d', `M${sx} ${sy} C${sx} ${ey}, ${sx} ${ey}, ${side} ${ey}`)
   window.setTimeout(() => P.arrow.classList.add('is-on'), animate ? 420 : 0)
 }
 
