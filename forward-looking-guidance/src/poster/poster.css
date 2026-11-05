@@ -185,16 +185,8 @@ body {
   background: var(--hl-bg);
 }
 
-.ps-kicker {
-  color: var(--accent);
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
 .ps-headline {
-  margin-top: 4px;
+  margin-top: 0;
   font-family: var(--font-serif);
   font-optical-sizing: auto;
   font-size: 46px;
@@ -373,20 +365,39 @@ body {
   height: 14px;
 }
 
-.ps-takeaway {
+/* The question the motivation answers, set as the section's first line. */
+.ps-lead {
   margin-top: 12px;
-  padding: 8px 14px 9px 16px;
-  border-left: 5px solid var(--accent-fill);
-  border-radius: 0 12px 12px 0;
-  background: var(--accent-tint);
   color: var(--ink);
-  font-size: 19px;
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* A remark under a figure: the reader's likely question, answered. */
+.ps-note {
+  margin-top: 12px;
+  padding-left: 14px;
+  border-left: 4px solid var(--border-strong);
+  color: var(--ink-2);
+}
+
+/* The one takeaway of the poster, along the foot of the sheet. */
+.ps-conclusion {
+  margin: 18px var(--pad) 0;
+  padding: 14px 26px 15px;
+  border-radius: 16px;
+  background: var(--band);
+  color: var(--band-ink);
+  font-size: 21px;
   line-height: 1.4;
 }
 
-.ps-takeaway > b:first-child {
-  margin-right: 4px;
-  color: var(--accent);
+.ps-conclusion b {
+  margin-right: 6px;
+  color: var(--band-ink-2);
   font-weight: 700;
 }
 
@@ -505,12 +516,57 @@ body {
 }
 
 .ps-eq {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 38px;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
   font-size: 24.5px;
   line-height: 1.35;
+}
+
+/* Change in EM when only that module reads G_i (Table 1). */
+.ps-eq-tag {
+  padding: 1px 10px 2px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ps-eq-tag.is-neg {
+  background: var(--miss-soft);
+  color: var(--miss);
+}
+
+.ps-eq-tag.is-strong {
+  background: var(--accent-solid);
+  color: var(--on-accent);
+}
+
+/* The setting FG uses: (3) and (4) together. */
+.ps-eq.is-both {
+  margin-top: 2px;
+  padding-top: 6px;
+  border-top: 1.5px dashed var(--border-strong);
+}
+
+.ps-eq-both {
+  color: var(--ink-2);
+  font-family: var(--font-sans);
+  font-size: 18.5px;
+  text-align: right;
+}
+
+.ps-eq-both b {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.ps-eq-both .m {
+  font-size: 1.15em;
 }
 
 .ps-eq .m sub {
@@ -549,6 +605,7 @@ body {
   color: var(--ink-3);
   font-family: var(--font-serif);
   font-size: 20px;
+  text-align: right;
 }
 
 /* What the symbols stand for, under the equations. */
@@ -777,137 +834,4 @@ body {
   mask: none;
   -webkit-mask: none;
   transform: rotate(45deg);
-}
-
-/* Of Figure 2, section 2 keeps the measured effect of each stage (Table 1). */
-.ps-effect .pl-diagram,
-.ps-effect .pf {
-  display: none;
-}
-
-.ps-effect .pl-effect {
-  max-width: none;
-  margin: 8px 0 0;
-  padding: 0;
-  border: 0;
-  background: none;
-}
-
-.ps-effect .pl-effect-head,
-.ps-effect .pl-bar-row {
-  grid-template-columns: 15rem minmax(0, 1fr) 4.2rem;
-}
-
-.ps-effect .pl-effect-head {
-  font-size: 16.5px;
-}
-
-.ps-effect .pl-bar-row {
-  padding-block: 3px;
-  font-size: 18px;
-}
-
-.ps-effect .pl-bar-row[aria-pressed='true'] {
-  box-shadow: none;
-  outline: 1.5px solid var(--border-strong);
-  outline-offset: -1.5px;
-}
-
-.ps-effect .pl-bar-track {
-  height: 16px;
-}
-
-/*
- * The real case (Table 4): one row per operation of the plan, one column per system, so the
- * reader follows the plan down and sees where the baseline loses the members.
- */
-.ps-case {
-  padding: 6px 16px 8px;
-}
-
-.ps-case-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.ps-case-c-plan {
-  width: 30%;
-}
-
-.ps-case-c-base {
-  width: 31%;
-}
-
-.ps-case-table th,
-.ps-case-table td {
-  padding: 8px 8px 9px;
-  text-align: left;
-  vertical-align: top;
-}
-
-.ps-case-table thead th {
-  padding-block: 6px 8px;
-  border-bottom: 2px solid var(--ink-3);
-  color: var(--ink);
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.ps-case-table thead th:first-child {
-  color: var(--ink-3);
-  font-weight: 650;
-  vertical-align: bottom;
-}
-
-.ps-case-table thead th.is-fg {
-  color: var(--accent);
-}
-
-.ps-case-table tbody tr + tr > * {
-  border-top: 1.5px solid var(--border);
-}
-
-.ps-case-table tbody th {
-  color: var(--ink-2);
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-.ps-case-table tbody th .m {
-  margin-right: 6px;
-  color: var(--ink);
-  font-size: 19px;
-  font-weight: 400;
-}
-
-/* The answers sit on one line with the pill, in the middle of the row. */
-.ps-case-table td.ps-case-end {
-  vertical-align: middle;
-}
-
-.ps-case-table td {
-  color: var(--ink);
-  font-size: 17.5px;
-  line-height: 1.35;
-}
-
-/* The +FG column, on the same tint as the +FG rows of the results table. */
-.ps-case-table td:last-child,
-.ps-case-table thead th.is-fg {
-  background: var(--accent-tint);
-}
-
-.ps-case-table small {
-  display: block;
-  margin-top: 3px;
-  color: var(--ink-3);
-  font-size: 15.5px;
-  line-height: 1.3;
-}
-
-.poster .ps-case .tr-verdict {
-  font-size: 17px;
 }

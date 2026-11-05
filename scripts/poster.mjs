@@ -57,10 +57,9 @@ try {
         figures: {
           teaser: count('#hero-visual svg .hero-node'),
           motivation: count('#fig-motivation .mv-cell'),
-          effect: count('#fig-pipeline .pl-bar-row'),
           table: count('#tbl-results tbody tr'),
           depth: count('#fig-depth .ps-dp-row'),
-          case: count('.ps-case-table tbody tr'),
+          tokens: count('#fig-tokens .tk-row'),
           qr: count('#qr svg'),
         },
         overflow: Math.round(lastBottom - (box.bottom - padBottom)),
