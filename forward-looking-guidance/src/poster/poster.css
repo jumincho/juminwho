@@ -58,7 +58,7 @@ body {
   flex-direction: column;
   width: var(--poster-w);
   height: var(--poster-h);
-  padding-bottom: 40px;
+  padding-bottom: 36px;
   overflow: hidden;
   background: var(--bg);
   color: var(--ink);
@@ -241,12 +241,12 @@ body {
 }
 
 /*
- * The teaser is drawn at 580 × 250 and scaled to the panel's inner size (687 × 296), so its nodes and
- * labels come out about 18% larger than the page draws them, with room between the running step's
+ * The teaser is drawn at 611 × 250 and scaled to the panel's inner size (687 × 281), so its nodes and
+ * labels come out about 12% larger than the page draws them, with room between the running step's
  * card and the key below it.
  */
 .ps-teaser {
-  height: 300px;
+  height: 284px;
   overflow: hidden;
   border: 1.5px solid var(--hl-border);
   border-radius: 18px;
@@ -255,9 +255,9 @@ body {
 
 .ps-teaser .hero-visual {
   position: relative;
-  width: 580px;
+  width: 611px;
   height: 250px;
-  transform: scale(1.1845);
+  transform: scale(1.1244);
   transform-origin: 0 0;
 }
 
@@ -371,7 +371,7 @@ body {
   color: var(--ink);
   font-family: var(--font-serif);
   font-optical-sizing: auto;
-  font-size: 25px;
+  font-size: 23px;
   font-weight: 600;
   line-height: 1.25;
 }
@@ -387,7 +387,7 @@ body {
 /* The one takeaway of the poster, along the foot of the sheet. */
 .ps-conclusion {
   margin: 18px var(--pad) 0;
-  padding: 14px 26px 15px;
+  padding: 12px 26px 13px;
   border-radius: 16px;
   background: var(--band);
   color: var(--band-ink);
@@ -615,6 +615,10 @@ body {
   border-top: 1.5px solid var(--border);
   color: var(--ink-3);
   font-size: 16.5px;
+}
+
+.ps-gl,
+.ps-nowrap {
   white-space: nowrap;
 }
 

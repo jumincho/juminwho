@@ -41,16 +41,16 @@
       <!-- The paper in three lines, for a first look: the task, the problem, the idea. -->
       <section class="ps-highlights">
         <div class="ps-hl-text">
-          <p class="ps-headline">Let each step see<br /> <em>the rest of the plan.</em></p>
+          <p class="ps-headline">Form intermediate outputs<br /> <em>with later operations in mind.</em></p>
           <ul class="ps-hl-list">
             <li>
-              <b>Task.</b> In multi-hop QA, planning-based iterative RAG writes a plan
-              <span class="m"><i>o</i><sub>1</sub>, …, <i>o</i><sub><i>n</i></sub></span>, then retrieves, extracts and reasons one operation at a time.
+              <b>Task.</b> For multi-hop QA, planning-based iterative RAG resolves a plan
+              <span class="m"><i>o</i><sub>1</sub>, …, <i>o</i><sub><i>n</i></sub></span> through retrieval, evidence extraction, and reasoning.
             </li>
-            <li><b>Problem.</b> Each step sees only its own operation, so its output can answer that step and still drop what a later step needs.</li>
+            <li><b>Problem.</b> Intermediate outputs are optimized locally: adequate for the current operation, they may omit information later operations require.</li>
             <li>
-              <b>Idea.</b> Forward-looking guidance (FG) gives the step’s extractor and reasoner the rest of the plan,
-              <span class="m"><i>G</i><sub><i>i</i></sub> = (<i>o</i><sub><i>i</i>+1</sub>, …, <i>o</i><sub><i>n</i></sub>)</span>, with no extra model calls.
+              <b>Idea.</b> Forward-looking guidance (FG) appends the remaining operations, <span class="m"><i>G</i><sub><i>i</i></sub> = (<i>o</i><sub><i>i</i>+1</sub>, …, <i>o</i><sub><i>n</i></sub>)</span>,
+              to the extractor and reasoner prompts.
             </li>
           </ul>
         </div>
@@ -61,23 +61,23 @@
         <div class="ps-col">
           <section class="ps-section">
             <h2><span class="ps-num">1</span>Motivation</h2>
-            <p class="ps-lead">The plan is written before the first step runs. Why should a step ignore the rest of it?</p>
+            <p class="ps-lead">Even when a full plan is available, intermediate outputs are not shaped by the later operations that will consume them.</p>
             <p class="ps-text">
-              Run alone, <span class="m"><i>o</i><sub>1</sub></span> answers “Springfield”, right for <span class="m"><i>o</i><sub>1</sub></span> but no use to <span class="m"><i>o</i><sub>2</sub></span>.
-              With <span class="m"><i>o</i><sub>2</sub></span> in view, it answers “Springfield, Illinois”.
+              In (A), <span class="m"><i>o</i><sub>1</sub></span> returns the underspecified “Springfield”, so <span class="m"><i>o</i><sub>2</sub></span> cannot identify the intended entity.
+              In (B), <span class="m"><i>o</i><sub>1</sub></span> returns “Springfield, Illinois”.
             </p>
             <div class="ps-panel ps-figure"><div id="fig-motivation"></div></div>
             <p class="ps-note">
-              FG leaves retrieval as it is, so both runs read the same documents. What changes is what the output of
-              <span class="m"><i>o</i><sub>1</sub></span> keeps for <span class="m"><i>o</i><sub>2</sub></span>.
+              Both settings share the planner and the operations. FG does not retrieve more documents:
+              it makes better use of the documents already retrieved.
             </p>
           </section>
 
           <section class="ps-section">
             <h2><span class="ps-num">2</span>Forward-looking guidance</h2>
             <p class="ps-text">
-              At step <span class="m"><i>i</i></span>, the remaining plan <span class="m"><i>G</i><sub><i>i</i></sub></span> can be appended (<span class="op">⊕</span>) to the input of each module.
-              The tag is the change in EM when only that module reads <span class="m"><i>G</i><sub><i>i</i></sub></span> (STRIDE, MuSiQue dev, Qwen3-8B).
+              Before resolving <span class="m"><i>o</i><sub><i>i</i></sub></span>, the remaining execution trajectory <span class="m"><i>G</i><sub><i>i</i></sub></span> is appended (<span class="op">⊕</span>) to a selected stage.
+              Tags: ΔEM over STRIDE with guidance at that stage (MuSiQue dev, Qwen3-8B).
             </p>
             <div class="ps-eqs">
               <p class="ps-eq is-off">
@@ -96,15 +96,15 @@
                 <span class="ps-eq-no">(4)</span>
               </p>
               <p class="ps-eq is-both">
-                <span class="ps-eq-both"><b>FG</b> reads <span class="m"><i>G</i><sub><i>i</i></sub></span> in (3) and (4) together</span>
+                <span class="ps-eq-both">Extraction + reasoning, used by every <b>+FG</b> variant</span>
                 <span class="ps-eq-tag is-strong">+.087</span>
                 <span class="ps-eq-no"></span>
               </p>
-              <p class="ps-eq-note"><span class="m"><i>D</i><sub><i>i</i></sub></span> documents · <span class="m"><i>f</i><sub><i>i</i></sub></span> facts · <span class="m"><i>r</i><sub><i>i</i></sub></span> output of <span class="m"><i>o</i><sub><i>i</i></sub></span> · <span class="m"><i>S</i></span> execution state · <span class="m"><svg class="ps-cal" viewBox="0 -789 771 932" role="img" aria-label="calligraphic D, the corpus"><path transform="scale(1 -1)" d="M37 475Q28 475 23 479Q18 483 19 489Q19 490 20 492Q20 494 21 497Q22 500 22 502Q44 571 132 623Q220 675 327 682H356Q386 683 408 683Q505 683 560 674Q615 664 667 633Q766 571 766 450Q766 416 757 375Q725 236 586 132Q449 29 279 6Q248 1 160 0Q83 0 79 2Q72 6 72 12Q72 23 88 37Q108 56 133 64L144 68L152 88Q247 328 272 587Q272 588 272 590Q275 613 272 613Q272 613 270 613H269Q205 609 168 592Q132 574 119 532Q118 530 116 525Q114 520 113 518Q102 502 80 490Q57 477 37 475ZM663 444Q647 531 573 572Q499 614 383 614Q370 614 370 612Q370 597 355 502Q320 299 242 103L228 69H265Q385 72 481 119Q631 197 660 347Q665 371 665 392V407Q665 433 663 444Z"/></svg></span> corpus</p>
+              <p class="ps-eq-note"><span class="ps-gl"><span class="m"><i>D</i><sub><i>i</i></sub></span> retrieved documents</span> · <span class="ps-gl"><span class="m"><i>f</i><sub><i>i</i></sub></span> extracted facts</span> · <span class="ps-gl"><span class="m"><i>r</i><sub><i>i</i></sub></span> intermediate output</span> · <span class="ps-gl"><span class="m"><i>S</i></span> execution state</span> · <span class="ps-gl"><span class="m"><svg class="ps-cal" viewBox="0 -789 771 932" role="img" aria-label="calligraphic D, the corpus"><path transform="scale(1 -1)" d="M37 475Q28 475 23 479Q18 483 19 489Q19 490 20 492Q20 494 21 497Q22 500 22 502Q44 571 132 623Q220 675 327 682H356Q386 683 408 683Q505 683 560 674Q615 664 667 633Q766 571 766 450Q766 416 757 375Q725 236 586 132Q449 29 279 6Q248 1 160 0Q83 0 79 2Q72 6 72 12Q72 23 88 37Q108 56 133 64L144 68L152 88Q247 328 272 587Q272 588 272 590Q275 613 272 613Q272 613 270 613H269Q205 609 168 592Q132 574 119 532Q118 530 116 525Q114 520 113 518Q102 502 80 490Q57 477 37 475ZM663 444Q647 531 573 572Q499 614 383 614Q370 614 370 612Q370 597 355 502Q320 299 242 103L228 69H265Q385 72 481 119Q631 197 660 347Q665 371 665 392V407Q665 433 663 444Z"/></svg></span> corpus</span></p>
             </div>
             <p class="ps-text">
-              <b>Why not in retrieval?</b> In the query, <span class="m"><i>G</i><sub><i>i</i></sub></span> mixes the needs of later steps into the current one, and the search gets worse.
-              After retrieval, <span class="m"><i>G</i><sub><i>i</i></sub></span> changes only what the step keeps and writes from the same documents.
+              <b>Why not in retrieval?</b> As extra query text, <span class="m"><i>G</i><sub><i>i</i></sub></span> can mix the current information need with future ones.
+              After retrieval, it shapes what is preserved and how the intermediate output is expressed.
             </p>
           </section>
         </div>
@@ -115,23 +115,24 @@
             <p class="ps-text">EM, 1,000 test questions each. <b>Bold</b> best, <u>underlined</u> second, Δ under +FG.</p>
             <div class="ps-panel ps-figure ps-table-wrap"><div id="tbl-results"></div></div>
             <p class="ps-text">
-              FG raises EM in <b>16 of 18</b> settings (3 planners × 3 datasets × 2 LLMs), and STRIDE+FG has the best average EM with both LLMs.
+              FG improves EM in <b>16 of 18</b> settings. STRIDE+FG obtains the best EM on all datasets with Qwen3-8B,
+              and on 2Wiki and MuSiQue with <span class="ps-nowrap">GPT-4o-mini</span>.
             </p>
           </section>
 
           <section class="ps-section">
-            <h2><span class="ps-num">4</span>Deeper questions</h2>
+            <h2><span class="ps-num">4</span>Gains across reasoning depths</h2>
             <p class="ps-text">
-              MuSiQue is the hardest of the three (the lowest EM for every system), with questions of 2 to 4 hops. There STRIDE+FG lifts EM
-              from .288 to <b>.375</b> with Qwen3-8B, and the gain does not fade as questions get deeper.
+              Deeper questions need intermediate outputs to stay useful over longer chains of operations. On MuSiQue, the relative
+              gain stays near 30% at every reasoning depth.
             </p>
             <div class="ps-panel ps-figure ps-depth">
-              <p class="ps-fig-title"><span>MuSiQue EM by gold hop count</span> <span class="legend ps-legend"><span><i class="swatch swatch-base"></i>STRIDE</span><span><i class="swatch swatch-accent"></i>gain with FG</span><span><i class="ps-dp-key">%</i>relative gain</span></span></p>
+              <p class="ps-fig-title"><span>MuSiQue EM by gold reasoning depth, Qwen3-8B</span> <span class="legend ps-legend"><span><i class="swatch swatch-base"></i>STRIDE</span><span><i class="swatch swatch-accent"></i>gain with FG</span><span><i class="ps-dp-key">%</i>relative gain</span></span></p>
               <div id="fig-depth"></div>
             </div>
-            <p class="ps-text">The cost is small: 2–5% more tokens per question, and no extra model calls.</p>
+            <p class="ps-text">FG adds no model calls or retrieval steps, and only a modest token cost.</p>
             <div class="ps-panel ps-figure ps-tokens">
-              <p class="ps-fig-title"><span>LLM tokens per question, Qwen3-8B</span> <span id="tokens-legend" class="legend ps-legend"></span></p>
+              <p class="ps-fig-title"><span>Module-wise token cost per question, Qwen3-8B (+2–5%)</span> <span id="tokens-legend" class="legend ps-legend"></span></p>
               <div id="fig-tokens"></div>
             </div>
           </section>
@@ -140,7 +141,7 @@
 
       <!-- The one takeaway, along the foot of the sheet. -->
       <p class="ps-conclusion">
-        <b>Conclusion.</b> If iterative RAG writes a plan, let each step’s extractor and reasoner read the rest of it: its outputs keep what later steps need.
+        <b>Conclusion.</b> Generated plans should be used not only to organize execution, but also to guide the production of intermediate outputs.
       </p>
 
     </main>

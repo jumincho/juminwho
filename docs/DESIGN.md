@@ -328,14 +328,17 @@ WCAG AA 이상입니다. 저자 이름은 링크 색(`--link`)으로 씁니다.
 포커스도 제목으로 옮깁니다.
 
 **포스터.** 학회 포스터(`poster.html`, A0 세로 841 × 1189 mm)는 이 논문을 처음 보는 연구자를 기준으로 짭니다.
-멀리서도 "반복 RAG로 multi-hop QA를 풀 때, 이미 세운 계획의 남은 부분을 각 단계가 보게 하자"가 읽히도록, 맨 위에
-짙은 초록 제목 띠(왼쪽에 CIKM 2026 로고만, 오른쪽에 프로젝트 페이지로 가는 약 8 cm QR), 그 아래 헤드라인과 과제·문제·
-아이디어 세 줄의 소개 상자와 티저 그림을 둡니다. 소개 상자에는 결과 수치를 넣지 않고, "TL;DR" 같은 요약 라벨도 달지
-않습니다. 이어서 두 단에 번호를 붙인 네 섹션이 옵니다. 1 Motivation은 "계획을 먼저 세웠는데 왜 뒤의 단계를 보지
-않나"라는 질문과 Figure 1, 그리고 FG가 검색을 바꾸지 않고 o₁의 출력이 o₂에 필요한 것을 남기게 한다는 설명입니다.
+용어와 문장은 논문을 따릅니다(operation, intermediate output, remaining operations, execution trajectory 등).
+멀리서도 "반복 RAG로 multi-hop QA를 풀 때, intermediate output을 뒤의 operation까지 생각해 만들자"가 읽히도록, 맨 위에
+짙은 초록 제목 띠(왼쪽에 CIKM 2026 로고만, 오른쪽에 프로젝트 페이지로 가는 약 8 cm QR), 그 아래 헤드라인("Form
+intermediate outputs with later operations in mind", 논문 결론의 구절)과 과제·문제·아이디어 세 줄의 소개 상자와 티저
+그림을 둡니다. 소개 상자에는 결과 수치를 넣지 않고, "TL;DR" 같은 요약 라벨도 달지
+않습니다. 이어서 두 단에 번호를 붙인 네 섹션이 옵니다. 1 Motivation은 논문의 문장("Even when a full plan is available,
+intermediate outputs are not shaped by the later operations that will consume them.")과 Figure 1, 그리고 FG가 문서를 더
+가져오는 것이 아니라 이미 가져온 문서를 더 잘 쓰게 한다는 설명입니다.
 2 Forward-looking guidance는 식 (2)–(4)와 각 식 옆의 EM 변화(그 모듈에만 Gᵢ를 넣었을 때), 기호 풀이, "왜 검색에는
-넣지 않나"입니다. 3 Main results는 EM 표와 16/18 문장, 4 Deeper questions는 MuSiQue 깊이별 EM 막대와 토큰 비용
-차트입니다. 섹션마다 Takeaway를 두지 않고, 맨 아래 짙은 초록 띠에 결론 한 줄만 둡니다. Case study는 Motivation과
+넣지 않나"입니다. 3 Main results는 EM 표와 16/18 문장, 4 Gains across reasoning depths는 MuSiQue 깊이별 EM 막대와
+module-wise 토큰 비용 차트입니다. 섹션마다 Takeaway를 두지 않고, 맨 아래 짙은 초록 띠에 논문 결론의 한 문장만 둡니다. Case study는 Motivation과
 내용이 겹쳐 넣지 않고, 링크는 QR 하나로 충분하므로 URL도 적지 않으며, 사사 문구도 넣지 않습니다. 이 페이지의 그림과
 색, 글꼴을 그대로 쓰고, `npm run poster`로 PDF를 출력합니다(`dist-poster/`, 사이트 빌드에는 넣지 않음). 1540 px 폭의
 캔버스에 배치한 뒤 PDF를 만들 때만 종이 크기로 확대하므로, 캔버스의 px 값의 약 1.55배가 인쇄되는 pt 크기입니다.
