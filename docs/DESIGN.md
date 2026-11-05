@@ -330,7 +330,7 @@ WCAG AA 이상입니다. 저자 이름은 링크 색(`--link`)으로 씁니다.
 **포스터.** 학회 포스터(`poster.html`, A0 세로 841 × 1189 mm)는 최근 ICLR, NeurIPS, ICML의 스포트라이트·oral
 포스터처럼 짭니다. 맨 위에 짙은 초록 제목 띠(왼쪽에 CIKM 2026 로고만, 오른쪽에 프로젝트 페이지로 가는 약 8 cm QR),
 그 아래 논문 전체를 세 줄로 담은 TL;DR 상자와 티저 그림, 이어서 두 단에 번호를 붙인 다섯 섹션(1 Motivation: Figure 1,
-2 Forward-looking guidance: 식 (2)–(4)와 단계별 효과, 3 Main results: EM 표, 4 Analysis: 깊이별 EM 막대, 5 Case study)이
+2 Forward-looking guidance: 식 (2)–(4)와 기호 풀이, 단계별 효과, 3 Main results: EM 표, 4 Analysis: 깊이별 EM 막대, 5 Case study)이
 오고, 섹션은 Takeaway 한 줄로 끝납니다. Case study는 Table 4를 계획의 단계(o₁, o₂, o₃)를 행으로, STRIDE와 STRIDE+FG를
 열로 둔 표로 보여 주어, 계획을 따라 내려가며 어디서 멤버를 잃는지 읽히게 합니다. 링크는 QR 하나로 충분하므로(프로젝트
 페이지에 논문과 코드 링크가 있음) 아래쪽에 URL을 적지 않고, 사사 문구도 넣지 않습니다. 이 페이지의 그림과 색, 글꼴을

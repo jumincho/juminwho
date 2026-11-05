@@ -497,9 +497,9 @@ body {
 
 .ps-eqs {
   display: grid;
-  gap: 6px;
+  gap: 4px;
   margin-top: 12px;
-  padding: 13px 20px 12px;
+  padding: 11px 20px 10px;
   border-radius: 16px;
   background: var(--bg-soft);
 }
@@ -551,10 +551,19 @@ body {
   font-size: 20px;
 }
 
+/* What the symbols stand for, under the equations. */
 .ps-eq-note {
-  margin-top: 2px;
+  margin-top: 3px;
+  padding-top: 6px;
+  border-top: 1.5px solid var(--border);
   color: var(--ink-3);
-  font-size: 17px;
+  font-size: 16.5px;
+  white-space: nowrap;
+}
+
+.ps-eq-note .m {
+  color: var(--ink);
+  font-size: 1.12em;
 }
 
 /* ---- the main results table ---- */
@@ -734,12 +743,12 @@ body {
 .poster .mv-kicker,
 .poster .mv-note,
 .poster .mv-badge {
-  font-size: 14.5px;
+  font-size: 14px;
 }
 
 .poster .mv-question p,
 .poster .mv-plan li {
-  font-size: 16.5px;
+  font-size: 16px;
 }
 
 .poster .mv-lane-title {
@@ -747,11 +756,11 @@ body {
 }
 
 .poster .mv-body {
-  font-size: 16.5px;
+  font-size: 16px;
 }
 
 .poster .mv-cell[data-step='2'] .mv-body {
-  font-size: 20px;
+  font-size: 19px;
 }
 
 /* The arrow between steps, drawn with borders instead of the page's CSS mask: a chevron in the 18 px gap. */
@@ -794,7 +803,7 @@ body {
 }
 
 .ps-effect .pl-bar-row {
-  padding-block: 4px;
+  padding-block: 3px;
   font-size: 18px;
 }
 

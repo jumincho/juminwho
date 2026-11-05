@@ -245,6 +245,16 @@
   stroke-width: 1.5;
 }
 
+/* The key's chip looks like the output chips under the resolved operations. */
+.hero-legend-chip {
+  fill: var(--bg-muted);
+  stroke: var(--border);
+}
+
+.hero-legend .hero-legend-chip-text {
+  fill: var(--ink-2);
+}
+
 .hero-visual.is-paused * {
   animation-play-state: paused !important;
 }

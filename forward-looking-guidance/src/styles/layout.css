@@ -352,7 +352,12 @@ main {
 .hero-visual {
   position: relative;
   aspect-ratio: 1000 / 300;
-  min-height: 12rem;
+  /*
+   * Tall enough that the running step's card always clears the key along the bottom. The width is
+   * set, so the ratio cannot turn that height into a width wider than the card.
+   */
+  width: 100%;
+  min-height: 15.75rem;
   overflow: hidden;
 }
 
