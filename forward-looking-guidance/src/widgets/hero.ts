@@ -97,7 +97,7 @@ function build(L: Layout): Parts {
   const regionLabel = s(
     'g',
     { class: 'hero-region-label' },
-    s('text', { class: 'hero-kicker', 'text-anchor': 'middle', y: -fs - 6 }, 'Remaining operations'),
+    s('text', { class: 'hero-kicker', 'text-anchor': 'middle', y: -fs - 6 }, 'Remaining plan'),
     regionMath,
   )
   const arrow = s('path', { class: 'hero-arrow', 'marker-end': 'url(#hero-tip)' })
@@ -145,7 +145,7 @@ function build(L: Layout): Parts {
     const legend = s('g', { class: 'hero-legend', transform: `translate(20 ${height - 18})` })
     const items: [string, string][] = [
       ['is-done', 'resolved'],
-      ['is-active', 'current'],
+      ['is-active', 'running'],
       ['is-next', 'remaining, shown as guidance'],
     ]
     let x = 0
@@ -156,10 +156,11 @@ function build(L: Layout): Parts {
       )
       x += 26 + label.length * 6.6
     }
-    // The chip under a resolved operation holds its intermediate output, r_i.
+    // The chip under a resolved operation holds its output, r_i.
     const chipLabel = s('text', { class: 'hero-legend-chip-text', x: x + 14, y: 0, 'text-anchor': 'middle' })
     chipLabel.append(...mathTspans('r_i', 12))
-    const chipText = s('text', { x: x + 35, y: 0 }, 'intermediate output')
+    const chipText = s('text', { x: x + 35, y: 0 }, 'output of ')
+    chipText.append(...mathTspans('o_i', 12))
     legend.append(s('rect', { class: 'hero-legend-chip', x, y: -13, width: 28, height: 17, rx: 8.5 }), chipLabel, chipText)
     svg.append(legend)
   }

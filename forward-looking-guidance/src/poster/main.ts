@@ -24,6 +24,7 @@ import { delta, int, percent, score } from '../lib/format'
 import { mountHero } from '../widgets/hero'
 import { mountMotivation } from '../widgets/motivation'
 import { mountTokens } from '../widgets/tokens'
+import { mountPipeline } from '../widgets/pipeline'
 
 /**
  * The poster (poster.html): the project page's own figures, drawn for paper,
@@ -130,6 +131,7 @@ function mount(id: string, run: (el: HTMLElement) => void): void {
 
 mount('hero-visual', (el) => mountHero(el))
 mount('fig-motivation', (el) => mountMotivation(el, null))
+mount('fig-pipeline', (el) => mountPipeline(el))
 mount('tbl-results', (el) => el.replaceChildren(resultsTable()))
 mount('fig-depth', (el) => el.replaceChildren(depthBars()))
 mount('fig-tokens', (el) => mountTokens(el, byId('tokens-legend')))

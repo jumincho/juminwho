@@ -58,7 +58,7 @@ body {
   flex-direction: column;
   width: var(--poster-w);
   height: var(--poster-h);
-  padding-bottom: 36px;
+  padding-bottom: 40px;
   overflow: hidden;
   background: var(--bg);
   color: var(--ink);
@@ -186,7 +186,7 @@ body {
 }
 
 .ps-headline {
-  margin-top: 0;
+  margin-top: 4px;
   font-family: var(--font-serif);
   font-optical-sizing: auto;
   font-size: 46px;
@@ -241,12 +241,12 @@ body {
 }
 
 /*
- * The teaser is drawn at 611 × 250 and scaled to the panel's inner size (687 × 281), so its nodes and
- * labels come out about 12% larger than the page draws them, with room between the running step's
+ * The teaser is drawn at 580 × 250 and scaled to the panel's inner size (687 × 296), so its nodes and
+ * labels come out about 18% larger than the page draws them, with room between the running step's
  * card and the key below it.
  */
 .ps-teaser {
-  height: 284px;
+  height: 300px;
   overflow: hidden;
   border: 1.5px solid var(--hl-border);
   border-radius: 18px;
@@ -255,9 +255,9 @@ body {
 
 .ps-teaser .hero-visual {
   position: relative;
-  width: 611px;
+  width: 580px;
   height: 250px;
-  transform: scale(1.1244);
+  transform: scale(1.1845);
   transform-origin: 0 0;
 }
 
@@ -365,40 +365,28 @@ body {
   height: 14px;
 }
 
-/* The question the motivation answers, set as the section's first line. */
-.ps-lead {
+.ps-takeaway {
   margin-top: 12px;
+  padding: 8px 14px 9px 16px;
+  border-left: 5px solid var(--accent-fill);
+  border-radius: 0 12px 12px 0;
+  background: var(--accent-tint);
   color: var(--ink);
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  font-size: 23px;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-/* A remark under a figure: the reader's likely question, answered. */
-.ps-note {
-  margin-top: 12px;
-  padding-left: 14px;
-  border-left: 4px solid var(--border-strong);
-  color: var(--ink-2);
-}
-
-/* The one takeaway of the poster, along the foot of the sheet. */
-.ps-conclusion {
-  margin: 18px var(--pad) 0;
-  padding: 12px 26px 13px;
-  border-radius: 16px;
-  background: var(--band);
-  color: var(--band-ink);
-  font-size: 21px;
+  font-size: 19px;
   line-height: 1.4;
 }
 
-.ps-conclusion b {
-  margin-right: 6px;
-  color: var(--band-ink-2);
+.ps-takeaway > b:first-child {
+  margin-right: 4px;
+  color: var(--accent);
   font-weight: 700;
+}
+
+/* The poster's one takeaway, under both columns. */
+.ps-final {
+  margin: 20px var(--pad) 0;
+  padding: 11px 18px 12px 20px;
+  font-size: 21px;
 }
 
 /* ---- MuSiQue EM by depth: one bar per depth, the gain from FG stacked on STRIDE ---- */
@@ -516,57 +504,12 @@ body {
 }
 
 .ps-eq {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto 38px;
+  display: flex;
   align-items: baseline;
-  gap: 14px;
+  justify-content: space-between;
+  gap: 16px;
   font-size: 24.5px;
   line-height: 1.35;
-}
-
-/* Change in EM when only that module reads G_i (Table 1). */
-.ps-eq-tag {
-  padding: 1px 10px 2px;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-family: var(--font-sans);
-  font-size: 18px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.ps-eq-tag.is-neg {
-  background: var(--miss-soft);
-  color: var(--miss);
-}
-
-.ps-eq-tag.is-strong {
-  background: var(--accent-solid);
-  color: var(--on-accent);
-}
-
-/* The setting FG uses: (3) and (4) together. */
-.ps-eq.is-both {
-  margin-top: 2px;
-  padding-top: 6px;
-  border-top: 1.5px dashed var(--border-strong);
-}
-
-.ps-eq-both {
-  color: var(--ink-2);
-  font-family: var(--font-sans);
-  font-size: 18.5px;
-  text-align: right;
-}
-
-.ps-eq-both b {
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.ps-eq-both .m {
-  font-size: 1.15em;
 }
 
 .ps-eq .m sub {
@@ -605,7 +548,6 @@ body {
   color: var(--ink-3);
   font-family: var(--font-serif);
   font-size: 20px;
-  text-align: right;
 }
 
 /* What the symbols stand for, under the equations. */
@@ -615,10 +557,6 @@ body {
   border-top: 1.5px solid var(--border);
   color: var(--ink-3);
   font-size: 16.5px;
-}
-
-.ps-gl,
-.ps-nowrap {
   white-space: nowrap;
 }
 
@@ -838,4 +776,44 @@ body {
   mask: none;
   -webkit-mask: none;
   transform: rotate(45deg);
+}
+
+/* Of Figure 2, section 2 keeps the measured effect of each stage (Table 1). */
+.ps-effect .pl-diagram,
+.ps-effect .pf {
+  display: none;
+}
+
+.ps-effect .pl-effect {
+  max-width: none;
+  margin: 8px 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.ps-effect .pl-effect-head,
+.ps-effect .pl-bar-row {
+  grid-template-columns: 15rem minmax(0, 1fr) 4.2rem;
+}
+
+/* The zero row and the column heads are left out: the title names the measure, the axis marks zero. */
+.ps-effect .pl-effect-head,
+.ps-effect .pl-bars li:first-child {
+  display: none;
+}
+
+.ps-effect .pl-bar-row {
+  padding-block: 3px;
+  font-size: 18px;
+}
+
+.ps-effect .pl-bar-row[aria-pressed='true'] {
+  box-shadow: none;
+  outline: 1.5px solid var(--border-strong);
+  outline-offset: -1.5px;
+}
+
+.ps-effect .pl-bar-track {
+  height: 16px;
 }
