@@ -38,6 +38,9 @@ AI 연구자이자 박사과정생 조주민의 한 페이지 프로필입니다
 - `--{tone}-ink`: 틴트 위의 글자와 아이콘에 씁니다.
 - `--{tone}-pop`: 점이나 블롭 같은 장식에만 씁니다. 글자에는 쓰지 않습니다.
 
+여섯 가족 밖의 브랜드 톤이 하나 있습니다. `meta`는 Meta의 파랑(색상 217°)을 여섯 가족처럼 옅게 옮긴 것이고
+(`--meta`, `--meta-ink`, `--meta-pop`), Muse from Meta 초대에만 씁니다. 글자 대비는 라이트 5.4:1, 다크 7.5:1입니다.
+
 요소에 `data-tone="sage"`처럼 톤을 지정하면 그 안에서 `--tone`, `--tone-ink`, `--tone-pop`을 쓸 수 있습니다
 (`tones.css`). 배정은 다음과 같습니다.
 
@@ -48,7 +51,7 @@ AI 연구자이자 박사과정생 조주민의 한 페이지 프로필입니다
 | 시계의 상태: 취침 / 출근 준비 / 근무 / 양자 중첩 | sky / peach / butter / lilac |
 | 역할 / 소속 / 위치 / 나이 행 | lilac / sky / sage / rose |
 | LinkedIn / GitHub / ChatGPT 버튼 | sky / lilac / butter |
-| 푸터와 GitHub 프로필의 AI 에이전트 초대: Pickle / Muse from Meta | sage / rose |
+| 푸터와 GitHub 프로필의 AI 에이전트 초대: Muse from Meta / Pickle | meta / sage |
 | 언어 메뉴, GitHub 프로필의 언어 알약 | lilac |
 
 `--accent`는 링크 호버와 포커스 링에만, `--alias`는 "JUMIN WHO?"에만 씁니다. `--alias`는 명도 대비가 3.6:1이므로

@@ -47,6 +47,10 @@
   --rose: #ffe4ea;
   --rose-ink: #a33d5c;
   --rose-pop: #f7aec0;
+  /* Meta's blue (hue 217), softened like the six families. Only for the Muse from Meta invite. */
+  --meta: #e3ecfd;
+  --meta-ink: #1659c2;
+  --meta-pop: #93b6f5;
 
   /* ---- backdrop ---- */
   --blob-a: #ffd3bb;
@@ -175,6 +179,9 @@
   --rose: #38262d;
   --rose-ink: #f7aec0;
   --rose-pop: #c5718a;
+  --meta: #1c2840;
+  --meta-ink: #93bbff;
+  --meta-pop: #4f7fd1;
 
   --blob-a: #6a3a26;
   --blob-b: #5a4520;

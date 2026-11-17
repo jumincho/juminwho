@@ -7,7 +7,7 @@ import type { Tone } from '../lib/tone'
 import styles from './Footer.module.css'
 
 /** One tone per invite, in the order of `invites.links`. */
-const inviteTones: Tone[] = ['sage', 'rose']
+const inviteTones: Tone[] = ['meta', 'sage']
 
 export default function Footer() {
   const { t } = useLanguage()

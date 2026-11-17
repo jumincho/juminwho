@@ -39,3 +39,10 @@
   --tone-ink: var(--rose-ink);
   --tone-pop: var(--rose-pop);
 }
+
+/* A brand tone, not a seventh family: Meta's blue, only for the Muse from Meta invite. */
+[data-tone='meta'] {
+  --tone: var(--meta);
+  --tone-ink: var(--meta-ink);
+  --tone-pop: var(--meta-pop);
+}

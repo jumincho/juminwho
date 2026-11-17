@@ -120,8 +120,8 @@ export const invites = {
   } satisfies Localized,
   codeLabel: { en: 'Invite code', ko: '초대 코드', 'zh-CN': '邀请码', 'zh-HK': '邀請碼', ja: '招待コード' } satisfies Localized,
   links: [
-    { label: 'Pickle', href: 'https://pickle.com/i/Z2MWQ9V7', code: 'Z2MWQ9V7' },
     { label: 'Muse from Meta', href: 'https://muse.ai/invite/LAIQNF', code: 'LAIQNF' },
+    { label: 'Pickle', href: 'https://pickle.com/i/Z2MWQ9V7', code: 'Z2MWQ9V7' },
   ] satisfies Invite[],
 }
 

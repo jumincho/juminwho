@@ -113,7 +113,7 @@ export function buildCards(c, lang, { Flag, LinkedInIcon, mascot, photo }) {
   ].join('')
 
   // ---- AI agent invites: the README puts them in their own row, under a caption ----
-  const inviteTones = ['sage', 'rose']
+  const inviteTones = ['meta', 'sage']
   const inviteButtons = invites.links
     .map((invite, i) =>
       button(`invite-${i + 1}`, inviteTones[i], icon(Ticket), invite.label, invite.href, {
