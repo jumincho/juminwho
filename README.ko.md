@@ -132,6 +132,7 @@ chromium`을 한 번 실행하거나, `PLAYWRIGHT_CHROMIUM=/path/to/chrome`으�
 | `languages` | 메뉴 순서대로 적은 언어, 각 언어의 지역 표시, 그 언어로 쓴 이름, 날짜 로캘 |
 | `site` | 페이지 제목, 설명, 주소, 마지막 업데이트 달. `<head>` 태그를 여기서 만듭니다 |
 | `profile` | 이름, 별명, 한글 이름, 소개, 소속, 위치, 태어난 시각, 이메일, 사진, 링크 |
+| `invites` | 푸터와 GitHub 프로필에 보이는 AI 에이전트 앱 두 개의 초대장 |
 | `sections` | 섹션 순서, 제목, 내비게이션 라벨 |
 | `publications`, `selfNames` | 학회와 개최지를 포함한 논문, 강조할 본인 이름 표기 |
 | `experience`, `education` | 타임라인 항목. 기간은 `{ from, to?, expected? }` |

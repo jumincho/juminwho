@@ -25,6 +25,11 @@ export interface Link<Label = string> {
   href: string
 }
 
+/** An invitation to an app. `code` is shown beside the name for people who sign up in the app itself. */
+export interface Invite extends Link {
+  code?: string
+}
+
 /** Months written as `YYYY.MM`. A missing `to` means the entry is still going on. */
 export interface Period {
   from: string

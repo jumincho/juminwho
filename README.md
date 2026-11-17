@@ -137,6 +137,7 @@ Edit `src/data/profile.ts` and nothing else. Components never hold facts or word
 | `languages` | The languages in menu order, with their region tags, own names and date locales |
 | `site` | Page title, description, address and last-updated month. The `<head>` tags are built from it |
 | `profile` | Name, alias, Korean name, tagline, affiliation, location, birth instant, email, photo and links |
+| `invites` | Invitations to two AI agent apps, shown in the footer and on the GitHub profile |
 | `sections` | Section order, titles and navigation labels |
 | `publications`, `selfNames` | Papers, with venue and place, and the spellings of Jumin's name to highlight |
 | `experience`, `education` | Timeline entries, with periods as `{ from, to?, expected? }` |

@@ -1,4 +1,4 @@
-import { Cloud, Hand, Heart, Landmark, MapPin, Sparkles, type LucideIcon } from 'lucide-react'
+import { Cloud, Hand, Heart, Landmark, MapPin, MessageCircle, Sparkles, type LucideIcon } from 'lucide-react'
 import { Fragment, type ReactNode } from 'react'
 import { GitHubIcon, LinkedInIcon } from '../components/BrandIcons'
 import CopyEmail from '../components/CopyEmail'
@@ -127,6 +127,12 @@ export default function Hero() {
               <GitHubIcon />
             </span>
             {profile.github.label}
+          </ExternalLink>
+          <ExternalLink href={profile.chatgpt.href} className={styles.social} data-tone="butter">
+            <span className={styles.socialIcon}>
+              <MessageCircle />
+            </span>
+            {profile.chatgpt.label}
           </ExternalLink>
         </div>
       </div>

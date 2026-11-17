@@ -18,7 +18,9 @@ import {
   Heart,
   Landmark,
   MapPin,
+  MessageCircle,
   Sparkles,
+  Ticket,
   Trophy,
 } from 'lucide-react'
 import { createElement } from 'react'
@@ -44,7 +46,7 @@ export function siteLink(site, lang, hash = '') {
  * @returns        { html, frames, age } where frames lists each image with its alt text and link
  */
 export function buildCards(c, lang, { Flag, LinkedInIcon, mascot, photo }) {
-  const { profile, labels, site, sections, githubProfile: gp } = c
+  const { profile, labels, site, sections, invites, githubProfile: gp } = c
   const t = (value) => value[lang]
   const mascotIcon = mascot.replace('<svg', '<svg class="mascot-icon"')
   const flag = (code) => `<span class="flag">${renderToStaticMarkup(createElement(Flag, { code }))}<span class="flag-ring"></span></span>`
@@ -96,18 +98,30 @@ export function buildCards(c, lang, { Flag, LinkedInIcon, mascot, photo }) {
   )
 
   // ---- pill buttons ----
-  const button = (id, tone, iconMarkup, label, href) =>
+  const button = (id, tone, iconMarkup, label, href, { alt = label, code } = {}) =>
     frame(
       id,
       'pill',
-      `<span class="button" data-shadow="sm"><span class="button-icon" data-tone="${tone}">${iconMarkup}</span><span class="button-label">${esc(label)}</span><span class="button-arrow">${icon(ArrowUpRight)}</span></span>`,
-      { alt: label, href },
+      `<span class="button" data-shadow="sm"><span class="button-icon" data-tone="${tone}">${iconMarkup}</span><span class="button-label">${esc(label)}</span>${code ? `<span class="button-code" data-tone="${tone}">${esc(code)}</span>` : ''}<span class="button-arrow">${icon(ArrowUpRight)}</span></span>`,
+      { alt, href },
     )
   const buttons = [
     button('button-portfolio', 'peach', mascotIcon, t(gp.portfolio), link()),
     button('button-linkedin', 'sky', renderToStaticMarkup(createElement(LinkedInIcon)), profile.linkedin.label, profile.linkedin.href),
+    button('button-chatgpt', 'butter', icon(MessageCircle), profile.chatgpt.label, profile.chatgpt.href),
     button('button-lab', 'sage', icon(FlaskConical), gp.lab, profile.lab.href),
   ].join('')
+
+  // ---- AI agent invites: the README puts them in their own row, under a caption ----
+  const inviteTones = ['sage', 'rose']
+  const inviteButtons = invites.links
+    .map((invite, i) =>
+      button(`invite-${i + 1}`, inviteTones[i], icon(Ticket), invite.label, invite.href, {
+        alt: `${t(invites.title)}: ${invite.label}${invite.code ? ` (${t(invites.codeLabel)} ${invite.code})` : ''}`,
+        code: invite.code,
+      }),
+    )
+    .join('')
 
   // ---- at a glance ----
   const fact = (tone, iconMarkup, label, value) =>
@@ -219,7 +233,7 @@ export function buildCards(c, lang, { Flag, LinkedInIcon, mascot, photo }) {
     { alt: `${t(labels.thanks)} ${t(labels.signOff)}`, href: link(), animated: true },
   )
 
-  const html = [hero, `<div class="row">${buttons}</div>`, glance, publications, experience, education, footer].join('\n')
+  const html = [hero, `<div class="row">${buttons}</div>`, `<div class="row">${inviteButtons}</div>`, glance, publications, experience, education, footer].join('\n')
   return { html, frames, age }
 }
 

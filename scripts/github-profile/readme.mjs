@@ -20,11 +20,12 @@ function picture(dir, frame, width, href = frame.href) {
 }
 
 export function buildReadme({ lang, frames, pills, rows, sizes, content }) {
-  const { githubProfile: gp, languages, profile, site } = content
+  const { githubProfile: gp, invites: inviteText, languages, profile, site } = content
   const dir = `assets/${lang}`
   const byId = Object.fromEntries(frames.map((f) => [f.id, f]))
   const show = (id) => picture(dir, byId[id], sizes[id].width)
   const buttons = frames.filter((f) => f.id.startsWith('button-')).map((f) => show(f.id))
+  const invites = frames.filter((f) => f.id.startsWith('invite-')).map((f) => show(f.id))
   const languageRow = languages.map(({ code }) => {
     const pill = pills.find((p) => p.code === code && p.on === (code === lang))
     const href = code === 'en' ? gp.profile : `${gp.repository}/blob/main/${readmeName(code)}`
@@ -52,6 +53,10 @@ ${buttons.join('\n')}
 <p align="center"><code>${attr(profile.email)}</code></p>
 
 ${rows.map((row) => `<p align="center">\n${row.map(show).join('\n')}\n</p>`).join('\n\n')}
+
+<p align="center"><sub>${attr(inviteText.title[lang])}</sub><br />
+${invites.join('\n')}
+</p>
 
 <p align="center">
 ${picture(dir, byId.footer, '100%')}

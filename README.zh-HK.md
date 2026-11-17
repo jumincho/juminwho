@@ -114,6 +114,7 @@ npm run dev        # http://localhost:5173
 | `languages` | 按選單順序排列的語言，以及各自的地區代碼、以該語言書寫的名稱和日期地區設定 |
 | `site` | 頁面標題、描述、網址和最後更新月份，`<head>` 標籤由此生成 |
 | `profile` | 姓名、別名、韓文姓名、簡介、所屬機構、所在地、出生時刻、電郵、相片和連結 |
+| `invites` | 兩個 AI 智能體應用的邀請連結，顯示在頁尾和 GitHub 個人主頁 |
 | `sections` | 欄目順序、標題和導覽標籤 |
 | `publications`、`selfNames` | 論文（附會議和舉辦地），以及要突出顯示的本人姓名寫法 |
 | `experience`、`education` | 時間線項目，時段寫成 `{ from, to?, expected? }` |

@@ -114,6 +114,7 @@ npm run dev        # http://localhost:5173
 | `languages` | 按菜单顺序排列的语言，以及各自的地区代码、用该语言书写的名称和日期区域设置 |
 | `site` | 页面标题、描述、网址和最后更新月份，`<head>` 标签由此生成 |
 | `profile` | 姓名、别名、韩文姓名、简介、所属机构、所在地、出生时刻、邮箱、照片和链接 |
+| `invites` | 两个 AI 智能体应用的邀请链接，显示在页脚和 GitHub 个人主页 |
 | `sections` | 栏目顺序、标题和导航标签 |
 | `publications`、`selfNames` | 论文（含会议和举办地），以及要高亮的本人姓名写法 |
 | `experience`、`education` | 时间线条目，时间段写作 `{ from, to?, expected? }` |

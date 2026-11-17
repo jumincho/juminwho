@@ -13,6 +13,7 @@
  */
 import type {
   Honor,
+  Invite,
   Language,
   Link,
   Localized,
@@ -39,7 +40,7 @@ export const site = {
     'Jumin Cho, AI researcher and Ph.D. student in Computer Science at Jeonbuk National University.',
   url: 'https://jumincho.github.io/juminwho/',
   source: 'https://github.com/jumincho/juminwho',
-  lastUpdated: '2026-10',
+  lastUpdated: '2026-11',
 }
 
 const university: Localized = {
@@ -102,6 +103,26 @@ export const profile = {
   lab: { label: 'Natural Language Learning Lab', href: 'https://sites.google.com/view/nlllab/main' },
   linkedin: { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jumin-cho-42b126338/' },
   github: { label: 'GitHub', href: 'https://github.com/jumincho' },
+  chatgpt: { label: 'ChatGPT', href: 'https://chatgpt.com/u/jumincho' },
+}
+
+/**
+ * Jumin's invitations to two personal AI agent apps, in the footer and the GitHub profile.
+ * Each invite link carries Jumin's invite code. The code is also shown, for people who sign up in the app.
+ */
+export const invites = {
+  title: {
+    en: 'AI agent invites',
+    ko: 'AI 에이전트 초대장',
+    'zh-CN': 'AI 智能体邀请',
+    'zh-HK': 'AI 智能體邀請',
+    ja: 'AI エージェント招待',
+  } satisfies Localized,
+  codeLabel: { en: 'Invite code', ko: '초대 코드', 'zh-CN': '邀请码', 'zh-HK': '邀請碼', ja: '招待コード' } satisfies Localized,
+  links: [
+    { label: 'Pickle', href: 'https://pickle.com/i/Z2MWQ9V7', code: 'Z2MWQ9V7' },
+    { label: 'Muse from Meta', href: 'https://muse.ai/invite/LAIQNF', code: 'LAIQNF' },
+  ] satisfies Invite[],
 }
 
 /** Page sections in reading order. The header navigation follows this order. */
